@@ -1,5 +1,5 @@
 process_dir <- function(path,
-                        extension = "qmd",
+                        extension = "rock",
                         regex,
                         codeRegex = "\\[\\[([a-zA-Z0-9._-]+)\\]\\]",
                         cidRegex = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",

@@ -77,18 +77,11 @@ parse_sources_dir <- function(path,
   metadata <- list();
   for (i in names(idRegexes)) {
     metadata[[i]] <-
-
+      purrr::map(rawSpecs,
+                 i);
   }
 
-  idRegexes
-
-  names(parsedAttributes) <-
-    purrr::map(parsedAttributes,
-               'cid');
-
-
-
-
+  res$metadata <- metadata;
 
   return(structure(res,
                    class="rockParsedSources"));

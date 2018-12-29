@@ -159,7 +159,7 @@ parse_source <- function(x,
 
 }
 
-x <- readLines("B:/Data/research/qualitative-quantitative interfacing/Qualitative rENA/arena/sylvias-test.txt",
+x <- readLines("B:/Data/research/qualitative-quantitative interfacing/Qualitative rENA/arena/sylvias-test.rock",
                encoding="UTF-8");
 
 y <- parse_source(x);
