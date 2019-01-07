@@ -1,3 +1,4 @@
+#' @export
 process_dir <- function(path,
                         extension = "rock",
                         regex,
@@ -10,7 +11,7 @@ process_dir <- function(path,
                         encoding="UTF-8",
                         silent=FALSE) {
 
-  parse_sources
+  #parse_sources
 
   return(structure(res,
                    class="rockParsedSources"));

@@ -1,0 +1,114 @@
+---
+title: "Introduction to the Reproducible Open Coding Kit (ROCK)"
+author: "Gjalt-Jorn Peters"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Introduction to the Reproducible Open Coding Kit (ROCK)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The Reproducible Open Coding Kit (ROCK) was developed to facilitate reproducible and open coding, specifically geared towards qualitative research methods. Although it is a general-purpose toolkit, three specific applications have been implemented:
+
+- an interface to the `rENA` package that implements Epistemic Network Analysis (ENA);
+- means to process notes from Cognitive Interviews (CIs);
+- means to work with a decentralized construct taxonomy (DCT).
+
+In this introduction, first a general overview of the logic behind ROCK will be given, after which each of those three use cases will be discussed.
+
+# General background and introduction
+
+Although the availability of tools for reproducible and open quantitative research is quickly increasing, there are few such options for researchers using qualitative methods. This hampers applying Open Science principles, and as a result, it often precludes re-use of data, learning from each other, and detecting errors. The Reproducible Open Coding Kit (ROCK) aims to fill this gap.
+
+ROCK consists of two parts. On the one hand, there is the `rock` R package that makes it easy to work with `rock` files. On the other hand, there is the `rock` file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source.
+
+
+```
+So what went right
+What went wrong
+Was it a story
+or was it a song
+Was it over night
+Or did it take you long
+Was knowing your weakness
+what made you strong
+```
+
+*(Smiley Faces, Gnarls Barclay)*
+
+
+
+
+
+
+## Glossary
+
+Attribute *(ROCK term)*
+: An attribute is a characteristic of a case. FOr example, if the cases are persons, attributes can be characteristics such as sex, age, region of residence, or diagnosis. All attributes of a case are attached to all utterances coded as belonging to that case.
+
+Case *(ROCK term)*
+: A case is a data provider, such as a person, a family, an organisation, or any other research unit. In psychological research, cases are almost always persons, but in a qualitative study of organisation policy documents, each organisation would be a case.
+
+Conversation *(ENA term)*
+: In ENA terminology, a source is called a conversation (see *source*).
+
+Discourse *(ENA term)*
+: In ENA terminology, a discourse is the full set of all utterances (and therefore, all sources) under analysis.
+
+Identifier *(ROCK term)*
+: In ROCK, an identifier provides a way to specify metadata (i.e. one or more attributes) about utterances. The most common identifiers are cases, but in ROCK, this concept is generalized, and different types of identifiers can be specified. This makes it possible to quickly attach other attributes to utterances as well. For example, one could use case identifiers to attach personal characteristics such as sex or age to utterances, and interview location identifiers to attach information about the interview context to utterances.
+
+Metadata *(ENA term)*
+: Metadata refers to the attributes that can be specified about cases (or more generally, can be attached to identifiers), and so can be attached to utterances. This metadata then makes it possible to group or compare patterns in codes.
+
+Section *(ROCK term)*
+: A section is a set of one or more consecutive utterances. Section markers can be used to divide a source into sections. Multiple different section markers can be used, and so a source can simultaneously be divided into sections differently.
+
+Section marker *(ROCK term)*
+: A section marker is a sequence of characters that marks a section division. Every section marker encountered in a source signals the ending of the preceding and the beginning of the following section. In the produced dataframe with utterances, this is shown by increasing section numbers.
+
+Source *(ROCK term)*
+: A file with content to code. The file can contain, for example, a transcript of an interview or focus group, or it can be something else, like a policy document, a discussion in an online forum, or a list of twitter posts. A source consists of utterances.
+
+Stanza *(ENA term)*
+: a set of one or more utterances that occur in close proximity and that are defined by ... (the complicated bit), i.e. the smallest unit of analysis psychologically. Stanzas are a solution for the fact that peoples' sentence length is not closely related to the psychological unity of the matter they discuss. E.g. Alice could discuss her ideas about the cause of the disease in three sentences while Bob would use only one, but both explanations would be the same stanza. Stanzas are what in written text would be paragraphs. Except that spoken text is more messy, and so 'paragraphs' can be interspersed by unrelated utterances. Therefore, utterances in close proximity can be combined into the same stanza even if they are separated by a small number of unrelated utterances. Note, however, that stanzas remain defined as 'messy paragraphs'; if an interviewee starts referring back to something discussed half an hour earlier, that doesn't justify combining those utterances into the same stanza. (Note, however, that they _could_ be combined through stanza sets / strophes, if they happen to be codes by the same codes, _and_ if strophes are composed by collapsing stanzas with those codes.)
+
+Strophe *(ENA term)*
+: a set of one or more stanzas that are combined based on sharing the same code, identifier, or attribute. Strophes, therefore, are collected over the entire transcript/source or over all transcripts/sources; proximity is irrelevant.
+
+Topic *(ROCK term)*
+: A topic is a distinct subject area covered by data in a source. For example, for interviews or focus groups, the topics can be the topics that form the toic list or the interview scheme.
+
+Transcript *(ROCK term)*
+: The verbatim text of an interview or focus group in a text file.
+
+Unit *(ENA term)*
+: a set of one or more utterances that share a given attribute
+
+Utterance *(ENA & ROCK term)*
+: An utterance is the smallest unit of analysis in a study. This is usually one sentence, but in any case it is one line in the `rock` file (a line being defined as zero or more characters ending with a line ending). That is, when reading the sources, `rock` splits each source at the line endings (newline characters).
+
+
+# Using ROCK for Epistemic Network Analysis
+
+
+
+# Using ROCK for Cognitive Interviews
+
+
+
+# Using ROCK with a Decentralized Construct Taxonomy
+
+
+
+
