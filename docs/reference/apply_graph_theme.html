@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract all yaml fragments from a file — extract_yaml_fragments • rock</title>
+<title>Apply multiple DiagrammeR global graph attributes — apply_graph_theme • rock</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract all yaml fragments from a file — extract_yaml_fragments" />
+<meta property="og:title" content="Apply multiple DiagrammeR global graph attributes — apply_graph_theme" />
 
-<meta property="og:description" content="This function simply extracts all YAML fragments from a file,
-returning a list of character vectors." />
+<meta property="og:description" content="Apply multiple DiagrammeR global graph attributes" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -105,71 +104,43 @@ returning a list of character vectors." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract all yaml fragments from a file</h1>
+    <h1>Apply multiple DiagrammeR global graph attributes</h1>
     
-    <div class="hidden name"><code>extract_yaml_fragments.Rd</code></div>
+    <div class="hidden name"><code>apply_graph_theme.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function simply extracts all YAML fragments from a file,
-returning a list of character vectors.</p>
+    <p>Apply multiple DiagrammeR global graph attributes</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>extract_yaml_fragments</span>(<span class='no'>file</span>, <span class='no'>text</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>apply_graph_theme</span>(<span class='no'>graph</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>The path to a file to scan.</p></td>
+      <th>...</th>
+      <td><p>One or more character vectors of length three, where the first element is
+the attribute, the second the value, and the third, the attribute type (`graph`,
+`node`, or `edge`).</p></td>
     </tr>
     <tr>
-      <th>text</th>
-      <td><p>A character vector to scan, where every element should
-represent one line in the file.</p></td>
-    </tr>
-    <tr>
-      <th>delimiterRegEx</th>
-      <td><p>The regular expression used to locate YAML
-fragments</p></td>
-    </tr>
-    <tr>
-      <th>ignoreOddDelimiters</th>
-      <td><p>Whether to throw an error (FALSE) or
-delete the last delimiter (TRUE) if an odd number of delimiters is
-encountered.</p></td>
-    </tr>
-    <tr>
-      <th>silent</th>
-      <td><p>Whether to be silent (TRUE) or informative (FALSE).</p></td>
+      <th>dctGraph</th>
+      <td><p>The [DiagrammeR::DiagrammeR] graph to apply the attributes to.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of character vectors.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function is called by [extract_dct_specs()]; it is normally not
-necessary to call it directly.</p>
+    <p>The [DiagrammeR::DiagrammeR] graph.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>extract_yaml_fragments</span>(<span class='kw'>text</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"---"</span>, <span class='st'>"First YAML fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Outside of YAML"</span>,
-                              <span class='st'>"---"</span>, <span class='st'>"Second fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Also outside of YAML"</span>));</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] "---"                 "First YAML fragment" "---"                
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] "---"             "Second fragment" "---"            
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>extractedSpecs</span> <span class='kw'>&lt;-</span> <span class='fu'>extract_dct_specs</span>(<span class='kw'>text</span><span class='kw'>=</span><span class='fu'>unlist</span>(<span class='fu'>strsplit</span>(<span class='kw pkg'>dct</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/dct/topics/extract_dct_specs'>example_dct_spec</a></span>, <span class='st'>'\n'</span>)));</div><div class='output co'>#&gt; <span class='error'>Error in extract_dct_specs(text = unlist(strsplit(dct::example_dct_spec,     "\n"))): could not find function "extract_dct_specs"</span></div><div class='input'><span class='no'>dctGraph</span> <span class='kw'>&lt;-</span> <span class='fu'>parse_dct_specs</span>(<span class='no'>extractedSpecs</span>)$<span class='no'>output</span>$<span class='no'>graph</span></div><div class='output co'>#&gt; <span class='error'>Error in parse_dct_specs(extractedSpecs): could not find function "parse_dct_specs"</span></div><div class='input'><span class='no'>dctGraph</span> <span class='kw'>&lt;-</span> <span class='fu'>apply_graph_theme</span>(<span class='no'>dctGraph</span>,
+                              <span class='fu'>c</span>(<span class='st'>"color"</span>, <span class='st'>"#0000AA"</span>, <span class='st'>"node"</span>),
+                              <span class='fu'>c</span>(<span class='st'>"fillcolor"</span>, <span class='st'>"#00FFFF"</span>, <span class='st'>"node"</span>));</div><div class='output co'>#&gt; <span class='error'>Error in c("graph_info", "nodes_df", "edges_df", "global_attrs", "directed",     "last_node", "last_edge", "node_selection", "edge_selection",     "cache", "graph_log") %in% names(graph): object 'dctGraph' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -177,8 +148,6 @@ necessary to call it directly.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

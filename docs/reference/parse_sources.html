@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract all yaml fragments from a file — extract_yaml_fragments • rock</title>
+<title>Extract DCT specifications from all files in a directory — parse_sources • rock</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract all yaml fragments from a file — extract_yaml_fragments" />
+<meta property="og:title" content="Extract DCT specifications from all files in a directory — parse_sources" />
 
-<meta property="og:description" content="This function simply extracts all YAML fragments from a file,
-returning a list of character vectors." />
+<meta property="og:description" content="This function processes all DCT specifications in a directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -105,71 +104,89 @@ returning a list of character vectors." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract all yaml fragments from a file</h1>
+    <h1>Extract DCT specifications from all files in a directory</h1>
     
-    <div class="hidden name"><code>extract_yaml_fragments.Rd</code></div>
+    <div class="hidden name"><code>parse_sources.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function simply extracts all YAML fragments from a file,
-returning a list of character vectors.</p>
+    <p>This function processes all DCT specifications in a directory.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>extract_yaml_fragments</span>(<span class='no'>file</span>, <span class='no'>text</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>parse_sources</span>(<span class='no'>path</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>"rock|dct"</span>, <span class='no'>regex</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>code</span>
+  <span class='kw'>=</span> <span class='st'>"\\[\\[([a-zA-Z0-9._&gt;-]+)\\]\\]"</span>), <span class='kw'>idRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>caseId</span> <span class='kw'>=</span>
+  <span class='st'>"\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>stanzaId</span> <span class='kw'>=</span>
+  <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>),
+  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"stanzaId"</span>), <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span>
+  <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span> <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
+  <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
+  <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"codes"</span>,
+  <span class='st'>"dct"</span>), <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># S3 method for rockParsedSources</span>
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for rockParsedSources</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>The path to a file to scan.</p></td>
+      <th>path</th>
+      <td><p>The path from where to read the DCT files.</p></td>
     </tr>
     <tr>
-      <th>text</th>
-      <td><p>A character vector to scan, where every element should
-represent one line in the file.</p></td>
+      <th>extension</th>
+      <td><p>The extension of the file; convenient alternative to
+specifying a `regex`.</p></td>
+    </tr>
+    <tr>
+      <th>regex</th>
+      <td><p>A regular expression; when provided, overrides the `extension`
+argument to guide file selection in the `path`.</p></td>
     </tr>
     <tr>
       <th>delimiterRegEx</th>
-      <td><p>The regular expression used to locate YAML
-fragments</p></td>
+      <td><p>The regular expression specifying how the YAML fragments
+specifying the constructs are delimited. Should normally never be changed.</p></td>
+    </tr>
+    <tr>
+      <th>metadataContainers, codesContainers</th>
+      <td><p>A character vector listing the containers
+of the metadata and code specifications in the YAML fragments. Because only
+specifications are read that are stored in these containers, the files can contain
+YAML fragments with other data, too, without interfering with the parsing of the
+ROCK specifications.</p></td>
     </tr>
     <tr>
       <th>ignoreOddDelimiters</th>
-      <td><p>Whether to throw an error (FALSE) or
-delete the last delimiter (TRUE) if an odd number of delimiters is
+      <td><p>Whether to ignore a final odd delimiter, if
 encountered.</p></td>
     </tr>
     <tr>
       <th>silent</th>
-      <td><p>Whether to be silent (TRUE) or informative (FALSE).</p></td>
+      <td><p>Whether to provide information on progress.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of character vectors.</p>
+    <p>An object of class `dctRawSpecListSet` for processing by [parse_dct_specs()].</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is called by [extract_dct_specs()]; it is normally not
-necessary to call it directly.</p>
+    <p>This function is called by [process_dir()]; it is normally not
+necessary to call this function directly.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>extract_yaml_fragments</span>(<span class='kw'>text</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"---"</span>, <span class='st'>"First YAML fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Outside of YAML"</span>,
-                              <span class='st'>"---"</span>, <span class='st'>"Second fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Also outside of YAML"</span>));</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] "---"                 "First YAML fragment" "---"                
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] "---"             "Second fragment" "---"            
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>extract_dct_dir</span>(<span class='st'>"A:/path/to/some/directory"</span>);
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

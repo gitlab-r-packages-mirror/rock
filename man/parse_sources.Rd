@@ -6,16 +6,16 @@
 \alias{plot.rockParsedSources}
 \title{Extract DCT specifications from all files in a directory}
 \usage{
-parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code
-  = "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
+parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code =
+  "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
   "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   autoGenerateIds = c("stanzaId"), sectionRegexes = c(paragraphs =
   "---paragraph-break---", secondary = "---<[a-zA-Z0-9]?>---"),
   inductiveCodingHierarchyMarker = ">", delimiterRegEx = "^---$",
-  metadataContainers = c("metadata"), codesContainers = c("codes",
-  "dct"), ignoreRegex = "^#", ignoreOddDelimiters = FALSE,
-  encoding = "UTF-8", silent = TRUE)
+  metadataContainers = c("metadata"), codesContainers = c("codes", "dct"),
+  ignoreRegex = "^#", ignoreOddDelimiters = FALSE, encoding = "UTF-8",
+  silent = TRUE)
 
 \method{print}{rockParsedSources}(x, prefix = "### ", ...)
 
