@@ -25,10 +25,10 @@ parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code =
 \item{path}{The path from where to read the DCT files.}
 
 \item{extension}{The extension of the file; convenient alternative to
-specifying a `regex`.}
+specifying a \code{regex}.}
 
-\item{regex}{A regular expression; when provided, overrides the `extension`
-argument to guide file selection in the `path`.}
+\item{regex}{A regular expression; when provided, overrides the \code{extension}
+argument to guide file selection in the \code{path}.}
 
 \item{delimiterRegEx}{The regular expression specifying how the YAML fragments
 specifying the constructs are delimited. Should normally never be changed.}
@@ -45,13 +45,13 @@ encountered.}
 \item{silent}{Whether to provide information on progress.}
 }
 \value{
-An object of class `dctRawSpecListSet` for processing by [parse_dct_specs()].
+An object of class \code{dctRawSpecListSet} for processing by \code{\link[=parse_dct_specs]{parse_dct_specs()}}.
 }
 \description{
 This function processes all DCT specifications in a directory.
 }
 \details{
-This function is called by [process_dir()]; it is normally not
+This function is called by \code{\link[=process_dir]{process_dir()}}; it is normally not
 necessary to call this function directly.
 }
 \examples{

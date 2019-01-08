@@ -31,7 +31,7 @@ a character vector where each element is a line (but the lines
 comprosing the YAML fragments have been deleted).
 }
 \details{
-This function is called by [parse_source()]; it is normally not
+This function is called by \code{\link[=parse_source]{parse_source()}}; it is normally not
 necessary to call it directly.
 }
 \examples{

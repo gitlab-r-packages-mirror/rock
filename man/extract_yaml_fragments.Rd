@@ -30,7 +30,7 @@ This function simply extracts all YAML fragments from a file,
 returning a list of character vectors.
 }
 \details{
-This function is called by [extract_dct_specs()]; it is normally not
+This function is called by \code{\link[=extract_dct_specs]{extract_dct_specs()}}; it is normally not
 necessary to call it directly.
 }
 \examples{
