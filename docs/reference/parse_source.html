@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract DCT specifications from all files in a directory — parse_sources • rock</title>
+<title>Parse a source — parse_source • rock</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract DCT specifications from all files in a directory — parse_sources" />
+<meta property="og:title" content="Parse a source — parse_source" />
 
-<meta property="og:description" content="This function processes all DCT specifications in a directory." />
+<meta property="og:description" content="This function parses a source and the contained identifiers, sections, and codes." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,101 +104,95 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract DCT specifications from all files in a directory</h1>
+    <h1>Parse a source</h1>
     
-    <div class="hidden name"><code>parse_sources.Rd</code></div>
+    <div class="hidden name"><code>parse_source.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function processes all DCT specifications in a directory.</p>
+    <p>This function parses a source and the contained identifiers, sections, and codes.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>parse_sources</span>(<span class='no'>path</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>"rock|dct"</span>, <span class='no'>regex</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>code</span> <span class='kw'>=</span>
+    <pre class="usage"><span class='fu'>parse_source</span>(<span class='no'>x</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>code</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[([a-zA-Z0-9._&gt;-]+)\\]\\]"</span>), <span class='kw'>idRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>caseId</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>stanzaId</span> <span class='kw'>=</span>
-  <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>),
-  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"stanzaId"</span>), <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span>
-  <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span> <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
+  <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>), <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>paragraphs</span>
+  <span class='kw'>=</span> <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span> <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
+  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"caseId"</span>),
   <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
-  <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"codes"</span>, <span class='st'>"dct"</span>),
-  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='co'># S3 method for rockParsedSources</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for rockParsedSources</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for rockParsedSource</span>
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>The path from where to read the DCT files.</p></td>
+      <th>x</th>
+      <td><p>The character vector containing the source, for example as obtained through
+[base::readLines()].</p></td>
     </tr>
     <tr>
-      <th>extension</th>
-      <td><p>The extension of the file; convenient alternative to
-specifying a `regex`.</p></td>
+      <th>codeRegexes, idRegexes, sectionRegexes</th>
+      <td><p>These are named character vectors with one
+or more regular expressions. For `codeRegexes`, these specify how to extract the codes
+(that were used to code the sources). For `idRegexes`, these specify how to extract the
+different types of identifiers. For `sectionRegexes`, these specify how to extract the
+different types of sections. The `codeRegexes` and `idRegexes` must each contain one
+capturing group to capture the codes and identifiers, respectively.</p></td>
     </tr>
     <tr>
-      <th>regex</th>
-      <td><p>A regular expression; when provided, overrides the `extension`
-argument to guide file selection in the `path`.</p></td>
+      <th>autoGenerateIds</th>
+      <td><p>The names of the `idRegexes` that, if missing, should receive
+autogenerated identifiers (which consist of 'autogenerated_' followed by an incrementing
+number).</p></td>
+    </tr>
+    <tr>
+      <th>persistentIds</th>
+      <td><p>The names of the `idRegexes` for the identifiers which, once
+attached to an utterance, should be attached to all following utterances as well (until
+a new identifier with the same name is encountered, after which that identifier will be
+attached to all following utterances, etc).</p></td>
+    </tr>
+    <tr>
+      <th>inductiveCodingHierarchyMarker</th>
+      <td><p>For inductive coding, this marker is used to indicate
+hierarchical relationships between codes. The code at the left hand side of this marker will
+be considered the parent code of the code on the right hand side. More than two levels
+can be specified in one code (for example, if the `inductiveCodingHierarchyMarker` is '&gt;',
+the code `grandparent&gt;child&gt;grandchild` would indicate codes at three levels.</p></td>
     </tr>
     <tr>
       <th>delimiterRegEx</th>
-      <td><p>The regular expression specifying how the YAML fragments
-specifying the constructs are delimited. Should normally never be changed.</p></td>
+      <td><p>The regular expression that is used to extract the YAML fragments.</p></td>
     </tr>
     <tr>
-      <th>metadataContainers, codesContainers</th>
-      <td><p>A character vector listing the containers
-of the metadata and code specifications in the YAML fragments. Because only
-specifications are read that are stored in these containers, the files can contain
-YAML fragments with other data, too, without interfering with the parsing of the
-ROCK specifications.</p></td>
+      <th>ignoreRegex</th>
+      <td><p>The regular expression that is used to delete lines before any other
+processing. This can be used to enable adding comments to sources, which are then ignored
+during analysis.</p></td>
     </tr>
     <tr>
       <th>ignoreOddDelimiters</th>
-      <td><p>Whether to ignore a final odd delimiter, if
-encountered.</p></td>
+      <td><p>If an odd number of YAML delimiters is encountered, whether this
+should result in an error (`FALSE`) or just be silently ignored (`TRUE`).</p></td>
     </tr>
     <tr>
       <th>silent</th>
-      <td><p>Whether to provide information on progress.</p></td>
+      <td><p>Whether to provide or suppress more detailed progress updates.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class `dctRawSpecListSet` for processing by [parse_dct_specs()].</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function is called by [process_dir()]; it is normally not
-necessary to call this function directly.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>extract_dct_dir</span>(<span class='st'>"A:/path/to/some/directory"</span>);
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>
