@@ -14,11 +14,19 @@ Description: The Reproducible Open Coding Kit (ROCK, and this package, `rock`)
   implements Epistemic Network Analysis (ENA), means to process notes
   from Cognitive Interviews (CIs), and means to work with a decentralized
   construct taxonomy (DCT).
-License: What license it uses
+BugReports: https://github.com/academy-of-behavior-change/dct/issues
+URL: https://dct.opens.science
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+Depends: R (>= 3.0.0)
+Imports: DiagrammeR (>= 1.0.0),
+         purrr (>= 0.2.5),
+         stats (>= 3.0.0),
+         ufs (>= 0.0.1),
+         yaml (>= 2.1.19)
 Suggests: 
     knitr,
     rmarkdown
