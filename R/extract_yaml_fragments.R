@@ -1,16 +1,18 @@
-#' Extract all yaml fragments from a file
+#' Extract or delete all yaml fragments from a file
 #'
-#' This function simply extracts all YAML fragments from a file,
-#' returning a list of character vectors.
+#' These function simply extract or delete all YAML fragments from a file,
+#' returning a list of character vectors containing the extracted fragments
+#' (`extract_yaml_fragments`) or a character vector without the lines that
+#' specified the YAML fragments (`delete_yaml_fragments`).
 #'
-#' This function is called by [extract_dct_specs()]; it is normally not
+#' This function is called by [parse_source()]; it is normally not
 #' necessary to call it directly.
 #'
-#' @param file The path to a file to scan.
+#' @param file The path to a file to scan; takes precedence over `text`.
 #' @param text A character vector to scan, where every element should
-#' represent one line in the file.
+#' represent one line in the file; can be specified instead of `file`.
 #' @param delimiterRegEx The regular expression used to locate YAML
-#' fragments
+#' fragments.
 #' @param ignoreOddDelimiters Whether to throw an error (FALSE) or
 #' delete the last delimiter (TRUE) if an odd number of delimiters is
 #' encountered.
@@ -22,6 +24,7 @@
 #'                               "---", "Second fragment", "---",
 #'                               "Also outside of YAML"));
 #'
+#' @rdname yaml_fragments
 #' @export
 extract_yaml_fragments <- function(file,
                                    text,

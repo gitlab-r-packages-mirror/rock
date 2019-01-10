@@ -1,29 +1,4 @@
-#' Extract DCT specifications from all files in a directory
-#'
-#' This function processes all DCT specifications in a directory.
-#'
-#' This function is called by [process_dir()]; it is normally not
-#' necessary to call this function directly.
-#'
-#' @param path The path from where to read the DCT files.
-#' @param extension The extension of the file; convenient alternative to
-#'   specifying a `regex`.
-#' @param regex A regular expression; when provided, overrides the `extension`
-#'   argument to guide file selection in the `path`.
-#' @param delimiterRegEx The regular expression specifying how the YAML fragments
-#'   specifying the constructs are delimited. Should normally never be changed.
-#' @param metadataContainers,codesContainers A character vector listing the containers
-#'   of the metadata and code specifications in the YAML fragments. Because only
-#'   specifications are read that are stored in these containers, the files can contain
-#'   YAML fragments with other data, too, without interfering with the parsing of the
-#'   ROCK specifications.
-#' @param ignoreOddDelimiters Whether to ignore a final odd delimiter, if
-#'   encountered.
-#' @param silent Whether to provide information on progress.
-#'
-#' @return An object of class `dctRawSpecListSet` for processing by [parse_dct_specs()].
-#' @examples \dontrun{extract_dct_dir("A:/path/to/some/directory");
-#' }
+#' @rdname parsing_sources
 #' @export
 parse_sources <- function(path,
                           extension = "rock|dct",
@@ -204,7 +179,7 @@ parse_sources <- function(path,
 
 }
 
-#' @rdname parse_sources
+#' @rdname parsing_sources
 #' @method print rockParsedSources
 #' @export
 print.rockParsedSources <- function(x, prefix="### ",  ...) {
@@ -214,7 +189,7 @@ print.rockParsedSources <- function(x, prefix="### ",  ...) {
   print(plot(x));
 }
 
-#' @rdname parse_sources
+#' @rdname parsing_sources
 #' @method plot rockParsedSources
 #' @export
 plot.rockParsedSources <- function(x, ...) {

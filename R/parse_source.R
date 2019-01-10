@@ -1,6 +1,7 @@
-#' Parse a source
+#' Parsing sources
 #'
-#' This function parses a source and the contained identifiers, sections, and codes.
+#' These function parse one (`parse_source`) or more (`parse_sources`) sources and the
+#' contained identifiers, sections, and codes.
 #'
 #' @param x The character vector containing the source, for example as obtained through
 #' [base::readLines()].
@@ -30,7 +31,7 @@
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
 #' @param silent Whether to provide or suppress more detailed progress updates.
 #'
-#' @rdname parse_source
+#' @rdname parsing_sources
 #' @export
 parse_source <- function(x,
                          codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
@@ -373,7 +374,7 @@ parse_source <- function(x,
 
 }
 
-#' @rdname parse_source
+#' @rdname parsing_sources
 #' @method print rockParsedSource
 #' @export
 print.rockParsedSource <- function(x, prefix="### ",  ...) {
@@ -454,8 +455,3 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
   }
   invisible(x);
 }
-
-# x <- readLines("B:/Data/research/qualitative-quantitative interfacing/Qualitative rENA/arena/sylvias-test.rock",
-#                encoding="UTF-8");
-#
-# y <- parse_source(x);
