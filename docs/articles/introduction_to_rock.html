@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1</span>
       </span>
     </div>
 
@@ -92,16 +92,163 @@
 <h1 class="hasAnchor">
 <a href="#general-background-and-introduction" class="anchor"></a>General background and introduction</h1>
 <p>Although the availability of tools for reproducible and open quantitative research is quickly increasing, there are few such options for researchers using qualitative methods. This hampers applying Open Science principles, and as a result, it often precludes re-use of data, learning from each other, and detecting errors. The Reproducible Open Coding Kit (ROCK) aims to fill this gap.</p>
-<p>ROCK consists of two parts. On the one hand, there is the <code>rock</code> R package that makes it easy to work with <code>rock</code> files. On the other hand, there is the <code>rock</code> file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source.</p>
+<p>ROCK consists of two parts. On the one hand, there is the <code>rock</code> R package that makes it easy to work with <code>.rock</code> files. This makes it easy to, for example, process coded sources and collapse the most specific levels of hierarchical coding trees into their parents, specify which utterances form stanzas or strophes for Epistemic Network Analysis, or</p>
+<p>On the other hand, there is the <code>.rock</code> file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source. Because these are plain text files, they are easily accessible to other researchers, regardless of the software they use.</p>
+<div id="rock-file-format" class="section level2">
+<h2 class="hasAnchor">
+<a href="#rock-file-format" class="anchor"></a><code>.rock</code> file format</h2>
+<p>The <code>.rock</code> file format uses a number of conventions to represent codes, metadata, and data structures. Although the functions in the <code>rock</code> package have been built to allow flexibility, this vignette uses the defaults (there is something to say for uniformity, after all).</p>
+<div id="codes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#codes" class="anchor"></a>Codes</h3>
+<p>Codes are by default any string of characters (specifically, lower or uppercase letters, digits, periods, underscores, larger than signs, and dashes) in between two pairs of square brackets (<code>[[</code> and <code>]]</code>). This is described by the regular expression <code>\[\[([a-zA-Z0-9._&gt;-]+)\]\]</code>; note that the escaping backslashes must be escaped themselves by prepending a second backslash when specifying this regular expression in R. Codes are designated per utterance, or in other words, per line. As many codes can be specified per line as one wishes. For example, see these two lines (utterances):</p>
+<pre><code>So what went right [[reflection-positive]]
+What went wrong [[reflection-negative]]</code></pre>
+<p>The first line is coded with <code>reflection-positive</code>, and the second line with code <code>reflection-negative</code>.</p>
+</div>
+<div id="structuring-inductive-codes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#structuring-inductive-codes" class="anchor"></a>Structuring inductive codes</h3>
+<p>When engaging in inductive coding (i.e. when not working with a prespecified code structure, but instead developing the code structure as one goes along; see the section below re: deductive coding), it can be desirable to structure the codes hierarchically. For example, perhaps a researchers wants to specify a parent code such as <code>reflection</code> with two child codes such as <code>positive</code> and <code>negative</code>. This helps one to identify patterns in the data, and makes it possible to easily extract all utterances coded as any type of reflection. By default, the marker that can be used to structure inductive codes is the greater than sign (specified by the regular expression <code>&gt;</code>). For example, see the same fragment but coded in two levels:</p>
+<pre><code>So what went right [[reflection&gt;positive]]
+What went wrong [[reflection&gt;negative]]</code></pre>
+<p>When this source is parsed by <code>rock</code>, it will recognize these deductive codes and their structure, and it will generate the corresponding hierarchical coding structure, as illustrated in the more extensive example below.</p>
+</div>
+<div id="specifying-identifiers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#specifying-identifiers" class="anchor"></a>Specifying identifiers</h3>
+<p>It is often desirable to attach specific attributes to utterances. For example, one may want to compare the patterns in codes between different categories of participants, such as those who do and do not own a car, or those that listen to progressive metal versus those that listen to psychedelic trance. Instead of coding all utterances with all relevant attributes, instead, it is possible to specify identifier to easily link utterances to characteristics of the data provision (such as data providers, for example participants, or the moment of data collection, for example daytime or nighttime, or winter or summer, or the location of data collection, such as in a busy place or in a silent office).</p>
+<p>This can be done by specifying identifiers. These are again specified using regular expressions. By default, two types of identifiers are specified: case identifiers and stanza identifiers. They are again specified using two pairs of square brackets, but this time, the opening brackets are immediately follow by a string of identifying characters (the ‘identifier identifier’, so to speak), followed by an equals sign, and then by the unique identifier. This may seem a bit abstract; it will become clearer as we look at the first example.</p>
+<div id="case-identifiers" class="section level4">
+<h4 class="hasAnchor">
+<a href="#case-identifiers" class="anchor"></a>Case identifiers</h4>
+<p>Case identifiers can be used to link utterances to data providers, such as participants. Their ‘identifier identifier’ is <code>cid</code>, and by default, their full regular expression is <code>\[\[cid=([a-zA-Z0-9._-]+)\]\]</code>. A source excerpt coded with only case identifiers may look like this:</p>
+<pre><code>CAIAPHAS: No, wait!   We need a more permanent solution to our problem. [[cid=1]]
+
+ANNAS: What then to do about Jesus of Nazareth?   Miracle wonderman, hero of fools. [[cid=2]]
+
+PRIEST THREE: No riots, no army, no fighting, no slogans. [[cid=3]]
+
+CAIAPHAS: One thing I'll say for him -- Jesus is cool. [[cid=1]]
+
+ANNAS: We dare not leave him to his own devices.   His half-witted fans will get out of control. [[cid=2]]</code></pre>
+<p>(Note that in this example, the names of the participants were retained; normally, the researcher would anonimyze the transcripts so as to allow publication of the coded transcripts.)</p>
+<p>WHen <code>rock</code> parses this source, it will know that the first and fourth utterances belong to the same case, as do the second and fifth. The attributes specified for these cases will then be attached to these utterances (see the section about metadata below).</p>
+</div>
+<div id="stanza-identifiers" class="section level4">
+<h4 class="hasAnchor">
+<a href="#stanza-identifiers" class="anchor"></a>Stanza identifiers</h4>
+<p>(add later)</p>
+</div>
+</div>
+<div id="specifying-deductive-coding-structures" class="section level3">
+<h3 class="hasAnchor">
+<a href="#specifying-deductive-coding-structures" class="anchor"></a>Specifying deductive coding structures</h3>
+<p>When a researcher works with a prespecified coding structure (i.e. engages in deductive coding), they only use codes that were determined a priori. Like in inductive coding, there are often multiple levels in such a coding structure, with the codes organised hierarchically. To efficiently be able to collapse codes to higher levels, <code>rock</code> needs to know the deductive coding structure. This can be specified using YAML fragments in the sources. YAML fragments are, by default, delimited by two lines that each contain only three dashes (<code>---</code>). Between those delimiters, YAML (a recursive acronym that stands for ‘YAML ain’t markup language’) can be specified. Specifically, in YAML terminology, each fragment should be a sequence of mappings that is named <code>codes</code>.</p>
+<p>The coding tree specified in the section on inductive coding, for example, can be efficiently specified as a deductive coding structure like this:</p>
+<pre><code>---
+codes:
+  -
+    id: reflection
+    children:
+      -
+        id: positive
+      -
+        id: negative
+---</code></pre>
+<p>If all children of a code are so-called ‘leaves’ (i.e. in the coding tree, they have no children of their own<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>), they can be specified more efficiently:</p>
+<pre><code>---
+codes:
+  -
+    id: reflection
+    children: ["positive", "negative"]
+---</code></pre>
+<p>When <code>rock</code> parses the sources, it will collect all such code specifications and combined them into one coding three using each code’s identifiers. It is possible to specify a parent in other code specification fragment by adding the field <code>parentId</code>. For example, in other sourrce, we could add this fragment:</p>
+<pre><code>---
+codes:
+  -
+    id: neutral
+    parentId: reflection
+---</code></pre>
+<p>This would add <code>neutral</code> as a sibling to <code>positive</code> and <code>negative</code>.</p>
+</div>
+<div id="specifying-metadata" class="section level3">
+<h3 class="hasAnchor">
+<a href="#specifying-metadata" class="anchor"></a>Specifying metadata</h3>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h2>
+<div id="section-breaks" class="section level3">
+<h3 class="hasAnchor">
+<a href="#section-breaks" class="anchor"></a>Section breaks</h3>
 <pre><code>So what went right
 What went wrong
+---paragraph-break---
 Was it a story
 or was it a song
+---paragraph-break---
 Was it over night
 Or did it take you long
+---paragraph-break---
 Was knowing your weakness
 what made you strong</code></pre>
-<p><em>(Smiley Faces, Gnarls Barclay)</em></p>
+<p><em>Source excerpt as example of section breaks (lyrics from Smiley Faces by Gnarls Barclay)</em></p>
+</div>
+<div id="identifiers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#identifiers" class="anchor"></a>Identifiers</h3>
+<pre><code>CAIAPHAS
+No, wait!   We need a more permanent solution to our problem.
+
+ANNAS
+What then to do about Jesus of Nazareth?   Miracle wonderman, hero of fools.
+
+PRIEST THREE
+No riots, no army, no fighting, no slogans.
+
+CAIAPHAS
+One thing I'll say for him -- Jesus is cool.
+
+ANNAS
+We dare not leave him to his own devices.   His half-witted fans will get out of control.
+
+PRIESTS
+But how can we stop him?   His glamour increases   By leaps every moment; he's top of the poll.
+
+CAIAPHAS
+I see bad things arising.   The crowd crown him king; which the Romans would ban.
+I see blood and destruction,   Our elimination because of one man.   Blood and destruction because of one man.
+
+ALL (inside)
+Because, because, because of one man.
+
+CAIAPHAS
+Our elimination because of one man.
+
+ALL (inside)
+Because, because, because of one, 'cause of one, 'cause of one man.
+
+PRIEST THREE
+What then to do about this Jesus-mania?
+
+ANNAS
+How do we deal with a carpenter king?
+
+PRIESTS
+Where do we start with a man who is bigger   Than John was when John did his baptism thing?
+
+CAIAPHAS
+Fools, you have no perception!   The stakes we are gambling are frighteningly high!
+We must crush him completely,   So like John before him, this Jesus must die.   For the sake of the nation, this Jesus must die.</code></pre>
+<p><em>This Jesus Must Die by Andrew Lloyd Webber</em></p>
+</div>
+<div id="codes-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#codes-1" class="anchor"></a>Codes</h3>
+</div>
+</div>
 <div id="glossary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#glossary" class="anchor"></a>Glossary</h2>
@@ -181,6 +328,12 @@ what made you strong</code></pre>
 <h1 class="hasAnchor">
 <a href="#using-rock-with-a-decentralized-construct-taxonomy" class="anchor"></a>Using ROCK with a Decentralized Construct Taxonomy</h1>
 </div>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>This is less sad than it may look; children are, among other things, very bad for the environment.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -190,7 +343,9 @@ what made you strong</code></pre>
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#general-background-and-introduction">General background and introduction</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#glossary">Glossary</a></li>
+<li><a href="#rock-file-format"><code>.rock</code> file format</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#glossary">Glossary</a></li>
       </ul>
 </li>
       <li><a href="#using-rock-for-epistemic-network-analysis">Using ROCK for Epistemic Network Analysis</a></li>

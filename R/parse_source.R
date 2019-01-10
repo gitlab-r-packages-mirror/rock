@@ -29,7 +29,7 @@
 #' during analysis.
 #' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
-#' @param silent Whether to provide or suppress more detailed progress updates.
+#' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #'
 #' @rdname parsing_sources
 #' @export

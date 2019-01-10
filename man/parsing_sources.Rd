@@ -69,7 +69,7 @@ during analysis.}
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
 
-\item{silent}{Whether to provide or suppress more detailed progress updates.}
+\item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the

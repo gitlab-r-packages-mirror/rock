@@ -30,21 +30,189 @@ In this introduction, first a general overview of the logic behind ROCK will be 
 
 Although the availability of tools for reproducible and open quantitative research is quickly increasing, there are few such options for researchers using qualitative methods. This hampers applying Open Science principles, and as a result, it often precludes re-use of data, learning from each other, and detecting errors. The Reproducible Open Coding Kit (ROCK) aims to fill this gap.
 
-ROCK consists of two parts. On the one hand, there is the `rock` R package that makes it easy to work with `rock` files. On the other hand, there is the `rock` file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source.
+ROCK consists of two parts. On the one hand, there is the `rock` R package that makes it easy to work with `.rock` files. This makes it easy to, for example, process coded sources and collapse the most specific levels of hierarchical coding trees into their parents, specify which utterances form stanzas or strophes for Epistemic Network Analysis, or 
 
+
+On the other hand, there is the `.rock` file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source. Because these are plain text files, they are easily accessible to other researchers, regardless of the software they use.
+
+## `.rock` file format
+
+The `.rock` file format uses a number of conventions to represent codes, metadata, and data structures. Although the functions in the `rock` package have been built to allow flexibility, this vignette uses the defaults (there is something to say for uniformity, after all).
+
+### Codes
+
+Codes are by default any string of characters (specifically, lower or uppercase letters, digits, periods, underscores, larger than signs, and dashes) in between two pairs of square brackets (`[[` and `]]`). This is described by the regular expression `\[\[([a-zA-Z0-9._>-]+)\]\]`; note that the escaping backslashes must be escaped themselves by prepending a second backslash when specifying this regular expression in R. Codes are designated per utterance, or in other words, per line. As many codes can be specified per line as one wishes. For example, see these two lines (utterances):
+
+```
+So what went right [[reflection-positive]]
+What went wrong [[reflection-negative]]
+```
+
+The first line is coded with `reflection-positive`, and the second line with code `reflection-negative`.
+
+### Structuring inductive codes
+
+When engaging in inductive coding (i.e. when not working with a prespecified code structure, but instead developing the code structure as one goes along; see the section below re: deductive coding), it can be desirable to structure the codes hierarchically. For example, perhaps a researchers wants to specify a parent code such as `reflection` with two child codes such as `positive` and `negative`. This helps one to identify patterns in the data, and makes it possible to easily extract all utterances coded as any type of reflection. By default, the marker that can be used to structure inductive codes is the greater than sign (specified by the regular expression `>`). For example, see the same fragment but coded in two levels:
+
+```
+So what went right [[reflection>positive]]
+What went wrong [[reflection>negative]]
+```
+
+When this source is parsed by `rock`, it will recognize these deductive codes and their structure, and it will generate the corresponding hierarchical coding structure, as illustrated in the more extensive example below.
+
+### Specifying identifiers
+
+It is often desirable to attach specific attributes to utterances. For example, one may want to compare the patterns in codes between different categories of participants, such as those who do and do not own a car, or those that listen to progressive metal versus those that listen to psychedelic trance. Instead of coding all utterances with all relevant attributes, instead, it is possible to specify identifier to easily link utterances to characteristics of the data provision (such as data providers, for example participants, or the moment of data collection, for example daytime or nighttime, or winter or summer, or the location of data collection, such as in a busy place or in a silent office).
+
+This can be done by specifying identifiers. These are again specified using regular expressions. By default, two types of identifiers are specified: case identifiers and stanza identifiers. They are again specified using two pairs of square brackets, but this time, the opening brackets are immediately follow by a string of identifying characters (the 'identifier identifier', so to speak), followed by an equals sign, and then by the unique identifier. This may seem a bit abstract; it will become clearer as we look at the first example.
+
+#### Case identifiers
+
+Case identifiers can be used to link utterances to data providers, such as participants. Their 'identifier identifier' is `cid`, and by default, their full regular expression is `\[\[cid=([a-zA-Z0-9._-]+)\]\]`. A source excerpt coded with only case identifiers may look like this:
+
+```
+CAIAPHAS: No, wait!   We need a more permanent solution to our problem. [[cid=1]]
+
+ANNAS: What then to do about Jesus of Nazareth?   Miracle wonderman, hero of fools. [[cid=2]]
+
+PRIEST THREE: No riots, no army, no fighting, no slogans. [[cid=3]]
+
+CAIAPHAS: One thing I'll say for him -- Jesus is cool. [[cid=1]]
+
+ANNAS: We dare not leave him to his own devices.   His half-witted fans will get out of control. [[cid=2]]
+```
+
+(Note that in this example, the names of the participants were retained; normally, the researcher would anonimyze the transcripts so as to allow publication of the coded transcripts.)
+
+WHen `rock` parses this source, it will know that the first and fourth utterances belong to the same case, as do the second and fifth. The attributes specified for these cases will then be attached to these utterances (see the section about metadata below).
+
+#### Stanza identifiers
+
+(add later)
+
+### Specifying deductive coding structures
+
+When a researcher works with a prespecified coding structure (i.e. engages in deductive coding), they only use codes that were determined a priori. Like in inductive coding, there are often multiple levels in such a coding structure, with the codes organised hierarchically. To efficiently be able to collapse codes to higher levels, `rock` needs to know the deductive coding structure. This can be specified using YAML fragments in the sources. YAML fragments are, by default, delimited by two lines that each contain only three dashes (`---`). Between those delimiters, YAML (a recursive acronym that stands for 'YAML ain't markup language') can be specified. Specifically, in YAML terminology, each fragment should be a sequence of mappings that is named `codes`.
+
+The coding tree specified in the section on inductive coding, for example, can be efficiently specified as a deductive coding structure like this:
+
+```
+---
+codes:
+  -
+    id: reflection
+    children:
+      -
+        id: positive
+      -
+        id: negative
+---
+```
+
+If all children of a code are so-called 'leaves' (i.e. in the coding tree, they have no children of their own^[This is less sad than it may look; children are, among other things, very bad for the environment.]), they can be specified more efficiently:
+
+```
+---
+codes:
+  -
+    id: reflection
+    children: ["positive", "negative"]
+---
+```
+
+When `rock` parses the sources, it will collect all such code specifications and combined them into one coding three using each code's identifiers. It is possible to specify a parent in other code specification fragment by adding the field `parentId`. For example, in other sourrce, we could add this fragment:
+
+
+```
+---
+codes:
+  -
+    id: neutral
+    parentId: reflection
+---
+```
+
+This would add `neutral` as a sibling to `positive` and `negative`.
+
+
+### Specifying metadata
+
+
+
+
+## Examples
+
+### Section breaks
 
 ```
 So what went right
 What went wrong
+---paragraph-break---
 Was it a story
 or was it a song
+---paragraph-break---
 Was it over night
 Or did it take you long
+---paragraph-break---
 Was knowing your weakness
 what made you strong
 ```
+*Source excerpt as example of section breaks (lyrics from Smiley Faces by Gnarls Barclay)*
 
-*(Smiley Faces, Gnarls Barclay)*
+
+### Identifiers
+
+
+```
+CAIAPHAS
+No, wait!   We need a more permanent solution to our problem.
+
+ANNAS
+What then to do about Jesus of Nazareth?   Miracle wonderman, hero of fools.
+
+PRIEST THREE
+No riots, no army, no fighting, no slogans.
+
+CAIAPHAS
+One thing I'll say for him -- Jesus is cool.
+
+ANNAS
+We dare not leave him to his own devices.   His half-witted fans will get out of control.
+
+PRIESTS
+But how can we stop him?   His glamour increases   By leaps every moment; he's top of the poll.
+
+CAIAPHAS
+I see bad things arising.   The crowd crown him king; which the Romans would ban.
+I see blood and destruction,   Our elimination because of one man.   Blood and destruction because of one man.
+
+ALL (inside)
+Because, because, because of one man.
+
+CAIAPHAS
+Our elimination because of one man.
+
+ALL (inside)
+Because, because, because of one, 'cause of one, 'cause of one man.
+
+PRIEST THREE
+What then to do about this Jesus-mania?
+
+ANNAS
+How do we deal with a carpenter king?
+
+PRIESTS
+Where do we start with a man who is bigger   Than John was when John did his baptism thing?
+
+CAIAPHAS
+Fools, you have no perception!   The stakes we are gambling are frighteningly high!
+We must crush him completely,   So like John before him, this Jesus must die.   For the sake of the nation, this Jesus must die.
+```
+*This Jesus Must Die by Andrew Lloyd Webber*
+
+
+### Codes
 
 
 

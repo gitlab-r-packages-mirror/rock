@@ -1,3 +1,17 @@
+#' Convert specifications of (deductive) codes into a hierarchical coding structure
+#'
+#' This function is called by [parse_sources()] to process the specification(s)
+#' of codes as used for deductive coding into one hierarchical coding structure
+#' (or coding tree).
+#'
+#' @param codes The list of YAML fragments that contain information about codes,
+#' as extracted from the sources by [extract_yaml_fragments()].
+#' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
+#'
+#' @return a [data.tree::Node()] object.
+#' @export
+#'
+#' @examples Add example here!
 codes_to_nodes <- function(codes,
                            silent=TRUE) {
 
