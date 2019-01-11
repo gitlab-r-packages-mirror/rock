@@ -70,9 +70,9 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to the Reproducible Open Coding Kit (ROCK)</h1>
-                        <h4 class="author">Gjalt-Jorn Peters</h4>
+                        <h4 class="author">Gjalt-Jorn Peters &amp; Szilvia Zörgő</h4>
             
-            <h4 class="date">2019-01-10</h4>
+            <h4 class="date">2019-01-11</h4>
       
       
       <div class="hidden name"><code>introduction_to_rock.Rmd</code></div>
@@ -138,7 +138,7 @@ ANNAS: We dare not leave him to his own devices.   His half-witted fans will get
 <div id="stanza-identifiers" class="section level4">
 <h4 class="hasAnchor">
 <a href="#stanza-identifiers" class="anchor"></a>Stanza identifiers</h4>
-<p>(add later)</p>
+<p>A stanza is a unit of analysis in ENA analysis (see the glossary for the exact definition).</p>
 </div>
 </div>
 <div id="specifying-deductive-coding-structures" class="section level3">
@@ -156,7 +156,7 @@ codes:
       -
         id: negative
 ---</code></pre>
-<p>If all children of a code are so-called ‘leaves’ (i.e. in the coding tree, they have no children of their own<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>), they can be specified more efficiently:</p>
+<p>If all children of a code are so-called ‘leaves’ (i.e. in the coding tree, they have no children of their own<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>) they can be specified more efficiently:</p>
 <pre><code>---
 codes:
   -
@@ -248,6 +248,25 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 <h3 class="hasAnchor">
 <a href="#codes-1" class="anchor"></a>Codes</h3>
 </div>
+<div id="helper-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#helper-functions" class="anchor"></a>Helper functions</h3>
+<div id="clean_transcript-and-clean_transcripts" class="section level4">
+<h4 class="hasAnchor">
+<a href="#clean_transcript-and-clean_transcripts" class="anchor"></a><code>clean_transcript</code> and <code>clean_transcripts</code>
+</h4>
+<p>Sometimes, sources are a bit messy.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> In such cases, it can be efficient to preprocess them and perform some search and replace actions. This can be done for one or multiple source files using <code>clean_transcript</code> (for one file) and <code>clean_transcripts</code> (for multiple files; it basically just calls [clean_transcript()] for multiple files).</p>
+<p>For example, a researcher will often want every sentence, as transcribed, to be on its own line (as lines correspond to utterances). In fact, this is the basic function of the <code>clean_transcript</code> function: by default, if used without other arguments, they try to (more or less smartly) split a transcript such that each transcribed sentence (as marked by a period (<code>.</code>), a question mark (<code>?</code>), an exclamation mark (<code>!</code>), or an ellipsis (<code>…</code>)) ends up on its own line. Before doing this, <code>clean_transcript</code> replaces all occurrences of exactly consecutive periods (<code>..</code>) with one period, all occurrences of four or more consecutive periods with three periods, and all occurrences of three or more newlines (<code>\n</code>) with two newlines.</p>
+<p>But this function can also be used to perform additonal (or other) replacements. For example, imagine that a transcriber used a dash at the beginning of a line, followed by a space, to indicate when a person starts talking. To easily group all utterances by the same person together, it would be convenient if this was expressed in the source file in a way that fits with ROCK’s conventions. There are four ways to achieve this.</p>
+<p>First, that sequence of characters (actually a newline character (<code>\n</code>) followed by a dash (<code>-</code>) followed by a whitespace character (<code>\s</code>)) can be converted into section break ‘<code>---turn-of-talk---</code>’ like this:</p>
+<pre><code>clean_transcript("
+- Something said by one speaker
+- Something said by another speaker
+",
+                 replacements=list(c("\\n-\\s", "\n---turn-of-talk---\n")));</code></pre>
+<p>To also maintain the default replacements, more can be added by specifying them in argument <code>extraReplacements</code> instead of <code>replacements</code>.</p>
+</div>
+</div>
 </div>
 <div id="glossary" class="section level2">
 <h2 class="hasAnchor">
@@ -331,7 +350,8 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>This is less sad than it may look; children are, among other things, very bad for the environment.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>This is less sad than it may look; voluntary childlessness is becoming more and more common, and not having children is one of the most effective choices one can make to save the environment.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Well, they are messy more often than not, unfortunately.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
   </div>

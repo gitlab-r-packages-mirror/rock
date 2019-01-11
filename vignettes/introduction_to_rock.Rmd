@@ -1,6 +1,6 @@
 ---
 title: "Introduction to the Reproducible Open Coding Kit (ROCK)"
-author: "Gjalt-Jorn Peters"
+author: "Gjalt-Jorn Peters & Szilvia Zörgő"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
@@ -31,6 +31,8 @@ In this introduction, first a general overview of the logic behind ROCK will be 
 Although the availability of tools for reproducible and open quantitative research is quickly increasing, there are few such options for researchers using qualitative methods. This hampers applying Open Science principles, and as a result, it often precludes re-use of data, learning from each other, and detecting errors. The Reproducible Open Coding Kit (ROCK) aims to fill this gap.
 
 ROCK consists of two parts. On the one hand, there is the `rock` R package that makes it easy to work with `.rock` files. This makes it easy to, for example, process coded sources and collapse the most specific levels of hierarchical coding trees into their parents, specify which utterances form stanzas or strophes for Epistemic Network Analysis, or 
+
+
 
 
 On the other hand, there is the `.rock` file format: plain text files that can include YAML fragments and follow conventions that allow extracting metadata, deductive and inductive coding trees, and codes as applied to lines of each source. Because these are plain text files, they are easily accessible to other researchers, regardless of the software they use.
@@ -89,7 +91,7 @@ WHen `rock` parses this source, it will know that the first and fourth utterance
 
 #### Stanza identifiers
 
-(add later)
+A stanza is a unit of analysis in ENA analysis (see the glossary for the exact definition).
 
 ### Specifying deductive coding structures
 
@@ -110,7 +112,7 @@ codes:
 ---
 ```
 
-If all children of a code are so-called 'leaves' (i.e. in the coding tree, they have no children of their own^[This is less sad than it may look; children are, among other things, very bad for the environment.]), they can be specified more efficiently:
+If all children of a code are so-called 'leaves' (i.e. in the coding tree, they have no children of their own^[This is less sad than it may look; voluntary childlessness is becoming more and more common, and not having children is one of the most effective choices one can make to save the environment.]) they can be specified more efficiently:
 
 ```
 ---
@@ -216,6 +218,30 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 
 
 
+
+
+
+### Helper functions
+
+#### `clean_transcript` and `clean_transcripts`
+
+Sometimes, sources are a bit messy.^[Well, they are messy more often than not, unfortunately.] In such cases, it can be efficient to preprocess them and perform some search and replace actions. This can be done for one or multiple source files using `clean_transcript` (for one file) and `clean_transcripts` (for multiple files; it basically just calls [clean_transcript()] for multiple files).
+
+For example, a researcher will often want every sentence, as transcribed, to be on its own line (as lines correspond to utterances). In fact, this is the basic function of the `clean_transcript` function: by default, if used without other arguments, they try to (more or less smartly) split a transcript such that each transcribed sentence (as marked by a period (`.`), a question mark (`?`), an exclamation mark (`!`), or an ellipsis (`…`)) ends up on its own line. Before doing this, `clean_transcript` replaces all occurrences of exactly consecutive periods (`..`) with one period, all occurrences of four or more consecutive periods with three periods, and all occurrences of three or more newlines (`\n`) with two newlines.
+
+But this function can also be used to perform additonal (or other) replacements. For example, imagine that a transcriber used a dash at the beginning of a line, followed by a space, to indicate when a person starts talking. To easily group all utterances by the same person together, it would be convenient if this was expressed in the source file in a way that fits with ROCK's conventions. There are four ways to achieve this.
+
+First, that sequence of characters (actually a newline character (`\n`) followed by a dash (`-`) followed by a whitespace character (`\s`)) can be converted into section break '`---turn-of-talk---`' like this:
+
+```
+clean_transcript("
+- Something said by one speaker
+- Something said by another speaker
+",
+                 replacements=list(c("\\n-\\s", "\n---turn-of-talk---\n")));
+```
+
+To also maintain the default replacements, more can be added by specifying them in argument `extraReplacements` instead of `replacements`.
 
 
 
