@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract or delete all yaml fragments from a file — delete_yaml_fragments • rock</title>
+<title>Cleaning sources — clean_source • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract or delete all yaml fragments from a file — delete_yaml_fragments" />
+<meta property="og:title" content="Cleaning sources — clean_source" />
 
-<meta property="og:description" content="These function simply extract or delete all YAML fragments from a file,
-returning a list of character vectors containing the extracted fragments
-(extract_yaml_fragments) or a character vector without the lines that
-specified the YAML fragments (delete_yaml_fragments)." />
+<meta property="og:description" content="Cleaning sources" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,76 +106,81 @@ specified the YAML fragments (delete_yaml_fragments)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract or delete all yaml fragments from a file</h1>
+    <h1>Cleaning sources</h1>
     
-    <div class="hidden name"><code>yaml_fragments.Rd</code></div>
+    <div class="hidden name"><code>cleaning_sources.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These function simply extract or delete all YAML fragments from a file,
-returning a list of character vectors containing the extracted fragments
-(<code>extract_yaml_fragments</code>) or a character vector without the lines that
-specified the YAML fragments (<code>delete_yaml_fragments</code>).</p>
+    <p>Cleaning sources</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>delete_yaml_fragments</span>(<span class='no'>file</span>, <span class='no'>text</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>extract_yaml_fragments</span>(<span class='no'>file</span>, <span class='no'>text</span>, <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>clean_source</span>(<span class='no'>input</span>, <span class='kw'>outputFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[^\\.](\\.\\.)[^\\.]"</span>, <span class='st'>"."</span>),
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[^\\.](\\.\\.\\.\\.+)[^\\.]"</span>, <span class='st'>"..."</span>),
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"\\n\\n\\n+"</span>, <span class='st'>"\n\n"</span>)), <span class='kw'>extraReplacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([[:alnum:]\\s]\\.(?!\\.\\.)\\s|[\\?\\!]+\\s|…\\s)"</span>),
+  <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>The path to a file to scan; takes precedence over <code>text</code>.</p></td>
+      <th>input</th>
+      <td><p>for <code>clean_source</code>, either a character vector containing the text
+of the relevant source <em>or</em> a path to a file that contains the source text;
+for <code>clean_sources</code>, a path to a directory that contains the sources to clean.</p></td>
     </tr>
     <tr>
-      <th>text</th>
-      <td><p>A character vector to scan, where every element should
-represent one line in the file; can be specified instead of <code>file</code>.</p></td>
+      <th>outputFile</th>
+      <td><p>If not <code>NULL</code>, this is the name (and path) of the file in
+which to save the cleaned source.</p></td>
     </tr>
     <tr>
-      <th>delimiterRegEx</th>
-      <td><p>The regular expression used to locate YAML
-fragments.</p></td>
+      <th>replacements</th>
+      <td><p>A list of two-element vectors, where the first element in each
+vector contains a regular expression to search for in the source(s), and the second
+element contains the replacement (these are passed as <code>perl</code> regular expressions; see
+<code><a href='https://www.rdocumentation.org/packages/base/topics/regex'>regex</a></code> for more information). Instead of regular expressions, simple
+words or phrases can also be entered of course (since those are valid regular
+expressions).</p></td>
     </tr>
     <tr>
-      <th>ignoreOddDelimiters</th>
-      <td><p>Whether to throw an error (FALSE) or
-delete the last delimiter (TRUE) if an odd number of delimiters is
-encountered.</p></td>
+      <th>extraReplacements</th>
+      <td><p>To perform more replacements than the default set, these
+can be conveniently specified in <code>extraReplacements</code>. This prevents you from having to
+manually copypaste the list of defaults to retain it.</p></td>
     </tr>
     <tr>
-      <th>silent</th>
-      <td><p>Whether to be silent (TRUE) or informative (FALSE).</p></td>
+      <th>utteranceSplits</th>
+      <td><p>This is a vector of regular expressions that specify where to
+insert breaks between utterances in the source(s). Such breakes are specified using
+<code>utteranceMarker</code>.</p></td>
+    </tr>
+    <tr>
+      <th>utteranceMarker</th>
+      <td><p>How to specify breaks between utterances in the source(s). The
+ROCK convention is to use a newline (<code></code>).</p></td>
+    </tr>
+    <tr>
+      <th>removeNewlines</th>
+      <td><p>Whether to remove all newline characters from the source before
+starting to clean them.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>The encoding of the source(s).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of character vectors.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function is called by <code><a href='parsing_sources.html'>parse_source()</a></code>; it is normally not
-necessary to call it directly.</p>
+    <p>A character vector for <code>clean_source</code>, or a list of character vectors , for <code>clean_sources</code>.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>extract_yaml_fragments</span>(<span class='kw'>text</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"---"</span>, <span class='st'>"First YAML fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Outside of YAML"</span>,
-                              <span class='st'>"---"</span>, <span class='st'>"Second fragment"</span>, <span class='st'>"---"</span>,
-                              <span class='st'>"Also outside of YAML"</span>));</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] "---"                 "First YAML fragment" "---"                
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] "---"             "Second fragment" "---"            
-#&gt; </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -186,11 +188,7 @@ necessary to call it directly.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

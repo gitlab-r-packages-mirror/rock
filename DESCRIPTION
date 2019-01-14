@@ -14,8 +14,8 @@ Description: The Reproducible Open Coding Kit (ROCK, and this package, `rock`)
   implements Epistemic Network Analysis (ENA), means to process notes
   from Cognitive Interviews (CIs), and means to work with a decentralized
   construct taxonomy (DCT).
-BugReports: https://github.com/academy-of-behavior-change/dct/issues
-URL: https://dct.opens.science
+BugReports: https://github.com/matherion/rock/issues
+URL: https://rock.opens.science
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
