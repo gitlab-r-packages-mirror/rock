@@ -9,4 +9,4 @@ implements Epistemic Network Analysis (ENA), means to process notes
 from Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
-See the [introductory vignette](/articles/introduction_to_rock.html) for an introduction.
+See the [introductory vignette](https://rock.opens.science/articles/introduction_to_rock.html) for an introduction.
