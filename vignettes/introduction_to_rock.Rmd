@@ -225,7 +225,7 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 
 #### `clean_source` and `clean_sources`
 
-Sometimes, sources are a bit messy.^[Well, they are messy more often than not, unfortunately.] In such cases, it can be efficient to preprocess them and perform some search and replace actions. This can be done for one or multiple source files using `clean_source` (for one file) and `clean_sources` (for multiple files; it basically just calls [clean_transcript()] for multiple files).
+Sometimes, sources are a bit messy.^[Well, they are messy more often than not, unfortunately.] In such cases, it can be efficient to preprocess them and perform some search and replace actions. This can be done for one or multiple source files using `clean_source` (for one file) and `clean_sources` (for multiple files; it basically just calls `clean_transcript` for multiple files).
 
 For example, a researcher will often want every sentence, as transcribed, to be on its own line (as lines correspond to utterances). In fact, this is the basic function of the `clean_source` function: by default, if used without other arguments, they try to (more or less smartly) split a transcript such that each transcribed sentence (as marked by a period (`.`), a question mark (`?`), an exclamation mark (`!`), or an ellipsis (`…`)) ends up on its own line. Before doing this, `clean_source` replaces all occurrences of exactly consecutive periods (`..`) with one period, all occurrences of four or more consecutive periods with three periods, and all occurrences of three or more newlines (`\n`) with two newlines.
 

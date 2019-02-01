@@ -10,3 +10,7 @@ from Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
 See the [introductory vignette](https://rock.opens.science/articles/introduction_to_rock.html) for an introduction.
+
+ [![Travis build status](https://travis-ci.org/Matherion/rock.svg?branch=master)](https://travis-ci.org/Matherion/rock)
+ 
+ 

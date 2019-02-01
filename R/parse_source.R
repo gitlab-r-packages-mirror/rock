@@ -49,21 +49,21 @@ parse_source <- function(x,
 
   arguments <- as.list(environment());
 
-  ### First remove lines to ignore
+  ### First process YAML fragments and remove them
+  yamlFragments <-
+    yum::extract_yaml_fragments(text=x,
+                                delimiterRegEx=delimiterRegEx,
+                                ignoreOddDelimiters=ignoreOddDelimiters);
+  x <-
+    yum::delete_yaml_fragments(text=x,
+                               delimiterRegEx=delimiterRegEx,
+                               ignoreOddDelimiters=ignoreOddDelimiters);
+
+  ### Then remove lines to ignore
   linesToIgnore <- grepl(ignoreRegex,
                          x);
   ignoredLines <- x[linesToIgnore];
   x <- x[!linesToIgnore];
-
-  ### First process YAML fragments and remove them
-  yamlFragments <-
-    extract_yaml_fragments(text=x,
-                           delimiterRegEx=delimiterRegEx,
-                           ignoreOddDelimiters=ignoreOddDelimiters);
-  x <-
-    delete_yaml_fragments(text=x,
-                          delimiterRegEx=delimiterRegEx,
-                          ignoreOddDelimiters=ignoreOddDelimiters);
 
   ### Create dataframe for parsing
   sourceDf <- data.frame(utterances_raw = x,

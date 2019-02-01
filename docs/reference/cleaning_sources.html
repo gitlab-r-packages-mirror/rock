@@ -32,7 +32,9 @@
 
 <meta property="og:title" content="Cleaning sources — clean_source" />
 
-<meta property="og:description" content="Cleaning sources" />
+<meta property="og:description" content="These function can be used to 'clean' one or more sources. Cleaning consists
+of two operations: splitting the source at utterance markers, and conducting
+search and replaces using regular expressions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -113,16 +115,21 @@
 
     <div class="ref-description">
     
-    <p>Cleaning sources</p>
+    <p>These function can be used to 'clean' one or more sources. Cleaning consists
+of two operations: splitting the source at utterance markers, and conducting
+search and replaces using regular expressions.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>clean_source</span>(<span class='no'>input</span>, <span class='kw'>outputFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[^\\.](\\.\\.)[^\\.]"</span>, <span class='st'>"."</span>),
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[^\\.](\\.\\.\\.\\.+)[^\\.]"</span>, <span class='st'>"..."</span>),
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"\\n\\n\\n+"</span>, <span class='st'>"\n\n"</span>)), <span class='kw'>extraReplacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([[:alnum:]\\s]\\.(?!\\.\\.)\\s|[\\?\\!]+\\s|…\\s)"</span>),
-  <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.)([^\\.])"</span>,
+  <span class='st'>"\\1.\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.\\.\\.+)([^\\.])"</span>,
+  <span class='st'>"\\1...\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"(\\s*\\r?\\n){3,}"</span>, <span class='st'>"\n"</span>)),
+  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"</span>),
+  <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>,
+  <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\,]),([^\\s])"</span>, <span class='st'>"\\1, \\2"</span>)),
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -130,7 +137,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>for <code>clean_source</code>, either a character vector containing the text
+      <td><p>For <code>clean_source</code>, either a character vector containing the text
 of the relevant source <em>or</em> a path to a file that contains the source text;
 for <code>clean_sources</code>, a path to a directory that contains the sources to clean.</p></td>
     </tr>
@@ -140,18 +147,20 @@ for <code>clean_sources</code>, a path to a directory that contains the sources 
 which to save the cleaned source.</p></td>
     </tr>
     <tr>
-      <th>replacements</th>
-      <td><p>A list of two-element vectors, where the first element in each
-vector contains a regular expression to search for in the source(s), and the second
-element contains the replacement (these are passed as <code>perl</code> regular expressions; see
-<code><a href='https://www.rdocumentation.org/packages/base/topics/regex'>regex</a></code> for more information). Instead of regular expressions, simple
-words or phrases can also be entered of course (since those are valid regular
-expressions).</p></td>
+      <th>replacementsPre, replacementsPost</th>
+      <td><p>Each is a list of two-element vectors,
+where the first element in each vector contains a regular expression to search for
+in the source(s), and the second element contains the replacement (these are passed
+as <code>perl</code> regular expressions; see <code><a href='https://www.rdocumentation.org/packages/base/topics/regex'>regex</a></code> for more information).
+Instead of regular expressions, simple words or phrases can also be entered of
+course (since those are valid regular expressions). <code>replacementsPre</code> are executed
+before the <code>utteranceSplits</code> are applied; <code>replacementsPost</code> afterwards.</p></td>
     </tr>
     <tr>
-      <th>extraReplacements</th>
-      <td><p>To perform more replacements than the default set, these
-can be conveniently specified in <code>extraReplacements</code>. This prevents you from having to
+      <th>extraReplacementsPre, extraReplacementsPost</th>
+      <td><p>To perform more replacements
+than the default set, these can be conveniently specified in <code>extraReplacementsPre</code>
+and <code>extraReplacementsPost</code>. This prevents you from having to
 manually copypaste the list of defaults to retain it.</p></td>
     </tr>
     <tr>
@@ -163,7 +172,7 @@ insert breaks between utterances in the source(s). Such breakes are specified us
     <tr>
       <th>utteranceMarker</th>
       <td><p>How to specify breaks between utterances in the source(s). The
-ROCK convention is to use a newline (<code></code>).</p></td>
+ROCK convention is to use a newline (<code>\n</code>).</p></td>
     </tr>
     <tr>
       <th>removeNewlines</th>
@@ -180,7 +189,43 @@ starting to clean them.</p></td>
 
     <p>A character vector for <code>clean_source</code>, or a list of character vectors , for <code>clean_sources</code>.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>When called with its default arguments, the following will happen:</p><ul>
+<li><p>Double periods (<code>..</code>) will be replaced with single periods (<code>.</code>)</p></li>
+<li><p>Four or more periods (<code>...</code> or <code>.....</code>) will be replaced with three periods</p></li>
+<li><p>Three or more newline characters will be replaced by one newline character (which
+will become more, if the sentence before that character marks the end of an
+utterance)</p></li>
+<li><p>All sentences will become separate utterances (in a semi-smart manner;
+specifically, breaks in speaking, if represented by three periods, are not
+considered sentence ends, wheread ellipses (<code>…</code>) <em>are</em>.</p></li>
+<li><p>If there are comma's without a space following them, a space will be inserted.</p></li>
+</ul>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>exampleSource</span> <span class='kw'>&lt;-</span>
+<span class='st'>"Do you like icecream?
+
+
+Well, that depends… Sometimes, when it's..... Nice. Then I do,
+but otherwise... not really, actually."</span>
+
+<span class='co'>### Default settings:</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>clean_source</span>(<span class='no'>exampleSource</span>));</div><div class='output co'>#&gt; Do you like icecream?
+#&gt; 
+#&gt; Well, that depends… 
+#&gt; Sometimes, when it's... Nice. 
+#&gt; Then I do,
+#&gt; but otherwise... not really, actually.</div><div class='input'>
+<span class='co'>### First remove existing newlines:</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>clean_source</span>(<span class='no'>exampleSource</span>,
+                 <span class='kw'>removeNewlines</span><span class='kw'>=</span><span class='fl'>TRUE</span>));</div><div class='output co'>#&gt; Do you like icecream?
+#&gt; Well, that depends… 
+#&gt; Sometimes, when it's... Nice. 
+#&gt; Then I do, but otherwise... not really, actually.</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -188,7 +233,11 @@ starting to clean them.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

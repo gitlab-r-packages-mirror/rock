@@ -26,7 +26,8 @@ Imports: DiagrammeR (>= 1.0.0),
          purrr (>= 0.2.5),
          stats (>= 3.0.0),
          ufs (>= 0.0.1),
-         yaml (>= 2.1.19)
+         yaml (>= 2.1.19),
+         yum (>= 0.0.1)
 Suggests: 
     knitr,
     rmarkdown
