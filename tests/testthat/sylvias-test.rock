@@ -1,0 +1,147 @@
+---
+metadata:
+  -
+    caseId: 1
+    gender: female
+    age: 50s
+    reason_to_leave_dissappointed_by_diagnosis: 3
+    reason_to_leave_doesnt_like_white_coats: 7
+    reason_to_leave_likes_accupuncture_needles: 1
+---
+
+Coding tree specifications:
+  Coding trees are by definition hierarchical: there is a root with children (potentially with children of their own, and so on, with arbitrary depth). Every node in such a tree has at least an identifier, which can contain only lowercase letters, nummers, and underscores. In addition, it can have a label, which can be anything and is the human-readable name, and a code which is used to code the utterances. If a label or code is not specified, the identitier is used (for example, if the identifiers are suitable for coding, it will often not be necessary to specify both identifiers and codes; but it is possible to enable use of DCT identifiers as identifier while using codes that are more practical). Nodes can optionally have one or more children. Since only the identifier is mandatory (and copied to codes and labels if those are omitted), children can be specified using a shorthand using a list of identifiers contained between square brackets and separated by comma's.
+
+---
+codes:
+  -
+    id:       expl_model
+    label:    Explanatory Model
+    code:     EM
+    children: [EM_Psych, EM_Eco, EM_Gen]
+  -
+    id:       icons
+    label:    Icons
+    code:     IC
+    children: [IC_Attack, IC_Overl, IC_Punish]
+  -
+    id:       source
+    label:    Information sources
+    children: [Source_Net, Source_Doc, Source_FandF]
+  -
+    id:       attitude
+    label:    Attitude
+    code:     Att
+    children:
+      -
+        id:      exp_attitude
+        code:    exp_att
+        label:   Experiential Attitude
+        children:
+          -
+            id:      exp_att_expect
+            label:   Expectation
+          -
+            id:      exp_att_eval
+            label:   Evaluation
+---
+
+---
+codes:
+  id: instr_att
+  label: Instrumental Attitude
+  parentId: attitude
+  children:
+    -
+      id: instr_att_expect
+      code: att_ins_exp
+      label: Expectation
+    -
+      id: instr_att_eval
+      code: att_ins_eval
+      label: Evaluation
+---
+
+
+Stanzas are not necessarily higher-level codes.
+
+Stanzas are sets of utterances within which you want to look for code co-occurrence.
+
+People's narratives convey information about their psychology. In their narratives,
+
+Co-occurrences
+
+
+
+
+Utterances  Sections  Stanzas  StanzaType  Strophes
+---------------------------------------------------
+1           1         1        A           1
+2           1         1        A           1
+3           1         2        B           2
+4           1         3        A           1
+5           2         3        A           1
+
+
+Utterance = smallest unit of analysis, usually one sentence, in any case, one line (a line being defined as a set of characters ending with a line ending)
+
+Section = a set of one or more utterances that follow each other and fall between the same two section markers ('nongreedy')
+
+Stanza = a set of one or more utterances that occur in close proximity and that are defined by ... (the complicated bit), i.e. the smallest unit of analysis psychologically. Stanzas are a solution for the fact that peoples' sentence length is not closely related to the psychological unity of the matter they discuss. E.g. Alice could discuss her ideas about the cause of the disease in three sentences while Bob would use only one, but both explanations would be the same stanza. Stanzas are what in written text would be paragraphs. Except that spoken text is more messy, and so 'paragraphs' can be interspersed by unrelated utterances. Therefore, utterances in close proximity can be combined into the same stanza even if they are separated by a small number of unrelated utterances. Note, however, that stanzas remain defined as 'messy paragraphs'; if an interviewee starts referring back to something discussed half an hour earlier, that doesn't justify combining those utterances into the same stanza. (Note, however, that they _could_ be combined through stanza sets / strophes, if they happen to be codes by the same codes, _and_ if strophes are composed by collapsing stanzas with those codes.)
+
+Strophe = a set of one or more stanzas that are combined based on sharing the same code, identifier, or attribute. Strophes, therefore, are collected over the entire transcript/source or over all transcripts/sources; proximity is irrelevant.
+
+Conversation = a transcript = a source
+
+Case = a person (assuming persons are the research unit, could in theory also be an organisation etc)
+
+Attribute = a characteristic of a case (that can then be designated to utterances as well)
+
+Unit = a set of one or more utterances that share a given attribute
+
+Discourse = all utterances
+
+Topic = a subject area discussed in the interview - i.e. topics are known beforehand and together form the interview scheme / questionnaire / whatever
+
+
+
+
+
+[[cid=1]]
+
+---paragraph-break---
+Why did you start using acupuncture? [[Topic1]] [[cid=1]] [[tid=1]]
+---<<<B>>>---
+---<A>---
+5 years ago my hand started hurting, it was harder and harder to use them for everyday tasks. [[IC>Overl]] [[cid=1]]
+And I got to the point where they hurt so bad that I went to my family doctor and then that doctor had me do lots of tests and they found nothing wrong, no inflammation in the joints. [[Source>Doc]] [[cid=1]]
+At first I thought it was just the bad weather - because I used to feel the weather in my joints. [[EM>Eco]] [[cid=1]]
+I inherited the joint problems from my mother. [[EM>Gen]]  [[cid=1]]
+But my hands just stopped working; it was like I was carrying these really really heavy bags in my hands all the time - it was that kind of feeling...when you put down those heavy bags and - like - your fingers are hard to move and it got to the point where I couldn't actually lift anything. [[IC>Overl]] [[cid=1]]
+---<A>---
+One time, I was holding this mug of coffee that I got for a Xmas present and I was lifting it to drink from it and I dropped it and spilled hot coffee all over myself. [[cid=1]]
+Then maybe two years ago I was diagnosed with erosive arthritis and they prescribed me this really strong medication which didn't work and then I got radiation therapy which didn't work either. [[Source>Doc]] [[cid=1]]
+---<A>---
+---<<<B>>>---
+So a friend of mine told me about this guy who does acupuncture and I decided to try it out. [[Source>FandF]] [[cid=1]]
+And I've been here twice and it feels like it's working my hands are easier to move, I feel more free. [[IC>Overl]] [[cid=1]]
+---paragraph-break---
+In your understanding what caused your illness? [[Topic2]] [[cid=1]] [[tid=2]]
+
+Well when I got my diagnosis I was searching the internet and I came across this website that talked about the psychological reasons behind illnesses and I saw the section on arthritis; it wasn't erosive arthritis but it was arthritis nonetheless. [[Source>Doc]] [[Source>Net]] [[cid=1]]
+And it was talking about how if this sickness affects your hands then you have trouble giving or receiving. [[Source>Net]] [[EM>Psych]] [[cid=1]]
+And I thought wow, ok, that's exactly how I feel - I feel like I'm giving giving giving and I'm not getting anything in return. [[EM>Psych]] [[cid=1]]
+I always remember people's birthday, I always help them when they need help, when they're in trouble, or yeah. [[cid=1]]
+I always help my two daughters...one of them doesn't even talk to me I don't know why. [[cid=1]]
+---<A>---
+It's like she's trying to hurt me on purpose. [[IC>Attack]]
+What did I do to deserve this? [[IC>Attack]] [[IC>Punish]]
+What did I do wrong? [[IC>Punish]]
+With my ex-husband same thing, I never got anything for him from him but I always gave him everything. [[EM>Psych]]
+I have a friend who was diagnosed with breast cancer and she knew it was her ex-husband who caused it. [[Source>FandF]] [[EM>Psych]]
+
+How does she know that?
+Because she read online that stress can cause cancer and she got sick when her husband left her for another woman. [[Source>FandF]] [[Source>Net]] [[EM>Psych]]
+Then when he came back to her, she got better, but then he left her again and she got so sick that she had to go to the hospital. [[EM>Psych]]
+So she knows what caused it. [[EM>Psych]]
+I don't know how someone can do something like that. [[IC>Attack]]

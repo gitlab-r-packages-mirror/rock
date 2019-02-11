@@ -3,8 +3,10 @@
 #' These function parse one (`parse_source`) or more (`parse_sources`) sources and the
 #' contained identifiers, sections, and codes.
 #'
-#' @param x The character vector containing the source, for example as obtained through
-#' [base::readLines()].
+#' @param file,text Either specify a `file` to read with encoding `encoding`, which will
+#' then be read using [base::readLines()], or specify a `text` to process, which should be
+#' a character vectors where every element is a line of the original source (like provided
+#' [base::readLines()]).
 #' @param codeRegexes,idRegexes,sectionRegexes These are named character vectors with one
 #' or more regular expressions. For `codeRegexes`, these specify how to extract the codes
 #' (that were used to code the sources). For `idRegexes`, these specify how to extract the
@@ -29,11 +31,13 @@
 #' during analysis.
 #' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
+#' @param encoding The encoding of the file to read (in `file`).
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #'
 #' @rdname parsing_sources
 #' @export
-parse_source <- function(x,
+parse_source <- function(file,
+                         text,
                          codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                          idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
                                        stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),
@@ -42,10 +46,25 @@ parse_source <- function(x,
                          autoGenerateIds = c('stanzaId'),
                          persistentIds = c('caseId'),
                          inductiveCodingHierarchyMarker = ">",
+                         metadataContainers = c("metadata"),
+                         codesContainers = c("codes", "dct"),
                          delimiterRegEx = "^---$",
                          ignoreRegex = "^#",
                          ignoreOddDelimiters=FALSE,
+                         encoding="UTF-8",
                          silent=FALSE) {
+
+  if (missing(file)) {
+    if (missing(text)) {
+      stop("Provide either a `file` or a `text` to scan!");
+    } else {
+      x <- text;
+    }
+  } else {
+    x <- readLines(file,
+                   encoding=encoding,
+                   warn=FALSE);
+  }
 
   arguments <- as.list(environment());
 
@@ -259,9 +278,9 @@ parse_source <- function(x,
                    return(lapply(subTree,
                                  function(x) {
                                    setNames(list(x,x,x),
-                                            c(idName,
-                                              labelName,
-                                              codeName));
+                                            c('idName',
+                                              'labelName',
+                                              'codeName'));
                                  }));
 
                  });
@@ -331,8 +350,8 @@ parse_source <- function(x,
           }
         }
 
-        SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
-                      directed="false");
+        data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
+                                 directed="false");
 
       } else {
         inductiveCodeTrees[[codeRegex]] <- NULL;
@@ -362,15 +381,34 @@ parse_source <- function(x,
     cleanSourceDf$sequenceNr <- 1:nrow(cleanSourceDf);
   }
 
-  return(structure(list(arguments = arguments,
-                        sourceDf = cleanSourceDf,
-                        rawSourceDf = sourceDf,
-                        codings = codingLeaves,
-                        rawCodings = codings,
-                        inductiveCodeProcessing = inductiveCodeProcessing,
-                        inductiveCodeTrees = inductiveCodeTrees,
-                        yamlFragments = yamlFragments),
-                   class="rockParsedSource"));
+  ### Store results in the object to return
+  res <-
+    structure(list(arguments = arguments,
+                   sourceDf = cleanSourceDf,
+                   rawSourceDf = sourceDf,
+                   codings = codingLeaves,
+                   rawCodings = codings,
+                   inductiveCodeProcessing = inductiveCodeProcessing,
+                   inductiveCodeTrees = inductiveCodeTrees),
+              class="rockParsedSource");
+
+  ### Process metadata and deductive code trees
+  if (!is.null(yamlFragments)) {
+    res$metadata <-
+      yum::load_yaml_fragments(yamlFragments=yamlFragments,
+                               select=metadataContainers);
+    res$deductiveCodes <-
+      yum::load_yaml_fragments(yamlFragments=yamlFragments,
+                               select=codesContainers);
+    res$deductiveCodeTrees <-
+      yum::build_tree(res$deductiveCodes);
+  }
+
+  ### Add raw yamlFragments
+  res$yamlFragments <- yamlFragments;
+
+  ### Return result
+  return(res);
 
 }
 
@@ -389,6 +427,16 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
   totalCodingMatches <-
     sum(unlist(x$sourceDf[, appliedCodes]));
 
+  if (totalCodingMatches > 0) {
+    codingInfo <-
+      glue::glue("These {nrow(x$sourceDf)} utterances were coded ",
+                 "{totalCodingMatches} times in total using these codes: ",
+                 "{ufs::vecTxtQ(appliedCodes)}.");
+  } else {
+    codingInfo <-
+      glue::glue("These {nrow(x$sourceDf)} utterances were not coded at all.");
+  }
+
   if (length(x$inductiveCodeTrees) > 0) {
     inductiveTreesInfo <-
       glue::glue("This source contained inductive coding trees. ",
@@ -396,6 +444,15 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
   } else {
     inductiveTreesInfo <-
       glue::glue("This source contained no inductive coding trees.\n\n")
+  }
+
+  if (length(x$deductiveCodeTrees) > 0) {
+    deductiveTreesInfo <-
+      glue::glue("This source contained deductive coding trees. ",
+                 "These are also shown in R Studio's viewer.\n\n")
+  } else {
+    deductiveTreesInfo <-
+      glue::glue("This source contained no deductive coding trees.\n\n")
   }
 
   identifiers <-
@@ -444,14 +501,16 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    identifierInfo,
                    "\n\n",
                    "{prefix}Utterances and coding\n\n",
-                   "These {nrow(x$sourceDf)} utterances were coded ",
-                   "{totalCodingMatches} times in total using these codes: ",
-                   "{ufs::vecTxtQ(appliedCodes)}.",
+                   codingInfo,
                    "\n\n",
                    "{prefix}Inductive coding trees\n\n",
-                   inductiveTreesInfo));
+                   inductiveTreesInfo,
+                   "\n",
+                   "{prefix}Deductive coding trees\n\n",
+                   deductiveTreesInfo));
   for (i in x$inductiveCodeTrees) {
     print(plot(i));
   }
+  print(plot(x$deductiveCodeTrees));
   invisible(x);
 }
