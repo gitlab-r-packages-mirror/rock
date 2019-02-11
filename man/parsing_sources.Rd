@@ -8,15 +8,16 @@
 \alias{plot.rockParsedSources}
 \title{Parsing sources}
 \usage{
-parse_source(x, codeRegexes = c(code =
+parse_source(file, text, codeRegexes = c(code =
   "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
   "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
   "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
   persistentIds = c("caseId"), inductiveCodingHierarchyMarker = ">",
-  delimiterRegEx = "^---$", ignoreRegex = "^#",
-  ignoreOddDelimiters = FALSE, silent = FALSE)
+  metadataContainers = c("metadata"), codesContainers = c("codes",
+  "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
+  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = FALSE)
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
@@ -36,8 +37,10 @@ parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code
 \method{plot}{rockParsedSources}(x, ...)
 }
 \arguments{
-\item{x}{The character vector containing the source, for example as obtained through
-\code{\link[base:readLines]{base::readLines()}}.}
+\item{file, text}{Either specify a \code{file} to read with encoding \code{encoding}, which will
+then be read using \code{\link[base:readLines]{base::readLines()}}, or specify a \code{text} to process, which should be
+a character vectors where every element is a line of the original source (like provided
+\code{\link[base:readLines]{base::readLines()}}).}
 
 \item{codeRegexes, idRegexes, sectionRegexes}{These are named character vectors with one
 or more regular expressions. For \code{codeRegexes}, these specify how to extract the codes
@@ -69,6 +72,8 @@ during analysis.}
 
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
+
+\item{encoding}{The encoding of the file to read (in \code{file}).}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
