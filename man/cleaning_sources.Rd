@@ -9,7 +9,7 @@ clean_source(input, outputFile = NULL,
   "\\\\1.\\\\3"), c("([^\\\\.])(\\\\.\\\\.\\\\.\\\\.+)([^\\\\.])",
   "\\\\1...\\\\3"), c("(\\\\s*\\\\r?\\\\n){3,}", "\\n")),
   extraReplacementsPre = NULL,
-  utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|â\\200¦\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
+  utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
   utteranceMarker = "\\n",
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
   extraReplacementsPost = NULL, removeNewlines = FALSE,
@@ -66,7 +66,7 @@ will become more, if the sentence before that character marks the end of an
 utterance)
 \item All sentences will become separate utterances (in a semi-smart manner;
 specifically, breaks in speaking, if represented by three periods, are not
-considered sentence ends, wheread ellipses (\code{…}) \emph{are}.
+considered sentence ends, wheread ellipses (unicode 2026) \emph{are}.
 \item If there are comma's without a space following them, a space will be inserted.
 }
 }
@@ -75,7 +75,7 @@ exampleSource <-
 "Do you like icecream?
 
 
-Well, that depends… Sometimes, when it's..... Nice. Then I do,
+Well, that depends\\u2026 Sometimes, when it's..... Nice. Then I do,
 but otherwise... not really, actually."
 
 ### Default settings:

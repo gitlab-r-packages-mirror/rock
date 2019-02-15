@@ -13,7 +13,7 @@
 #' utterance)
 #' - All sentences will become separate utterances (in a semi-smart manner;
 #' specifically, breaks in speaking, if represented by three periods, are not
-#' considered sentence ends, wheread ellipses (`…`) *are*.
+#' considered sentence ends, wheread ellipses (unicode 2026, see the example) *are*.
 #' - If there are comma's without a space following them, a space will be inserted.
 #'
 #' @param input For `clean_source`, either a character vector containing the text
@@ -48,7 +48,7 @@
 #' "Do you like icecream?
 #'
 #'
-#' Well, that depends… Sometimes, when it's..... Nice. Then I do,
+#' Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,
 #' but otherwise... not really, actually."
 #'
 #' ### Default settings:
@@ -68,7 +68,7 @@ clean_source <- function(input,
                                                 c("(\\s*\\r?\\n){3,}",
                                                   "\n")),
                          extraReplacementsPre = NULL,
-                         utteranceSplits = c("([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+                         utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
                          utteranceMarker = "\n",
                          replacementsPost = list(c("([^\\,]),([^\\s])",
                                                    "\\1, \\2")),

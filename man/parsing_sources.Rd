@@ -2,8 +2,8 @@
 % Please edit documentation in R/parse_source.R, R/parse_sources.R
 \name{parse_source}
 \alias{parse_source}
-\alias{print.rockParsedSource}
 \alias{parse_sources}
+\alias{print.rockParsedSource}
 \alias{print.rockParsedSources}
 \alias{plot.rockParsedSources}
 \title{Parsing sources}
@@ -64,6 +64,12 @@ be considered the parent code of the code on the right hand side. More than two 
 can be specified in one code (for example, if the \code{inductiveCodingHierarchyMarker} is '>',
 the code \code{grandparent>child>grandchild} would indicate codes at three levels.}
 
+\item{metadataContainers}{The name of YAML fragments containing metadata (i.e. attributes
+about cases).}
+
+\item{codesContainers}{The name of YAML fragments containing (parts of) deductive coding
+trees.}
+
 \item{delimiterRegEx}{The regular expression that is used to extract the YAML fragments.}
 
 \item{ignoreRegex}{The regular expression that is used to delete lines before any other
@@ -76,6 +82,21 @@ should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE
 \item{encoding}{The encoding of the file to read (in \code{file}).}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
+
+\item{x}{The object to print.}
+
+\item{prefix}{The prefix to use before the 'headings' of the printed result.}
+
+\item{...}{Any additional arguments are passed on to the default print method.}
+
+\item{path}{The path containing the files to read.}
+
+\item{extension}{The extension of the files to read; files with other extensions will
+be ignored.}
+
+\item{regex}{Instead of specifing an extension, it's also possible to specify a regular
+expression; only files matching this regular expression are read. If specified, \code{regex}
+takes precedece over \code{extension},}
 }
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the

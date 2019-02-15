@@ -7,6 +7,12 @@
 #' then be read using [base::readLines()], or specify a `text` to process, which should be
 #' a character vectors where every element is a line of the original source (like provided
 #' [base::readLines()]).
+#' @param path The path containing the files to read.
+#' @param extension The extension of the files to read; files with other extensions will
+#' be ignored.
+#' @param regex Instead of specifing an extension, it's also possible to specify a regular
+#' expression; only files matching this regular expression are read. If specified, `regex`
+#' takes precedece over `extension`,
 #' @param codeRegexes,idRegexes,sectionRegexes These are named character vectors with one
 #' or more regular expressions. For `codeRegexes`, these specify how to extract the codes
 #' (that were used to code the sources). For `idRegexes`, these specify how to extract the
@@ -25,6 +31,10 @@
 #' be considered the parent code of the code on the right hand side. More than two levels
 #' can be specified in one code (for example, if the `inductiveCodingHierarchyMarker` is '>',
 #' the code `grandparent>child>grandchild` would indicate codes at three levels.
+#' @param metadataContainers The name of YAML fragments containing metadata (i.e. attributes
+#' about cases).
+#' @param codesContainers The name of YAML fragments containing (parts of) deductive coding
+#' trees.
 #' @param delimiterRegEx The regular expression that is used to extract the YAML fragments.
 #' @param ignoreRegex The regular expression that is used to delete lines before any other
 #' processing. This can be used to enable adding comments to sources, which are then ignored
@@ -33,7 +43,11 @@
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
 #' @param encoding The encoding of the file to read (in `file`).
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
+#' @param x The object to print.
+#' @param prefix The prefix to use before the 'headings' of the printed result.
+#' @param ... Any additional arguments are passed on to the default print method.
 #'
+#' @aliases parse_source parse_sources print.rockParsedSource
 #' @rdname parsing_sources
 #' @export
 parse_source <- function(file,
@@ -115,11 +129,11 @@ parse_source <- function(file,
         which(unlist(lapply(ids, length))>1);
       if (length(multipleIds) > 0) {
         warning(glue::glue("Multiple identifiers matching '{idRegex}' found in the following utterances:\n",
-                       paste0(x[multipleSids],
+                       paste0(x[multipleIds],
                               collapse="\n"),
                        "\n\nOnly using the first identifier for each utterance, removing and ignoring the rest!"));
         ids <-
-          lapply(ids, head, 1);
+          lapply(ids, utils::head, 1);
       }
 
       ### Clean identifiers (i.e. only retain identifier content itself)
@@ -136,7 +150,7 @@ parse_source <- function(file,
       ### Convert from a list to a vector
       ids <- unlist(ids);
 
-      if (length(ids) > 0) {
+      if (length(ids) > 1) {
         ### Implement 'identifier persistence' by copying the
         ### identifier of the previous utterance if the identifier
         ### is not set - can't be done using vectorization as identifiers
@@ -213,7 +227,7 @@ parse_source <- function(file,
 
         inductiveCodeProcessing[[codeRegex]]$inductiveLeaves <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$splitCodings,
-                        tail,
+                        utils::tail,
                         1));
       } else {
         inductiveCodeProcessing[[codeRegex]]$inductiveLeaves <-
@@ -262,10 +276,10 @@ parse_source <- function(file,
         ### Build tree for this code regex. First some preparation.
         inductiveCodeProcessing[[codeRegex]]$localRoots <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$splitCodings,
-                        head, 1));
+                        utils::head, 1));
         inductiveCodeProcessing[[codeRegex]]$localBranches <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$splitCodings,
-                        tail, -1));
+                        utils::tail, -1));
         inductiveCodeProcessing[[codeRegex]]$localRootsThatAreBranches <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$localRoots,
                         `%in%`,
@@ -277,10 +291,10 @@ parse_source <- function(file,
                  function(subTree) {
                    return(lapply(subTree,
                                  function(x) {
-                                   setNames(list(x,x,x),
-                                            c('idName',
-                                              'labelName',
-                                              'codeName'));
+                                   stats::setNames(list(x,x,x),
+                                                   c('idName',
+                                                     'labelName',
+                                                     'codeName'));
                                  }));
 
                  });
@@ -509,8 +523,8 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "{prefix}Deductive coding trees\n\n",
                    deductiveTreesInfo));
   for (i in x$inductiveCodeTrees) {
-    print(plot(i));
+    print(graphics::plot(i));
   }
-  print(plot(x$deductiveCodeTrees));
+  print(graphics::plot(x$deductiveCodeTrees));
   invisible(x);
 }

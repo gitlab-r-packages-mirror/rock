@@ -1,16 +1,41 @@
 #' Apply multiple DiagrammeR global graph attributes
 #'
-#' @param dctGraph The [DiagrammeR::DiagrammeR] graph to apply the attributes to.
+#' @param graph The [DiagrammeR::DiagrammeR] graph to apply the attributes to.
 #' @param ... One or more character vectors of length three, where the first element is
 #' the attribute, the second the value, and the third, the attribute type (`graph`,
 #' `node`, or `edge`).
 #'
 #' @return The [DiagrammeR::DiagrammeR] graph.
-#' @examples extractedSpecs <- extract_dct_specs(text=unlist(strsplit(dct::example_dct_spec, '\n')));
-#' dctGraph <- parse_dct_specs(extractedSpecs)$output$graph
-#' dctGraph <- apply_graph_theme(dctGraph,
-#'                               c("color", "#0000AA", "node"),
-#'                               c("fillcolor", "#00FFFF", "node"));
+#' @examples exampleSource <- unlist(strsplit('
+#' ---
+#' codes:
+#'   -
+#'     id: parentCode
+#'     label: Parent code
+#'     children:
+#'       -
+#'         id: childCode1
+#'       -
+#'         id: childCode2
+#'   -
+#'     id: childCode3
+#'     label: Child Code
+#'     parentId: parentCode
+#'     children: [grandChild1, grandChild2]
+#' ---
+#' ', split="\n", fixed=TRUE));
+#' parsedSource <-
+#'   parse_source(text=exampleSource);
+#' miniGraph <-
+#'   apply_graph_theme(data.tree::ToDiagrammeRGraph(parsedSource$deductiveCodeTrees),
+#'                     c("color", "#0000AA", "node"),
+#'                     c("shape", "triangle", "node"),
+#'                     c("fontcolor", "#FF0000", "node"));
+#' ### This line should be run when executing this example as test, because
+#' ### rendering a DiagrammeR graph takes quite long
+#' \dontrun{
+#' DiagrammeR::render_graph(miniGraph);
+#' }
 #' @export
 apply_graph_theme <- function(graph,
                               ...) {
