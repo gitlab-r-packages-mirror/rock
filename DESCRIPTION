@@ -34,5 +34,6 @@ Imports: data.tree (>= 0.7.8),
          yum (>= 0.0.1)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr

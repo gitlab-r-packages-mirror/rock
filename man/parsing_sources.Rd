@@ -8,7 +8,7 @@
 \alias{plot.rockParsedSources}
 \title{Parsing sources}
 \usage{
-parse_source(file, text, codeRegexes = c(code =
+parse_source(text, file, codeRegexes = c(code =
   "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
   "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
@@ -37,13 +37,19 @@ parse_sources(path, extension = "rock|dct", regex, recursive = TRUE,
 \method{plot}{rockParsedSources}(x, ...)
 }
 \arguments{
-\item{file, text}{Either specify a \code{file} to read with encoding \code{encoding}, which will
-then be read using \code{\link[base:readLines]{base::readLines()}} (if specified, takes precedence over \code{text});
-or specify a \code{text} to process, which should be a character vectors where every
-element is a line of the original source (like provided \code{\link[base:readLines]{base::readLines()}});
-although if a character vector of one element \emph{but} including at least one
-newline character (\code{\\n}) is provided as \code{text}, this is split at the newline
-characters using \code{\link[base:strsplit]{base::strsplit()}}.}
+\item{text, file}{As \code{text} or \code{file}, you can specify a \code{file} to read with
+encoding \code{encoding}, which will then be read using \code{\link[base:readLines]{base::readLines()}}. If the
+argument is named \code{text}, whether it is the path to an existing file is checked
+first, and if it is, that file is read. If the argument is named \code{file}, and it
+does not point to an existing file, an error is produced (useful if calling
+from other functions). A \code{text} should be a character vector where every
+element is a line of the original source (like provided by \code{\link[base:readLines]{base::readLines()}});
+although if a character vector of one element \emph{and} including at least one
+newline character (\code{\\n}) is provided as \code{text}, it is split at the newline
+characters using \code{\link[base:strsplit]{base::strsplit()}}. Basically, this behavior means that the
+first argument can be either a character vector or the path to a file; and if
+you're specifying a file and you want to be certain that an error is thrown if
+it doesn't exist, make sure to name it \code{file}.}
 
 \item{codeRegexes, idRegexes, sectionRegexes}{These are named character vectors with one
 or more regular expressions. For \code{codeRegexes}, these specify how to extract the codes

@@ -3,13 +3,19 @@
 #' These function parse one (`parse_source`) or more (`parse_sources`) sources and the
 #' contained identifiers, sections, and codes.
 #'
-#' @param file,text Either specify a `file` to read with encoding `encoding`, which will
-#' then be read using [base::readLines()] (if specified, takes precedence over `text`);
-#' or specify a `text` to process, which should be a character vectors where every
-#' element is a line of the original source (like provided [base::readLines()]);
-#' although if a character vector of one element *but* including at least one
-#' newline character (`\\n`) is provided as `text`, this is split at the newline
-#' characters using [base::strsplit()].
+#' @param text,file As `text` or `file`, you can specify a `file` to read with
+#' encoding `encoding`, which will then be read using [base::readLines()]. If the
+#' argument is named `text`, whether it is the path to an existing file is checked
+#' first, and if it is, that file is read. If the argument is named `file`, and it
+#' does not point to an existing file, an error is produced (useful if calling
+#' from other functions). A `text` should be a character vector where every
+#' element is a line of the original source (like provided by [base::readLines()]);
+#' although if a character vector of one element *and* including at least one
+#' newline character (`\\n`) is provided as `text`, it is split at the newline
+#' characters using [base::strsplit()]. Basically, this behavior means that the
+#' first argument can be either a character vector or the path to a file; and if
+#' you're specifying a file and you want to be certain that an error is thrown if
+#' it doesn't exist, make sure to name it `file`.
 #' @param path The path containing the files to read.
 #' @param extension The extension of the files to read; files with other extensions will
 #' be ignored. Multiple extensions can be separated by a pipe (`|`).
@@ -55,8 +61,8 @@
 #' @aliases parse_source parse_sources print.rockParsedSource
 #' @rdname parsing_sources
 #' @export
-parse_source <- function(file,
-                         text,
+parse_source <- function(text,
+                         file,
                          codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                          idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
                                        stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),

@@ -119,7 +119,7 @@ contained identifiers, sections, and codes.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>parse_source</span>(<span class='no'>file</span>, <span class='no'>text</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>code</span> <span class='kw'>=</span>
+    <pre class="usage"><span class='fu'>parse_source</span>(<span class='no'>text</span>, <span class='no'>file</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>code</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[([a-zA-Z0-9._&gt;-]+)\\]\\]"</span>), <span class='kw'>idRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>caseId</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>stanzaId</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>),
@@ -154,14 +154,20 @@ contained identifiers, sections, and codes.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file, text</th>
-      <td><p>Either specify a <code>file</code> to read with encoding <code>encoding</code>, which will
-then be read using <code><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>base::readLines()</a></code> (if specified, takes precedence over <code>text</code>);
-or specify a <code>text</code> to process, which should be a character vectors where every
-element is a line of the original source (like provided <code><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>base::readLines()</a></code>);
-although if a character vector of one element <em>but</em> including at least one
-newline character (<code>\n</code>) is provided as <code>text</code>, this is split at the newline
-characters using <code><a href='https://www.rdocumentation.org/packages/base/topics/strsplit'>base::strsplit()</a></code>.</p></td>
+      <th>text, file</th>
+      <td><p>As <code>text</code> or <code>file</code>, you can specify a <code>file</code> to read with
+encoding <code>encoding</code>, which will then be read using <code><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>base::readLines()</a></code>. If the
+argument is named <code>text</code>, whether it is the path to an existing file is checked
+first, and if it is, that file is read. If the argument is named <code>file</code>, and it
+does not point to an existing file, an error is produced (useful if calling
+from other functions). A <code>text</code> should be a character vector where every
+element is a line of the original source (like provided by <code><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>base::readLines()</a></code>);
+although if a character vector of one element <em>and</em> including at least one
+newline character (<code>\n</code>) is provided as <code>text</code>, it is split at the newline
+characters using <code><a href='https://www.rdocumentation.org/packages/base/topics/strsplit'>base::strsplit()</a></code>. Basically, this behavior means that the
+first argument can be either a character vector or the path to a file; and if
+you're specifying a file and you want to be certain that an error is thrown if
+it doesn't exist, make sure to name it <code>file</code>.</p></td>
     </tr>
     <tr>
       <th>codeRegexes, idRegexes, sectionRegexes</th>
