@@ -20,7 +20,7 @@ The \link[DiagrammeR:DiagrammeR]{DiagrammeR::DiagrammeR} graph.
 Apply multiple DiagrammeR global graph attributes
 }
 \examples{
-exampleSource <- unlist(strsplit('
+exampleSource <- '
 ---
 codes:
   -
@@ -37,7 +37,7 @@ codes:
     parentId: parentCode
     children: [grandChild1, grandChild2]
 ---
-', split="\\n", fixed=TRUE));
+';
 parsedSource <-
   parse_source(text=exampleSource);
 miniGraph <-

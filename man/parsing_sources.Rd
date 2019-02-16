@@ -21,10 +21,10 @@ parse_source(file, text, codeRegexes = c(code =
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
-parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code
-  = "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
-  "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
-  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
+parse_sources(path, extension = "rock|dct", regex, recursive = TRUE,
+  codeRegexes = c(code = "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"),
+  idRegexes = c(caseId = "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
+  stanzaId = "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   autoGenerateIds = c("stanzaId"), sectionRegexes = c(paragraphs =
   "---paragraph-break---", secondary = "---<[a-zA-Z0-9]?>---"),
   inductiveCodingHierarchyMarker = ">", delimiterRegEx = "^---$",
@@ -38,9 +38,12 @@ parse_sources(path, extension = "rock|dct", regex, codeRegexes = c(code
 }
 \arguments{
 \item{file, text}{Either specify a \code{file} to read with encoding \code{encoding}, which will
-then be read using \code{\link[base:readLines]{base::readLines()}}, or specify a \code{text} to process, which should be
-a character vectors where every element is a line of the original source (like provided
-\code{\link[base:readLines]{base::readLines()}}).}
+then be read using \code{\link[base:readLines]{base::readLines()}} (if specified, takes precedence over \code{text});
+or specify a \code{text} to process, which should be a character vectors where every
+element is a line of the original source (like provided \code{\link[base:readLines]{base::readLines()}});
+although if a character vector of one element \emph{but} including at least one
+newline character (\code{\\n}) is provided as \code{text}, this is split at the newline
+characters using \code{\link[base:strsplit]{base::strsplit()}}.}
 
 \item{codeRegexes, idRegexes, sectionRegexes}{These are named character vectors with one
 or more regular expressions. For \code{codeRegexes}, these specify how to extract the codes
@@ -92,11 +95,14 @@ should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE
 \item{path}{The path containing the files to read.}
 
 \item{extension}{The extension of the files to read; files with other extensions will
-be ignored.}
+be ignored. Multiple extensions can be separated by a pipe (\code{|}).}
 
 \item{regex}{Instead of specifing an extension, it's also possible to specify a regular
 expression; only files matching this regular expression are read. If specified, \code{regex}
 takes precedece over \code{extension},}
+
+\item{recursive}{Whether to also process subdirectories (\code{TRUE})
+or not (\code{FALSE}).}
 }
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the

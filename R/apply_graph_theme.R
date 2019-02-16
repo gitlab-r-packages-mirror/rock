@@ -6,7 +6,7 @@
 #' `node`, or `edge`).
 #'
 #' @return The [DiagrammeR::DiagrammeR] graph.
-#' @examples exampleSource <- unlist(strsplit('
+#' @examples exampleSource <- '
 #' ---
 #' codes:
 #'   -
@@ -23,7 +23,7 @@
 #'     parentId: parentCode
 #'     children: [grandChild1, grandChild2]
 #' ---
-#' ', split="\n", fixed=TRUE));
+#' ';
 #' parsedSource <-
 #'   parse_source(text=exampleSource);
 #' miniGraph <-

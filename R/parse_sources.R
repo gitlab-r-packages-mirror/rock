@@ -3,6 +3,7 @@
 parse_sources <- function(path,
                           extension = "rock|dct",
                           regex,
+                          recursive=TRUE,
                           codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                           idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
                                         stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),
@@ -18,18 +19,26 @@ parse_sources <- function(path,
                           encoding="UTF-8",
                           silent=TRUE) {
 
+  if (!dir.exists(path)) {
+    stop("Directory '",
+         path,
+         "' does not exist!");
+  }
+
   if (missing(regex)) {
     regex <- paste0("^(.*)\\.", extension, "$");
   }
 
-  filelist <- list.files(path,
-                         pattern=regex,
-                         full.names=FALSE);
+  fileList <-
+    list.files(path=path,
+               pattern=regex,
+               recursive=recursive,
+               full.names=TRUE);
 
   res <- list(input=as.list(environment()));
 
   res$parsedSources <-
-    lapply(file.path(path, filelist),
+    lapply(fileList,
            parse_source,
            codeRegexes=codeRegexes,
            idRegexes=idRegexes,
@@ -41,7 +50,7 @@ parse_sources <- function(path,
            silent=silent);
 
   names(res$parsedSources) <-
-    filelist;
+    basename(fileList);
 
   res$sourcesDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,

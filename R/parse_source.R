@@ -4,15 +4,20 @@
 #' contained identifiers, sections, and codes.
 #'
 #' @param file,text Either specify a `file` to read with encoding `encoding`, which will
-#' then be read using [base::readLines()], or specify a `text` to process, which should be
-#' a character vectors where every element is a line of the original source (like provided
-#' [base::readLines()]).
+#' then be read using [base::readLines()] (if specified, takes precedence over `text`);
+#' or specify a `text` to process, which should be a character vectors where every
+#' element is a line of the original source (like provided [base::readLines()]);
+#' although if a character vector of one element *but* including at least one
+#' newline character (`\\n`) is provided as `text`, this is split at the newline
+#' characters using [base::strsplit()].
 #' @param path The path containing the files to read.
 #' @param extension The extension of the files to read; files with other extensions will
-#' be ignored.
+#' be ignored. Multiple extensions can be separated by a pipe (`|`).
 #' @param regex Instead of specifing an extension, it's also possible to specify a regular
 #' expression; only files matching this regular expression are read. If specified, `regex`
 #' takes precedece over `extension`,
+#' @param recursive Whether to also process subdirectories (`TRUE`)
+#' or not (`FALSE`).
 #' @param codeRegexes,idRegexes,sectionRegexes These are named character vectors with one
 #' or more regular expressions. For `codeRegexes`, these specify how to extract the codes
 #' (that were used to code the sources). For `idRegexes`, these specify how to extract the

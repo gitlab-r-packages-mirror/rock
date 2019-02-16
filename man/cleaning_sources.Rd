@@ -66,7 +66,7 @@ will become more, if the sentence before that character marks the end of an
 utterance)
 \item All sentences will become separate utterances (in a semi-smart manner;
 specifically, breaks in speaking, if represented by three periods, are not
-considered sentence ends, wheread ellipses (unicode 2026, see the example) \emph{are}.
+considered sentence ends, wheread ellipses ("…" or unicode 2026, see the example) \emph{are}.
 \item If there are comma's without a space following them, a space will be inserted.
 }
 }
