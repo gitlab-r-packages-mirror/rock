@@ -79,16 +79,35 @@ parse_source <- function(text,
                          encoding="UTF-8",
                          silent=FALSE) {
 
+
   if (missing(file)) {
     if (missing(text)) {
       stop("Provide either a `file` or a `text` to scan!");
     } else {
-      x <- text;
+      if ((length(text) == 1) && file.exists(text)) {
+        x <- readLines(text,
+                       encoding=encoding,
+                       warn=FALSE);
+      } else {
+        x <- text;
+        if ((length(x) == 1) && grepl('\n', x)) {
+          x <-
+            strsplit(x,
+                     "\n")[[1]];
+        }
+      }
     }
   } else {
-    x <- readLines(file,
-                   encoding=encoding,
-                   warn=FALSE);
+    if (file.exists(file)) {
+      x <- readLines(file,
+                     encoding=encoding,
+                     warn=FALSE);
+    } else {
+      stop("The file you specified in argument `file` ('",
+           paste0(file, collapse=" "),
+           "') does not exist. If you meant to provide a text ",
+           "to process, please use argument `text`");
+    }
   }
 
   arguments <- as.list(environment());
@@ -208,6 +227,7 @@ parse_source <- function(text,
   codingLeaves <- list();
   inductiveCodeProcessing <- list();
   inductiveCodeTrees <- list();
+  inductiveDiagrammeR <- list();
   ### Process codes
   if (!is.null(codeRegexes) && length(codeRegexes) > 0) {
 
@@ -264,15 +284,20 @@ parse_source <- function(text,
                `names<-`,
                value <- inductiveCodeProcessing[[codeRegex]]$inductiveLeaves);
 
+      ### Removed this at 2019-02-18 after meeting with Szilvia - no idea why
+      ### I'd put it in, but it caused these columns to be *lists* in the data.frame
+      ### for some weird reason.
+      ###
       ### Convert from a vector to a list
-      namedOccurrences <-
-        lapply(namedOccurrences,
-               as.list);
+      # namedOccurrences <-
+      #   lapply(namedOccurrences,
+      #          as.list);
 
       ### Convert the lists to dataframes
       sourceDf <-
         cbind(sourceDf,
-              do.call(rbind, namedOccurrences));
+              as.data.frame(do.call(rbind,
+                                    namedOccurrences)));
 
       ### Delete codes from utterances
       x <-
@@ -335,14 +360,34 @@ parse_source <- function(text,
             ### Add children; first save reference to this node
             currentNode <-
               inductiveCodeTrees[[codeRegex]][[currentSubtree[1]]];
+            if (!silent) {
+              ufs::cat0("\nThis node has children: storing node to add children to ('",
+                        currentNode$name,
+                        "').");
+            }
             ### Then loop through children and progressively add them
             for (currentBranch in currentSubtree[2:length(currentSubtree)]) {
-              currentNode <-
-                currentNode$AddChild(currentBranch);
-              currentNode$label <-
-                currentBranch;
-              currentNode$code <-
-                currentBranch;
+              if (is.null(currentNode[[currentBranch]])) {
+                if (!silent) {
+                  ufs::cat0("\nThis parent node does not yet have a child with the name '",
+                            currentBranch,
+                            "', so adding it to that parent node.");
+                }
+                currentNode <-
+                  currentNode$AddChild(currentBranch);
+                currentNode$label <-
+                  currentBranch;
+                currentNode$code <-
+                  currentBranch;
+              } else {
+                if (!silent) {
+                  ufs::cat0("\nThis parent node already has a child with the name '",
+                            currentBranch,
+                            "', so not adding anything at this point.");
+                }
+                currentNode <-
+                  currentNode[[currentBranch]];
+              }
             }
           }
         }
@@ -377,6 +422,10 @@ parse_source <- function(text,
 
         data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
                                  directed="false");
+
+        # inductiveDiagrammeR[[codeRegex]] <-
+        #   data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
+
 
       } else {
         inductiveCodeTrees[[codeRegex]] <- NULL;
@@ -414,7 +463,8 @@ parse_source <- function(text,
                    codings = codingLeaves,
                    rawCodings = codings,
                    inductiveCodeProcessing = inductiveCodeProcessing,
-                   inductiveCodeTrees = inductiveCodeTrees),
+                   inductiveCodeTrees = inductiveCodeTrees,
+                   inductiveGraphs = inductiveDiagrammeR),
               class="rockParsedSource");
 
   ### Process metadata and deductive code trees
@@ -533,9 +583,14 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "\n",
                    "{prefix}Deductive coding trees\n\n",
                    deductiveTreesInfo));
-  for (i in x$inductiveCodeTrees) {
-    print(graphics::plot(i));
+  if (length(x$inductiveCodeTrees) > 0) {
+    for (i in names(x$inductiveCodeTrees)) {
+      print(graphics::plot(x$inductiveCodeTrees[[i]]));
+      #DiagrammeR::render_graph(x$inductiveGraphs[[i]]);
+    }
   }
-  print(graphics::plot(x$deductiveCodeTrees));
+  if (length(x$deductiveCodeTrees) > 0) {
+    print(graphics::plot(x$deductiveCodeTrees));
+  }
   invisible(x);
 }

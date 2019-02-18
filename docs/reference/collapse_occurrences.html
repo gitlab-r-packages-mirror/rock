@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rock</title>
+<title>Collapse the occurrences in utterances into groups — collapse_occurrences • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Collapse the occurrences in utterances into groups — collapse_occurrences" />
+
+<meta property="og:description" content="This function collapses all occurrences into groups
+sharing the same identifier, by default the stanzaId
+identifier ([[sid=..]])." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -101,66 +106,66 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Collapse the occurrences in utterances into groups</h1>
+    
+    <div class="hidden name"><code>collapse_occurrences.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>This function collapses all occurrences into groups
+sharing the same identifier, by default the <code>stanzaId</code>
+identifier (<code>[[sid=..]]</code>).</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="apply_graph_theme.html">apply_graph_theme()</a></code> </p>
-        </td>
-        <td><p>Apply multiple DiagrammeR global graph attributes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cleaning_sources.html">clean_source()</a></code> </p>
-        </td>
-        <td><p>Cleaning sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collapse_occurrences.html">collapse_occurrences()</a></code> </p>
-        </td>
-        <td><p>Collapse the occurrences in utterances into groups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rockParsedSources&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Parsing sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rock_example_1.html">rock_example_1</a></code> </p>
-        </td>
-        <td><p>Example 1</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedSource</span>, <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>"stanzaId"</span>,
+  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>parsedSource</th>
+      <td><p>The parsed sources as provided by <code><a href='parsing_sources.html'>parse_source()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>collapseBy</th>
+      <td><p>The column in the <code>sourceDf</code> (in the <code>parsedSource</code> object)
+to collapse by (i.e. the column specifying the groups to collapse).</p></td>
+    </tr>
+    <tr>
+      <th>columns</th>
+      <td><p>The columns to collapse; if unspecified (i.e. <code>NULL</code>), all
+codes stored in the <code>code</code> object in the <code>codings</code> object in the
+<code>parsedSource</code> object are taken (i.e. all used codes in the <code>parsedSource</code>
+object).</p></td>
+    </tr>
+    <tr>
+      <th>logical</th>
+      <td><p>Whether to return the counts of the occurrences (<code>FALSE</code>) or
+simply whether any code occurreded in the group at all (<code>TRUE</code>).</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A dataframe with one row for each value of of <code>collapseBy</code> and columns
+for <code>collapseBy</code> and each of the <code>columns</code>, with in the cells the counts (if
+<code>logical</code> is <code>FALSE</code>) or <code>TRUE</code> or <code>FALSE</code> (if <code>logical</code> is <code>TRUE</code>).</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 
