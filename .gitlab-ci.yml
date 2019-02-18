@@ -1,0 +1,21 @@
+pages:
+  stage: build
+  image: alpine:latest
+  script:
+    - echo 'Nothing to do...'
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+
+metabefor-CI:
+  stage: test
+  image: rocker/tidyverse
+  script:
+    - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "ufs"))'
+    - R -e 'install.packages(c("knitr", "rmarkdown", "covr"))'
+    - R -e 'devtools::install_gitlab("r-packages/yum")'
+    - R -e 'devtools::check()'
+  tags:
+    - docker
