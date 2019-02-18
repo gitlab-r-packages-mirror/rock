@@ -12,6 +12,7 @@ construct taxonomy (DCT).
 See the [introductory vignette](https://rock.opens.science/articles/introduction_to_rock.html) for an introduction.
 
 <!-- [![Travis build status](https://travis-ci.org/Matherion/rock.svg?branch=master)](https://travis-ci.org/Matherion/rock) -->
+
 [![pipeline status](https://gitlab.com/r-packages/rock/badges/master/pipeline.svg)](https://gitlab.com/r-packages/rock/commits/master)
  
 [![Coverage status](https://codecov.io/gh/Matherion/rock/branch/master/graph/badge.svg)](https://codecov.io/github/Matherion/rock?branch=master) 

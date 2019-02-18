@@ -159,7 +159,8 @@ codes:
 ---
 '</span>;
 <span class='no'>parsedSource</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='kw'>text</span><span class='kw'>=</span><span class='no'>exampleSource</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'><span class='no'>miniGraph</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='kw'>text</span><span class='kw'>=</span><span class='no'>exampleSource</span>);
+<span class='no'>miniGraph</span> <span class='kw'>&lt;-</span>
   <span class='fu'>apply_graph_theme</span>(<span class='kw pkg'>data.tree</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/data.tree/topics/ToDiagrammeRGraph'>ToDiagrammeRGraph</a></span>(<span class='no'>parsedSource</span>$<span class='no'>deductiveCodeTrees</span>),
                     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"color"</span>, <span class='st'>"#0000AA"</span>, <span class='st'>"node"</span>),
                     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"shape"</span>, <span class='st'>"triangle"</span>, <span class='st'>"node"</span>),
