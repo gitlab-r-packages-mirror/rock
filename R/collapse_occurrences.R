@@ -50,14 +50,14 @@ collapse_occurrences <- function(parsedSource,
 
   if (logical) {
     res <-
-      aggregate(sourceDf[, columns],
-                sourceDf[, collapseBy, drop=FALSE],
-                any);
+      stats::aggregate(sourceDf[, columns],
+                       sourceDf[, collapseBy, drop=FALSE],
+                       any);
   } else {
     res <-
-      aggregate(sourceDf[, columns],
-                sourceDf[, collapseBy, drop=FALSE],
-                sum);
+      stats::aggregate(sourceDf[, columns],
+                       sourceDf[, collapseBy, drop=FALSE],
+                       sum);
   }
 
   names(res)[1] <-
