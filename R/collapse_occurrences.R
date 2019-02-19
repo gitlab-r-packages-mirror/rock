@@ -52,7 +52,13 @@ collapse_occurrences <- function(parsedSource,
     res <-
       stats::aggregate(sourceDf[, columns],
                        sourceDf[, collapseBy, drop=FALSE],
-                       any);
+                       function(x) {
+                         if (sum(x) == 0) {
+                           return(0);
+                         } else {
+                           return(1);
+                         }
+                       });
   } else {
     res <-
       stats::aggregate(sourceDf[, columns],

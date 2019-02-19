@@ -77,7 +77,7 @@ parse_source <- function(text,
                          ignoreRegex = "^#",
                          ignoreOddDelimiters=FALSE,
                          encoding="UTF-8",
-                         silent=FALSE) {
+                         silent=TRUE) {
 
 
   if (missing(file)) {

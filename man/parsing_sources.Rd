@@ -17,7 +17,7 @@ parse_source(text, file, codeRegexes = c(code =
   persistentIds = c("caseId"), inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
   "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
-  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = FALSE)
+  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = TRUE)
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
