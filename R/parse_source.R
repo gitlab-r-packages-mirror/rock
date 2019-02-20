@@ -429,7 +429,9 @@ parse_source <- function(text,
           inductiveDiagrammeR[[codeRegex]] <-
             data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
         }, error = function(e) {
-          warning("Error issues by 'data.tree::ToDiagrammeRGraph' when converting '",
+          print(class(inductiveCodeProcessing[[codeRegex]]));
+          print(inductiveCodeProcessing[[codeRegex]]);
+          warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
                   codeRegex, "' code tree: ", e$message);
         });
 
