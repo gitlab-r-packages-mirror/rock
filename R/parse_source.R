@@ -422,6 +422,8 @@ parse_source <- function(text,
 
         data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
                                  directed="false");
+        data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
+                                 rankdir = "LR");
 
         # inductiveDiagrammeR[[codeRegex]] <-
         #   data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
