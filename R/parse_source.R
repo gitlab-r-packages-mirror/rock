@@ -420,19 +420,19 @@ parse_source <- function(text,
           }
         }
 
-        data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
+        data.tree::SetGraphStyle(inductiveCodeTrees[[codeRegex]],
                                  directed="false");
-        data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
+        data.tree::SetGraphStyle(inductiveCodeTrees[[codeRegex]],
                                  rankdir = "LR");
 
         tryCatch({
           inductiveDiagrammeR[[codeRegex]] <-
-            data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
+            data.tree::ToDiagrammeRGraph(inductiveCodeTrees[[codeRegex]]);
         }, error = function(e) {
-          print(class(inductiveCodeProcessing[[codeRegex]]));
-          print(inductiveCodeProcessing[[codeRegex]]);
           warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
-                  codeRegex, "' code tree: ", e$message);
+                  codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n");
+          print(class(inductiveCodeTrees[[codeRegex]]));
+          print(inductiveCodeTrees[[codeRegex]]);
         });
 
 
