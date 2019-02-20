@@ -63,7 +63,7 @@
 #' @export
 parse_source <- function(text,
                          file,
-                         codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
+                         codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                          idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
                                        stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),
                          sectionRegexes = c(paragraphs = "---paragraph-break---",
@@ -425,8 +425,13 @@ parse_source <- function(text,
         data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
                                  rankdir = "LR");
 
-        # inductiveDiagrammeR[[codeRegex]] <-
-        #   data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
+        tryCatch({
+          inductiveDiagrammeR[[codeRegex]] <-
+            data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
+        }, error = function(e) {
+          warning("Error issues by 'data.tree::ToDiagrammeRGraph' when converting '",
+                  codeRegex, "' code tree: ", e$message);
+        });
 
 
       } else {
@@ -465,8 +470,8 @@ parse_source <- function(text,
                    codings = codingLeaves,
                    rawCodings = codings,
                    inductiveCodeProcessing = inductiveCodeProcessing,
-                   inductiveCodeTrees = inductiveCodeTrees,
-                   inductiveGraphs = inductiveDiagrammeR),
+                   inductiveCodeTrees = inductiveCodeTrees),
+                   #inductiveGraphs = inductiveDiagrammeR),
               class="rockParsedSource");
 
   ### Process metadata and deductive code trees

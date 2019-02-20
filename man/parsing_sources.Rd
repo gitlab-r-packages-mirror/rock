@@ -8,7 +8,7 @@
 \alias{plot.rockParsedSources}
 \title{Parsing sources}
 \usage{
-parse_source(text, file, codeRegexes = c(code =
+parse_source(text, file, codeRegexes = c(codes =
   "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
   "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
