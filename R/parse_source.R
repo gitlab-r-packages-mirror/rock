@@ -423,8 +423,8 @@ parse_source <- function(text,
         data.tree::SetGraphStyle(inductiveCodeProcessing[[codeRegex]],
                                  directed="false");
 
-        # inductiveDiagrammeR[[codeRegex]] <-
-        #   data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
+        inductiveDiagrammeR[[codeRegex]] <-
+          data.tree::ToDiagrammeRGraph(inductiveCodeProcessing[[codeRegex]]);
 
 
       } else {
