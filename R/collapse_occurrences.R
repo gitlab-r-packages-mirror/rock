@@ -31,7 +31,7 @@ collapse_occurrences <- function(parsedSource,
 
   if (is.null(columns)) {
     columns <-
-      parsedSource$codings$code;
+      unlist(parsedSource$codings);
   }
 
   if (!(all(columns %in% names(parsedSource$sourceDf)))) {

@@ -488,6 +488,12 @@ parse_source <- function(text,
       yum::build_tree(res$deductiveCodes);
   }
 
+  if (length(res$metadata) > 0) {
+    res$metadataDf <-
+      do.call(rbind,
+              yum::simplify_by_flattening(res$metadata));
+  }
+
   ### Add raw yamlFragments
   res$yamlFragments <- yamlFragments;
 
