@@ -492,6 +492,11 @@ parse_source <- function(text,
     res$metadataDf <-
       do.call(rbind,
               yum::simplify_by_flattening(res$metadata));
+
+    res$mergedSourceDf <-
+      merge(res$sourceDf,
+            res$metadataDf);
+
   }
 
   ### Add raw yamlFragments
