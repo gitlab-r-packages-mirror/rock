@@ -497,11 +497,25 @@ parse_source <- function(text,
       merge(res$sourceDf,
             res$metadataDf);
 
+    res$convenience <-
+      list(metadataVars =
+             setdiff(names(res$mergedSourceDf),
+                     names(metadataContainers)));
+
+
+  } else {
+
+    res$convenience <-
+      list(metadataVars = NULL);
+
   }
 
-  if (length(unlist(res$codings)) > 0) {
+  res$convenience$codings <- unlist(res$codings);
+
+  if (length(res$convenience) > 0) {
     res$countedCodings <-
-      colSums(res$sourceDf[, unlist(res$codings)]);
+      colSums(res$sourceDf[, res$convenience]);
+
   } else {
     res$countedCodings <-
       NULL;
