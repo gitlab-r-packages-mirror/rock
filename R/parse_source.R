@@ -499,6 +499,14 @@ parse_source <- function(text,
 
   }
 
+  if (length(unlist(res$codings)) > 0) {
+    res$countedCodings <-
+      colSums(res$sourceDf[, unlist(res$codings)]);
+  } else {
+    res$countedCodings <-
+      NULL;
+  }
+
   ### Add raw yamlFragments
   res$yamlFragments <- yamlFragments;
 
