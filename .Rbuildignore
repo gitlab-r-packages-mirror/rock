@@ -9,8 +9,8 @@
 ^_pkgdown\.yml$
 
 ### pkgdown websites
-public
-^docs$
+^public/
+^docs/
 
 ### Obsolete files/directories
 ^delete/
