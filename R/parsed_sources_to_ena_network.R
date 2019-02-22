@@ -1,20 +1,21 @@
-#' Title
+#' Create an ENA network out of one or more parsed sources
 #'
-#' @param x
-#' @param unitCols
-#' @param conversationCols
-#' @param codesCols
-#' @param metadataCols
+#' @param x The parsed source(s) as provided by `rock::parse_source` or `rock::parse_sources`.
+#' @param unitCols The columns that together define units.
+#' @param conversationCols The columns that together define conversations.
+#' @param codes The codes to include; by default, takes all codes.
+#' @param metadata The columns in the merged source dataframe that contain the
+#' metadata. By default, takes all read metadata.
 #'
-#' @return
+#' @return The result of a call to [rENA::ena.plot.network()].
 #' @export
 #'
-#' @examples
+#' @examples ### Add example later!
 parsed_sources_to_ena_network <- function(x,
                                           unitCols,
                                           conversationCols,
-                                          codesCols = x$convenience$codings,
-                                          metadataCols = x$convenience$metadataVars) {
+                                          codes = x$convenience$codings,
+                                          metadata = x$convenience$metadataVars) {
 
   if (!requireNamespace("rENA", quietly = TRUE)) {
     stop("To create ENA networks, the \"rENA\" package is required. ",

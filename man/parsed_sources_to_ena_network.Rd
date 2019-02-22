@@ -2,15 +2,29 @@
 % Please edit documentation in R/parsed_sources_to_ena_network.R
 \name{parsed_sources_to_ena_network}
 \alias{parsed_sources_to_ena_network}
-\title{Title}
+\title{Create an ENA network out of one or more parsed sources}
 \usage{
 parsed_sources_to_ena_network(x, unitCols, conversationCols,
-  codesCols = x$convenience$codings,
-  metadataCols = x$convenience$metadataVars)
+  codes = x$convenience$codings, metadata = x$convenience$metadataVars)
 }
 \arguments{
-\item{metadataCols}{}
+\item{x}{The parsed source(s) as provided by \code{rock::parse_source} or \code{rock::parse_sources}.}
+
+\item{unitCols}{The columns that together define units.}
+
+\item{conversationCols}{The columns that together define conversations.}
+
+\item{codes}{The codes to include; by default, takes all codes.}
+
+\item{metadata}{The columns in the merged source dataframe that contain the
+metadata. By default, takes all read metadata.}
+}
+\value{
+The result of a call to \code{\link[rENA:ena.plot.network]{rENA::ena.plot.network()}}.
 }
 \description{
-Title
+Create an ENA network out of one or more parsed sources
+}
+\examples{
+### Add example later!
 }
