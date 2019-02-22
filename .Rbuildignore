@@ -1,23 +1,23 @@
 ### R Studio files
 \.Rproj$
-^\.Rproj\.user$
+\.Rproj\.user$
 
 ### Configuration
-^\.travis\.yml$
-^codecov\.yml$
-^\.gitlab-ci\.yml$
-^_pkgdown\.yml$
+\.travis\.yml$
+codecov\.yml$
+\.gitlab-ci\.yml$
+_pkgdown\.yml$
 
 ### pkgdown websites
-^public/
-^docs/
+public/
+docs/
 
 ### Obsolete files/directories
-^delete/
+delete/
 
 ### Uncompiled documentation files
-^README\.Rmd$
+README\.Rmd$
 
 ### License
-^LICENSE\.md$
+LICENSE\.md$
 

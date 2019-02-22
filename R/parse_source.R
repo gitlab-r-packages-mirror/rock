@@ -514,7 +514,7 @@ parse_source <- function(text,
 
   if (length(res$convenience) > 0) {
     res$countedCodings <-
-      colSums(res$sourceDf[, res$convenience]);
+      colSums(res$sourceDf[, res$convenience$metadataVars]);
 
   } else {
     res$countedCodings <-
