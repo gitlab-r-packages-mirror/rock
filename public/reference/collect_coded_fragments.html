@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rock</title>
+<title>Create an overview of coded fragments — collect_coded_fragments • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Create an overview of coded fragments — collect_coded_fragments" />
+
+<meta property="og:description" content="Collect all coded utterances and optionally add some context
+(utterances before and utterances after) to create ann overview
+of all coded fragments per code." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -101,84 +106,72 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Create an overview of coded fragments</h1>
+    
+    <div class="hidden name"><code>collect_coded_fragments.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Collect all coded utterances and optionally add some context
+(utterances before and utterances after) to create ann overview
+of all coded fragments per code.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="apply_graph_theme.html">apply_graph_theme()</a></code> </p>
-        </td>
-        <td><p>Apply multiple DiagrammeR global graph attributes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cleaning_sources.html">clean_source()</a></code> </p>
-        </td>
-        <td><p>Cleaning sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collapse_occurrences.html">collapse_occurrences()</a></code> </p>
-        </td>
-        <td><p>Collapse the occurrences in utterances into groups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collect_coded_fragments.html">collect_coded_fragments()</a></code> </p>
-        </td>
-        <td><p>Create an overview of coded fragments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_cooccurrence_matrix.html">create_cooccurrence_matrix()</a></code> </p>
-        </td>
-        <td><p>Create a co-occurrence matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsed_sources_to_ena_network.html">parsed_sources_to_ena_network()</a></code> </p>
-        </td>
-        <td><p>Create an ENA network out of one or more parsed sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rockParsedSources&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Parsing sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rock_example_1.html">rock_example_1</a></code> </p>
-        </td>
-        <td><p>Example 1</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(<span class='no'>x</span>, <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>The parsed source(s) as provided by <code><a href='parsing_sources.html'>rock::parse_source</a></code>
+or <code><a href='parsing_sources.html'>rock::parse_sources</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>codes</th>
+      <td><p>The regular expression that matches the codes to include</p></td>
+    </tr>
+    <tr>
+      <th>context</th>
+      <td><p>How many utterances before and after the target
+utterances to include in the fragments.</p></td>
+    </tr>
+    <tr>
+      <th>rawResult</th>
+      <td><p>Whether to returnt he raw result, a list of the
+fragments, or one character value in markdown format.</p></td>
+    </tr>
+    <tr>
+      <th>cleanUtterances</th>
+      <td><p>Whether to use the clean or the raw utterances
+when constructing he fragments (the raw versions contain all codes).</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>Either a list of character vectors, or a single character value.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>### Add later
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 
