@@ -34,15 +34,15 @@ parsed_sources_to_ena_network <- function(x,
   allCols <-
     c(unitCols,
       conversationCols,
-      codesCols,
-      metadataCols);
+      codes,
+      metadata);
 
   if (!all(allCols %in% names(x$mergedSourceDf))) {
     stop(glue::glue("Not all columns you specified exist in the 'mergedSourceDf' in the object you provided! Specifically, you provided:\n\n",
                     "unitCols = {ufs::vecTxtQ(unitCols)}\n",
                     "conversationCols = {ufs::vecTxtQ(conversationCols)}\n",
-                    "codesCols = {ufs::vecTxtQ(codesCols)}\n",
-                    "metadataCols = {ufs::vecTxtQ(metadataCols)}\n\n",
+                    "codes = {ufs::vecTxtQ(codes)}\n",
+                    "metadata = {ufs::vecTxtQ(metadata)}\n\n",
                     "However, the following columns were not found: {ufs::vecTxtQ(allCols[!(allCols %in% names(x$mergedSourceDf))])}."));
   }
 
@@ -53,8 +53,8 @@ parsed_sources_to_ena_network <- function(x,
     rENA::ena.accumulate.data(
       units = dat[, unitCols, drop=FALSE],
       conversation = dat[, conversationCols, drop=FALSE],
-      codes = dat[, codesCols, drop=FALSE],
-      metadata = dat[, metadataCols, drop=FALSE]
+      codes = dat[, codes, drop=FALSE],
+      metadata = dat[, metadata, drop=FALSE]
     );
 
   ENA_set <-
