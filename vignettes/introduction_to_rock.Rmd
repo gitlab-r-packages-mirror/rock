@@ -298,6 +298,64 @@ Utterance *(ENA & ROCK term)*
 
 # Using ROCK for Epistemic Network Analysis
 
+In Epistemic Network Analysis (ENA), the data are segmented and co-occurrences of codes in segments called stanzas are determined, after which these co-occurrences are visualised in a network. In ENA, the smallest unit of analysis is that stanza, but stanzas are composed of one or more utterances. An utterance can be, for example, a sentence, but it can also be several sentences or parts of sentences. Stanzas can be entire interviews, or paragraphs within an interview, or sets of two or three utterances. Each of these are determined depending on what is sensible given the type of data and research question at hand. In ENA vocabulary, a conversation defines a set of utterances that can be segmented into stanzas. The role of these conversations is to explicitly specify where co-occurrences can exist (i.e. only within the same conversation). When specifying stanzas 'manually', this is of limited added value, but when specifying stanzas automatically, for example using what is called the moving stanza window in ENA vocabulary, such delineations are used to constrain the possible stanzas.
+
+In addition to this segmentation in stanzas, the data are segmented into units. A unit is defined by a nesting of characteristics. In research in humans, one such characteristic that would make sense to distinguish is a person: designating persons as one level in the unit specification ensures that the dependence between utterances of the same person is taken into account properly. Similarly, subsamples of interest can be defined, such as categories of a categorical variable that has been collected as metadata (e.g. country of residence of participants, or sexual preference, or age group). It is also possible to define unit specification levels that are *smaller* than persons, for example by specifying the different questions in an interview scheme or topic list as a level in the unit specification.
+
+In the ROCK, the identifiers, such as case identifiers, can be used, but section identifiers can also be used to specify units.
+
+It is important to have sufficient units compared to the number of codes. This equation expresses how many units you need as a function of the number of codes:
+
+$$\text{codes} = {\text{units} \choose 2} + 1$$
+
+This means that if you have 
+
+
+Is a code a coded fragment? Or is a code a `code`?
+
+In 
+
+
+Discourse - big D discourse = the norms, consistency in communications;
+
+quantittaive ethnography
+
+discourse = 'population'
+
+sample has observations - inferences towards discourse
+
+unit = anything you want to see a network for. Can be entire sample; can also be subsample.
+
+conversation = interview; metadata may nest within conversations
+
+conversations determine the boundaries where the conversations (used to be called strophe)
+
+co-occurrences can only occur within conversations
+
+interpretation of the ENA space requires n+2 codes
+
+n choose 2
+
+
+combinations
+
+so 10 choose 2 means you need 45 codes +1 = 46
+
+
+units are the combination
+
+rigid body rotation - always the same
+
+
+units are a sequence of nestings where one level can be the question, one level can be the individuals, one level can be an attribute (categorisation) of the individuals
+
+
+n choose 2 + 1
+
+
+
+
+
 
 
 # Using ROCK for Cognitive Interviews
