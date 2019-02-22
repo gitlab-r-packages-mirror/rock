@@ -33,6 +33,7 @@ Imports: data.tree (>= 0.7.8),
          utils (>= 3.5.0),
          yum (>= 0.0.1)
 Suggests: 
+    rENA (>= 0.1.6),
     knitr,
     rmarkdown,
     covr

@@ -489,18 +489,25 @@ parse_source <- function(text,
   }
 
   if (length(res$metadata) > 0) {
+
+    ### Simplify YAML metadata and convert into a data frame
     res$metadataDf <-
       do.call(rbind,
-              yum::simplify_by_flattening(res$metadata));
+              lapply(yum::simplify_by_flattening(res$metadata),
+                     as.data.frame,
+                     stringsAsFactors=FALSE));
 
+    ### Merge metadata with source data
     res$mergedSourceDf <-
       merge(res$sourceDf,
             res$metadataDf);
 
+    ### Store metadata variables for convenient use later on
     res$convenience <-
       list(metadataVars =
-             setdiff(names(res$mergedSourceDf),
-                     names(metadataContainers)));
+             setdiff(names(res$metadataDf),
+                     c(names(idRegexes),
+                       names(metadataContainers))));
 
 
   } else {
@@ -512,9 +519,10 @@ parse_source <- function(text,
 
   res$convenience$codings <- unlist(res$codings);
 
-  if (length(res$convenience) > 0) {
+  if (length(res$convenience$codings) > 0) {
+    ### Count how often each code was used
     res$countedCodings <-
-      colSums(res$sourceDf[, res$convenience$metadataVars]);
+      colSums(res$sourceDf[, res$convenience$codings]);
 
   } else {
     res$countedCodings <-
