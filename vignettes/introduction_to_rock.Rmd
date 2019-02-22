@@ -302,7 +302,7 @@ In Epistemic Network Analysis (ENA), the data are segmented and co-occurrences o
 
 In addition to this segmentation in stanzas, the data are segmented into units. A unit is defined by a nesting of characteristics. In research in humans, one such characteristic that would make sense to distinguish is a person: designating persons as one level in the unit specification ensures that the dependence between utterances of the same person is taken into account properly. Similarly, subsamples of interest can be defined, such as categories of a categorical variable that has been collected as metadata (e.g. country of residence of participants, or sexual preference, or age group). It is also possible to define unit specification levels that are *smaller* than persons, for example by specifying the different questions in an interview scheme or topic list as a level in the unit specification.
 
-In the ROCK, the identifiers, such as case identifiers, can be used, but section identifiers can also be used to specify units.
+In the ROCK, the identifiers, such as case identifiers and section identifiers, can be used, as well as metadata or even codes.
 
 It is important to have sufficient units compared to the number of codes. This equation expresses how many units you need as a function of the number of codes:
 
