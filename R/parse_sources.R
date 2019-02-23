@@ -145,13 +145,14 @@ parse_sources <- function(path,
   }
 
   deductiveCodeLists <-
-    purrr::map(res$parsedSources,
-               'deductiveCodes');
+    do.call(c,
+            purrr::map(res$parsedSources,
+                       'deductiveCodes'));
     # yum::load_yaml_list(yamlLineSets,
     #                     select=paste0(codesContainers, sep="|"));
 
   class(deductiveCodeLists) <-
-    "yumFromList";
+    "simplifiedYum";
 
   res$deductiveCodeTree <-
     yum::build_tree(deductiveCodeLists);

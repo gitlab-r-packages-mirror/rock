@@ -479,11 +479,11 @@ parse_source <- function(text,
   ### Process metadata and deductive code trees
   if (!is.null(yamlFragments)) {
     res$metadata <-
-      yum::load_yaml_fragments(yamlFragments=yamlFragments,
-                               select=metadataContainers);
+      yum::load_and_simplify(yamlFragments=yamlFragments,
+                              select=metadataContainers);
     res$deductiveCodes <-
-      yum::load_yaml_fragments(yamlFragments=yamlFragments,
-                               select=codesContainers);
+      yum::load_and_simplify(yamlFragments=yamlFragments,
+                             select=codesContainers);
     res$deductiveCodeTrees <-
       yum::build_tree(res$deductiveCodes);
   }
@@ -493,7 +493,7 @@ parse_source <- function(text,
     ### Simplify YAML metadata and convert into a data frame
     res$metadataDf <-
       do.call(rbind,
-              lapply(yum::simplify_by_flattening(res$metadata),
+              lapply(res$metadata,
                      as.data.frame,
                      stringsAsFactors=FALSE));
 
