@@ -10,7 +10,7 @@ test_that("reading a source with no ROCK stuff works properly", {
                                  "testthat",
                                  "lorum-ipsum.rock"));
 
-}
+});
 
 ###-----------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ test_that("a inductive code tree is read correctly", {
   testthat::expect_equal(res$inductiveCodeTrees$code$IC$Attack$label,
                          "Attack");
 
-}
+});
 
 ###-----------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ test_that("a single deductive code tree is read correctly", {
   testthat::expect_equal(res$deductiveCodeTrees$EM_SEM_Psych$label,
                          "EM_SEM_Psych");
 
-}
+});
 
 ###-----------------------------------------------------------------------------
 
@@ -46,10 +46,10 @@ test_that("Multiple sources are read correctly", {
                                   "testthat"),
                        extension="rock");
 
-  testthat::expect_equal(res$deductiveCodeTrees$EM_SEM_Psych$label,
+  testthat::expect_equal(res$deductiveCodeTrees$expl_model$ESM$EM_SEM_Psych$label,
                          "EM_SEM_Psych");
 
-}
+});
 
 ###-----------------------------------------------------------------------------
 
@@ -59,10 +59,9 @@ test_that("multiple sources without deductive code trees are read correctly", {
                                   "testthat"),
                        regex = "ipsum");
 
-  testthat::expect_equal(res$deductiveCodeTrees$EM_SEM_Psych$label,
-                         "EM_SEM_Psych");
+  testthat::expect_null(res$deductiveCodeTrees);
 
-}
+});
 
 ###-----------------------------------------------------------------------------
 
@@ -72,10 +71,10 @@ test_that("A deductive code tree is read correctly from multiple DCT files", {
                                   "testthat"),
                        extension="dct");
 
-  testthat::expect_equal(res$deductiveCodeTrees$EM_SEM_Psych$label,
-                         "EM_SEM_Psych");
+  testthat::expect_equal(res$deductiveCodeTrees$behavior_xl67k7w8j$intention_71vr5q3q$attitude_71vqm37n$label,
+                         "Attitude");
 
-}
+});
 
 
 

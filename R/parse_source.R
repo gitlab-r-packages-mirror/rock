@@ -53,6 +53,10 @@
 #' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
 #' @param encoding The encoding of the file to read (in `file`).
+#' @param postponeDeductiveTreeBuilding Whether to imediately try to build the deductive
+#' tree(s) based on the information in this file (`FALSE`) or whether to skip that. Skipping
+#' this is useful if the full tree information is distributed over multiple files (in which case
+#' you should probably call `parse_sources` instead of `parse_source`).
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
 #' @param prefix The prefix to use before the 'headings' of the printed result.
@@ -77,6 +81,7 @@ parse_source <- function(text,
                          ignoreRegex = "^#",
                          ignoreOddDelimiters=FALSE,
                          encoding="UTF-8",
+                         postponeDeductiveTreeBuilding = FALSE,
                          silent=TRUE) {
 
 
@@ -139,9 +144,12 @@ parse_source <- function(text,
       sourceDf[, glue::glue("{sectionRegex}_match")] <-
         grepl(sectionRegexes[sectionRegex], x);
       ### Set incremental counter for each match
-      sourceDf[, glue::glue("{sectionRegex}_counter")] <-
-        purrr::accumulate(sourceDf[, glue::glue("{sectionRegex}_match")],
-                          `+`);
+      if (glue::glue("{sectionRegex}_match") %in% names(sourceDf) &&
+          (length(sourceDf[, glue::glue("{sectionRegex}_match")]) > 0)) {
+        sourceDf[, glue::glue("{sectionRegex}_counter")] <-
+          purrr::accumulate(sourceDf[, glue::glue("{sectionRegex}_match")],
+                            `+`);
+      }
     }
   }
 
@@ -480,12 +488,14 @@ parse_source <- function(text,
   if (!is.null(yamlFragments)) {
     res$metadata <-
       yum::load_and_simplify(yamlFragments=yamlFragments,
-                              select=metadataContainers);
+                              select=paste0(metadataContainers, collapse="|"));
     res$deductiveCodes <-
       yum::load_and_simplify(yamlFragments=yamlFragments,
-                             select=codesContainers);
-    res$deductiveCodeTrees <-
-      yum::build_tree(res$deductiveCodes);
+                             select=paste0(codesContainers, collapse="|"));
+    if (!postponeDeductiveTreeBuilding) {
+      res$deductiveCodeTrees <-
+        yum::build_tree(res$deductiveCodes);
+    }
   }
 
   if (length(res$metadata) > 0) {

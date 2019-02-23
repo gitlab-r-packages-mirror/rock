@@ -47,6 +47,7 @@ parse_sources <- function(path,
            delimiterRegEx = delimiterRegEx,
            ignoreRegex = ignoreRegex,
            ignoreOddDelimiters = ignoreOddDelimiters,
+           postponeDeductiveTreeBuilding = TRUE,
            silent=silent);
 
   names(res$parsedSources) <-
@@ -151,20 +152,20 @@ parse_sources <- function(path,
     # yum::load_yaml_list(yamlLineSets,
     #                     select=paste0(codesContainers, sep="|"));
 
-  class(deductiveCodeLists) <-
-    "simplifiedYum";
-
-  res$deductiveCodeTree <-
-    yum::build_tree(deductiveCodeLists);
-
-  if (res$deductiveCodeTree$count == 0) {
-    res$deductiveCodeTree <-
-      NULL;
+  if (is.null(deductiveCodeLists)) {
+    res$deductiveCodeTrees <- NULL;
   } else {
-    res$deductiveCodeTree$root$Set(name = 'codes',
+
+    class(deductiveCodeLists) <-
+      "simplifiedYum";
+
+    res$deductiveCodeTrees <-
+      yum::build_tree(deductiveCodeLists);
+
+    res$deductiveCodeTrees$root$Set(name = 'codes',
                                    filterFun=function(x) x$isRoot);
     res$deductiveCodeTreeGraph <-
-      data.tree::ToDiagrammeRGraph(res$deductiveCodeTree);
+      data.tree::ToDiagrammeRGraph(res$deductiveCodeTrees);
 
     res$deductiveCodeTreeGraph <-
       apply_graph_theme(res$deductiveCodeTreeGraph,
