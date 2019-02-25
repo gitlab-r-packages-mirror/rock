@@ -17,7 +17,8 @@ parse_source(text, file, codeRegexes = c(codes =
   persistentIds = c("caseId"), inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
   "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
-  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = TRUE)
+  ignoreOddDelimiters = FALSE, encoding = "UTF-8",
+  postponeDeductiveTreeBuilding = FALSE, silent = TRUE)
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
@@ -89,6 +90,11 @@ during analysis.}
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
 
 \item{encoding}{The encoding of the file to read (in \code{file}).}
+
+\item{postponeDeductiveTreeBuilding}{Whether to imediately try to build the deductive
+tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping
+this is useful if the full tree information is distributed over multiple files (in which case
+you should probably call \code{parse_sources} instead of \code{parse_source}).}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 

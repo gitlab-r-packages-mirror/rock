@@ -15,5 +15,5 @@ See the [introductory vignette](articles/introduction_to_rock.html) for an intro
 
 [![pipeline status](https://gitlab.com/r-packages/rock/badges/master/pipeline.svg)](https://gitlab.com/r-packages/rock/commits/master)
  
-[![Coverage status](https://codecov.io/gh/Matherion/rock/branch/master/graph/badge.svg)](https://codecov.io/github/Matherion/rock?branch=master) 
+[![Coverage status](https://codecov.io/gl/r-packages/rock/branch/master/graph/badge.svg)](https://codecov.io/gl/r-packages/rock?branch=master)
 
