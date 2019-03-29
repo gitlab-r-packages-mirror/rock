@@ -306,14 +306,9 @@ In the ROCK, the identifiers, such as case identifiers and section identifiers, 
 
 It is important to have sufficient units compared to the number of codes. This equation expresses how many units you need as a function of the number of codes:
 
-$$\text{codes} = {\text{units} \choose 2} + 1$$
-
-This means that if you have 
+$$\text{units} = {\text{codes} \choose 2} + 1$$
 
 
-Is a code a coded fragment? Or is a code a `code`?
-
-In 
 
 
 Discourse - big D discourse = the norms, consistency in communications;
