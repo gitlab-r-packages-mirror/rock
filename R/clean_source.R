@@ -139,6 +139,7 @@ clean_source <- function(input,
   if (is.null(output)) {
     return(res);
   } else {
+    print(output);
     writeLines(text=res,
                con=con<-file(output,
                              open="w",
