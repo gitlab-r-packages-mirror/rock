@@ -306,7 +306,8 @@ In the ROCK, the identifiers, such as case identifiers and section identifiers, 
 
 It is important to have sufficient units compared to the number of codes. This equation expresses how many units you need as a function of the number of codes:
 
-$$\text{units} = {\text{codes} \choose 2} + 1$$
+$$\text{units} >= {\text{codes} \choose 2} + 1$$
+
 
 
 

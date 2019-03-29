@@ -25,7 +25,7 @@ clean_sources(input, output,
   utteranceMarker = "\\n",
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
   extraReplacementsPost = NULL, removeNewlines = FALSE,
-  encoding = "UTF-8")
+  encoding = "UTF-8", silent = FALSE)
 }
 \arguments{
 \item{input}{For \code{clean_source}, either a character vector containing the text
