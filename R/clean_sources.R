@@ -15,7 +15,8 @@ clean_sources <- function(input,
                                                     "\\1, \\2")),
                           extraReplacementsPost = NULL,
                           removeNewlines = FALSE,
-                          encoding = "UTF-8") {
+                          encoding = "UTF-8",
+                          silent=FALSE) {
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
