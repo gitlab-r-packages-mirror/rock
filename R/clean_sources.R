@@ -43,6 +43,7 @@ clean_sources <- function(input,
     list.files(input,
                full.names=TRUE);
 
+  res <- character();
   for (filename in rawSourceFiles) {
     newFilename <-
       paste0(sub("(.*)\\.[a-zA-Z0-9]+",
@@ -61,21 +62,23 @@ clean_sources <- function(input,
                        removeNewlines=removeNewlines,
                        encoding=encoding,
                        silent=TRUE);
-    if (!silent) {
-      message("I just wrote ", length(rawSourceFiles), " cleaned sources to path '",
-              output,
-              "'. Note that these files will all be overwritten if this ",
-              "script is ran again. Therefore, make sure to copy them to ",
-              "another directory before starting to code those sources!\n\n",
-              "A recommended convention is to place all data in a directory ",
-              "called 'data', and use three subdirectories: 'raw-sources' for ",
-              "the raw sources; 'clean-sources' for the cleaned sources (which ",
-              "should then be the `output` specified to this `clean_sources` ",
-              "function), and 'coded-sources' for the coded sources. If you have ",
-              "multiple coders, use e.g. 'coded-sources-coder-A' and ",
-              "'coded-sources-coder-B' to organise these versions.");
-    }
-
+    res <-
+      c(res,
+        newFilename);
   }
-
+  if (!silent) {
+    message("I just wrote ", length(rawSourceFiles), " cleaned sources to path '",
+            output,
+            "'. Note that these files will all be overwritten if this ",
+            "script is ran again. Therefore, make sure to copy them to ",
+            "another directory before starting to code those sources!\n\n",
+            "A recommended convention is to place all data in a directory ",
+            "called 'data', and use three subdirectories: 'raw-sources' for ",
+            "the raw sources; 'clean-sources' for the cleaned sources (which ",
+            "should then be the `output` specified to this `clean_sources` ",
+            "function), and 'coded-sources' for the coded sources. If you have ",
+            "multiple coders, use e.g. 'coded-sources-coder-A' and ",
+            "'coded-sources-coder-B' to organise these versions.");
+  }
+  invisible(res);
 }

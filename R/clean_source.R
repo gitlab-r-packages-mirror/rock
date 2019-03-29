@@ -149,7 +149,7 @@ clean_source <- function(input,
               output,
               "'. Note that this file will be overwritten if this ",
               "script is ran again. Therefore, make sure to copy it to ",
-              "another directory before starting to code this source!");
+              "another directory, or rename it, before starting to code this source!");
     }
     invisible(res);
   }
