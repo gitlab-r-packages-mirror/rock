@@ -42,6 +42,7 @@
 #' @param removeNewlines Whether to remove all newline characters from the source before
 #' starting to clean them.
 #' @param encoding The encoding of the source(s).
+#' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
 #' @return A character vector for `clean_source`, or a list of character vectors , for `clean_sources`.
 #' @rdname cleaning_sources
@@ -76,7 +77,8 @@ clean_source <- function(input,
                                                    "\\1, \\2")),
                          extraReplacementsPost = NULL,
                          removeNewlines = FALSE,
-                         encoding = "UTF-8") {
+                         encoding = "UTF-8",
+                         silent=FALSE) {
 
   if (file.exists(input)) {
     res <- readLines(input,
@@ -142,6 +144,13 @@ clean_source <- function(input,
                              open="w",
                              encoding=encoding));
     close(con);
+    if (!silent) {
+      message("I just wrote a cleaned source to file '",
+              output,
+              "'. Note that this file will be overwritten if this ",
+              "script is ran again. Therefore, make sure to copy it to ",
+              "another directory before starting to code this source!");
+    }
     invisible(res);
   }
 

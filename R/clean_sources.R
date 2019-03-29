@@ -50,9 +50,8 @@ clean_sources <- function(input,
                  basename(rawSourceFiles)),
              ".rock");
     rock::clean_source(input = filename,
-                       outputFile = here::here("data",
-                                               "cleaned-sources",
-                                               newFilename),
+                       outputFile = file.path(output,
+                                              newFilename),
                        replacementsPre=replacementsPre,
                        extraReplacementsPre=extraReplacementsPre,
                        utteranceSplits=utteranceSplits,
@@ -60,7 +59,23 @@ clean_sources <- function(input,
                        replacementsPost=replacementsPost,
                        extraReplacementsPost=extraReplacementsPost,
                        removeNewlines=removeNewlines,
-                       encoding=encoding);
+                       encoding=encoding,
+                       silent=TRUE);
+    if (!silent) {
+      message("I just wrote ", length(rawSourceFiles), " cleaned sources to path '",
+              output,
+              "'. Note that these files will all be overwritten if this ",
+              "script is ran again. Therefore, make sure to copy them to ",
+              "another directory before starting to code those sources!\n\n",
+              "A recommended convention is to place all data in a directory ",
+              "called 'data', and use three subdirectories: 'raw-sources' for ",
+              "the raw sources; 'clean-sources' for the cleaned sources (which ",
+              "should then be the `output` specified to this `clean_sources` ",
+              "function), and 'coded-sources' for the coded sources. If you have ",
+              "multiple coders, use e.g. 'coded-sources-coder-A' and ",
+              "'coded-sources-coder-B' to organise these versions.");
+    }
+
   }
 
 }

@@ -14,7 +14,7 @@ clean_source(input, output = NULL,
   utteranceMarker = "\\n",
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
   extraReplacementsPost = NULL, removeNewlines = FALSE,
-  encoding = "UTF-8")
+  encoding = "UTF-8", silent = FALSE)
 
 clean_sources(input, output,
   replacementsPre = list(c("([^\\\\.])(\\\\.\\\\.)([^\\\\.])",
@@ -61,6 +61,8 @@ ROCK convention is to use a newline (\code{\\n}).}
 starting to clean them.}
 
 \item{encoding}{The encoding of the source(s).}
+
+\item{silent}{Whether to suppress the warning about not editing the cleaned source.}
 }
 \value{
 A character vector for \code{clean_source}, or a list of character vectors , for \code{clean_sources}.
