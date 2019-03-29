@@ -128,7 +128,8 @@ contained identifiers, sections, and codes.</p>
   <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>), <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
   <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
   <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
+  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for rockParsedSource</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
@@ -227,6 +228,13 @@ should result in an error (<code>FALSE</code>) or just be silently ignored (<cod
     <tr>
       <th>encoding</th>
       <td><p>The encoding of the file to read (in <code>file</code>).</p></td>
+    </tr>
+    <tr>
+      <th>postponeDeductiveTreeBuilding</th>
+      <td><p>Whether to imediately try to build the deductive
+tree(s) based on the information in this file (<code>FALSE</code>) or whether to skip that. Skipping
+this is useful if the full tree information is distributed over multiple files (in which case
+you should probably call <code>parse_sources</code> instead of <code>parse_source</code>).</p></td>
     </tr>
     <tr>
       <th>silent</th>

@@ -121,7 +121,18 @@ search and replaces using regular expressions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clean_source</span>(<span class='no'>input</span>, <span class='kw'>outputFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>clean_source</span>(<span class='no'>input</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.)([^\\.])"</span>,
+  <span class='st'>"\\1.\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.\\.\\.+)([^\\.])"</span>,
+  <span class='st'>"\\1...\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"(\\s*\\r?\\n){3,}"</span>, <span class='st'>"\n"</span>)),
+  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"</span>),
+  <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>,
+  <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\,]),([^\\s])"</span>, <span class='st'>"\\1, \\2"</span>)),
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)
+
+<span class='fu'>clean_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>,
   <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.)([^\\.])"</span>,
   <span class='st'>"\\1.\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.\\.\\.+)([^\\.])"</span>,
   <span class='st'>"\\1...\\3"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"(\\s*\\r?\\n){3,}"</span>, <span class='st'>"\n"</span>)),
@@ -142,9 +153,11 @@ of the relevant source <em>or</em> a path to a file that contains the source tex
 for <code>clean_sources</code>, a path to a directory that contains the sources to clean.</p></td>
     </tr>
     <tr>
-      <th>outputFile</th>
-      <td><p>If not <code>NULL</code>, this is the name (and path) of the file in
-which to save the cleaned source.</p></td>
+      <th>output</th>
+      <td><p>For <code>clean_source</code>, if not <code>NULL</code>, this is the name (and path) of the file in
+which to save the cleaned source (if it <em>is</em> <code>NULL</code>, the result will be returned visible). For
+<code>clean_sources</code>, <code>output</code> is mandatory and is the path to the directory where to store
+the cleaned sources. This path will be created with a warning if it does not exist.</p></td>
     </tr>
     <tr>
       <th>replacementsPre, replacementsPost</th>

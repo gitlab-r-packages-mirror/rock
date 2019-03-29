@@ -19,8 +19,10 @@
 #' @param input For `clean_source`, either a character vector containing the text
 #' of the relevant source *or* a path to a file that contains the source text;
 #' for `clean_sources`, a path to a directory that contains the sources to clean.
-#' @param outputFile If not `NULL`, this is the name (and path) of the file in
-#' which to save the cleaned source.
+#' @param output For `clean_source`, if not `NULL`, this is the name (and path) of the file in
+#' which to save the cleaned source (if it *is* `NULL`, the result will be returned visible). For
+#' `clean_sources`, `output` is mandatory and is the path to the directory where to store
+#' the cleaned sources. This path will be created with a warning if it does not exist.
 #' @param replacementsPre,replacementsPost Each is a list of two-element vectors,
 #' where the first element in each vector contains a regular expression to search for
 #' in the source(s), and the second element contains the replacement (these are passed
@@ -60,7 +62,7 @@
 #'
 #' @export
 clean_source <- function(input,
-                         outputFile = NULL,
+                         output = NULL,
                          replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
                                                   "\\1.\\3"),
                                                 c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
@@ -132,11 +134,11 @@ clean_source <- function(input,
     }
   }
 
-  if (is.null(outputFile)) {
+  if (is.null(output)) {
     return(res);
   } else {
     writeLines(text=res,
-               con=con<-file(outputFile,
+               con=con<-file(output,
                              open="w",
                              encoding=encoding));
     close(con);
