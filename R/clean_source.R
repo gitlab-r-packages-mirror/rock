@@ -139,11 +139,17 @@ clean_source <- function(input,
   if (is.null(output)) {
     return(res);
   } else {
-    print(output);
+    if (!dir.exists(dirname(output))) {
+      stop("The directory specified where the output file '",
+           basename(output), "' is supposed to be written ('",
+           dirname(output),
+           "') does not exist.");
+    }
+    con <- file(description=output,
+                open="w",
+                encoding=encoding);
     writeLines(text=res,
-               con=con<-file(output,
-                             open="w",
-                             encoding=encoding));
+               con=con);
     close(con);
     if (!silent) {
       message("I just wrote a cleaned source to file '",

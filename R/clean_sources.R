@@ -49,20 +49,20 @@ clean_sources <- function(input,
     newFilename <-
       paste0(sub("(.*)\\.[a-zA-Z0-9]+",
                  "\\1",
-                 basename(rawSourceFiles)),
+                 basename(filename)),
              ".rock");
-    rock::clean_source(input = filename,
-                       output = file.path(output,
-                                          newFilename),
-                       replacementsPre=replacementsPre,
-                       extraReplacementsPre=extraReplacementsPre,
-                       utteranceSplits=utteranceSplits,
-                       utteranceMarker=utteranceMarker,
-                       replacementsPost=replacementsPost,
-                       extraReplacementsPost=extraReplacementsPost,
-                       removeNewlines=removeNewlines,
-                       encoding=encoding,
-                       silent=TRUE);
+    clean_source(input = filename,
+                 output = file.path(output,
+                                    newFilename),
+                 replacementsPre=replacementsPre,
+                 extraReplacementsPre=extraReplacementsPre,
+                 utteranceSplits=utteranceSplits,
+                 utteranceMarker=utteranceMarker,
+                 replacementsPost=replacementsPost,
+                 extraReplacementsPost=extraReplacementsPost,
+                 removeNewlines=removeNewlines,
+                 encoding=encoding,
+                 silent=TRUE);
     res <-
       c(res,
         newFilename);
