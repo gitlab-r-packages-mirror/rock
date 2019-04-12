@@ -438,11 +438,13 @@ parse_source <- function(text,
             data.tree::ToDiagrammeRGraph(inductiveCodeTrees[[codeRegex]]);
         }, error = function(e) {
           warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
-                  codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n");
-          print(class(inductiveCodeTrees[[codeRegex]]));
-          print(inductiveCodeTrees[[codeRegex]]);
+                  codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n",
+                  paste0(capture.output(print(class(inductiveCodeTrees[[codeRegex]]))),
+                         collapse="\n"),
+                  "\n",
+                  paste0(capture.output(print(inductiveCodeTrees[[codeRegex]])),
+                         collapse="\n"));
         });
-
 
       } else {
         inductiveCodeTrees[[codeRegex]] <- NULL;
