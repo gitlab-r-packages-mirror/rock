@@ -29,7 +29,7 @@ preprend_ids_to_source <- function(input,
   uids <-
     generate_uids(length(res));
 
-  x <- paste0(uids, " ", res);
+  res <- paste0(uids, " ", res);
 
   if (is.null(output)) {
     return(res);
