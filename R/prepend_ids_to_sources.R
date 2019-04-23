@@ -46,7 +46,7 @@ prepend_ids_to_sources <- function(input,
     print(last_uid);
     print(base30toNumeric(last_uid));
     origin <-
-      as.POSIXct((1+base30toNumeric('73fb9jnd')) / 100, origin="1970-01-01");
+      as.POSIXct((1+base30toNumeric(last_uid)) / 100, origin="1970-01-01");
     print(origin);
   }
   if (!silent) {
