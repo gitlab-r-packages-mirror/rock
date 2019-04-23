@@ -69,8 +69,9 @@ prepend_ids_to_source <- function(input,
     if (!silent) {
       message("I just wrote a file with a source with prepended utterance identifiers (uids) to '",
               output,
-              "'. Note that this file will be overwritten if this ",
-              "script is ran again. Therefore, make sure to copy it to ",
+              "'. Note that this file may be overwritten if this ",
+              "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
+              "Therefore, make sure to copy it to ",
               "another directory, or rename it, before starting to code this source!");
     }
     invisible(res);

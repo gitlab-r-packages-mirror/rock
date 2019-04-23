@@ -58,8 +58,9 @@ prepend_ids_to_sources <- function(input,
             ifelse(preventOverwriting,
                    "(unless the files already existed)",
                    "(overwriting any files that may already have existed)"),
-            ". Note that these files will all be overwritten if this ",
-            "script is ran again. Therefore, make sure to copy them to ",
+            ". Note that these files may all be overwritten if this ",
+            "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
+            "Therefore, make sure to copy them to ",
             "another directory before starting to code those sources!");
   }
   invisible(res);
