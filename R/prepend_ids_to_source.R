@@ -12,9 +12,9 @@
 #' if specified) or visibly (if not).
 #' @rdname prepending_uids
 #' @export
-preprend_ids_to_source <- function(input,
-                                   output = NULL,
-                                   encoding="UTF-8") {
+prepend_ids_to_source <- function(input,
+                                  output = NULL,
+                                  encoding="UTF-8") {
   if (file.exists(input)) {
     res <- readLines(input,
                      encoding=encoding);

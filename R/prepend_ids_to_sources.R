@@ -32,10 +32,10 @@ prepend_ids_to_sources <- function(input,
 
   res <- character();
   for (filename in rawSourceFiles) {
-    preprend_ids_to_source(input = filename,
-                           output = file.path(output,
-                                              filename),
-                           encoding=encoding);
+    prepend_ids_to_source(input = filename,
+                          output = file.path(output,
+                                             basename(filename)),
+                          encoding = encoding);
   }
   if (!silent) {
     message("I just added utterenance identifiers to ", length(rawSourceFiles),
