@@ -10,6 +10,7 @@
 #' @param output The filename where to write the resulting file for
 #' `prepend_ids_to_source` and the directory where to write the
 #' resulting files for `prepend_ids_to_sources`
+#' @param origin The time to use for the first identifier.
 #' @param encoding The encoding of the file(s).
 #' @param silent Whether to be chatty or quiet.
 #'
@@ -19,6 +20,7 @@
 #' @export
 prepend_ids_to_source <- function(input,
                                   output = NULL,
+                                  origin=Sys.time(),
                                   encoding="UTF-8",
                                   silent=FALSE) {
   if (file.exists(input)) {
@@ -34,7 +36,8 @@ prepend_ids_to_source <- function(input,
   }
 
   uids <-
-    generate_uids(length(res));
+    generate_uids(length(res),
+                  origin=origin);
 
   res <- paste0(uids, " ", res);
 
