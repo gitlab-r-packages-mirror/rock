@@ -47,7 +47,7 @@ clean_sources <- function(input,
   res <- character();
   for (filename in rawSourceFiles) {
     newFilename <-
-      paste0(sub("(.*)\\.[a-zA-Z0-9]+",
+      paste0(sub("^(.*)\\.[a-zA-Z0-9]+$",
                  "\\1",
                  basename(filename)),
              ".rock");

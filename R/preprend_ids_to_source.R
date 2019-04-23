@@ -10,6 +10,7 @@
 #'
 #' @return The source with prepended uids, either invisible (if `output`
 #' if specified) or visibly (if not).
+#' @rdname prepending_uids
 #' @export
 preprend_ids_to_source <- function(input,
                                    output = NULL,
