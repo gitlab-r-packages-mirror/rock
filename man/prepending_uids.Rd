@@ -6,16 +6,24 @@
 \alias{prepend_ids_to_sources}
 \title{Prepending unique utterance identifiers}
 \usage{
-prepend_ids_to_source(input, output = NULL, encoding = "UTF-8")
+prepend_ids_to_source(input, output = NULL, encoding = "UTF-8",
+  silent = FALSE)
 
-prepend_ids_to_sources(input, output = NULL, encoding = "UTF-8")
+prepend_ids_to_sources(input, output = NULL, encoding = "UTF-8",
+  silent = FALSE)
 }
 \arguments{
-\item{input}{The filename or contents of the source.}
+\item{input}{The filename or contents of the source
+for \code{prepend_ids_to_source} and the directory containing the
+sources for \code{prepend_ids_to_sources}.}
 
-\item{output}{The filename where to write the resulting file.}
+\item{output}{The filename where to write the resulting file for
+\code{prepend_ids_to_source} and the directory where to write the
+resulting files for \code{prepend_ids_to_sources}}
 
-\item{encoding}{The encoding of the file.}
+\item{encoding}{The encoding of the file(s).}
+
+\item{silent}{Whether to be chatty or quiet.}
 }
 \value{
 The source with prepended uids, either invisible (if \code{output}

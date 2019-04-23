@@ -2,7 +2,8 @@
 #' @export
 prepend_ids_to_sources <- function(input,
                                    output = NULL,
-                                   encoding="UTF-8") {
+                                   encoding="UTF-8",
+                                   silent=FALSE) {
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
