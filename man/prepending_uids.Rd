@@ -7,10 +7,10 @@
 \title{Prepending unique utterance identifiers}
 \usage{
 prepend_ids_to_source(input, output = NULL, origin = Sys.time(),
-  encoding = "UTF-8", silent = FALSE)
+  preventOverwriting = TRUE, encoding = "UTF-8", silent = FALSE)
 
-prepend_ids_to_sources(input, output = NULL, encoding = "UTF-8",
-  origin = Sys.time(), silent = FALSE)
+prepend_ids_to_sources(input, output = NULL, preventOverwriting = TRUE,
+  encoding = "UTF-8", origin = Sys.time(), silent = FALSE)
 }
 \arguments{
 \item{input}{The filename or contents of the source

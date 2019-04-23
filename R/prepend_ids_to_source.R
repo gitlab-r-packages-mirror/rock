@@ -21,6 +21,7 @@
 prepend_ids_to_source <- function(input,
                                   output = NULL,
                                   origin=Sys.time(),
+                                  preventOverwriting=TRUE,
                                   encoding="UTF-8",
                                   silent=FALSE) {
   if (file.exists(input)) {
@@ -50,12 +51,21 @@ prepend_ids_to_source <- function(input,
            dirname(output),
            "') does not exist.");
     }
-    con <- file(description=output,
-                open="w",
-                encoding=encoding);
-    writeLines(text=res,
-               con=con);
-    close(con);
+    if (file.exists(output) && preventOverwriting) {
+      if (!silent) {
+        message("File '",
+                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
+                "write the source with prepended utterance identifiers (uids to ",
+                "disk.");
+      }
+    } else {
+      con <- file(description=output,
+                  open="w",
+                  encoding=encoding);
+      writeLines(text=res,
+                 con=con);
+      close(con);
+    }
     if (!silent) {
       message("I just wrote a file with a source with prepended utterance identifiers (uids) to '",
               output,

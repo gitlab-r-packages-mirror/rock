@@ -13,8 +13,8 @@ clean_source(input, output = NULL,
   utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
   utteranceMarker = "\\n",
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
-  extraReplacementsPost = NULL, removeNewlines = FALSE,
-  encoding = "UTF-8", silent = FALSE)
+  extraReplacementsPost = NULL, preventOverwriting = TRUE,
+  removeNewlines = FALSE, encoding = "UTF-8", silent = FALSE)
 
 clean_sources(input, output,
   replacementsPre = list(c("([^\\\\.])(\\\\.\\\\.)([^\\\\.])",
@@ -24,8 +24,8 @@ clean_sources(input, output,
   utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
   utteranceMarker = "\\n",
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
-  extraReplacementsPost = NULL, removeNewlines = FALSE,
-  encoding = "UTF-8", silent = FALSE)
+  extraReplacementsPost = NULL, preventOverwriting = TRUE,
+  removeNewlines = FALSE, encoding = "UTF-8", silent = FALSE)
 }
 \arguments{
 \item{input}{For \code{clean_source}, either a character vector containing the text
@@ -56,6 +56,8 @@ insert breaks between utterances in the source(s). Such breakes are specified us
 
 \item{utteranceMarker}{How to specify breaks between utterances in the source(s). The
 ROCK convention is to use a newline (\code{\\n}).}
+
+\item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{removeNewlines}{Whether to remove all newline characters from the source before
 starting to clean them.}

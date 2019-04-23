@@ -2,6 +2,7 @@
 #' @export
 prepend_ids_to_sources <- function(input,
                                    output = NULL,
+                                   preventOverwriting = TRUE,
                                    encoding="UTF-8",
                                    origin=Sys.time(),
                                    silent=FALSE) {
@@ -38,6 +39,7 @@ prepend_ids_to_sources <- function(input,
       prepend_ids_to_source(input = filename,
                             output = file.path(output,
                                                basename(filename)),
+                            preventOverwriting = preventOverwriting,
                             origin=origin,
                             encoding = encoding,
                             silent=TRUE);
@@ -52,7 +54,11 @@ prepend_ids_to_sources <- function(input,
     message("I just added utterenance identifiers to ", length(rawSourceFiles),
             " sources and wrote the new files to path '",
             output,
-            "'. Note that these files will all be overwritten if this ",
+            "' ",
+            ifelse(preventOverwriting,
+                   "(unless the files already existed)",
+                   "(overwriting any files that may already have existed)"),
+            ". Note that these files will all be overwritten if this ",
             "script is ran again. Therefore, make sure to copy them to ",
             "another directory before starting to code those sources!");
   }

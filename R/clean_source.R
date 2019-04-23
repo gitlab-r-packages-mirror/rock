@@ -39,6 +39,7 @@
 #' `utteranceMarker`.
 #' @param utteranceMarker How to specify breaks between utterances in the source(s). The
 #' ROCK convention is to use a newline (`\\n`).
+#' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param removeNewlines Whether to remove all newline characters from the source before
 #' starting to clean them.
 #' @param encoding The encoding of the source(s).
@@ -76,6 +77,7 @@ clean_source <- function(input,
                          replacementsPost = list(c("([^\\,]),([^\\s])",
                                                    "\\1, \\2")),
                          extraReplacementsPost = NULL,
+                         preventOverwriting = TRUE,
                          removeNewlines = FALSE,
                          encoding = "UTF-8",
                          silent=FALSE) {
@@ -145,12 +147,20 @@ clean_source <- function(input,
            dirname(output),
            "') does not exist.");
     }
-    con <- file(description=output,
-                open="w",
-                encoding=encoding);
-    writeLines(text=res,
-               con=con);
-    close(con);
+    if (file.exists(output) && preventOverwriting) {
+      if (!silent) {
+        message("File '",
+                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
+                "write the cleaned source to disk.");
+      }
+    } else {
+      con <- file(description=output,
+                  open="w",
+                  encoding=encoding);
+      writeLines(text=res,
+                 con=con);
+      close(con);
+    }
     if (!silent) {
       message("I just wrote a cleaned source to file '",
               output,
