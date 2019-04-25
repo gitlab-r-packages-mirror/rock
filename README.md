@@ -11,6 +11,8 @@ construct taxonomy (DCT).
 
 See the [introductory vignette](https://r-packages.gitlab.io/rock/articles/introduction_to_rock.html) for an introduction.
 
+There is a FLOSS interface for the ROCK, iROCK, available at https://damngood.one/clients/Gjalt-Jorn/iRock/ - 
+
 <!-- [![Travis build status](https://travis-ci.org/Matherion/rock.svg?branch=master)](https://travis-ci.org/Matherion/rock) -->
 
 [![pipeline status](https://gitlab.com/r-packages/rock/badges/master/pipeline.svg)](https://gitlab.com/r-packages/rock/commits/master)
