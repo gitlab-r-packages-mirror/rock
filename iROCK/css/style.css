@@ -21,11 +21,6 @@ header {
     padding-bottom: 1em;
 }
 
-content {
-    display: block;
-    width: 100%;
-}
-
 input[type="file"]:valid {
     background-color: rgba(0,255,0, 0.5);
 }
@@ -51,18 +46,16 @@ h2, h3 {
 }
 
 header {
-    position: fixed;
-    margin-top: 1em;
-    padding-top: 1em;
-    text-align: left;
+    flex-shrink: 0;
+    overflow-y: scroll;
+    height: 100vh;
     box-shadow: 0 0 1em black;
-    width: 100%;
-    top: 0;
-    max-height: 25vh;
-    overflow: auto;
+    padding-right: .5em;
 }
 
 header span {
+    display: block;
+    margin: .25em;
     cursor: grab;
 }
 
@@ -70,8 +63,13 @@ header span {
     cursor: grabbing;
 }
 
+content, header {
+    padding-top: 2em;
+}
+
 content {
-    padding-top: 1em;
+    padding-left: .5em;
+    flex-grow: 1;
     text-align: left;
     line-height: 1.25em;
 }

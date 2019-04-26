@@ -34,6 +34,7 @@ $(function () {
         $(this).animate({ top: 0 }, null, 'easeOutBounce');
     });
 
+    /*
     var resize;
     function headerSize(event) {
         let $this = $(this);
@@ -44,9 +45,12 @@ $(function () {
         }, 50);
     }
 
+    $(window).on('resize', headerSize.bind($('header'))).trigger('resize');
+    */
+
     $('header').on('DOMNodeInserted', 'span', function (event) {
         let $this = $(this);
-        headerSize.apply(this, event);
+        //headerSize.apply(this, event);
         $this.draggable({
             appendTo: 'body',
             cursor: 'move',
@@ -55,13 +59,11 @@ $(function () {
         })
     });
 
-    $(window).on('resize', headerSize.bind($('header'))).trigger('resize');
-
     $("content").on('DOMNodeInserted', '.line', function (event) {
         $(this).droppable({
             accept: function ($this) {
-                console.log($(this).find('.tags').has('[data-id="' + $this.data('id') + '"]').length);
-                return !$(this).find('.tags').has('[data-id="' + $this.data('id') + '"]').length;
+                console.log($(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length);
+                return !$(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length;
             },
             drop: function (event, ui) {
                 var $this = ui.draggable;
@@ -77,7 +79,7 @@ $(function () {
 
     $('.download').on('click', function () {
         blob = new Blob(
-            [ $('content').text() ],
+            [ $('content').text().replace(/\s*$/gm, "") ],
             {
                 type : "text/plain;charset=utf-8"
             }
@@ -112,7 +114,7 @@ $(function () {
             fr.onload = function () {
                 var data = b64DecodeUnicode(this.result.split(',')[1]);
                 // console.log($my, data);
-                data = data.split(/\r?\n/g).map(function (i) {
+                data = data.replace(/\s*$/gm, "").split(/\r?\n/g).map(function (i) {
                     var $line = $($this.data('template'));
 
                     if ($this.hasClass('file')) {
