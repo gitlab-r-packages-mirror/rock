@@ -1,0 +1,130 @@
+body {
+    text-align: center;
+}
+
+.files,
+header {
+    background-color: white;
+}
+
+.files {
+    box-shadow: 0 0 1em black;
+    margin: 0px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.files > div {
+    padding: 0;
+    padding-bottom: 1em;
+}
+
+content {
+    display: block;
+    width: 100%;
+}
+
+input[type="file"]:valid {
+    background-color: rgba(0,255,0, 0.5);
+}
+
+input[type="file"]:invalid {
+    background-color: rgba(255,0,0, 0.5);
+}
+
+input[name='.draggables .breaks'][type="file"]:valid {
+    background-color: rgba(0,0,255, 0.5);
+}
+
+input[type="file"] {
+    padding-bottom: 1em;
+    margin-bottom: -1em;
+    cursor: pointer;
+    max-width: 100%;
+}
+
+h2, h3 {
+    padding-top: 1em;
+    margin-bottom: -2em;
+}
+
+header {
+    position: fixed;
+    margin-top: 1em;
+    padding-top: 1em;
+    text-align: left;
+    box-shadow: 0 0 1em black;
+    width: 100%;
+    top: 0;
+    max-height: 25vh;
+    overflow: auto;
+}
+
+header span {
+    cursor: grab;
+}
+
+.ui-draggable-dragging {
+    cursor: grabbing;
+}
+
+content {
+    padding-top: 1em;
+    text-align: left;
+    line-height: 1.25em;
+}
+
+[data-target='.tags'],
+[data-target='.breaks'] {
+    padding-right: .25em;
+    border-radius: .25em;
+    margin-left: .5em;
+}
+
+[data-target='.tags'] {
+    background-color: #eeffee;
+}
+
+[data-target='.breaks'] {
+    background-color: #eeeeff;
+}
+
+.line [data-target='.tags'],
+.line [data-target='.breaks'] {
+    cursor: not-allowed;
+}
+
+.line [data-target='.breaks'] {
+    display: block;
+}
+
+.download {
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
+}
+
+.player, #player {
+    position: fixed;
+    left: -5em;
+    top: -5em;
+    right: -5em;
+    bottom: -5em;
+    width: calc(100% + 5em);
+    z-index: 9999;
+    height: calc(100vh + 10em);
+}
+
+.player {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: black;
+    background-image: url(../img/irock.jpg);
+}
+
+#player {
+    display: none;
+    pointer-events: none;
+}
