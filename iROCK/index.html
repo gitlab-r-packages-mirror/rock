@@ -16,31 +16,33 @@
 <body>
     <div class="row files">
         <div class="col-4">
-            <h3>iRock</h3>
-            <input type="file" name="content" class="file" required accept=".txt"
+            <h3>Sources</h3>
+            <input type="file" name="content" class="file" required accept=".txt,.rock"
                 data-template="&#x3C;div class=&#x22;line&#x22;&#x3E;&#x3C;span class=&#x22;text&#x22;&#x3E;&#x3C;/span&#x3E;&#x3C;span class=&#x22;tags&#x22;&#x3E;&#x3C;/span&#x3E;&#x3C;div class=&#x22;breaks&#x22;&#x3E;&#x3C;/div&#x3E;&#x3C;/div&#x3E;"
                 data-target=".text">
         </div>
         <div class="col-4">
-            <h3>Tags</h3>
+            <h3>Codes</h3>
             <input type="file" name=".draggables .tags" class="tags" required accept=".txt"
                 data-template="&#x3C;span data-id=&#x22;&#x22; data-target=&#x22;.tags&#x22;&#x3E;&#x3C;/span&#x3E;"
                 data-id="data-id">
         </div>
         <div class="col-4">
-            <h3>Breaks</h3>
+            <h3><span class="d-none d-lg-inline-block">Section&nbsp;</span>Breaks</h3>
             <input type="file" name=".draggables .breaks" class="breaks" required accept=".txt"
                 data-template="&#x3C;span data-id=&#x22;&#x22; data-target=&#x22;.breaks&#x22;&#x3E;&#x3C;/span&#x3E;"
                 data-id="data-id">
         </div>
     </div>
-    <header class="draggables">
-        <span class="tags"></span>
-        <span class="breaks"></span>
-    </header>
-    <content>
+    <div class="d-flex stage">
+        <content>
 
-    </content>
+        </content>
+        <header class="draggables">
+            <span class="tags"></span>
+            <span class="breaks"></span>
+        </header>
+    </div>
     <a href="#" class="btn btn-primary download disabled">Download</a>
     <div class="player">
         <div id="player"></div>
