@@ -62,8 +62,9 @@ $(function () {
     $("content").on('DOMNodeInserted', '.line', function (event) {
         $(this).droppable({
             accept: function ($this) {
-                console.log($(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length);
-                return !$(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length;
+                console.log(($this.data('id')));
+                console.log($(this).find('.tags').has('[data-id="' + String($this.data('id') || "").replace(/"/,'\\\\"') + '"]').length);
+                return !$(this).find('.tags').has('[data-id="' + String($this.data('id') || "").replace(/"/,'\\\\"') + '"]').length;
             },
             drop: function (event, ui) {
                 var $this = ui.draggable;
