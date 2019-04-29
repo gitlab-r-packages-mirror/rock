@@ -61,7 +61,6 @@
         //    after the API code downloads.
         var player;
         function onYouTubeIframeAPIReady() {
-            console.log('ready');
             player = new YT.Player('player', {
                 height: '390',
                 width: '640',
@@ -83,14 +82,12 @@
         //    the player should play for six seconds and then stop.
         var done = false;
         function onPlayerStateChange(event) {
-            console.log(event.data, YT.PlayerState.PLAYING, !done);
             if (event.data == YT.PlayerState.PLAYING) {
-                $('#player').fadeIn();
+                $('#player').animate({opacity: 1});
                 setTimeout(stopVideo, 3550);
             }
         }
         function stopVideo() {
-            console.log('stop');
             $('.player').fadeOut(null, function () {
                 $(this).remove();
             });
@@ -98,7 +95,6 @@
 
         $(function () {
             $('body').on('click', '.player', function () {
-                console.log('click');
                 $('.player').fadeOut(function () {
                     $(this).remove();
                 });
