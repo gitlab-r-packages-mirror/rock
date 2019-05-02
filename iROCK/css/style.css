@@ -57,6 +57,7 @@ header span {
     display: block;
     margin: .25em;
     cursor: grab;
+    padding-left: .25em;
 }
 
 .ui-draggable-dragging {
@@ -65,6 +66,8 @@ header span {
 
 content, header {
     padding-top: 2em;
+    overflow: auto;
+    height: 100vh;
 }
 
 content {
@@ -82,7 +85,7 @@ content {
 }
 
 [data-target='.tags'] {
-    background-color: #eeffee;
+    background-color: #f4d142;
 }
 
 [data-target='.breaks'] {
@@ -123,6 +126,6 @@ content {
 }
 
 #player {
-    display: none;
+    opacity: 0;
     pointer-events: none;
 }

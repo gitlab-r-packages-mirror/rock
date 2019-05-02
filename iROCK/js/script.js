@@ -48,7 +48,7 @@ $(function () {
     $(window).on('resize', headerSize.bind($('header'))).trigger('resize');
     */
 
-    $('header').on('DOMNodeInserted', 'span', function (event) {
+    $('header').on('DOMNodeInserted', '[data-target=".tags"],[data-target=".breaks"]', function (event) {
         let $this = $(this);
         //headerSize.apply(this, event);
         $this.draggable({
@@ -62,8 +62,7 @@ $(function () {
     $("content").on('DOMNodeInserted', '.line', function (event) {
         $(this).droppable({
             accept: function ($this) {
-                console.log($(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length);
-                return !$(this).find('.tags').has('[data-id="' + $this.data('id').replace(/"/,'\\\\"') + '"]').length;
+                return !$(this).find('.tags').has('[data-id="' + String($this.data('id') || "").replace(/"/,'\\\\"') + '"]').length;
             },
             drop: function (event, ui) {
                 var $this = ui.draggable;

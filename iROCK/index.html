@@ -17,19 +17,19 @@
     <div class="row files">
         <div class="col-4">
             <h3>Sources</h3>
-            <input type="file" name="content" class="file" required accept=".txt,.rock"
+            <input type="file" name="content" class="file" required accept=".rock,.txt"
                 data-template="&#x3C;div class=&#x22;line&#x22;&#x3E;&#x3C;span class=&#x22;text&#x22;&#x3E;&#x3C;/span&#x3E;&#x3C;span class=&#x22;tags&#x22;&#x3E;&#x3C;/span&#x3E;&#x3C;div class=&#x22;breaks&#x22;&#x3E;&#x3C;/div&#x3E;&#x3C;/div&#x3E;"
                 data-target=".text">
         </div>
         <div class="col-4">
             <h3>Codes</h3>
-            <input type="file" name=".draggables .tags" class="tags" required accept=".txt"
+            <input type="file" name=".draggables .tags" class="tags" required accept=".rock,.txt"
                 data-template="&#x3C;span data-id=&#x22;&#x22; data-target=&#x22;.tags&#x22;&#x3E;&#x3C;/span&#x3E;"
                 data-id="data-id">
         </div>
         <div class="col-4">
             <h3><span class="d-none d-lg-inline-block">Section&nbsp;</span>Breaks</h3>
-            <input type="file" name=".draggables .breaks" class="breaks" required accept=".txt"
+            <input type="file" name=".draggables .breaks" class="breaks" required accept=".rock,.txt"
                 data-template="&#x3C;span data-id=&#x22;&#x22; data-target=&#x22;.breaks&#x22;&#x3E;&#x3C;/span&#x3E;"
                 data-id="data-id">
         </div>
@@ -61,7 +61,6 @@
         //    after the API code downloads.
         var player;
         function onYouTubeIframeAPIReady() {
-            console.log('ready');
             player = new YT.Player('player', {
                 height: '390',
                 width: '640',
@@ -83,14 +82,12 @@
         //    the player should play for six seconds and then stop.
         var done = false;
         function onPlayerStateChange(event) {
-            console.log(event.data, YT.PlayerState.PLAYING, !done);
             if (event.data == YT.PlayerState.PLAYING) {
-                $('#player').fadeIn();
+                $('#player').animate({opacity: 1});
                 setTimeout(stopVideo, 3550);
             }
         }
         function stopVideo() {
-            console.log('stop');
             $('.player').fadeOut(null, function () {
                 $(this).remove();
             });
@@ -98,7 +95,6 @@
 
         $(function () {
             $('body').on('click', '.player', function () {
-                console.log('click');
                 $('.player').fadeOut(function () {
                     $(this).remove();
                 });
