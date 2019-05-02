@@ -1,4 +1,5 @@
-# Reproducible Open Coding Kit (ROCK)
+
+# <img src='img/rock-logo-400.png' align="right" height="200" /> Reproducible Open Coding Kit (ROCK)
 
 The Reproducible Open Coding Kit (ROCK, and this package, `rock`)
 was developed to facilitate reproducible and open coding, specifically
