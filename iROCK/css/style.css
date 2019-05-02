@@ -66,6 +66,8 @@ header span {
 
 content, header {
     padding-top: 2em;
+    overflow: auto;
+    height: 100vh;
 }
 
 content {

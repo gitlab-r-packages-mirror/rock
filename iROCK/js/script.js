@@ -48,7 +48,7 @@ $(function () {
     $(window).on('resize', headerSize.bind($('header'))).trigger('resize');
     */
 
-    $('header').on('DOMNodeInserted', 'span', function (event) {
+    $('header').on('DOMNodeInserted', '[data-target=".tags"],[data-target=".breaks"]', function (event) {
         let $this = $(this);
         //headerSize.apply(this, event);
         $this.draggable({
