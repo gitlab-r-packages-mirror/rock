@@ -15,6 +15,7 @@
 #' code), or a regular expression, in which case all utterances
 #' matching that regular expression will be coded with that
 #' source.
+#' @param encoding The encoding of the source file.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the coded source object.

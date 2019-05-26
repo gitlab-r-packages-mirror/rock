@@ -1,12 +1,15 @@
+This file is a very drafty file used to test stuff. It contains some meeting minutes and some other stuff.
+
+The contents aren't relevant; it's all about the parsing of the ROCK conventions.
+
 ---
 metadata:
   -
     caseId: 1
     gender: female
     age: 50s
-    reason_to_leave_dissappointed_by_diagnosis: 3
-    reason_to_leave_doesnt_like_white_coats: 7
-    reason_to_leave_likes_accupuncture_needles: 1
+    some_categorical_varable: 3
+    some_other_variable: 7
 ---
 
 Coding tree specifications:
@@ -15,19 +18,19 @@ Coding tree specifications:
 ---
 codes:
   -
-    id:       expl_model
-    label:    Explanatory Model
-    code:     EM
-    children: [EM_Psych, EM_Eco, EM_Gen]
+    id:       pets
+    label:    Cute little pets
+    code:     pets
+    children: [cats, dogs, fish]
   -
-    id:       icons
-    label:    Icons
-    code:     IC
-    children: [IC_Attack, IC_Overl, IC_Punish]
+    id:       furniture
+    label:    Furniture
+    code:     furn
+    children: [tables, chairs, oaken_chests]
   -
     id:       source
     label:    Information sources
-    children: [Source_Net, Source_Doc, Source_FandF]
+    children: [internet, books, people]
   -
     id:       attitude
     label:    Attitude
@@ -110,38 +113,34 @@ Topic = a subject area discussed in the interview - i.e. topics are known before
 [[cid=1]]
 
 ---paragraph-break---
-Why did you start using acupuncture? [[Topic1]] [[cid=1]] [[tid=1]]
+Why did you do that? [[Topic1]] [[cid=1]] [[tid=1]]
 ---<<<B>>>---
 ---<A>---
-5 years ago my hand started hurting, it was harder and harder to use them for everyday tasks. [[IC>Overl]] [[cid=1]]
-And I got to the point where they hurt so bad that I went to my family doctor and then that doctor had me do lots of tests and they found nothing wrong, no inflammation in the joints. [[Source>Doc]] [[cid=1]]
-At first I thought it was just the bad weather - because I used to feel the weather in my joints. [[EM>Eco]] [[cid=1]]
-I inherited the joint problems from my mother. [[EM>Gen]]  [[cid=1]]
-But my hands just stopped working; it was like I was carrying these really really heavy bags in my hands all the time - it was that kind of feeling...when you put down those heavy bags and - like - your fingers are hard to move and it got to the point where I couldn't actually lift anything. [[IC>Overl]] [[cid=1]]
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. [[inductMother>inducChild1]] [[cid=1]]
+It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.[[inductFather>inducChild3]] [[cid=1]]
+It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. [[inductMother>inducChild2]] [[cid=1]]
+
+Why do we use it? [[inductMother>inducChild1]]  [[cid=1]]
+It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. [[inductFather>inducChild4]] [[cid=1]]
 ---<A>---
-One time, I was holding this mug of coffee that I got for a Xmas present and I was lifting it to drink from it and I dropped it and spilled hot coffee all over myself. [[cid=1]]
-Then maybe two years ago I was diagnosed with erosive arthritis and they prescribed me this really strong medication which didn't work and then I got radiation therapy which didn't work either. [[Source>Doc]] [[cid=1]]
+The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. [[cid=1]]
+Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. [[inductFather>inducChild3]] [[cid=1]]
 ---<A>---
 ---<<<B>>>---
-So a friend of mine told me about this guy who does acupuncture and I decided to try it out. [[Source>FandF]] [[cid=1]]
-And I've been here twice and it feels like it's working my hands are easier to move, I feel more free. [[IC>Overl]] [[cid=1]]
+Where does it come from? [[inductFather>inducChild4]] [[cid=1]]
+Contrary to popular belief, Lorem Ipsum is not simply random text. [[inductFather>inducChild5]] [[cid=1]]
 ---paragraph-break---
-In your understanding what caused your illness? [[Topic2]] [[cid=1]] [[tid=2]]
-
-Well when I got my diagnosis I was searching the internet and I came across this website that talked about the psychological reasons behind illnesses and I saw the section on arthritis; it wasn't erosive arthritis but it was arthritis nonetheless. [[Source>Doc]] [[Source>Net]] [[cid=1]]
-And it was talking about how if this sickness affects your hands then you have trouble giving or receiving. [[Source>Net]] [[EM>Psych]] [[cid=1]]
-And I thought wow, ok, that's exactly how I feel - I feel like I'm giving giving giving and I'm not getting anything in return. [[EM>Psych]] [[cid=1]]
-I always remember people's birthday, I always help them when they need help, when they're in trouble, or yeah. [[cid=1]]
-I always help my two daughters...one of them doesn't even talk to me I don't know why. [[cid=1]]
+It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. [[Topic2]] [[cid=1]] [[tid=2]]
+Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. [[tables]] [[people]] [[cid=1]]
+Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. [[oaken_chests]] [[people]] [[cid=1]]
+This book is a treatise on the theory of ethics, very popular during the Renaissance. [[people]] [[cid=1]]
+The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. [[cid=1]]
 ---<A>---
-It's like she's trying to hurt me on purpose. [[IC>Attack]]
-What did I do to deserve this? [[IC>Attack]] [[IC>Punish]]
-What did I do wrong? [[IC>Punish]]
-With my ex-husband same thing, I never got anything for him from him but I always gave him everything. [[EM>Psych]]
-I have a friend who was diagnosed with breast cancer and she knew it was her ex-husband who caused it. [[Source>FandF]] [[EM>Psych]]
+The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
 
-How does she know that?
-Because she read online that stress can cause cancer and she got sick when her husband left her for another woman. [[Source>FandF]] [[Source>Net]] [[EM>Psych]]
-Then when he came back to her, she got better, but then he left her again and she got so sick that she had to go to the hospital. [[EM>Psych]]
-So she knows what caused it. [[EM>Psych]]
-I don't know how someone can do something like that. [[IC>Attack]]
+Where can I get some? [[inductFather>inducChild3]]
+There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. [[chairs]] [[internet]]
+If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. [[inductFather>inducChild3]]
+All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. [[internet]]
+It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. [[inductFather>inducChild4]] [[inductMother>inducChild1]]
+The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. [[tables]] [[att_ins_eval]]

@@ -1,20 +1,18 @@
-#' Conversion between base10 and base30 & base36
+#' Conversion between base10 and base30
 #'
-#' The conversion functions from base10 to base30 are
-#' used by the [generate_id()] functions; the base36
-#' functions are just left here for convenience.
+#' The conversion functions from base10 to base30 and vice versa are
+#' used by the [generate_uids()] functions.
 #'
 #' The symbols to represent the 'base 30' system are the 0-9
 #' followed by the alphabet without vowels but including the y. This
 #' vector is available as `base30`.
 #'
-#' @param x The vector to convert (numeric for the `numericTo` functions,
-#'          character for the `base30to` and `base36to` funtions).
+#' @param x The vector to convert (numeric for `numericToBase30`,
+#'          character for `base30toNumeric`).
 #'
-#' @return The converted vector (numeric for the `base30to` and `base36to` funtions,
-#'          character for the `numericTo` functions).
-#' @name base30and36conversion
-#' @rdname base30and36conversion
+#' @return The converted vector (numeric for `base30toNumeric`, character for `numericToBase30`).
+#' @name base30conversion
+#' @rdname base30conversion
 #' @examples numericToBase30(654321);
 #' base30toNumeric(numericToBase30(654321));
 #' @export

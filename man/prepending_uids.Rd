@@ -23,6 +23,9 @@ resulting files for \code{prepend_ids_to_sources}}
 
 \item{origin}{The time to use for the first identifier.}
 
+\item{preventOverwriting}{Whether to overwrite existing files (\code{FALSE})
+or prevent that from happening (\code{TRUE}).}
+
 \item{encoding}{The encoding of the file(s).}
 
 \item{silent}{Whether to be chatty or quiet.}

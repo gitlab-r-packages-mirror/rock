@@ -1,3 +1,1 @@
-require(testthat);
-require(here);
-test_check("rock");
+testthat::test_check("rock");

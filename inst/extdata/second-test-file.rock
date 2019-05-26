@@ -28,14 +28,21 @@ Cats bla bla cats [[cid=1]] [[pets>cats>siamese]] [[property>hairy]] [[relations
 ---
 codes:
   -
-    id: ESM
-    label: Explanatory Sub Model
-    parentId: expl_model
+    id: someParent
+    label: Explanatory Parent thingy
+    parentId: parentCode1
     children:
       -
-        id: EM_SEM_Psych
+        id: childCode1
       -
-        id: EM_SEM_Eco
+        id: childCode2
 ---
 
+
+---
+codes:
+  -
+    id: parentCode1
+    label: The parent code
+---
 

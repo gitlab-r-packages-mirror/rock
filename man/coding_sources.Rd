@@ -23,6 +23,8 @@ code), or a regular expression, in which case all utterances
 matching that regular expression will be coded with that
 source.}
 
+\item{encoding}{The encoding of the source file.}
+
 \item{silent}{Whether to be chatty or quiet.}
 }
 \value{

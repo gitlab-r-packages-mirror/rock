@@ -1,3 +1,5 @@
+#' @rdname base30conversion
+#' @export
 base30toNumeric <- function(x) {
   symbols <- rev(strsplit(tolower(x), "")[[1]]);
   res <- 0L;

@@ -1,6 +1,3 @@
-#' Example 1
-#'
-rock_example_1 <- unlist(strsplit("
 ---
 metadata:
   -
@@ -104,4 +101,11 @@ codes:
         id: moreChildCodes2
 ---
 
-", split="\n", fixed=TRUE));
+
+---
+codes:
+  -
+    id: parentCode1
+    label: The parent code
+---
+

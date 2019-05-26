@@ -1,62 +1,68 @@
-context("general ROCK tests")
+testthat::context("general ROCK tests")
 
 ###-----------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------
 
-test_that("reading a source with no ROCK stuff works properly", {
+testthat::test_that("reading a source with no ROCK stuff works properly", {
 
-  res <- parse_source(here::here("tests",
-                                 "testthat",
-                                 "lorum-ipsum.rock"));
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  res <- parse_source(file.path(examplePath,
+                                "lorum-ipsum.rock"));
 
 });
 
 ###-----------------------------------------------------------------------------
 
-test_that("a inductive code tree is read correctly", {
+testthat::test_that("a inductive code tree is read correctly", {
 
-  res <- parse_source(here::here("tests",
-                                 "testthat",
-                                 "sylvias-test.rock"));
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  testthat::expect_equal(res$inductiveCodeTrees$code$IC$Attack$label,
-                         "Attack");
+  res <- parse_source(file.path(examplePath,
+                                "longer-test.rock"));
 
-});
-
-###-----------------------------------------------------------------------------
-
-test_that("a single deductive code tree is read correctly", {
-
-  res <- parse_source(here::here("tests",
-                                 "testthat",
-                                 "second-test-file.rock"));
-
-  testthat::expect_equal(res$deductiveCodeTrees$EM_SEM_Psych$label,
-                         "EM_SEM_Psych");
+  testthat::expect_equal(res$inductiveCodeTrees$codes$inductFather$inducChild3$label,
+                         "inducChild3");
 
 });
 
 ###-----------------------------------------------------------------------------
 
-test_that("Multiple sources are read correctly", {
+testthat::test_that("a single deductive code tree is read correctly", {
 
-  res <- parse_sources(here::here("tests",
-                                  "testthat"),
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  res <- parse_source(file.path(examplePath,
+                                "second-test-file.rock"));
+
+  testthat::expect_equal(res$deductiveCodeTrees$parentCode1$someParent$childCode1$label,
+                         "childCode1");
+
+});
+
+###-----------------------------------------------------------------------------
+
+testthat::test_that("Multiple sources are read correctly", {
+
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+
+  res <- parse_sources(examplePath,
                        extension="rock");
 
-  testthat::expect_equal(res$deductiveCodeTrees$expl_model$ESM$EM_SEM_Psych$label,
-                         "EM_SEM_Psych");
+  testthat::expect_equal(res$deductiveCodeTrees$children$parentCode1$someParent$childCode2$label,
+                         "childCode2");
 
 });
 
 ###-----------------------------------------------------------------------------
 
-test_that("multiple sources without deductive code trees are read correctly", {
+testthat::test_that("multiple sources without deductive code trees are read correctly", {
 
-  res <- parse_sources(here::here("tests",
-                                  "testthat"),
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  res <- parse_sources(examplePath,
                        regex = "ipsum");
 
   testthat::expect_null(res$deductiveCodeTrees);
@@ -65,10 +71,11 @@ test_that("multiple sources without deductive code trees are read correctly", {
 
 ###-----------------------------------------------------------------------------
 
-test_that("A deductive code tree is read correctly from multiple DCT files", {
+testthat::test_that("A deductive code tree is read correctly from multiple DCT files", {
 
-  res <- parse_sources(here::here("tests",
-                                  "testthat"),
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  res <- parse_sources(examplePath,
                        extension="dct");
 
   testthat::expect_equal(res$deductiveCodeTrees$behavior_xl67k7w8j$intention_71vr5q3q$attitude_71vqm37n$label,

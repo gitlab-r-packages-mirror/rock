@@ -439,10 +439,10 @@ parse_source <- function(text,
         }, error = function(e) {
           warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
                   codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n",
-                  paste0(capture.output(print(class(inductiveCodeTrees[[codeRegex]]))),
+                  paste0(utils::capture.output(print(class(inductiveCodeTrees[[codeRegex]]))),
                          collapse="\n"),
                   "\n",
-                  paste0(capture.output(print(inductiveCodeTrees[[codeRegex]])),
+                  paste0(utils::capture.output(print(inductiveCodeTrees[[codeRegex]])),
                          collapse="\n"));
         });
 

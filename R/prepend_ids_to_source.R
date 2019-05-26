@@ -11,6 +11,8 @@
 #' `prepend_ids_to_source` and the directory where to write the
 #' resulting files for `prepend_ids_to_sources`
 #' @param origin The time to use for the first identifier.
+#' @param preventOverwriting Whether to overwrite existing files (`FALSE`)
+#' or prevent that from happening (`TRUE`).
 #' @param encoding The encoding of the file(s).
 #' @param silent Whether to be chatty or quiet.
 #'
