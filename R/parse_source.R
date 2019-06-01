@@ -64,6 +64,17 @@
 #'
 #' @aliases parse_source parse_sources print.rockParsedSource
 #' @rdname parsing_sources
+#'
+#' @examples ### Get path to example source
+#' exampleFile <-
+#'   system.file("extdata", "example-1.rock", package="rock");
+#'
+#' ### Parse example source
+#' parsedExample <- rock::parse_source(exampleFile);
+#'
+#' ### Show inductive code tree
+#' parsedExample$inductiveCodeTrees;
+#'
 #' @export
 parse_source <- function(text,
                          file,
@@ -231,33 +242,43 @@ parse_source <- function(text,
          x);
   sourceDf$utterances_without_identifiers <- x;
 
+  ###---------------------------------------------------------------------------
+  ### Process codes
+  ###---------------------------------------------------------------------------
+
   codings <- list();
   codingLeaves <- list();
   inductiveCodeProcessing <- list();
   inductiveCodeTrees <- list();
   inductiveDiagrammeR <- list();
+
   ### Process codes
   if (!is.null(codeRegexes) && length(codeRegexes) > 0) {
 
     for (codeRegex in names(codeRegexes)) {
 
-      ### Find matches
+      ### Find matches (the full substrings that match this code in each line)
       matches <-
         regmatches(x,
                    gregexpr(codeRegexes[codeRegex], x));
 
-      ### Retain only the parenthesized expression
+      ### Retain only the 'parenthesized' expression (i.e. the part of
+      ### this code's regex between the parentheses, i.e., the actual code itself)
       cleanedMatches <-
         lapply(matches, gsub, pattern=codeRegexes[codeRegex], replacement="\\1");
 
-      ### Get a complete list of all used codes
+      ### Get a complete list of all used codes. Note that for deductive codes,
+      ### this list can contain duplicate leaves, because the ancestors are
+      ### included here as well.
       codings[[codeRegex]] <-
         sort(unique(unlist(cleanedMatches)));
 
-      ### Split these unique codes into levels
+      ### Split these unique codes into levels in case inductive coding
+      ### was applied
       if ((nchar(inductiveCodingHierarchyMarker) > 0) &&
           (!is.null(codings[[codeRegex]])) &&
           (length(codings[[codeRegex]]) > 0)) {
+
         inductiveCodeProcessing[[codeRegex]] <- list();
 
         inductiveCodeProcessing[[codeRegex]]$splitCodings <-
@@ -273,14 +294,21 @@ parse_source <- function(text,
           codings[[codeRegex]];
       }
 
+      ### Remove duplicate elements from the list with leaves
+      ### and store for later
       codingLeaves[[codeRegex]] <-
-        inductiveCodeProcessing[[codeRegex]]$inductiveLeaves;
+        unique(inductiveCodeProcessing[[codeRegex]]$inductiveLeaves);
+
+      ### Set matches for lines that did
+      ### not have a match to NA
+      cleanedMatches[unlist(lapply(matches, length))==0] <- NA;
 
       ### Get presence of codes in utterances
       occurrences <-
-        lapply(cleanedMatches,
+        lapply(get_leaf_codes(cleanedMatches,
+                              inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker),
                `%in%`,
-               x=codings[[codeRegex]]);
+               x=codingLeaves[[codeRegex]]);
 
       ### Convert from logical to numeric
       occurrenceCounts <-
@@ -290,22 +318,29 @@ parse_source <- function(text,
       namedOccurrences <-
         lapply(occurrenceCounts,
                `names<-`,
-               value <- inductiveCodeProcessing[[codeRegex]]$inductiveLeaves);
-
-      ### Removed this at 2019-02-18 after meeting with Szilvia - no idea why
-      ### I'd put it in, but it caused these columns to be *lists* in the data.frame
-      ### for some weird reason.
-      ###
-      ### Convert from a vector to a list
-      # namedOccurrences <-
-      #   lapply(namedOccurrences,
-      #          as.list);
+               value <- codingLeaves[[codeRegex]]);
 
       ### Convert the lists to dataframes
       sourceDf <-
         cbind(sourceDf,
               as.data.frame(do.call(rbind,
                                     namedOccurrences)));
+
+      ### Merge duplicate columns (which can occur because sometimes only a leaf is
+      ### used in coding, while other times the parents and maybe other ancestors are
+      ### specified)
+      duplicateCols <- unique(names(sourceDf)[duplicated(names(sourceDf))]);
+      if (length(duplicateCols)) {
+        for (currentDupCol in duplicateCols) {
+          allIndices <- which(names(sourceDf) == currentDupCol);
+          firstIndex <- allIndices[1];
+          otherIndices <- tail(allIndices, -1);
+          newVector <- rowSums(sourceDf[, allIndices]);
+          sourceDf[, firstIndex] <- newVector;
+          sourceDf[, otherIndices] <- NULL;
+        }
+      }
+
 
       ### Delete codes from utterances
       x <-
@@ -324,6 +359,18 @@ parse_source <- function(text,
         inductiveCodeProcessing[[codeRegex]]$localBranches <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$splitCodings,
                         utils::tail, -1));
+
+        ### In the preparation, remove the duplicates
+        # inductiveCodeProcessing[[codeRegex]]$inductiveLeaves <-
+        #   unique(inductiveCodeProcessing[[codeRegex]]$inductiveLeaves);
+
+        inductiveCodeProcessing[[codeRegex]]$localRoots <-
+          unique(inductiveCodeProcessing[[codeRegex]]$localRoots);
+
+        inductiveCodeProcessing[[codeRegex]]$localBranches <-
+          unique(inductiveCodeProcessing[[codeRegex]]$localBranches);
+
+        ### Check whether any local roots are actually branches
         inductiveCodeProcessing[[codeRegex]]$localRootsThatAreBranches <-
           unlist(lapply(inductiveCodeProcessing[[codeRegex]]$localRoots,
                         `%in%`,

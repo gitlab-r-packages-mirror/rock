@@ -120,3 +120,15 @@ or not (\code{FALSE}).}
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the
 contained identifiers, sections, and codes.
 }
+\examples{
+### Get path to example source
+exampleFile <-
+  system.file("extdata", "example-1.rock", package="rock");
+
+### Parse example source
+parsedExample <- rock::parse_source(exampleFile);
+
+### Show inductive code tree
+parsedExample$inductiveCodeTrees;
+
+}

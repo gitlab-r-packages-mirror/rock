@@ -31,3 +31,29 @@ This function collapses all occurrences into groups
 sharing the same identifier, by default the \code{stanzaId}
 identifier (\code{[[sid=..]]}).
 }
+\examples{
+### Get path to example source
+exampleFile <-
+  system.file("extdata", "example-1.rock", package="rock");
+
+### Parse example source
+parsedExample <-
+  rock::parse_source(exampleFile);
+
+### Collapse logically, using a code (either occurring or not):
+collapsedExample <-
+  rock::collapse_occurrences(parsedExample,
+                             collapseBy = 'childCode1');
+
+### Show result: only two rows left after collapsing,
+### because 'childCode1' is either 0 or 1:
+collapsedExample;
+
+### Collapse using weights (i.e. count codes in each segment):
+collapsedExample <-
+  rock::collapse_occurrences(parsedExample,
+                             collapseBy = 'childCode1',
+                             logical=FALSE);
+
+
+}
