@@ -326,22 +326,6 @@ parse_source <- function(text,
               as.data.frame(do.call(rbind,
                                     namedOccurrences)));
 
-      ### Merge duplicate columns (which can occur because sometimes only a leaf is
-      ### used in coding, while other times the parents and maybe other ancestors are
-      ### specified)
-      duplicateCols <- unique(names(sourceDf)[duplicated(names(sourceDf))]);
-      if (length(duplicateCols)) {
-        for (currentDupCol in duplicateCols) {
-          allIndices <- which(names(sourceDf) == currentDupCol);
-          firstIndex <- allIndices[1];
-          otherIndices <- tail(allIndices, -1);
-          newVector <- rowSums(sourceDf[, allIndices]);
-          sourceDf[, firstIndex] <- newVector;
-          sourceDf[, otherIndices] <- NULL;
-        }
-      }
-
-
       ### Delete codes from utterances
       x <-
         gsub(codeRegexes[codeRegex],
