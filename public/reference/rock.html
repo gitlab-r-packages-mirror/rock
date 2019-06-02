@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rock</title>
+<title>rock: A Reprocucible Open Coding Kit — rock • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="rock: A Reprocucible Open Coding Kit — rock" />
+
+<meta property="og:description" content="This package implements an open standard for working with
+qualitative data, as such, it has two parts: a file format/convention
+and this R package that facilitates working with .rock files." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -101,114 +106,55 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>rock: A Reprocucible Open Coding Kit</h1>
+    
+    <div class="hidden name"><code>rock.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>This package implements an open standard for working with
+qualitative data, as such, it has two parts: a file format/convention
+and this R package that facilitates working with .rock files.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+        
+    <h2 class="hasAnchor" id="the-rock-file-format"><a class="anchor" href="#the-rock-file-format"></a>The ROCK File Format</h2>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="apply_graph_theme.html">apply_graph_theme()</a></code> </p>
-        </td>
-        <td><p>Apply multiple DiagrammeR global graph attributes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="base30conversion.html">base30toNumeric()</a></code> <code><a href="base30conversion.html">numericToBase30()</a></code> </p>
-        </td>
-        <td><p>Conversion between base10 and base30</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cleaning_sources.html">clean_source()</a></code> <code><a href="cleaning_sources.html">clean_sources()</a></code> </p>
-        </td>
-        <td><p>Cleaning sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="coding_sources.html">code_source()</a></code> <code><a href="coding_sources.html">code_sources()</a></code> </p>
-        </td>
-        <td><p>Add one or more codes to one or more sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collapse_occurrences.html">collapse_occurrences()</a></code> </p>
-        </td>
-        <td><p>Collapse the occurrences in utterances into groups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collect_coded_fragments.html">collect_coded_fragments()</a></code> </p>
-        </td>
-        <td><p>Create an overview of coded fragments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_cooccurrence_matrix.html">create_cooccurrence_matrix()</a></code> </p>
-        </td>
-        <td><p>Create a co-occurrence matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_uids.html">generate_uids()</a></code> </p>
-        </td>
-        <td><p>Generate utterance identifiers (UIDs)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="loading_sources.html">load_source()</a></code> <code><a href="loading_sources.html">load_sources()</a></code> </p>
-        </td>
-        <td><p>Load a source from a file or a string</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsed_sources_to_ena_network.html">parsed_sources_to_ena_network()</a></code> </p>
-        </td>
-        <td><p>Create an ENA network out of one or more parsed sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rockParsedSources&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Parsing sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="prepending_uids.html">prepend_ids_to_source()</a></code> <code><a href="prepending_uids.html">prepend_ids_to_sources()</a></code> </p>
-        </td>
-        <td><p>Prepending unique utterance identifiers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rock.html">rock</a></code> </p>
-        </td>
-        <td><p>rock: A Reprocucible Open Coding Kit</p></td>
-      </tr>
-    </tbody>
-    </table>
+    
+    <p>The .rock files are plain text files where a number of conventions are used
+to add metadata. Normally these are the following conventions:</p><ul>
+<li><p>The smallest 'codeable unit' is called an utterance, and utterances are separated by newline characters (i.e. every line of the file is an utterance);</p></li>
+<li><p>Codes are in between double square brackets: <code>[[code1]]</code> and <code>[[code2]]</code>;</p></li>
+<li><p>Hierarchy in inductive code trees can be indicated using the greater than sign (<code>&gt;</code>): <code>[[parent1&gt;child1]]</code>;</p></li>
+<li><p>Utterances can have unique identifiers called 'utterance identifiers' or 'UIDs', which are unique short alphanumeric strings placed in between double square brackets after 'uid:', e.g. <code>[[uid:73xk2q07]]</code>;</p></li>
+<li><p>Deductive code trees can be specified using YAML</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="the-rock-r-package-functions"><a class="anchor" href="#the-rock-r-package-functions"></a>The <code>rock</code> R Package Functions</h2>
+
+    
+    <p>The most important functions are <code><a href='parsing_sources.html'>parse_source()</a></code> to parse one source and <code><a href='parsing_sources.html'>parse_sources()</a></code>
+to parse multiple sources simultaneously. <code><a href='cleaning_sources.html'>clean_source()</a></code> and <code><a href='cleaning_sources.html'>clean_sources()</a></code> can be used
+to clean sources, and <code><a href='prepending_uids.html'>prepend_ids_to_source()</a></code> and <code><a href='prepending_uids.html'>prepend_ids_to_sources()</a></code> can be
+used to quickly generate UIDs and prepend them to each utterance in a source.</p>
+<p>For analysis, <code><a href='create_cooccurrence_matrix.html'>create_cooccurrence_matrix()</a></code>, <code><a href='collapse_occurrences.html'>collapse_occurrences()</a></code>, and
+<code><a href='collect_coded_fragments.html'>collect_coded_fragments()</a></code> can be used.</p>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      
+      <li><a href="#the-rock-file-format">The ROCK File Format</a></li>
+
+      <li><a href="#the-rock-r-package-functions">The <code>rock</code> R Package Functions</a></li>
+          </ul>
+
   </div>
 </div>
 

@@ -129,8 +129,8 @@ search and replaces using regular expressions.</p>
   <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"</span>),
   <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>,
   <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\,]),([^\\s])"</span>, <span class='st'>"\\1, \\2"</span>)),
-  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>clean_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>,
   <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\.])(\\.\\.)([^\\.])"</span>,
@@ -140,8 +140,8 @@ search and replaces using regular expressions.</p>
   <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"</span>),
   <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>,
   <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\,]),([^\\s])"</span>, <span class='st'>"\\1, \\2"</span>)),
-  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,6 +186,10 @@ insert breaks between utterances in the source(s). Such breakes are specified us
       <th>utteranceMarker</th>
       <td><p>How to specify breaks between utterances in the source(s). The
 ROCK convention is to use a newline (<code>\n</code>).</p></td>
+    </tr>
+    <tr>
+      <th>preventOverwriting</th>
+      <td><p>Whether to prevent overwriting of output files.</p></td>
     </tr>
     <tr>
       <th>removeNewlines</th>

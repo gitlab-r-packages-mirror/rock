@@ -3,6 +3,7 @@
 %   R/prepend_ids_to_sources.R
 \name{prepend_ids_to_source}
 \alias{prepend_ids_to_source}
+\alias{prepending_uids}
 \alias{prepend_ids_to_sources}
 \title{Prepending unique utterance identifiers}
 \usage{
@@ -38,4 +39,7 @@ if specified) or visibly (if not).
 This function prepending unique utterance identifiers to each
 utterance (line) in a source. Note that you'll probably want
 to clean the sources using \code{\link[=clean_sources]{clean_sources()}} first.
+}
+\examples{
+prepend_ids_to_source(input = "brief\\nexample\\nsource");
 }

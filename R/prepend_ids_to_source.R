@@ -18,7 +18,9 @@
 #'
 #' @return The source with prepended uids, either invisible (if `output`
 #' if specified) or visibly (if not).
+#' @aliases prepending_uids
 #' @rdname prepending_uids
+#' @examples prepend_ids_to_source(input = "brief\nexample\nsource");
 #' @export
 prepend_ids_to_source <- function(input,
                                   output = NULL,

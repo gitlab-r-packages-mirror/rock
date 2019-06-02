@@ -125,7 +125,8 @@ contained identifiers, sections, and codes.</p>
   <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>),
   <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span>
   <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>), <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>),
-  <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>), <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
+  <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>), <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^dct:|^ci:"</span>,
+  <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
   <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
   <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
   <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
@@ -191,6 +192,14 @@ number).</p></td>
 attached to an utterance, should be attached to all following utterances as well (until
 a new identifier with the same name is encountered, after which that identifier will be
 attached to all following utterances, etc).</p></td>
+    </tr>
+    <tr>
+      <th>noCodes</th>
+      <td><p>This regular expression is matched with all codes after they have been
+extracted using the <code>codeRegexes</code> regular expression (i.e. they're matched against the
+codes themselves without, for example, the square brackets in the default code regex). Any
+codes matching this <code>noCodes</code> regular expression will be <strong>ignored</strong>, i.e., removed from the
+list of codes.</p></td>
     </tr>
     <tr>
       <th>inductiveCodingHierarchyMarker</th>
@@ -275,12 +284,1168 @@ or not (<code>FALSE</code>).</p></td>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Parse example source</span>
+<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_source</a></span>(<span class='no'>exampleFile</span>);</div><div class='output co'>#&gt; [[1]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[2]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[3]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[4]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[5]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[6]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[7]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] "parentCode1&gt;childCode1"
+#&gt; 
+#&gt; [[9]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[10]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[11]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[12]]
+#&gt; [1] "parentCode1&gt;childCode2" "childCode1"            
+#&gt; 
+#&gt; [[13]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[14]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[15]]
+#&gt; [1] "parentCode1&gt;childCode3" "someOtherCode"         
+#&gt; 
+#&gt; [[16]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[17]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[18]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[19]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[20]]
+#&gt; [1] "parentCode2&gt;childCode4"
+#&gt; 
+#&gt; [[21]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[22]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[23]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[24]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[25]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[26]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[27]]
+#&gt; [1] "parentCode2&gt;childCode5"
+#&gt; 
+#&gt; [[28]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[29]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[30]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[31]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode1"
+#&gt; 
+#&gt; [[32]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[33]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[34]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[35]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[36]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[37]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[38]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[39]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[40]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[41]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode3"
+#&gt; 
+#&gt; [[42]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[43]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[44]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[45]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode4"
+#&gt; 
+#&gt; [[46]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[47]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[48]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[49]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode5"
+#&gt; 
+#&gt; [[50]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[51]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[52]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[53]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[54]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode6"
+#&gt; 
+#&gt; [[55]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[56]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[57]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[58]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[59]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[60]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[61]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[62]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[63]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[64]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[65]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[66]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[67]]
+#&gt; [1] "childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[68]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[69]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[70]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[71]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[72]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[73]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[74]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[75]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[76]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[77]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[78]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[79]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[80]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[81]]
+#&gt; [1] "grandchildCode2"
+#&gt; 
+#&gt; [[82]]
+#&gt; [1] "childCode5&gt;grandchildCode7"
+#&gt; 
+#&gt; [[83]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[84]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[85]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[86]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[1]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[2]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[3]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[4]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[5]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[6]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[7]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] "parentCode1&gt;childCode1"
+#&gt; 
+#&gt; [[9]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[10]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[11]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[12]]
+#&gt; [1] "parentCode1&gt;childCode2" "childCode1"            
+#&gt; 
+#&gt; [[13]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[14]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[15]]
+#&gt; [1] "parentCode1&gt;childCode3" "someOtherCode"         
+#&gt; 
+#&gt; [[16]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[17]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[18]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[19]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[20]]
+#&gt; [1] "parentCode2&gt;childCode4"
+#&gt; 
+#&gt; [[21]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[22]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[23]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[24]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[25]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[26]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[27]]
+#&gt; [1] "parentCode2&gt;childCode5"
+#&gt; 
+#&gt; [[28]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[29]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[30]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[31]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode1"
+#&gt; 
+#&gt; [[32]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[33]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[34]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[35]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[36]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[37]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[38]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[39]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[40]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[41]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode3"
+#&gt; 
+#&gt; [[42]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[43]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[44]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[45]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode4"
+#&gt; 
+#&gt; [[46]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[47]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[48]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[49]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode5"
+#&gt; 
+#&gt; [[50]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[51]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[52]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[53]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[54]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode6"
+#&gt; 
+#&gt; [[55]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[56]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[57]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[58]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[59]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[60]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[61]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[62]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[63]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[64]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[65]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[66]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[67]]
+#&gt; [1] "childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[68]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[69]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[70]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[71]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[72]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[73]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[74]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[75]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[76]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[77]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[78]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[79]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[80]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[81]]
+#&gt; [1] "grandchildCode2"
+#&gt; 
+#&gt; [[82]]
+#&gt; [1] "childCode5&gt;grandchildCode7"
+#&gt; 
+#&gt; [[83]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[84]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[85]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[86]]
+#&gt; character(0)
+#&gt; </div><div class='input'>
+<span class='co'>### Show inductive code tree</span>
+<span class='no'>parsedExample</span>$<span class='no'>inductiveCodeTrees</span>;</div><div class='output co'>#&gt; $codes
+#&gt;                      levelName
+#&gt; 1  codes                      
+#&gt; 2   ¦--parentCode1            
+#&gt; 3   ¦   ¦--childCode1         
+#&gt; 4   ¦   ¦   ¦--grandchildCode1
+#&gt; 5   ¦   ¦   ¦--grandchildCode2
+#&gt; 6   ¦   ¦   °--grandchildCode3
+#&gt; 7   ¦   ¦--childCode2         
+#&gt; 8   ¦   °--childCode3         
+#&gt; 9   ¦--parentCode2            
+#&gt; 10  ¦   ¦--childCode4         
+#&gt; 11  ¦   ¦   ¦--grandchildCode4
+#&gt; 12  ¦   ¦   ¦--grandchildCode5
+#&gt; 13  ¦   ¦   °--grandchildCode6
+#&gt; 14  ¦   °--childCode5         
+#&gt; 15  ¦       °--grandchildCode7
+#&gt; 16  °--someOtherCode          
+#&gt; </div><div class='input'>
+<span class='co'>### If you want `rock` to be chatty, use:</span>
+<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_source</a></span>(<span class='no'>exampleFile</span>,
+                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; [[1]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[2]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[3]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[4]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[5]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[6]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[7]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] "parentCode1&gt;childCode1"
+#&gt; 
+#&gt; [[9]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[10]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[11]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[12]]
+#&gt; [1] "parentCode1&gt;childCode2" "childCode1"            
+#&gt; 
+#&gt; [[13]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[14]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[15]]
+#&gt; [1] "parentCode1&gt;childCode3" "someOtherCode"         
+#&gt; 
+#&gt; [[16]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[17]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[18]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[19]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[20]]
+#&gt; [1] "parentCode2&gt;childCode4"
+#&gt; 
+#&gt; [[21]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[22]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[23]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[24]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[25]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[26]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[27]]
+#&gt; [1] "parentCode2&gt;childCode5"
+#&gt; 
+#&gt; [[28]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[29]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[30]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[31]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode1"
+#&gt; 
+#&gt; [[32]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[33]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[34]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[35]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[36]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[37]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[38]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[39]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[40]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[41]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode3"
+#&gt; 
+#&gt; [[42]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[43]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[44]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[45]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode4"
+#&gt; 
+#&gt; [[46]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[47]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[48]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[49]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode5"
+#&gt; 
+#&gt; [[50]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[51]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[52]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[53]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[54]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode6"
+#&gt; 
+#&gt; [[55]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[56]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[57]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[58]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[59]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[60]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[61]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[62]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[63]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[64]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[65]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[66]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[67]]
+#&gt; [1] "childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[68]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[69]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[70]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[71]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[72]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[73]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[74]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[75]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[76]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[77]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[78]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[79]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[80]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[81]]
+#&gt; [1] "grandchildCode2"
+#&gt; 
+#&gt; [[82]]
+#&gt; [1] "childCode5&gt;grandchildCode7"
+#&gt; 
+#&gt; [[83]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[84]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[85]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[86]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[1]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[2]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[3]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[4]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[5]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[6]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[7]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] "parentCode1&gt;childCode1"
+#&gt; 
+#&gt; [[9]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[10]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[11]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[12]]
+#&gt; [1] "parentCode1&gt;childCode2" "childCode1"            
+#&gt; 
+#&gt; [[13]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[14]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[15]]
+#&gt; [1] "parentCode1&gt;childCode3" "someOtherCode"         
+#&gt; 
+#&gt; [[16]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[17]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[18]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[19]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[20]]
+#&gt; [1] "parentCode2&gt;childCode4"
+#&gt; 
+#&gt; [[21]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[22]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[23]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[24]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[25]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[26]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[27]]
+#&gt; [1] "parentCode2&gt;childCode5"
+#&gt; 
+#&gt; [[28]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[29]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[30]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[31]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode1"
+#&gt; 
+#&gt; [[32]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[33]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[34]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[35]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[36]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[37]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[38]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[39]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[40]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[41]]
+#&gt; [1] "parentCode1&gt;childCode1&gt;grandchildCode3"
+#&gt; 
+#&gt; [[42]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[43]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[44]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[45]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode4"
+#&gt; 
+#&gt; [[46]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[47]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[48]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[49]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode5"
+#&gt; 
+#&gt; [[50]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[51]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[52]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[53]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[54]]
+#&gt; [1] "parentCode2&gt;childCode4&gt;grandchildCode6"
+#&gt; 
+#&gt; [[55]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[56]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[57]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[58]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[59]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[60]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[61]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[62]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[63]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[64]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[65]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[66]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[67]]
+#&gt; [1] "childCode1&gt;grandchildCode2"
+#&gt; 
+#&gt; [[68]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[69]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[70]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[71]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[72]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[73]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[74]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[75]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[76]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[77]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[78]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[79]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[80]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[81]]
+#&gt; [1] "grandchildCode2"
+#&gt; 
+#&gt; [[82]]
+#&gt; [1] "childCode5&gt;grandchildCode7"
+#&gt; 
+#&gt; [[83]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[84]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[85]]
+#&gt; character(0)
+#&gt; 
+#&gt; [[86]]
+#&gt; character(0)
+#&gt; 
+#&gt; 
+#&gt; Building tree containing all 'true local roots'.
+#&gt; - Processing 'true local root' 'parentCode1'.
+#&gt; - Processing 'true local root' 'parentCode2'.
+#&gt; - Processing 'true local root' 'someOtherCode'.
+#&gt; 
+#&gt; Processing subtrees of those 'true local roots'.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode1'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode1'.
+#&gt;       - This parent node does not yet have a child with the name 'childCode1', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode1'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode1'.
+#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode1'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode1', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode2'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode1'.
+#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode2'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode2', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode3'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode1'.
+#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode3'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode3', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode2'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode2'.
+#&gt;       - This parent node does not yet have a child with the name 'childCode2', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode3'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode3'.
+#&gt;       - This parent node does not yet have a child with the name 'childCode3', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode4'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode4'.
+#&gt;       - This parent node does not yet have a child with the name 'childCode4', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode4'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode4'.
+#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode4'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode4', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode5'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode4'.
+#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode5'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode5', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode6'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode4'.
+#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
+#&gt;     - Processing node 'grandchildCode6'.
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode6', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode5'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;     - Processing node 'childCode5'.
+#&gt;       - This parent node does not yet have a child with the name 'childCode5', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'someOtherCode'.
+#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
+#&gt; 
+#&gt; Processing subtrees of 'local roots that are branches', i.e. single codes that are descendants of other codes (without the full path to the root being specified in the code), or subtrees where the local root is in fact a descendant.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'childCode1'.
+#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'childCode1' &amp; 'grandchildCode2'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;       - This parent node already has a child with the name 'grandchildCode2', so not adding anything at this point.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'childCode5' &amp; 'grandchildCode7'.
+#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
+#&gt;       - This parent node does not yet have a child with the name 'grandchildCode7', so adding it to that parent node.
+#&gt; 
+#&gt; - Processing subtree consisting of the node sequence 'grandchildCode2'.
+#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

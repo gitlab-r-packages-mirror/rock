@@ -14,7 +14,8 @@ parse_source(text, file, codeRegexes = c(codes =
   "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
   "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
-  persistentIds = c("caseId"), inductiveCodingHierarchyMarker = ">",
+  persistentIds = c("caseId"), noCodes = "^uid:|^dct:|^ci:",
+  inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
   "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
   ignoreOddDelimiters = FALSE, encoding = "UTF-8",
@@ -67,6 +68,12 @@ number).}
 attached to an utterance, should be attached to all following utterances as well (until
 a new identifier with the same name is encountered, after which that identifier will be
 attached to all following utterances, etc).}
+
+\item{noCodes}{This regular expression is matched with all codes after they have been
+extracted using the \code{codeRegexes} regular expression (i.e. they're matched against the
+codes themselves without, for example, the square brackets in the default code regex). Any
+codes matching this \code{noCodes} regular expression will be \strong{ignored}, i.e., removed from the
+list of codes.}
 
 \item{inductiveCodingHierarchyMarker}{For inductive coding, this marker is used to indicate
 hierarchical relationships between codes. The code at the left hand side of this marker will
@@ -130,5 +137,9 @@ parsedExample <- rock::parse_source(exampleFile);
 
 ### Show inductive code tree
 parsedExample$inductiveCodeTrees;
+
+### If you want `rock` to be chatty, use:
+parsedExample <- rock::parse_source(exampleFile,
+                                    silent=FALSE);
 
 }

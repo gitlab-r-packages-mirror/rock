@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rock</title>
+<title>Add one or more codes to one or more sources — code_source • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Add one or more codes to one or more sources — code_source" />
+
+<meta property="og:description" content="These functions add codes to one or more
+sources that were read with one of the
+loading_sources functions." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -101,114 +106,69 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Add one or more codes to one or more sources</h1>
+    
+    <div class="hidden name"><code>coding_sources.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>These functions add codes to one or more
+sources that were read with one of the
+<code>loading_sources</code> functions.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>code_source</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="apply_graph_theme.html">apply_graph_theme()</a></code> </p>
-        </td>
-        <td><p>Apply multiple DiagrammeR global graph attributes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="base30conversion.html">base30toNumeric()</a></code> <code><a href="base30conversion.html">numericToBase30()</a></code> </p>
-        </td>
-        <td><p>Conversion between base10 and base30</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cleaning_sources.html">clean_source()</a></code> <code><a href="cleaning_sources.html">clean_sources()</a></code> </p>
-        </td>
-        <td><p>Cleaning sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="coding_sources.html">code_source()</a></code> <code><a href="coding_sources.html">code_sources()</a></code> </p>
-        </td>
-        <td><p>Add one or more codes to one or more sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collapse_occurrences.html">collapse_occurrences()</a></code> </p>
-        </td>
-        <td><p>Collapse the occurrences in utterances into groups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collect_coded_fragments.html">collect_coded_fragments()</a></code> </p>
-        </td>
-        <td><p>Create an overview of coded fragments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_cooccurrence_matrix.html">create_cooccurrence_matrix()</a></code> </p>
-        </td>
-        <td><p>Create a co-occurrence matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_uids.html">generate_uids()</a></code> </p>
-        </td>
-        <td><p>Generate utterance identifiers (UIDs)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="loading_sources.html">load_source()</a></code> <code><a href="loading_sources.html">load_sources()</a></code> </p>
-        </td>
-        <td><p>Load a source from a file or a string</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsed_sources_to_ena_network.html">parsed_sources_to_ena_network()</a></code> </p>
-        </td>
-        <td><p>Create an ENA network out of one or more parsed sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rockParsedSources&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Parsing sources</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="prepending_uids.html">prepend_ids_to_source()</a></code> <code><a href="prepending_uids.html">prepend_ids_to_sources()</a></code> </p>
-        </td>
-        <td><p>Prepending unique utterance identifiers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rock.html">rock</a></code> </p>
-        </td>
-        <td><p>rock: A Reprocucible Open Coding Kit</p></td>
-      </tr>
-    </tbody>
+<span class='fu'>code_sources</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>input</th>
+      <td><p>The source, or list of sources, as
+produced by one of the <code>loading_sources</code> functions.</p></td>
+    </tr>
+    <tr>
+      <th>codes</th>
+      <td><p>A named character vector, where each element
+is the code to be added to the matching utterance, and
+the corresponding name is either an utterance identifier
+(in which case the utterance with that identifier will be
+coded with that code), a digit (in which case the utterance
+at that line number in the source will be coded with that
+code), or a regular expression, in which case all utterances
+matching that regular expression will be coded with that
+source.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>The encoding of the source file.</p></td>
+    </tr>
+    <tr>
+      <th>silent</th>
+      <td><p>Whether to be chatty or quiet.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>Invisibly, the coded source object.</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

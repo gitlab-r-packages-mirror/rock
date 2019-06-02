@@ -5,7 +5,7 @@
 #' Note that you'll probably want to clean the sources
 #' first, using one of the [clean_sources()] functions,
 #' and you'll probably want to add utterance identifiers
-#' to each utterance using one of the `prepending_uids`
+#' to each utterance using one of the [prepending_uids()]
 #' functions.
 #'
 #' @param input The filename or contents of the source

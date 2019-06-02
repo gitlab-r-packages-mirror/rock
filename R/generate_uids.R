@@ -25,5 +25,5 @@ generate_uids <- function(x,
   res <-
     unlist(lapply(timeNrs,
                   numericToBase30));
-  return(paste0("[[", res, "]]"));
+  return(paste0("[[uid:", res, "]]"));
 }

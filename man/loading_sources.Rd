@@ -28,6 +28,6 @@ a string and store it in memory for further processing.
 Note that you'll probably want to clean the sources
 first, using one of the \code{\link[=clean_sources]{clean_sources()}} functions,
 and you'll probably want to add utterance identifiers
-to each utterance using one of the \code{prepending_uids}
+to each utterance using one of the \code{\link[=prepending_uids]{prepending_uids()}}
 functions.
 }
