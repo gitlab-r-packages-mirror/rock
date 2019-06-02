@@ -10,6 +10,8 @@ pages:
   script:
     - mkdir public/iROCK
     - cp -R iROCK public
+    - mkdir public/img
+    - cp img/hex-logo.png public/img/hex-logo.png
   artifacts:
     paths:
     - public
