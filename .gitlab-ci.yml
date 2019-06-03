@@ -42,6 +42,10 @@ coverage:
   when: on_success
   only:
     - master
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends ${APT_PKGS}
+    - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   script:
     - install2.r covr
     - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr"))'
