@@ -27,12 +27,13 @@ parse_sources(path, extension = "rock|dct", regex, recursive = TRUE,
   codeRegexes = c(code = "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"),
   idRegexes = c(caseId = "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
   stanzaId = "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
-  autoGenerateIds = c("stanzaId"), sectionRegexes = c(paragraphs =
-  "---paragraph-break---", secondary = "---<[a-zA-Z0-9]?>---"),
-  inductiveCodingHierarchyMarker = ">", delimiterRegEx = "^---$",
+  sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
+  "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
+  persistentIds = c("caseId"), noCodes = "^uid:|^dct:|^ci:",
+  inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
-  "dct"), ignoreRegex = "^#", ignoreOddDelimiters = FALSE,
-  encoding = "UTF-8", silent = TRUE)
+  "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
+  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = TRUE)
 
 \method{print}{rockParsedSources}(x, prefix = "### ", ...)
 
