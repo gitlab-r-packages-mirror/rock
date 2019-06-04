@@ -277,13 +277,9 @@ parse_source <- function(text,
       cleanedMatches <-
         lapply(matches, gsub, pattern=codeRegexes[codeRegex], replacement="\\1");
 
-      print(cleanedMatches);
-
       ### Remove all codes matching the 'noCodes' argument
       cleanedMatches <-
         lapply(cleanedMatches, grep, pattern=noCodes, value=TRUE, invert=TRUE);
-
-      print(cleanedMatches);
 
       ### Get a complete list of all used codes. Note that for deductive codes,
       ### this list can contain duplicate leaves, because the ancestors are
