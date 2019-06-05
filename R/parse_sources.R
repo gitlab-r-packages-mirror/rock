@@ -28,7 +28,17 @@ parse_sources <- function(path,
   }
 
   if (missing(regex)) {
-    regex <- paste0("^(.*)\\.", extension, "$");
+    if (grep("|", extension, fixed=TRUE)) {
+      regex <- paste0("^(.*)\\.",
+                      strsplit(extension,
+                               "|",
+                               fixed=TRUE)[[1]],
+                      "$");
+      regex <- paste0("^(.*)\\.", extension, "$",
+                      collapse="|");
+    } else {
+      regex <- paste0("^(.*)\\.", extension, "$");
+    }
   }
 
   fileList <-
