@@ -11,6 +11,8 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
   res <- parse_source(file.path(examplePath,
                                 "lorum-ipsum.rock"));
 
+  testthat::expect_s3_class(res$sourceDf, 'data.frame');
+
 });
 
 ###-----------------------------------------------------------------------------
@@ -58,14 +60,14 @@ testthat::test_that("Multiple sources are read correctly", {
 
 ###-----------------------------------------------------------------------------
 
-testthat::test_that("multiple sources without deductive code trees are read correctly", {
+testthat::test_that("multiple sources without deductive code trees are read correctly (i.e. as NA)", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
   res <- parse_sources(examplePath,
                        regex = "ipsum");
 
-  testthat::expect_null(res$deductiveCodeTrees);
+  testthat::expect_true(identical(res$deductiveCodeTrees, NA));
 
 });
 
