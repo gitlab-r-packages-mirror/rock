@@ -70,6 +70,49 @@ parse_sources <- function(path,
   names(res$parsedSources) <-
     basename(fileList);
 
+  ### Get a full list of all rawCodings
+  allRawCodings <-
+    purrr::map(res$parsedSources,
+               'rawCodings');
+
+  ### Get a list of all names of codes (usually just 'code', but
+  ### in theory, people could use multiple types of code)
+  codeNames <- unique(unlist(lapply(allRawCodings, function(x) {
+    return(names(x));
+  })));
+
+  res$inductiveCodeTrees <-
+    lapply(codeNames,
+           function(codeRegex) {
+
+             ### Get used codes for this 'code type'
+             usedCodes <-
+               unique(unlist(lapply(res$parsedSources,
+                             function(x) {
+                               return(x$rawCodings[[codeRegex]]);
+                             })));
+
+             ### Process inductive code trees
+             tmpRes <-
+               inductiveCodes_to_tree(inductiveCodes=usedCodes,
+                                      codeRegex=codeRegex,
+                                      inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker,
+                                      silent=silent);
+
+             res <-
+               list(inductiveCodeProcessing = tmpRes$inductiveCodeProcessing[[codeRegex]],
+                    inductiveCodeTrees = tmpRes$inductiveCodeTrees[[codeRegex]],
+                    inductiveDiagrammeR = tmpRes$inductiveDiagrammeR[[codeRegex]],
+                    codingLeaves = tmpRes$codingLeaves[[codeRegex]],
+                    codings = tmpRes$codings[[codeRegex]]);
+
+             return(res);
+           });
+
+  names(res$inductiveCodeTrees) <-
+    codeNames;
+
+  ### Merge source dataframes
   res$sourcesDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'sourceDf'));
@@ -170,7 +213,7 @@ parse_sources <- function(path,
     #                     select=paste0(codesContainers, sep="|"));
 
   if (is.null(deductiveCodeLists)) {
-    res$deductiveCodeTrees <- NULL;
+    res$deductiveCodeTrees <- NA;
   } else {
 
     class(deductiveCodeLists) <-
