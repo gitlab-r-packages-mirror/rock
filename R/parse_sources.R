@@ -2,7 +2,7 @@
 #' @export
 parse_sources <- function(path,
                           extension = "rock|dct",
-                          regex,
+                          regex=NULL,
                           recursive=TRUE,
                           codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                           idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
@@ -27,14 +27,13 @@ parse_sources <- function(path,
          "' does not exist!");
   }
 
-  if (missing(regex)) {
+  if (is.null(regex)) {
     if (grepl("|", extension, fixed=TRUE)) {
       regex <- paste0("^(.*)\\.",
                       strsplit(extension,
                                "|",
                                fixed=TRUE)[[1]],
-                      "$");
-      regex <- paste0("^(.*)\\.", extension, "$",
+                      "$",
                       collapse="|");
     } else {
       regex <- paste0("^(.*)\\.", extension, "$");
