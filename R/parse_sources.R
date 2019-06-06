@@ -28,7 +28,7 @@ parse_sources <- function(path,
   }
 
   if (missing(regex)) {
-    if (grep("|", extension, fixed=TRUE)) {
+    if (grepl("|", extension, fixed=TRUE)) {
       regex <- paste0("^(.*)\\.",
                       strsplit(extension,
                                "|",
