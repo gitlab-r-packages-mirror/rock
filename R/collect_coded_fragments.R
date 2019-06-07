@@ -39,9 +39,9 @@ collect_coded_fragments <- function(x,
   dat <- x$mergedSourceDf;
 
   if (!silent) {
-    ufs::cat0("\nThe regular expression passed in argument `codes` ('",
+    ufs::cat0("The regular expression passed in argument `codes` ('",
               codes, "') matches the following codings: ",
-              ufs::vecTxtQ(codes), ".");
+              ufs::vecTxtQ(codes), ".\n\n");
   }
 
   ### Get line numbers of the fragments to extract,

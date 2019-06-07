@@ -129,9 +129,14 @@ parse_sources <- function(path,
     codeNames;
 
   ### Merge source dataframes
-  res$sourcesDf <-
+  res$sourceDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'sourceDf'));
+
+  ### Merge merged source dataframes
+  res$mergedSourceDf <-
+    dplyr::bind_rows(purrr::map(res$parsedSources,
+                                'mergedSourceDf'));
 
   ###--------------------------------------------------------------------------
   ### Now look in the returned objects for generic information and structure
