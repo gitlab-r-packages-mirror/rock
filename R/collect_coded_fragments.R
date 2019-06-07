@@ -9,19 +9,51 @@
 #' @param codes The regular expression that matches the codes to include
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
-#' @param rawResult Whether to returnt he raw result, a list of the
+#' @param heading Optionally, a title to include in the output. The title
+#' will be prefixed with `headingLevel` hashes (`#`), and the codes with
+#' `headingLevel+1` hashes. If `NULL` (the default), a heading will be
+#' generated that includes the collected codes if those are five or less.
+#' If a character value is specified, that will be used. To omit a heading,
+#' set to anything that is not `NULL` or a character vector (e.g. `FALSE`).
+#' If no heading is used, the code prefix will be `headingLevel` hashes,
+#' instead of `headingLevel+1` hashes.
+#' @param headingLevel The number of hashes to insert before the headings.
+#' @param rawResult Whether to return the raw result, a list of the
 #' fragments, or one character value in markdown format.
+#' @param output Here, a path and filename can be provided where the
+#' result will be written. If provided, the result will be returned
+#' invisibly.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
-#' when constructing he fragments (the raw versions contain all codes).
+#' when constructing the fragments (the raw versions contain all codes).
 #'
 #' @return Either a list of character vectors, or a single character value.
-#' @export
 #'
-#' @examples ### Add later
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Parse single example source
+#' parsedExample <- rock::parse_source(exampleFile);
+#'
+#' ### Show organised coded fragments in Markdown
+#' cat(collect_coded_fragments(parsedExample));
+#'
+#' ### Only for the codes containing 'Code2'
+#' cat(collect_coded_fragments(parsedExample,
+#'                             'Code2'));
+#'
+#' @export
 collect_coded_fragments <- function(x,
                                     codes = ".*",
                                     context = 0,
+                                    heading = NULL,
+                                    headingLevel = 2,
                                     rawResult = FALSE,
+                                    output = NULL,
                                     cleanUtterances = TRUE,
                                     silent=TRUE) {
 
@@ -69,8 +101,38 @@ collect_coded_fragments <- function(x,
   if (rawResult) {
     names(res) <-
       codes;
-    return(res);
   } else {
+    ### Set codePrefix based on whether a heading
+    ### will be included
+    if (is.null(heading)) {
+      if (length(codes) > 5) {
+        heading <-
+          paste0(ufs::repStr("#", headingLevel), " ",
+                 "Collected coded fragments with ",
+                 context, " lines of context",
+                 "\n\n");
+      } else {
+        heading <-
+          paste0(ufs::repStr("#", headingLevel), " ",
+                 "Collected coded fragments for codes ",
+                 ufs::vecTxtQ(codes), " with ",
+                 context, " lines of context",
+                 "\n\n");
+      }
+      codePrefix <-
+        paste0(ufs::repStr("#", headingLevel+1), " ");
+    } else if (is.character(heading)) {
+      heading <-
+        paste0(ufs::repStr("#", headingLevel), " ",
+               heading, "\n\n");
+      codePrefix <-
+        paste0(ufs::repStr("#", headingLevel+1), " ");
+    } else {
+      heading <- FALSE;
+      codePrefix <-
+        paste0(ufs::repStr("#", headingLevel), " ");
+    }
+
     ### Combine all fragments within each code
     res <- lapply(res,
                   paste0,
@@ -78,10 +140,32 @@ collect_coded_fragments <- function(x,
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
-    res <- paste0("## ", codes, "\n\n",
+    res <- paste0(codePrefix, codes, "\n\n",
                   res, "\n\n-----\n");
     ### Collapse into one character value
     res <- paste0(res, collapse="\n");
-    return(res);
+    ### Add title heading
+    if (!identical(heading, FALSE)) {
+      res <- paste0(heading,
+                    res);
+    }
   }
+
+  if (is.null(output)) {
+    return(res);
+  } else {
+    if (dir.exists(dirname(output))) {
+      writeLines(res,
+                 con = con <- file(output,
+                                   "w",
+                                   encoding="UTF-8"));
+      close(con);
+      return(invisible(res));
+    } else {
+      stop("You passed '", output,
+           "' as output filename, but directory '", dirname(output),
+           "' does not exist!");
+    }
+  }
+
 }

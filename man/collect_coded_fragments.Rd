@@ -4,8 +4,9 @@
 \alias{collect_coded_fragments}
 \title{Create an overview of coded fragments}
 \usage{
-collect_coded_fragments(x, codes = ".*", context = 0,
-  rawResult = FALSE, cleanUtterances = TRUE, silent = TRUE)
+collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
+  headingLevel = 2, rawResult = FALSE, output = NULL,
+  cleanUtterances = TRUE, silent = TRUE)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}
@@ -16,11 +17,26 @@ or \code{rock::parse_sources}.}
 \item{context}{How many utterances before and after the target
 utterances to include in the fragments.}
 
-\item{rawResult}{Whether to returnt he raw result, a list of the
+\item{heading}{Optionally, a title to include in the output. The title
+will be prefixed with \code{headingLevel} hashes (\code{#}), and the codes with
+\code{headingLevel+1} hashes. If \code{NULL} (the default), a heading will be
+generated that includes the collected codes if those are five or less.
+If a character value is specified, that will be used. To omit a heading,
+set to anything that is not \code{NULL} or a character vector (e.g. \code{FALSE}).
+If no heading is used, the code prefix will be \code{headingLevel} hashes,
+instead of \code{headingLevel+1} hashes.}
+
+\item{headingLevel}{The number of hashes to insert before the headings.}
+
+\item{rawResult}{Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.}
 
+\item{output}{Here, a path and filename can be provided where the
+result will be written. If provided, the result will be returned
+invisibly.}
+
 \item{cleanUtterances}{Whether to use the clean or the raw utterances
-when constructing he fragments (the raw versions contain all codes).}
+when constructing the fragments (the raw versions contain all codes).}
 }
 \value{
 Either a list of character vectors, or a single character value.
@@ -31,5 +47,22 @@ Collect all coded utterances and optionally add some context
 of all coded fragments per code.
 }
 \examples{
-### Add later
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+### Parse single example source
+parsedExample <- rock::parse_source(exampleFile);
+
+### Show organised coded fragments in Markdown
+cat(collect_coded_fragments(parsedExample));
+
+### Only for the codes containing 'Code2'
+cat(collect_coded_fragments(parsedExample,
+                            'Code2'));
+
 }

@@ -121,8 +121,9 @@ of all coded fragments per code.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(<span class='no'>x</span>, <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(<span class='no'>x</span>, <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>heading</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,14 +143,35 @@ or <code><a href='parsing_sources.html'>rock::parse_sources</a></code>.</p></td>
 utterances to include in the fragments.</p></td>
     </tr>
     <tr>
+      <th>heading</th>
+      <td><p>Optionally, a title to include in the output. The title
+will be prefixed with <code>headingLevel</code> hashes (<code>#</code>), and the codes with
+<code>headingLevel+1</code> hashes. If <code>NULL</code> (the default), a heading will be
+generated that includes the collected codes if those are five or less.
+If a character value is specified, that will be used. To omit a heading,
+set to anything that is not <code>NULL</code> or a character vector (e.g. <code>FALSE</code>).
+If no heading is used, the code prefix will be <code>headingLevel</code> hashes,
+instead of <code>headingLevel+1</code> hashes.</p></td>
+    </tr>
+    <tr>
+      <th>headingLevel</th>
+      <td><p>The number of hashes to insert before the headings.</p></td>
+    </tr>
+    <tr>
       <th>rawResult</th>
-      <td><p>Whether to returnt he raw result, a list of the
+      <td><p>Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>Here, a path and filename can be provided where the
+result will be written. If provided, the result will be returned
+invisibly.</p></td>
     </tr>
     <tr>
       <th>cleanUtterances</th>
       <td><p>Whether to use the clean or the raw utterances
-when constructing he fragments (the raw versions contain all codes).</p></td>
+when constructing the fragments (the raw versions contain all codes).</p></td>
     </tr>
     </table>
     
@@ -159,7 +181,132 @@ when constructing he fragments (the raw versions contain all codes).</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>### Add later
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Get a path to one example file</span>
+<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+
+<span class='co'>### Parse single example source</span>
+<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+
+<span class='co'>### Show organised coded fragments in Markdown</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>collect_coded_fragments</span>(<span class='no'>parsedExample</span>));</div><div class='output co'>#&gt; ## Collected coded fragments with 0 lines of context
+#&gt; 
+#&gt; ### childCode1
+#&gt; 
+#&gt; Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; specimen book.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### childCode2
+#&gt; 
+#&gt; specimen book.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### childCode3
+#&gt; 
+#&gt; electronic typesetting, remaining essentially unchanged.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### childCode4
+#&gt; 
+#&gt; including versions of Lorem Ipsum.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### childCode5
+#&gt; 
+#&gt; content of a page when looking at its layout.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode1
+#&gt; 
+#&gt; using 'Content here, content here', making it look like readable English.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode2
+#&gt; 
+#&gt; still in their infancy.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; accompanied by English versions from the 1914 translation by H. Rackham.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; reasonable. The generated Lorem Ipsum is therefore always free from
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode3
+#&gt; 
+#&gt; by accident, sometimes on purpose (injected humour and the like).
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode4
+#&gt; 
+#&gt; Where does it come from?
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode5
+#&gt; 
+#&gt; old.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode6
+#&gt; 
+#&gt; discovered the undoubtable source.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode7
+#&gt; 
+#&gt; repetition, injected humour, or non-characteristic words etc.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### someOtherCode
+#&gt; 
+#&gt; electronic typesetting, remaining essentially unchanged.
+#&gt; 
+#&gt; -----</div><div class='input'>
+<span class='co'>### Only for the codes containing 'Code2'</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>collect_coded_fragments</span>(<span class='no'>parsedExample</span>,
+                            <span class='st'>'Code2'</span>));</div><div class='output co'>#&gt; ## Collected coded fragments for codes 'childCode2' &amp; 'grandchildCode2' with 0 lines of context
+#&gt; 
+#&gt; ### childCode2
+#&gt; 
+#&gt; specimen book.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; ### grandchildCode2
+#&gt; 
+#&gt; still in their infancy.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; accompanied by English versions from the 1914 translation by H. Rackham.
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; reasonable. The generated Lorem Ipsum is therefore always free from
+#&gt; 
+#&gt; -----</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
