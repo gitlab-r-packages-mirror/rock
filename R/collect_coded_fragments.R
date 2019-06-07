@@ -140,7 +140,7 @@ collect_coded_fragments <- function(x,
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
-    res <- paste0(codePrefix, codes, "\n\n",
+    res <- paste0(codePrefix, codes, "\n\n-----\n\n",
                   res, "\n\n-----\n");
     ### Collapse into one character value
     res <- paste0(res, collapse="\n");
