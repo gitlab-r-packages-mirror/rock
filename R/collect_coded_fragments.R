@@ -25,6 +25,7 @@
 #' invisibly.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
 #' when constructing the fragments (the raw versions contain all codes).
+#' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #'
 #' @return Either a list of character vectors, or a single character value.
 #'

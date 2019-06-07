@@ -37,6 +37,8 @@ invisibly.}
 
 \item{cleanUtterances}{Whether to use the clean or the raw utterances
 when constructing the fragments (the raw versions contain all codes).}
+
+\item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
 \value{
 Either a list of character vectors, or a single character value.
