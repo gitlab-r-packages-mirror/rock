@@ -433,7 +433,11 @@ parse_source <- function(text,
 
   }
 
-  res$convenience$codings <- unlist(res$codings);
+  res$convenience$codings <- sort(unique(unlist(res$codings)));
+
+  res$convenience$codingLeaves <-
+    sort(unique(unlist(get_leaf_codes(res$codings,
+                                      inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used

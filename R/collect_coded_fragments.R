@@ -34,14 +34,14 @@ collect_coded_fragments <- function(x,
   }
 
   codes <- grep(codes,
-                x$convenience$codings,
+                x$convenience$codingLeaves,
                 value=TRUE);
-  metadata <- x$convenience$metadataVars;
   dat <- x$mergedSourceDf;
 
   if (!silent) {
     ufs::cat0("\nThe regular expression passed in argument `codes` ('",
-              codes, "') matches the following codings:");
+              codes, "') matches the following codings: ",
+              ufs::vecTxtQ(codes), ".");
   }
 
   ### Get line numbers of the fragments to extract,
