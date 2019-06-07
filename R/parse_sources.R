@@ -4,7 +4,7 @@ parse_sources <- function(path,
                           extension = "rock|dct",
                           regex=NULL,
                           recursive=TRUE,
-                          codeRegexes = c(code = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
+                          codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                           idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
                                         stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),
                           sectionRegexes = c(paragraphs = "---paragraph-break---",
@@ -71,17 +71,33 @@ parse_sources <- function(path,
     basename(fileList);
 
   ### Get a full list of all rawCodings
-  allRawCodings <-
-    purrr::map(res$parsedSources,
-               'rawCodings');
+  res$convenience <-
+    list(rawCodings = purrr::map(res$parsedSources,
+                                 'rawCodings'),
+         rawCodingLeaves = purrr::map(res$parsedSources,
+                                      'codings'));
+
+  res$convenience$codings <-
+    sort(unique(unlist(res$convenience$rawCodings)));
+  res$convenience$codingLeaves <-
+    sort(unique(unlist(res$convenience$rawCodingLeaves)));
+
+  res$convenience$metadata <-
+    dplyr::bind_rows(purrr::map(res$parsedSource,
+                                'metadataDf'));
+
+         # codings = purrr::map(res$parsedSources,
+         #                      'codings'),
+         # metadata = purrr::map(res$parsedSources,
+         #                       'metadata'));
 
   ### Get a list of all names of codes (usually just 'code', but
   ### in theory, people could use multiple types of code)
-  codeNames <- unique(unlist(lapply(allRawCodings, function(x) {
+  codeNames <- unique(unlist(lapply(res$convenience$rawCodings, function(x) {
     return(names(x));
   })));
 
-  res$inductiveCodeTrees <-
+  res$inductiveCoding <-
     lapply(codeNames,
            function(codeRegex) {
 
@@ -109,7 +125,7 @@ parse_sources <- function(path,
              return(res);
            });
 
-  names(res$inductiveCodeTrees) <-
+  names(res$inductiveCoding) <-
     codeNames;
 
   ### Merge source dataframes

@@ -22,7 +22,8 @@ collect_coded_fragments <- function(x,
                                     codes = ".*",
                                     context = 0,
                                     rawResult = FALSE,
-                                    cleanUtterances = TRUE) {
+                                    cleanUtterances = TRUE,
+                                    silent=TRUE) {
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
@@ -37,6 +38,11 @@ collect_coded_fragments <- function(x,
                 value=TRUE);
   metadata <- x$convenience$metadataVars;
   dat <- x$mergedSourceDf;
+
+  if (!silent) {
+    ufs::cat0("\nThe regular expression passed in argument `codes` ('",
+              codes, "') matches the following codings:");
+  }
 
   ### Get line numbers of the fragments to extract,
   ### get fragments, store them

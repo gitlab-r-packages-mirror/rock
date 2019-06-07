@@ -23,10 +23,11 @@ parse_source(text, file, codeRegexes = c(codes =
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
-parse_sources(path, extension = "rock|dct", regex, recursive = TRUE,
-  codeRegexes = c(code = "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"),
-  idRegexes = c(caseId = "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
-  stanzaId = "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
+parse_sources(path, extension = "rock|dct", regex = NULL,
+  recursive = TRUE, codeRegexes = c(codes =
+  "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
+  "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
+  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
   "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
   persistentIds = c("caseId"), noCodes = "^uid:|^dct:|^ci:",
@@ -130,17 +131,31 @@ contained identifiers, sections, and codes.
 }
 \examples{
 ### Get path to example source
-exampleFile <-
-  system.file("extdata", "example-1.rock", package="rock");
+examplePath <-
+  system.file("extdata", package="rock");
 
-### Parse example source
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+### Parse single example source
 parsedExample <- rock::parse_source(exampleFile);
 
-### Show inductive code tree
-parsedExample$inductiveCodeTrees;
+### Show inductive code tree for the codes
+### extracted with the regular expression specified with
+### the name 'codes':
+parsedExample$inductiveCodeTrees$codes;
 
 ### If you want `rock` to be chatty, use:
 parsedExample <- rock::parse_source(exampleFile,
                                     silent=FALSE);
+
+### Parse all example sources in that directory
+parsedExamples <- rock::parse_sources(examplePath);
+
+### Show combined inductive code tree for the codes
+### extracted with the regular expression specified with
+### the name 'codes':
+parsedExamples$inductiveCoding$codes$inductiveCodeTrees;
 
 }

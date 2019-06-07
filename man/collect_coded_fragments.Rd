@@ -5,7 +5,7 @@
 \title{Create an overview of coded fragments}
 \usage{
 collect_coded_fragments(x, codes = ".*", context = 0,
-  rawResult = FALSE, cleanUtterances = TRUE)
+  rawResult = FALSE, cleanUtterances = TRUE, silent = TRUE)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}

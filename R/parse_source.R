@@ -71,18 +71,32 @@
 #' @rdname parsing_sources
 #'
 #' @examples ### Get path to example source
-#' exampleFile <-
-#'   system.file("extdata", "example-1.rock", package="rock");
+#' examplePath <-
+#'   system.file("extdata", package="rock");
 #'
-#' ### Parse example source
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Parse single example source
 #' parsedExample <- rock::parse_source(exampleFile);
 #'
-#' ### Show inductive code tree
-#' parsedExample$inductiveCodeTrees;
+#' ### Show inductive code tree for the codes
+#' ### extracted with the regular expression specified with
+#' ### the name 'codes':
+#' parsedExample$inductiveCodeTrees$codes;
 #'
 #' ### If you want `rock` to be chatty, use:
 #' parsedExample <- rock::parse_source(exampleFile,
 #'                                     silent=FALSE);
+#'
+#' ### Parse all example sources in that directory
+#' parsedExamples <- rock::parse_sources(examplePath);
+#'
+#' ### Show combined inductive code tree for the codes
+#' ### extracted with the regular expression specified with
+#' ### the name 'codes':
+#' parsedExamples$inductiveCoding$codes$inductiveCodeTrees;
 #'
 #' @export
 parse_source <- function(text,
