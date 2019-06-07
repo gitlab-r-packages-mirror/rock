@@ -428,6 +428,9 @@ parse_source <- function(text,
 
   } else {
 
+    res$mergedSourceDf <-
+      res$sourceDf;
+
     res$convenience <-
       list(metadataVars = NULL);
 
