@@ -150,10 +150,16 @@ parse_source <- function(text,
     }
   }
 
-  arguments <- as.list(environment());
+  ### Store raw input for later reference
+  rawX <- x;
+
+  ### Store results in the object to return
+  res <-
+    structure(list(arguments = as.list(environment())),
+              class="rockParsedSource");
 
   ### First process YAML fragments and remove them
-  yamlFragments <-
+  res$yamlFragments <-
     yum::extract_yaml_fragments(text=x,
                                 delimiterRegEx=delimiterRegEx,
                                 ignoreOddDelimiters=ignoreOddDelimiters);
@@ -161,6 +167,55 @@ parse_source <- function(text,
     yum::delete_yaml_fragments(text=x,
                                delimiterRegEx=delimiterRegEx,
                                ignoreOddDelimiters=ignoreOddDelimiters);
+
+
+  ### Process metadata and deductive code trees
+  if (!is.null(res$yamlFragments)) {
+    res$metadata <-
+      yum::load_and_simplify(yamlFragments=res$yamlFragments,
+                             select=paste0(metadataContainers, collapse="|"));
+    res$deductiveCodes <-
+      yum::load_and_simplify(yamlFragments=res$yamlFragments,
+                             select=paste0(codesContainers, collapse="|"));
+    ### Build tree
+    deductiveCodeTrees <-
+      yum::build_tree(res$deductiveCodes);
+    ### Store tree, unless we should postpone that
+    if (!postponeDeductiveTreeBuilding) {
+      res$deductiveCodeTrees <-
+        deductiveCodeTrees;
+    }
+    ### Get all deductive codes
+    res$deductiveCodes <-
+      unname(parsedExample$deductiveCodeTrees$Get('name'));
+    ### Remove empty codes
+    res$deductiveCodes <-
+      res$deductiveCodes[nchar(res$deductiveCodes)>0];
+  }
+
+  if (length(res$metadata) > 0) {
+
+    ### Simplify YAML metadata and convert into a data frame
+    res$metadataDf <-
+      do.call(rbind,
+              lapply(res$metadata,
+                     as.data.frame,
+                     stringsAsFactors=FALSE));
+
+    ### Store metadata variables for convenient use later on
+    res$convenience <-
+      list(metadataVars =
+             setdiff(names(res$metadataDf),
+                     c(names(idRegexes),
+                       names(metadataContainers))));
+
+  } else {
+
+    res$convenience <-
+      list(metadataVars = NULL);
+
+  }
+
 
   ### Then remove lines to ignore
   linesToIgnore <- grepl(ignoreRegex,
@@ -271,11 +326,7 @@ parse_source <- function(text,
   ###---------------------------------------------------------------------------
 
   codings <- list();
-  codingLeaves <- list();
-  inductiveCodeProcessing <- list();
-  inductiveCodeTrees <- list();
-  inductiveDiagrammeR <- list();
-  originalInductiveCodeProcessing <- list();
+  codeProcessing <- list();
 
   ### Process codes
   if (!is.null(codeRegexes) && length(codeRegexes) > 0) {
@@ -296,64 +347,161 @@ parse_source <- function(text,
       cleanedMatches <-
         lapply(cleanedMatches, grep, pattern=noCodes, value=TRUE, invert=TRUE);
 
-      ### Get a complete list of all used codes. Note that for deductive codes,
-      ### this list can contain duplicate leaves, because the ancestors are
-      ### included here as well.
+      ### Get a complete list of all used codes. Note that this list can still contain
+      ### duplicate leaves, because the ancestors are included here as well.
       codings[[codeRegex]] <-
         sort(unique(unlist(cleanedMatches)));
 
-      ### Process inductive code trees
-      originalInductiveCodeProcessing[[codeRegex]] <-
-        inductiveCodes_to_tree(inductiveCodes=codings[[codeRegex]],
-                               codeRegex=codeRegex,
-                               inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker,
-                               silent=silent);
+      ### Split these unique codes (but potentially containing duplicates given the
+      ### inclusion of ancestors) into levels in case inductive coding was applied
+      if ((nchar(inductiveCodingHierarchyMarker) > 0) &&
+          (!is.null(codings[[codeRegex]])) &&
+          (length(codings[[codeRegex]]) > 0)) {
 
-      ### Extract objects and add to normal lists
-      inductiveCodeProcessing[[codeRegex]] <-
-        originalInductiveCodeProcessing[[codeRegex]]$inductiveCodeProcessing[[codeRegex]];
-      inductiveCodeTrees[[codeRegex]] <-
-        originalInductiveCodeProcessing[[codeRegex]]$inductiveCodeTrees[[codeRegex]];
-      inductiveDiagrammeR[[codeRegex]] <-
-        originalInductiveCodeProcessing[[codeRegex]]$inductiveDiagrammeR[[codeRegex]];
-      codingLeaves[[codeRegex]] <-
-        originalInductiveCodeProcessing[[codeRegex]]$codingLeaves[[codeRegex]];
-      codings[[codeRegex]] <-
-        originalInductiveCodeProcessing[[codeRegex]]$codings[[codeRegex]];
+        ### Create an object with the intermediate objects
+        codeProcessing[[codeRegex]] <- list();
 
-      ### Set matches for lines that did
-      ### not have a match to NA
-      cleanedMatches[unlist(lapply(matches, length))==0] <- NA;
+        ### Split the codes using the specified marker
+        codeProcessing[[codeRegex]]$splitCodings <-
+          strsplit(codings[[codeRegex]],
+                   inductiveCodingHierarchyMarker);
 
-      ### Get presence of codes in utterances
-      occurrences <-
-        lapply(get_leaf_codes(cleanedMatches,
-                              inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker),
-               `%in%`,
-               x=codingLeaves[[codeRegex]]);
+        ### Make a specific vector with the leaves
+        codeProcessing[[codeRegex]]$leafCodes <-
+          unlist(lapply(codeProcessing[[codeRegex]]$splitCodings,
+                        utils::tail,
+                        1));
 
-      ### Convert from logical to numeric
-      occurrenceCounts <-
-        lapply(occurrences, as.numeric);
+        ### Remove duplicate elements from the list with leaves
+        codeProcessing[[codeRegex]]$leafCodes <-
+          sort(unique(codeProcessing[[codeRegex]]$leafCodes));
 
-      ### Add the codes as names
-      namedOccurrences <-
-        lapply(occurrenceCounts,
-               `names<-`,
-               value <- codingLeaves[[codeRegex]]);
+        ### Make a separate list containing only the inductive codes
+        codeProcessing[[codeRegex]]$inductiveCodes <-
+          lapply(codeProcessing[[codeRegex]]$splitCodings,
+                 function(codeVector) {
+                   ### Check which of the codes in this vector are
+                   ### deductive codes
+                   deductives <-
+                     codeVector %in% res$deductiveCodes;
 
-      ### Convert the lists to dataframes
-      sourceDf <-
-        cbind(sourceDf,
-              as.data.frame(do.call(rbind,
-                                    namedOccurrences)));
+                   if (all(deductives)) {
+                     ### If no inductive codes included in this vector, return NULL
+                     return(NULL);
+                   } else if (all(!(deductives))) {
+                     ### If they're all inductive codes, return them all
+                     return(codeVector);
+                   } else {
+                     ### If a part is inductive, strip the deductive codes
+                     if (identical(rev(sort(deductives)), deductives)) {
+                       ### So we have 1+ deductive codes. We need to retain the
+                       ### last one, but can remove its ancestors.
+                       inductives <- !deductives;
+                       inductives[max(which(deductives))] <- TRUE;
+                       return(codeVector[inductives]);
+                     } else {
+                       problemCode <-
+                         paste0("[[",
+                                paste0(codeVector,
+                                       sep=inductiveCodingHierarchyMarker),
+                                "]]");
+                       stop("I encountered a code specification that includes both deductive ",
+                            "and inductive codes (", problemCode,
+                            ", occurring on lines ",
+                            grep(problemCode, rawX), " of the input source), but the inductive codes ",
+                            "are not all descendents of the deductive codes! Inductive coding ",
+                            "can be combined with deductive coding, but only if the inductive ",
+                            "codes further specify (i.e. are subcodes, or descendents, of) the ",
+                            "deductive codes.");
+                     }
+                   }
+                 });
 
-      ### Delete codes from utterances
-      x <-
-        gsub(codeRegexes[codeRegex],
-             "",
-             x);
+        ### Remove elements that are NULL
+        codeProcessing[[codeRegex]]$inductiveCodes <-
+          codeProcessing[[codeRegex]]$inductiveCodes[!unlist(lapply(codeProcessing[[codeRegex]]$inductiveCodes,
+                                                                    is.null))];
 
+      } else {
+        codeProcessing[[codeRegex]] <-
+          list(splitCodings = lapply(codings[[codeRegex]], return),
+               leafCodes = codings[[codeRegex]],
+               inductiveCodes = codings[[codeRegex]][!(codings[[codeRegex]] %in% res$deductiveCodes)]);
+      }
+
+      ### Get inductive leaf codes
+      codeProcessing[[codeRegex]]$inductiveLeafCodes <-
+        unlist(lapply(codeProcessing[[codeRegex]]$splitCodings,
+                      utils::tail,
+                      1));
+      codeProcessing[[codeRegex]]$inductiveLeafCodes <-
+        sort(unique(codeProcessing[[codeRegex]]$inductiveLeafCodes));
+
+      ### If inductive coding was applied using a hierarchical structure,
+      ### build the inductive code tree
+      if ((nchar(inductiveCodingHierarchyMarker) > 0) &&
+          (!is.null(codeProcessing[[codeRegex]]$inductiveCodes)) &&
+          (length(codeProcessing[[codeRegex]]$inductiveCodes) > 0)) {
+
+        ### Process inductive code trees
+        codeProcessing[[codeRegex]]$inductiveCodeTrees <-
+          inductiveCodes_to_tree(inductiveCodes=codeProcessing[[codeRegex]]$inductiveCodes,
+                                 silent=silent);
+
+        ### Set graph style
+        data.tree::SetGraphStyle(codeProcessing[[codeRegex]]$inductiveCodeTrees,
+                                 directed="false");
+        data.tree::SetGraphStyle(codeProcessing[[codeRegex]]$inductiveCodeTrees,
+                                 rankdir = "LR");
+
+        ### Try to convert to a DiagrammeR graph
+        tryCatch({
+          codeProcessing[[codeRegex]]$inductiveDiagrammeR <-
+            data.tree::ToDiagrammeRGraph(codeProcessing[[codeRegex]]$inductiveCodeTrees);
+        }, error = function(e) {
+          warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
+                  codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n",
+                  paste0(utils::capture.output(print(class(codeProcessing[[codeRegex]]$inductiveCodeTrees))),
+                         collapse="\n"),
+                  "\n",
+                  paste0(utils::capture.output(print(codeProcessing[[codeRegex]]$inductiveCodeTrees)),
+                         collapse="\n"));
+        });
+
+        ### Set matches for lines that did
+        ### not have a match to NA
+        cleanedMatches[unlist(lapply(matches, length))==0] <- NA;
+
+        ### Get presence of codes in utterances
+        occurrences <-
+          lapply(get_leaf_codes(cleanedMatches,
+                                inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker),
+                 `%in%`,
+                 x=codeProcessing[[codeRegex]]$leafCodes);
+
+        ### Convert from logical to numeric
+        occurrenceCounts <-
+          lapply(occurrences, as.numeric);
+
+        ### Add the codes as names
+        namedOccurrences <-
+          lapply(occurrenceCounts,
+                 `names<-`,
+                 value <- codeProcessing[[codeRegex]]$leafCodes);
+
+        ### Convert the lists to dataframes
+        sourceDf <-
+          cbind(sourceDf,
+                as.data.frame(do.call(rbind,
+                                      namedOccurrences)));
+
+        ### Delete codes from utterances
+        x <-
+          gsub(codeRegexes[codeRegex],
+               "",
+               x);
+
+      }
     }
   }
 
@@ -379,65 +527,31 @@ parse_source <- function(text,
   }
 
   ### Store results in the object to return
-  res <-
-    structure(list(arguments = arguments,
-                   sourceDf = cleanSourceDf,
-                   rawSourceDf = sourceDf,
-                   codings = codingLeaves,
-                   rawCodings = codings,
-                   inductiveCodeProcessing = inductiveCodeProcessing,
-                   inductiveCodeTrees = inductiveCodeTrees),
-                   #inductiveGraphs = inductiveDiagrammeR),
-              class="rockParsedSource");
+  res$sourceDf <- cleanSourceDf;
+  res$rawSourceDf <- sourceDf;
+  res$codings <- codeProcessing[[codeRegex]]$leafCodes;
+  res$rawCodings <- codings;
+  res$codeProcessing <- codeProcessing;
+  res$inductiveCodeTrees <- purrr::map(parsedExample$codeProcessing, "inductiveCodeTrees");
+  res$inductiveDiagrammeRs <- purrr::map(parsedExample$codeProcessing, "inductiveDiagrammeR");
 
-  ### Process metadata and deductive code trees
-  if (!is.null(yamlFragments)) {
-    res$metadata <-
-      yum::load_and_simplify(yamlFragments=yamlFragments,
-                             select=paste0(metadataContainers, collapse="|"));
-    res$deductiveCodes <-
-      yum::load_and_simplify(yamlFragments=yamlFragments,
-                             select=paste0(codesContainers, collapse="|"));
-    if (!postponeDeductiveTreeBuilding) {
-      res$deductiveCodeTrees <-
-        yum::build_tree(res$deductiveCodes);
-    }
-  }
-
+  ### Merge metadata with source dataframe
   if (length(res$metadata) > 0) {
-
-    ### Simplify YAML metadata and convert into a data frame
-    res$metadataDf <-
-      do.call(rbind,
-              lapply(res$metadata,
-                     as.data.frame,
-                     stringsAsFactors=FALSE));
 
     ### Merge metadata with source data
     res$mergedSourceDf <-
       merge(res$sourceDf,
             res$metadataDf);
 
-    ### Store metadata variables for convenient use later on
-    res$convenience <-
-      list(metadataVars =
-             setdiff(names(res$metadataDf),
-                     c(names(idRegexes),
-                       names(metadataContainers))));
-
-
   } else {
 
     res$mergedSourceDf <-
       res$sourceDf;
 
-    res$convenience <-
-      list(metadataVars = NULL);
-
   }
 
+  ### Add codings and leaves only to the convenience list
   res$convenience$codings <- sort(unique(unlist(res$codings)));
-
   res$convenience$codingLeaves <-
     sort(unique(unlist(get_leaf_codes(res$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
@@ -452,8 +566,34 @@ parse_source <- function(text,
       NULL;
   }
 
-  ### Add raw yamlFragments
-  res$yamlFragments <- yamlFragments;
+  ### Store all available deductive codes in this source
+  res$convenience$deductiveCodes <-
+    res$deductiveCodes;
+
+  ### Merge inductive code tree into deductive code tree
+  res$extendedDeductiveCodeTrees <-
+    data.tree::Clone(res$deductiveCodeTrees);
+  res$fullyMergedCodeTrees <-
+    data.tree::Clone(res$deductiveCodeTrees);
+
+  for (i in names(res$inductiveCodeTrees)) {
+    for (j in names(res$inductiveCodeTrees[[i]]$children)) {
+      if (j %in% res$deductiveCodes) {
+        currentNode1 <-
+          data.tree::FindNode(res$extendedDeductiveCodeTrees,
+                              j);
+        currentNode2 <-
+          data.tree::FindNode(res$fullyMergedCodeTrees,
+                              j);
+        for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
+          currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+          currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+        }
+      } else {
+        res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
+      }
+    }
+  }
 
   ### Return result
   return(res);
@@ -556,10 +696,12 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "\n",
                    "{prefix}Deductive coding trees\n\n",
                    deductiveTreesInfo));
-  if (length(x$inductiveCodeTrees) > 0) {
-    for (i in names(x$inductiveCodeTrees)) {
-      print(graphics::plot(x$inductiveCodeTrees[[i]]));
-      #DiagrammeR::render_graph(x$inductiveGraphs[[i]]);
+  #if (length(x$inductiveCodeTrees) > 0) {
+  if (length(x$inductiveDiagrammeRs) > 0) {
+    #for (i in names(x$inductiveCodeTrees)) {
+    for (i in names(x$inductiveDiagrammeRs)) {
+      #print(graphics::plot(x$inductiveCodeTrees[[i]]));
+      print(DiagrammeR::render_graph(x$inductiveDiagrammeRs[[i]]));
     }
   }
   if (length(x$deductiveCodeTrees) > 0) {
