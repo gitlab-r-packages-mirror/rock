@@ -48,6 +48,11 @@ parse_sources <- function(path,
 
   res <- list(input=as.list(environment()));
 
+  if (!silent) {
+    ufs::cat0("\nStarting to process all files matching regular expression '",
+              regex, "' in directory '", path, "'.\n\n");
+  }
+
   res$parsedSources <-
     lapply(fileList,
            parse_source,
@@ -66,6 +71,10 @@ parse_sources <- function(path,
            encoding=encoding,
            postponeDeductiveTreeBuilding = TRUE,
            silent=silent);
+
+  if (!silent) {
+    ufs::cat0("Done parsing all sources in directory '", path, "'.\n");
+  }
 
   names(res$parsedSources) <-
     basename(fileList);
@@ -91,42 +100,77 @@ parse_sources <- function(path,
          # metadata = purrr::map(res$parsedSources,
          #                       'metadata'));
 
-  ### Get a list of all names of codes (usually just 'code', but
+  ### Get a list of all names of codes (usually just 'codes', but
   ### in theory, people could use multiple types of code)
   codeNames <- unique(unlist(lapply(res$convenience$rawCodings, function(x) {
     return(names(x));
   })));
 
-  res$inductiveCoding <-
+  if (!silent) {
+    ufs::cat0("Found codes with names ", ufs::vecTxtQ(codeNames), ".\n");
+  }
+
+  res$inductiveSplitCodes <-
     lapply(codeNames,
-           function(codeRegex) {
+           function(codeName) {
+             return(list(unlist(lapply(res$parsedSources,
+                                       function(parsedSource) {
+                                         return(parsedSource$convenience$inductiveSplitCodes[[codeName]]);
+                                      }),
+                                recursive=FALSE)));
 
-             ### Get used codes for this 'code type'
-             usedCodes <-
-               unique(unlist(lapply(res$parsedSources,
-                             function(x) {
-                               return(x$rawCodings[[codeRegex]]);
-                             })));
-
-             ### Process inductive code trees
-             tmpRes <-
-               inductiveCodes_to_tree(inductiveCodes=usedCodes,
-                                      codeRegex=codeRegex,
-                                      inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker,
-                                      silent=silent);
-
-             res <-
-               list(inductiveCodeProcessing = tmpRes$inductiveCodeProcessing[[codeRegex]],
-                    inductiveCodeTrees = tmpRes$inductiveCodeTrees[[codeRegex]],
-                    inductiveDiagrammeR = tmpRes$inductiveDiagrammeR[[codeRegex]],
-                    codingLeaves = tmpRes$codingLeaves[[codeRegex]],
-                    codings = tmpRes$codings[[codeRegex]]);
-
-             return(res);
+             # ### Get used codes for this 'code type'
+             # usedCodes <-
+             #   unique(unlist(lapply(res$parsedSources,
+             #                 function(x) {
+             #                   return(x$rawCodings[[codeRegex]]);
+             #                 })));
+             #
+             # ### Process inductive code trees
+             # tmpRes <-
+             #   inductiveCodes_to_tree(inductiveCodes=usedCodes,
+             #                          codeRegex=codeRegex,
+             #                          inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker,
+             #                          silent=silent);
+             #
+             # res <-
+             #   list(inductiveCodeProcessing = tmpRes$inductiveCodeProcessing[[codeRegex]],
+             #        inductiveCodeTrees = tmpRes$inductiveCodeTrees[[codeRegex]],
+             #        inductiveDiagrammeR = tmpRes$inductiveDiagrammeR[[codeRegex]],
+             #        codingLeaves = tmpRes$codingLeaves[[codeRegex]],
+             #        codings = tmpRes$codings[[codeRegex]]);
+             #
+             # return(res);
            });
 
-  names(res$inductiveCoding) <-
+  res$inductiveSplitCodes <-
+    lapply(res$inductiveSplitCodes,
+           function(x) {
+             return(unname(unlist(x,
+                                  recursive=FALSE)));
+           });
+
+  names(res$inductiveSplitCodes) <-
     codeNames;
+
+  if (!silent) {
+    ufs::cat0("Successfully extracted and combined the inductive codes from each source. Starting building the inductive code tree.\n");
+  }
+
+  res$inductiveCodeTrees <-
+    lapply(res$inductiveSplitCodes,
+           function(x) {
+             if (length(x) > 0) {
+               return(inductiveCodes_to_tree(x,
+                                             silent=silent));
+             } else {
+               return(NA);
+             }
+           });
+
+  if (!silent) {
+    ufs::cat0("Successfully built the inductive code trees.\n");
+  }
 
   ### Merge source dataframes
   res$sourceDf <-
@@ -229,7 +273,7 @@ parse_sources <- function(path,
   deductiveCodeLists <-
     do.call(c,
             purrr::map(res$parsedSources,
-                       'deductiveCodes'));
+                       'rawDeductiveCodes'));
     # yum::load_yaml_list(yamlLineSets,
     #                     select=paste0(codesContainers, sep="|"));
 

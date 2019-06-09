@@ -128,12 +128,18 @@ parse_source <- function(text,
         x <- readLines(text,
                        encoding=encoding,
                        warn=FALSE);
+        if (!silent) {
+          ufs::cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
+        }
       } else {
         x <- text;
         if ((length(x) == 1) && grepl('\n', x)) {
           x <-
             strsplit(x,
                      "\n")[[1]];
+        }
+        if (!silent) {
+          ufs::cat0("Read input string (", length(x), " lines read).\n\n");
         }
       }
     }
@@ -142,6 +148,9 @@ parse_source <- function(text,
       x <- readLines(file,
                      encoding=encoding,
                      warn=FALSE);
+      if (!silent) {
+        ufs::cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
+      }
     } else {
       stop("The file you specified in argument `file` ('",
            paste0(file, collapse=" "),
@@ -149,9 +158,6 @@ parse_source <- function(text,
            "to process, please use argument `text`");
     }
   }
-
-  ### Store raw input for later reference
-  rawX <- x;
 
   ### Store results in the object to return
   res <-
@@ -168,29 +174,47 @@ parse_source <- function(text,
                                delimiterRegEx=delimiterRegEx,
                                ignoreOddDelimiters=ignoreOddDelimiters);
 
-
   ### Process metadata and deductive code trees
   if (!is.null(res$yamlFragments)) {
+    if (!silent) {
+      ufs::cat0("Encountered YAML fragments. Parsing them for metadata.\n");
+    }
     res$metadata <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(metadataContainers, collapse="|"));
-    res$deductiveCodes <-
+    if (!silent) {
+      ufs::cat0("Read ", length(unlist(testres$metadata)),
+                " metadata specifications. Continuing with deductive code trees.\n");
+    }
+    res$rawDeductiveCodes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(codesContainers, collapse="|"));
-    ### Build tree
-    deductiveCodeTrees <-
-      yum::build_tree(res$deductiveCodes);
-    ### Store tree, unless we should postpone that
-    if (!postponeDeductiveTreeBuilding) {
-      res$deductiveCodeTrees <-
-        deductiveCodeTrees;
-    }
-    ### Get all deductive codes
+    ### Get all deductive code ids
     res$deductiveCodes <-
-      unname(parsedExample$deductiveCodeTrees$Get('name'));
+      get_deductive_code_values(res$rawDeductiveCodes,
+                                name="id");
     ### Remove empty codes
     res$deductiveCodes <-
       res$deductiveCodes[nchar(res$deductiveCodes)>0];
+    if (!silent) {
+      ufs::cat0("Read ", length(res$deductiveCodes),
+                " deductive codes (",
+                ufs::vecTxtQ(res$deductiveCodes), ").\n");
+    }
+    ### Store tree, unless we should postpone that
+    if (!postponeDeductiveTreeBuilding) {
+      ### Build tree
+      deductiveCodeTrees <-
+        yum::build_tree(res$rawDeductiveCodes);
+      deductiveCodeTrees$name <- 'codes';
+      res$deductiveCodeTrees <-
+        deductiveCodeTrees;
+    } else {
+      deductiveCodeTrees <- NA;
+    }
+  } else {
+    res$deductiveCodes <- NA;
+    res$deductiveCodeTrees <- NA;
   }
 
   if (length(res$metadata) > 0) {
@@ -408,7 +432,7 @@ parse_source <- function(text,
                        stop("I encountered a code specification that includes both deductive ",
                             "and inductive codes (", problemCode,
                             ", occurring on lines ",
-                            grep(problemCode, rawX), " of the input source), but the inductive codes ",
+                            grep(problemCode, res$arguments$x), " of the input source), but the inductive codes ",
                             "are not all descendents of the deductive codes! Inductive coding ",
                             "can be combined with deductive coding, but only if the inductive ",
                             "codes further specify (i.e. are subcodes, or descendents, of) the ",
@@ -532,8 +556,8 @@ parse_source <- function(text,
   res$codings <- codeProcessing[[codeRegex]]$leafCodes;
   res$rawCodings <- codings;
   res$codeProcessing <- codeProcessing;
-  res$inductiveCodeTrees <- purrr::map(parsedExample$codeProcessing, "inductiveCodeTrees");
-  res$inductiveDiagrammeRs <- purrr::map(parsedExample$codeProcessing, "inductiveDiagrammeR");
+  res$inductiveCodeTrees <- purrr::map(res$codeProcessing, "inductiveCodeTrees");
+  res$inductiveDiagrammeRs <- purrr::map(res$codeProcessing, "inductiveDiagrammeR");
 
   ### Merge metadata with source dataframe
   if (length(res$metadata) > 0) {
@@ -570,29 +594,49 @@ parse_source <- function(text,
   res$convenience$deductiveCodes <-
     res$deductiveCodes;
 
-  ### Merge inductive code tree into deductive code tree
-  res$extendedDeductiveCodeTrees <-
-    data.tree::Clone(res$deductiveCodeTrees);
-  res$fullyMergedCodeTrees <-
-    data.tree::Clone(res$deductiveCodeTrees);
+  ### Store all available inductive codes in this source
+  res$convenience$inductiveSplitCodes <-
+    c(lapply(res$codeProcessing,
+             function(x) {
+               return(x$inductiveCodes);
+             }));
+  res$convenience$inductiveCodes <-
+    lapply(res$convenience$inductiveSplitCodes,
+           function(x) {
+             return(sort(unique(unname(unlist(x)))));
+           });
 
-  for (i in names(res$inductiveCodeTrees)) {
-    for (j in names(res$inductiveCodeTrees[[i]]$children)) {
-      if (j %in% res$deductiveCodes) {
-        currentNode1 <-
-          data.tree::FindNode(res$extendedDeductiveCodeTrees,
-                              j);
-        currentNode2 <-
-          data.tree::FindNode(res$fullyMergedCodeTrees,
-                              j);
-        for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
-          currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
-          currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+  if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
+    ### Merge inductive code tree into deductive code tree
+    res$extendedDeductiveCodeTrees <-
+      data.tree::Clone(res$deductiveCodeTrees);
+    res$fullyMergedCodeTrees <-
+      data.tree::Clone(res$deductiveCodeTrees);
+
+    for (i in names(res$inductiveCodeTrees)) {
+      for (j in names(res$inductiveCodeTrees[[i]]$children)) {
+        if (j %in% res$deductiveCodes) {
+          currentNode1 <-
+            data.tree::FindNode(res$extendedDeductiveCodeTrees,
+                                j);
+          currentNode2 <-
+            data.tree::FindNode(res$fullyMergedCodeTrees,
+                                j);
+          for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
+            currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+            currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+          }
+        } else {
+          res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
         }
-      } else {
-        res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
       }
     }
+  } else {
+    res$extendedDeductiveCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- NA;
+  }
+  if (!silent) {
+    cat("\n\n");
   }
 
   ### Return result

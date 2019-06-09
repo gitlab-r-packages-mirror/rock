@@ -5,6 +5,10 @@ inductiveCodes_to_tree <- function(inductiveCodes,
   ### Build the inductive coding tree
   ###---------------------------------------------------------------------------
 
+  if (!silent) {
+    ufs::cat0("\nStarting to process the inductive codes and building a code tree.");
+  }
+
   ### Build tree for this code regex. First some preparation.
   localRootsFull <-
     unlist(lapply(inductiveCodes,
@@ -138,85 +142,94 @@ inductiveCodes_to_tree <- function(inductiveCodes,
   ### Then start working on the subtrees that should be attached to
   ### a parent
 
-  if (!silent) {
-    ufs::cat0("\n\nProcessing subtrees of 'local roots that are branches', i.e. single codes ",
-              "that are descendants of other codes (without the full path to the root being ",
-              "specified in the code), or subtrees where the local root is in fact a descendant.");
-  }
-
-  for (i in seq_along(inductiveCodes[localRootsThatAreBranchesFullLogical])) {
-    currentSubtree <-
-      inductiveCodes[localRootsThatAreBranchesFullLogical][[i]];
-
+  if (length(inductiveCodes[localRootsThatAreBranchesFullLogical]) > 0) {
     if (!silent) {
-      ufs::cat0("\n\n- Processing subtree consisting of the node sequence ",
-                ufs::vecTxtQ(currentSubtree),
-                ".");
+      ufs::cat0("\n\nProcessing subtrees of 'local roots that are branches', i.e. single codes ",
+                "that are descendants of other codes (without the full path to the root being ",
+                "specified in the code), or subtrees where the local root is in fact a descendant.");
     }
-
-    if (length(currentSubtree) == 1) {
+    for (i in seq_along(inductiveCodes[localRootsThatAreBranchesFullLogical])) {
+      currentSubtree <-
+        inductiveCodes[localRootsThatAreBranchesFullLogical][[i]];
 
       if (!silent) {
-        ufs::cat0("\n  - This 'subtree' only consists of the parent/root code, ",
-                  "so no further processing required.");
+        ufs::cat0("\n\n- Processing subtree consisting of the node sequence ",
+                  ufs::vecTxtQ(currentSubtree),
+                  ".");
       }
 
-    } else {
-
-      currentNode <-
-        data.tree::FindNode(inductiveCodeTrees,
-                            currentSubtree[1]);
-
-      if (is.null(currentNode)) {
-        ### Code not found - should normally not be possible
+      if (length(currentSubtree) == 1) {
 
         if (!silent) {
-          ufs::cat0("\n  - I cannot find the local root of this subtree ('",
-                    currentSubtree[1], "') in the inductive code tree - this ",
-                    "should normally not occur (actually, it should not be ",
-                    "possible). Not processing this subtree further.");
+          ufs::cat0("\n  - This 'subtree' only consists of the parent/root code, ",
+                    "so no further processing required.");
         }
-
-        warning(paste0("Code '", codings[[codeRegex]][i], "' does not ",
-                       "have a parent I can find!"));
 
       } else {
 
-        if (!silent) {
-          ufs::cat0("\n  - This subtree doesn't only consist of the parent/root code, but contains ",
-                    length(currentSubtree)-1,
-                    " child(ren). Processing child(ren).");
-        }
+        currentNode <-
+          data.tree::FindNode(inductiveCodeTrees,
+                              currentSubtree[1]);
 
-        ### If it's found, loop through the children and progressively add them
-        for (currentBranch in currentSubtree[2:length(currentSubtree)]) {
-          if (currentBranch %in% data.tree::Get(currentNode$children, 'name')) {
-            if (!silent) {
-              ufs::cat0("\n      - This parent node already has a child with the name '",
-                        currentBranch,
-                        "', so not adding anything at this point.");
+        if (is.null(currentNode)) {
+          ### Code not found - should normally not be possible
+
+          if (!silent) {
+            ufs::cat0("\n  - I cannot find the local root of this subtree ('",
+                      currentSubtree[1], "') in the inductive code tree - this ",
+                      "should normally not occur (actually, it should not be ",
+                      "possible). Not processing this subtree further.");
+          }
+
+          warning(paste0("Code '", codings[[codeRegex]][i], "' does not ",
+                         "have a parent I can find!"));
+
+        } else {
+
+          if (!silent) {
+            ufs::cat0("\n  - This subtree doesn't only consist of the parent/root code, but contains ",
+                      length(currentSubtree)-1,
+                      " child(ren). Processing child(ren).");
+          }
+
+          ### If it's found, loop through the children and progressively add them
+          for (currentBranch in currentSubtree[2:length(currentSubtree)]) {
+            if (currentBranch %in% data.tree::Get(currentNode$children, 'name')) {
+              if (!silent) {
+                ufs::cat0("\n      - This parent node already has a child with the name '",
+                          currentBranch,
+                          "', so not adding anything at this point.");
+              }
+
+            } else {
+
+              if (!silent) {
+                ufs::cat0("\n      - This parent node does not yet have a child with the name '",
+                          currentBranch,
+                          "', so adding it to that parent node.");
+              }
+
+              currentNode <-
+                currentNode$AddChild(currentBranch);
+              currentNode$label <-
+                currentBranch;
+              currentNode$code <-
+                currentBranch;
             }
-
-          } else {
-
-            if (!silent) {
-              ufs::cat0("\n      - This parent node does not yet have a child with the name '",
-                        currentBranch,
-                        "', so adding it to that parent node.");
-            }
-
-            currentNode <-
-              currentNode$AddChild(currentBranch);
-            currentNode$label <-
-              currentBranch;
-            currentNode$code <-
-              currentBranch;
           }
         }
       }
     }
+  } else {
+    if (!silent) {
+      ufs::cat0("\n\nNo subtrees of 'local roots that are branches', i.e. single codes ",
+                "that are descendants of other codes (without the full path to the root being ",
+                "specified in the code) found, so no further processing required.");
+    }
   }
-
+  if (!silent) {
+    ufs::cat0("\n\nDone processing the inductive code tree.");
+  }
   return(inductiveCodeTrees);
 
 }

@@ -8,23 +8,24 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  res <- parse_source(file.path(examplePath,
-                                "lorum-ipsum.rock"));
+  testres <- parse_source(file.path(examplePath,
+                                    "lorum-ipsum.rock"));
 
-  testthat::expect_s3_class(res$sourceDf, 'data.frame');
+  testthat::expect_s3_class(testres);
 
 });
 
 ###-----------------------------------------------------------------------------
 
-testthat::test_that("a inductive code tree is read correctly", {
+testthat::test_that("an inductive code tree is read correctly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  res <- parse_source(file.path(examplePath,
-                                "longer-test.rock"));
+  testres <- parse_source(file.path(examplePath,
+                                    "longer-test.rock"),
+                          silent=TRUE);
 
-  testthat::expect_equal(res$inductiveCodeTrees$codes$inductFather$inducChild3$label,
+  testthat::expect_equal(testres$inductiveCodeTrees$codes$inductFather$inducChild3$label,
                          "inducChild3");
 
 });
@@ -35,10 +36,10 @@ testthat::test_that("a single deductive code tree is read correctly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  res <- parse_source(file.path(examplePath,
+  testres <- parse_source(file.path(examplePath,
                                 "second-test-file.rock"));
 
-  testthat::expect_equal(res$deductiveCodeTrees$parentCode1$someParent$childCode1$label,
+  testthat::expect_equal(testres$deductiveCodeTrees$parentCode1$someParent$childCode1$label,
                          "childCode1");
 
 });
@@ -49,11 +50,11 @@ testthat::test_that("Multiple sources are read correctly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
+  testres <- parse_sources(examplePath,
+                           extension="rock",
+                           silent=FALSE);
 
-  res <- parse_sources(examplePath,
-                       extension="rock");
-
-  testthat::expect_equal(res$deductiveCodeTrees$children$parentCode1$someParent$childCode2$label,
+  testthat::expect_equal(testres$deductiveCodeTrees$children$parentCode1$someParent$childCode2$label,
                          "childCode2");
 
 });
@@ -64,10 +65,10 @@ testthat::test_that("multiple sources without deductive code trees are read corr
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  res <- parse_sources(examplePath,
-                       regex = "ipsum");
+  testres <- parse_sources(examplePath,
+                           regex = "ipsum");
 
-  testthat::expect_true(identical(res$deductiveCodeTrees, NA));
+  testthat::expect_true(identical(testres$deductiveCodeTrees, NA));
 
 });
 
@@ -77,10 +78,10 @@ testthat::test_that("A deductive code tree is read correctly from multiple DCT f
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  res <- parse_sources(examplePath,
+  testres <- parse_sources(examplePath,
                        extension="dct");
 
-  testthat::expect_equal(res$deductiveCodeTrees$behavior_xl67k7w8j$intention_71vr5q3q$attitude_71vqm37n$label,
+  testthat::expect_equal(testres$deductiveCodeTrees$behavior_xl67k7w8j$intention_71vr5q3q$attitude_71vqm37n$label,
                          "Attitude");
 
 });
