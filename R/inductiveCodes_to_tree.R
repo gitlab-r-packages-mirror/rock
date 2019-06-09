@@ -181,7 +181,7 @@ inductiveCodes_to_tree <- function(inductiveCodes,
                       "possible). Not processing this subtree further.");
           }
 
-          warning(paste0("Code '", codings[[codeRegex]][i], "' does not ",
+          warning(paste0("Code '", currentSubtree[1], "' does not ",
                          "have a parent I can find!"));
 
         } else {

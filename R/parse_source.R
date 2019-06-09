@@ -183,7 +183,7 @@ parse_source <- function(text,
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(metadataContainers, collapse="|"));
     if (!silent) {
-      ufs::cat0("Read ", length(unlist(testres$metadata)),
+      ufs::cat0("Read ", length(unlist(res$metadata)),
                 " metadata specifications. Continuing with deductive code trees.\n");
     }
     res$rawDeductiveCodes <-
@@ -351,6 +351,9 @@ parse_source <- function(text,
 
   codings <- list();
   codeProcessing <- list();
+  occurrences <- list();
+  occurrenceCounts <- list();
+  namedOccurrences <- list();
 
   ### Process codes
   if (!is.null(codeRegexes) && length(codeRegexes) > 0) {
@@ -497,19 +500,19 @@ parse_source <- function(text,
         cleanedMatches[unlist(lapply(matches, length))==0] <- NA;
 
         ### Get presence of codes in utterances
-        occurrences <-
+        occurrences[[codeRegex]] <-
           lapply(get_leaf_codes(cleanedMatches,
                                 inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker),
                  `%in%`,
                  x=codeProcessing[[codeRegex]]$leafCodes);
 
         ### Convert from logical to numeric
-        occurrenceCounts <-
-          lapply(occurrences, as.numeric);
+        occurrenceCounts[[codeRegex]] <-
+          lapply(occurrences[[codeRegex]], as.numeric);
 
         ### Add the codes as names
-        namedOccurrences <-
-          lapply(occurrenceCounts,
+        namedOccurrences[[codeRegex]] <-
+          lapply(occurrenceCounts[[codeRegex]],
                  `names<-`,
                  value <- codeProcessing[[codeRegex]]$leafCodes);
 
@@ -517,7 +520,7 @@ parse_source <- function(text,
         sourceDf <-
           cbind(sourceDf,
                 as.data.frame(do.call(rbind,
-                                      namedOccurrences)));
+                                      namedOccurrences[[codeRegex]])));
 
         ### Delete codes from utterances
         x <-
@@ -607,27 +610,30 @@ parse_source <- function(text,
            });
 
   if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
-    ### Merge inductive code tree into deductive code tree
+    ### Merge inductive code tree into deductive code tree (currently only support
+    ### for one deductive code tree)
     res$extendedDeductiveCodeTrees <-
       data.tree::Clone(res$deductiveCodeTrees);
     res$fullyMergedCodeTrees <-
       data.tree::Clone(res$deductiveCodeTrees);
 
     for (i in names(res$inductiveCodeTrees)) {
-      for (j in names(res$inductiveCodeTrees[[i]]$children)) {
-        if (j %in% res$deductiveCodes) {
-          currentNode1 <-
-            data.tree::FindNode(res$extendedDeductiveCodeTrees,
-                                j);
-          currentNode2 <-
-            data.tree::FindNode(res$fullyMergedCodeTrees,
-                                j);
-          for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
-            currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
-            currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+      if ("Node" %in% class(res$inductiveCodeTrees[[i]])) {
+        for (j in names(res$inductiveCodeTrees[[i]]$children)) {
+          if (j %in% res$deductiveCodes) {
+            currentNode1 <-
+              data.tree::FindNode(res$extendedDeductiveCodeTrees,
+                                  j);
+            currentNode2 <-
+              data.tree::FindNode(res$fullyMergedCodeTrees,
+                                  j);
+            for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
+              currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+              currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+            }
+          } else {
+            res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
           }
-        } else {
-          res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
         }
       }
     }

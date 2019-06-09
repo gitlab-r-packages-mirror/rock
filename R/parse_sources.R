@@ -169,7 +169,7 @@ parse_sources <- function(path,
            });
 
   if (!silent) {
-    ufs::cat0("Successfully built the inductive code trees.\n");
+    ufs::cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
   }
 
   ### Merge source dataframes
@@ -181,6 +181,10 @@ parse_sources <- function(path,
   res$mergedSourceDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'mergedSourceDf'));
+
+  if (!silent) {
+    ufs::cat0("Merged all source dataframes together.\n");
+  }
 
   ###--------------------------------------------------------------------------
   ### Now look in the returned objects for generic information and structure
@@ -241,6 +245,10 @@ parse_sources <- function(path,
   #   metadataDf <-
   #   dplyr::bind_rows(metadataDfs);
 
+  if (!silent) {
+    ufs::cat0("Creating metadata dataframe and merging with source dataframe.\n");
+  }
+
   metadataDf <-
     res$metadataDf <-
     dplyr::bind_rows(lapply(purrr::map(res$parsedSources,
@@ -253,7 +261,7 @@ parse_sources <- function(path,
     ### Check whether metadata was provided for this identifier
     if (names(idRegexes)[i] %in% names(metadataDf)) {
       if (!silent) {
-        print(glue::glue("\n\nFor identifier class {names(idRegexes)[i]}, metadata was provided: proceeding to join to sources dataframe.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, metadata was provided: proceeding to join to sources dataframe.\n"));
       }
       ### Convert to character to avoid errors
       metadataDf[, names(idRegexes)[i]] <-
@@ -265,9 +273,13 @@ parse_sources <- function(path,
                          by=names(idRegexes)[i]);
     } else {
       if (!silent) {
-        print(glue::glue("\n\nFor identifier class {names(idRegexes)[i]}, no metadata was provided.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no metadata was provided.\n"));
       }
     }
+  }
+
+  if (!silent) {
+    ufs::cat0("Finished merging metadata with source dataframe. Starting to collect deductive code trees.\n");
   }
 
   deductiveCodeLists <-
@@ -279,7 +291,14 @@ parse_sources <- function(path,
 
   if (is.null(deductiveCodeLists)) {
     res$deductiveCodeTrees <- NA;
+    if (!silent) {
+      ufs::cat0("No deductive code trees found.\n");
+    }
   } else {
+
+    if (!silent) {
+      ufs::cat0("Specifications of deductive code trees found: combining them into actual tree.\n");
+    }
 
     class(deductiveCodeLists) <-
       "simplifiedYum";
@@ -304,7 +323,65 @@ parse_sources <- function(path,
                         c("color", "#888888", "edge"),
                         c("dir", "none", "edge"),
                         c("fillcolor", "#FFFFFF", "node"));
+
+    if (!silent) {
+      ufs::cat0("Successfully combined deductive code tree specifications into actual tree. Starting merging with inductive code trees.\n");
+    }
+
   }
+
+  if ("Node" %in% class(res$deductiveCodeTrees)) {
+
+    ### Merge inductive code tree into deductive code tree (currently only support
+    ### for one deductive code tree)
+    res$extendedDeductiveCodeTrees <-
+      data.tree::Clone(res$deductiveCodeTrees);
+    res$fullyMergedCodeTrees <-
+      data.tree::Clone(res$deductiveCodeTrees);
+
+    for (i in names(res$inductiveCodeTrees)) {
+
+      if ("Node" %in% class(res$inductiveCodeTrees[[i]])) {
+        for (j in names(res$inductiveCodeTrees[[i]]$children)) {
+          if (j %in% res$deductiveCodes) {
+            currentNode1 <-
+              data.tree::FindNode(res$extendedDeductiveCodeTrees,
+                                  j);
+            currentNode2 <-
+              data.tree::FindNode(res$fullyMergedCodeTrees,
+                                  j);
+            for (k in names(res$inductiveCodeTrees[[i]]$children[[j]]$children)) {
+              currentNode1$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+              currentNode2$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]$children[[k]]);
+            }
+          } else {
+            res$fullyMergedCodeTrees$AddChildNode(res$inductiveCodeTrees[[i]]$children[[j]]);
+          }
+        }
+      }
+    }
+
+    if (!silent) {
+      ufs::cat0("Successfully merged deductive code tree with inductive code trees.\n");
+    }
+
+  } else {
+    res$extendedDeductiveCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- NA;
+  }
+  if (!silent) {
+    cat("\n\n");
+  }
+
+
+
+
+
+
+
+
+
+
 
   # ### Get the codes
   # deductiveCodeLists <- list();

@@ -11,7 +11,7 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
   testres <- parse_source(file.path(examplePath,
                                     "lorum-ipsum.rock"));
 
-  testthat::expect_s3_class(testres);
+  testthat::expect_s3_class(testres, "rockParsedSource");
 
 });
 
@@ -52,7 +52,7 @@ testthat::test_that("Multiple sources are read correctly", {
 
   testres <- parse_sources(examplePath,
                            extension="rock",
-                           silent=FALSE);
+                           silent=TRUE);
 
   testthat::expect_equal(testres$deductiveCodeTrees$children$parentCode1$someParent$childCode2$label,
                          "childCode2");
@@ -79,7 +79,8 @@ testthat::test_that("A deductive code tree is read correctly from multiple DCT f
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
   testres <- parse_sources(examplePath,
-                       extension="dct");
+                           extension="dct",
+                           silent=TRUE);
 
   testthat::expect_equal(testres$deductiveCodeTrees$behavior_xl67k7w8j$intention_71vr5q3q$attitude_71vqm37n$label,
                          "Attitude");
