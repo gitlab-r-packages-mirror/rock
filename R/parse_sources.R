@@ -95,6 +95,13 @@ parse_sources <- function(path,
     dplyr::bind_rows(purrr::map(res$parsedSource,
                                 'metadataDf'));
 
+  res$convenience$metadataVars <-
+    sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
+                                           'convenience'),
+                                function(x) {
+                                  return(x$metadataVars);
+                                })))));
+
          # codings = purrr::map(res$parsedSources,
          #                      'codings'),
          # metadata = purrr::map(res$parsedSources,
@@ -180,10 +187,19 @@ parse_sources <- function(path,
   ### Merge merged source dataframes
   res$mergedSourceDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,
-                                'mergedSourceDf'));
+                                'mergedSourceDf'),
+                     .id="originalSource");
+
+  res$mergedSourceDf[, res$convenience$codingLeaves] <-
+    lapply(res$mergedSourceDf[, res$convenience$codingLeaves],
+           function(x) {
+             return(ifelse(is.na(x),
+                           0,
+                           x));
+           });
 
   if (!silent) {
-    ufs::cat0("Merged all source dataframes together.\n");
+    ufs::cat0("Merged all source dataframes together and set NA occurrences to 0.\n");
   }
 
   ###--------------------------------------------------------------------------

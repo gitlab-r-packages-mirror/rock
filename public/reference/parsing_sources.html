@@ -320,7 +320,12 @@ or not (<code>FALSE</code>).</p></td>
 #&gt; 16  °--someOtherCode          </div><div class='input'>
 <span class='co'>### If you want `rock` to be chatty, use:</span>
 <span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_source</a></span>(<span class='no'>exampleFile</span>,
-                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; 
+                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; Read the contents of file 'B:/Data/R/rock/inst/extdata/example-1.rock' (111 lines read).
+#&gt; Encountered YAML fragments. Parsing them for metadata.
+#&gt; Read 3 metadata specifications. Continuing with deductive code trees.
+#&gt; Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').
+#&gt; 
+#&gt; Starting to process the inductive codes and building a code tree.
 #&gt; Building tree containing all 'true local roots'.
 #&gt; - Processing 'true local root' 'parentCode1'.
 #&gt; - Processing 'true local root' 'parentCode2'.
@@ -412,14 +417,17 @@ or not (<code>FALSE</code>).</p></td>
 #&gt;       - This parent node does not yet have a child with the name 'grandchildCode7', so adding it to that parent node.
 #&gt; 
 #&gt; - Processing subtree consisting of the node sequence 'grandchildCode2'.
-#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.</div><div class='input'>
+#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
+#&gt; 
+#&gt; Done processing the inductive code tree.
+#&gt; </div><div class='input'>
 <span class='co'>### Parse all example sources in that directory</span>
 <span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_sources</a></span>(<span class='no'>examplePath</span>);
 
 <span class='co'>### Show combined inductive code tree for the codes</span>
 <span class='co'>### extracted with the regular expression specified with</span>
 <span class='co'>### the name 'codes':</span>
-<span class='no'>parsedExamples</span>$<span class='no'>inductiveCoding</span>$<span class='no'>codes</span>$<span class='no'>inductiveCodeTrees</span>;</div><div class='output co'>#&gt;                      levelName
+<span class='no'>parsedExamples</span>$<span class='no'>inductiveCodeTrees</span>$<span class='no'>codes</span>;</div><div class='output co'>#&gt;                      levelName
 #&gt; 1  codes                      
 #&gt; 2   ¦--parentCode1            
 #&gt; 3   ¦   ¦--childCode1         

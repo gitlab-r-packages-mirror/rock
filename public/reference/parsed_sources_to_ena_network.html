@@ -117,8 +117,10 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>parsed_sources_to_ena_network</span>(<span class='no'>x</span>, <span class='no'>unitCols</span>, <span class='no'>conversationCols</span>,
-  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>codings</span>, <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>metadataVars</span>)</pre>
+    <pre class="usage"><span class='fu'>parsed_sources_to_ena_network</span>(<span class='no'>x</span>, <span class='no'>unitCols</span>,
+  <span class='kw'>conversationCols</span> <span class='kw'>=</span> <span class='st'>"originalSource"</span>,
+  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>codingLeaves</span>,
+  <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>metadataVars</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,11 +131,13 @@
     </tr>
     <tr>
       <th>unitCols</th>
-      <td><p>The columns that together define units.</p></td>
+      <td><p>The columns that together define units (e.g. utterances in each
+source that belong together, for example because they're about the same topic).</p></td>
     </tr>
     <tr>
       <th>conversationCols</th>
-      <td><p>The columns that together define conversations.</p></td>
+      <td><p>The columns that together define conversations (e.g. separate
+sources, but can be something else, as well).</p></td>
     </tr>
     <tr>
       <th>codes</th>
@@ -152,7 +156,21 @@ metadata. By default, takes all read metadata.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>### Add example later!
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Parse all example sources in that directory</span>
+<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_sources</a></span>(<span class='no'>examplePath</span>);
+
+<span class='co'>### Add something to indicate which units belong together</span>
+<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>units</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>11</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>9</span>);
+
+<span class='co'>### Generate ENA plot - this is not run during testing because</span>
+<span class='co'>### it takes too long</span></div><span class='co'># NOT RUN {</span>
+<span class='fu'>parsed_sources_to_ena_network</span>(<span class='no'>parsedExamples</span>,
+                              <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

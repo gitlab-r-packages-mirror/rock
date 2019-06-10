@@ -96,7 +96,7 @@
 #' ### Show combined inductive code tree for the codes
 #' ### extracted with the regular expression specified with
 #' ### the name 'codes':
-#' parsedExamples$inductiveCoding$codes$inductiveCodeTrees;
+#' parsedExamples$inductiveCodeTrees$codes;
 #'
 #' @export
 parse_source <- function(text,

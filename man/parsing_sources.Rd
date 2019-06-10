@@ -156,6 +156,6 @@ parsedExamples <- rock::parse_sources(examplePath);
 ### Show combined inductive code tree for the codes
 ### extracted with the regular expression specified with
 ### the name 'codes':
-parsedExamples$inductiveCoding$codes$inductiveCodeTrees;
+parsedExamples$inductiveCodeTrees$codes;
 
 }

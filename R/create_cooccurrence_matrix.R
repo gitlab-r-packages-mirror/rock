@@ -11,9 +11,18 @@
 #' @return The co-occurrence matrix; a `matrix`.
 #' @export
 #'
-#' @examples ### Add example later!
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Parse all example sources in that directory
+#' parsedExamples <- rock::parse_sources(examplePath);
+#'
+#' ### Create cooccurrence matrix
+#' rock::create_cooccurrence_matrix(parsedExamples);
+#'
 create_cooccurrence_matrix <- function(x,
-                                       codes = x$convenience$codings,
+                                       codes = x$convenience$codingLeaves,
                                        plotHeatmap = FALSE) {
 
   if (!("rockParsedSource" %in% class(x)) &&

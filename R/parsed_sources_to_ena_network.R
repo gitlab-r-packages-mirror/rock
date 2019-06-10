@@ -1,8 +1,10 @@
 #' Create an ENA network out of one or more parsed sources
 #'
 #' @param x The parsed source(s) as provided by `rock::parse_source` or `rock::parse_sources`.
-#' @param unitCols The columns that together define units.
-#' @param conversationCols The columns that together define conversations.
+#' @param unitCols The columns that together define units (e.g. utterances in each
+#' source that belong together, for example because they're about the same topic).
+#' @param conversationCols The columns that together define conversations (e.g. separate
+#' sources, but can be something else, as well).
 #' @param codes The codes to include; by default, takes all codes.
 #' @param metadata The columns in the merged source dataframe that contain the
 #' metadata. By default, takes all read metadata.
@@ -10,11 +12,27 @@
 #' @return The result of a call to [rENA::ena.plot.network()].
 #' @export
 #'
-#' @examples ### Add example later!
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Parse all example sources in that directory
+#' parsedExamples <- rock::parse_sources(examplePath);
+#'
+#' ### Add something to indicate which units belong together
+#' parsedExamples$mergedSourceDf$units <- rep(1:11, each=9);
+#'
+#' ### Generate ENA plot - this is not run during testing because
+#' ### it takes too long
+#' \dontrun{
+#' parsed_sources_to_ena_network(parsedExamples,
+#'                               unitCols='units');
+#' }
+#'
 parsed_sources_to_ena_network <- function(x,
                                           unitCols,
-                                          conversationCols,
-                                          codes = x$convenience$codings,
+                                          conversationCols = 'originalSource',
+                                          codes = x$convenience$codingLeaves,
                                           metadata = x$convenience$metadataVars) {
 
   if (!requireNamespace("rENA", quietly = TRUE)) {

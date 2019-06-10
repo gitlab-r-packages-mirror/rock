@@ -4,15 +4,19 @@
 \alias{parsed_sources_to_ena_network}
 \title{Create an ENA network out of one or more parsed sources}
 \usage{
-parsed_sources_to_ena_network(x, unitCols, conversationCols,
-  codes = x$convenience$codings, metadata = x$convenience$metadataVars)
+parsed_sources_to_ena_network(x, unitCols,
+  conversationCols = "originalSource",
+  codes = x$convenience$codingLeaves,
+  metadata = x$convenience$metadataVars)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source} or \code{rock::parse_sources}.}
 
-\item{unitCols}{The columns that together define units.}
+\item{unitCols}{The columns that together define units (e.g. utterances in each
+source that belong together, for example because they're about the same topic).}
 
-\item{conversationCols}{The columns that together define conversations.}
+\item{conversationCols}{The columns that together define conversations (e.g. separate
+sources, but can be something else, as well).}
 
 \item{codes}{The codes to include; by default, takes all codes.}
 
@@ -26,5 +30,21 @@ The result of a call to \code{\link[rENA:ena.plot.network]{rENA::ena.plot.networ
 Create an ENA network out of one or more parsed sources
 }
 \examples{
-### Add example later!
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Parse all example sources in that directory
+parsedExamples <- rock::parse_sources(examplePath);
+
+### Add something to indicate which units belong together
+parsedExamples$mergedSourceDf$units <- rep(1:11, each=9);
+
+### Generate ENA plot - this is not run during testing because
+### it takes too long
+\dontrun{
+parsed_sources_to_ena_network(parsedExamples,
+                              unitCols='units');
+}
+
 }

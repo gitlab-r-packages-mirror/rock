@@ -1,6 +1,6 @@
 get_deductive_code_values <- function(x,
                                       name="id") {
-  if (is.null(x) || is.na(x)) {
+  if (all(is.null(x)) || all(is.na(x))) {
     return(x);
   }
   if (name %in% names(x)) {

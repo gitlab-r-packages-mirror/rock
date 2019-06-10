@@ -4,7 +4,7 @@
 \alias{create_cooccurrence_matrix}
 \title{Create a co-occurrence matrix}
 \usage{
-create_cooccurrence_matrix(x, codes = x$convenience$codings,
+create_cooccurrence_matrix(x, codes = x$convenience$codingLeaves,
   plotHeatmap = FALSE)
 }
 \arguments{
@@ -23,5 +23,14 @@ coded sources. Optionally, it plots a heatmap, simply by calling
 the \code{\link[stats:heatmap]{stats::heatmap()}} function on that matrix.
 }
 \examples{
-### Add example later!
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Parse all example sources in that directory
+parsedExamples <- rock::parse_sources(examplePath);
+
+### Create cooccurrence matrix
+rock::create_cooccurrence_matrix(parsedExamples);
+
 }
