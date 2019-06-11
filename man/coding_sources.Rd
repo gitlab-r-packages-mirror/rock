@@ -5,8 +5,8 @@
 \alias{code_sources}
 \title{Add one or more codes to one or more sources}
 \usage{
-code_source(input, codes, codeDelimiters = c("[[", "]]"),
-  silent = FALSE)
+code_source(input, codes, indices = NULL, codeDelimiters = c("[[",
+  "]]"), silent = TRUE)
 
 code_sources(input, codes, silent = FALSE)
 }
@@ -27,6 +27,11 @@ matching that regular expression will be coded with that
 source. If specifying an utterance ID or code, make sure
 that the code delimiters are included (normally, two square
 brackets).}
+
+\item{indices}{A logical vector of the same length as \code{input}
+that indicates to which utterance the code in \code{codes} should be
+applied. Note that if \code{indiced} is provided, only the first
+element of \code{codes} is used, and its name is ignored.}
 
 \item{codeDelimiters}{A character vector of two elements
 specifying the opening and closing delimiters of codes (conform
@@ -63,7 +68,7 @@ cat(loadedExample[71]);
 ### containing "Ipsum" with the code 'ipsum' and
 ### all utterances containing the code
 codeSpecs <-
-  c("Ipsum" = "ipsum",
+  c("(?i)ipsum" = "ipsum",
     "BC|AD|\\\\d\\\\d\\\\d\\\\ds" = "timeRef");
 
 ### Apply rules
@@ -79,5 +84,13 @@ moreCodedExample <- code_source(codedExample,
 
 ### Show line 71
 cat(moreCodedExample[71]);
+
+### Use the 'indices' argument to add the code 'bar' to
+### line 71
+overCodedExample <- code_source(moreCodedExample,
+                                "bar",
+                                indices=71);
+
+cat(overCodedExample[71]);
 
 }
