@@ -10,20 +10,63 @@
 #' is the code to be added to the matching utterance, and
 #' the corresponding name is either an utterance identifier
 #' (in which case the utterance with that identifier will be
-#' coded with that code), a digit (in which case the utterance
-#' at that line number in the source will be coded with that
+#' coded with that code), a code (in which case all utterances
+#' with that code will be coded with the new code as well), a
+#' digit (in which case the utterance at that line number in
+#' the source will be coded with that
 #' code), or a regular expression, in which case all utterances
 #' matching that regular expression will be coded with that
-#' source.
-#' @param encoding The encoding of the source file.
+#' source. If specifying an utterance ID or code, make sure
+#' that the code delimiters are included (normally, two square
+#' brackets).
+#' @param codeDelimiters A character vector of two elements
+#' specifying the opening and closing delimiters of codes (conform
+#' the default ROCK convention, two square brackets). The square
+#' brackets will be escaped; other characters will not, but will
+#' be used as-is.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the coded source object.
 #' @rdname coding_sources
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Parse single example source
+#' loadedExample <- rock::load_source(exampleFile);
+#'
+#' ### Show line 71
+#' cat(loadedExample[71]);
+#'
+#' ### Specify the rules to code all utterances
+#' ### containing "Ipsum" with the code 'ipsum' and
+#' ### all utterances containing the code
+#' codeSpecs <-
+#'   c("Ipsum" = "ipsum",
+#'     "BC|AD|\\d\\d\\d\\ds" = "timeRef");
+#'
+#' ### Apply rules
+#' codedExample <- code_source(loadedExample,
+#'                             codeSpecs);
+#'
+#' ### Show line 71
+#' cat(codedExample[71]);
+#'
+#' ### Also add code "foo" to utteranced with code 'ipsum'
+#' moreCodedExample <- code_source(codedExample,
+#'                                 c("[[ipsum]]" = "foo"));
+#'
+#' ### Show line 71
+#' cat(moreCodedExample[71]);
+#'
 #' @export
 code_source <- function(input,
                         codes,
-                        encoding="UTF-8",
+                        codeDelimiters = c("[[", "]]"),
                         silent=FALSE) {
 
   if (!("rock_source" %in% class(input))) {
@@ -31,27 +74,44 @@ code_source <- function(input,
          "as loaded with load_source or load_sources.");
   }
 
+  ### Create regex to match codes, where we escape the character
+  ### class specification codes (square brackets)
+  regexMatchingCode <-
+    paste0("^",
+           escapeRegexCharacterClass(codeDelimiters[1]),
+           "(.*)",
+           escapeRegexCharacterClass(codeDelimiters[2]),
+           "$");
+
   for (i in seq_along(codes)) {
-    if (grepl("^\\[\\[.*\\]\\]$", names(codes)[i])) {
-      ### The name of this case is an utterance ID;
-      ### get indices matching it
-      indices <- grep(gsub("^\\[\\[(.*)\\]\\]$",
-                           "\\\\[\\\\[\\1\\\\]\\\\]",
-                           names(codes)[i]),
-                      input);
-      ### Append code
-      input[indices] <-
-        paste(input[indices],
-              paste0("[[", codes[i], "]]"),
-              sep=" ");
+
+    ### Generate code to add to utterances matching this code
+    codeToAdd <-
+      paste0(codeDelimiters[1],
+             codes[i],
+             codeDelimiters[2]);
+
+    if (grepl(regexMatchingCode,
+              names(codes)[i],
+              perl=TRUE)) {
+
+      ### The name of this case is a code or an utterance ID;
+      ### Extract it from between the specified delimiters
+      escapedCodeToFind <-
+        escapeRegexCharacterClass(names(codes)[i]);
+
+      ### Get indices matching it
+      indices <-
+        grep(escapedCodeToFind,
+             input,
+             perl=TRUE);
+
     } else if (grepl("^[0-9]+$", names(codes)[i])) {
       ### It's a number, so a line number; check whether
       ### it's not too high and then add code
       if (names(codes)[i] <= length(input)) {
-        input[as.numeric(names(codes)[i])] <-
-          paste(input[as.numeric(names(codes)[i])],
-                paste0("[[", codes[i], "]]"),
-                sep=" ");
+        ### (Only one index, really)
+        indices <- as.numeric(names(codes)[i]);
       } else {
         stop("You specified a line number (",
              names(codes)[i], ") that's higher than ",
@@ -64,12 +124,12 @@ code_source <- function(input,
       ### get indices matching it
       indices <- grep(names(codes)[i],
                       input);
-      ### Append code
-      input[indices] <-
-        paste(input[indices],
-              paste0("[[", codes[i], "]]"),
-              sep=" ");
     }
+    ### Append code
+    input[indices] <-
+      paste(input[indices],
+            codeToAdd,
+            sep=" ");
   }
 
   res <- input;

@@ -37,14 +37,17 @@ examplePath <-
 ### Parse all example sources in that directory
 parsedExamples <- rock::parse_sources(examplePath);
 
-### Add something to indicate which units belong together
+### Add something to indicate which units belong together; normally,
+### these would probably be indicated using one of the identifier,
+### for example the stanza identifiers, the sid's
 parsedExamples$mergedSourceDf$units <- rep(1:11, each=9);
 
-### Generate ENA plot - this is not run during testing because
-### it takes too long
-\dontrun{
-parsed_sources_to_ena_network(parsedExamples,
-                              unitCols='units');
-}
+### Generate ENA plot
+enaPlot <-
+  rock::parsed_sources_to_ena_network(parsedExamples,
+                                      unitCols='units');
+
+### Show the resulting plot
+\donttest{print(enaPlot);}
 
 }

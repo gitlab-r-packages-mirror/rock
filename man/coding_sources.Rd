@@ -5,7 +5,8 @@
 \alias{code_sources}
 \title{Add one or more codes to one or more sources}
 \usage{
-code_source(input, codes, encoding = "UTF-8", silent = FALSE)
+code_source(input, codes, codeDelimiters = c("[[", "]]"),
+  silent = FALSE)
 
 code_sources(input, codes, silent = FALSE)
 }
@@ -17,13 +18,21 @@ produced by one of the \code{loading_sources} functions.}
 is the code to be added to the matching utterance, and
 the corresponding name is either an utterance identifier
 (in which case the utterance with that identifier will be
-coded with that code), a digit (in which case the utterance
-at that line number in the source will be coded with that
+coded with that code), a code (in which case all utterances
+with that code will be coded with the new code as well), a
+digit (in which case the utterance at that line number in
+the source will be coded with that
 code), or a regular expression, in which case all utterances
 matching that regular expression will be coded with that
-source.}
+source. If specifying an utterance ID or code, make sure
+that the code delimiters are included (normally, two square
+brackets).}
 
-\item{encoding}{The encoding of the source file.}
+\item{codeDelimiters}{A character vector of two elements
+specifying the opening and closing delimiters of codes (conform
+the default ROCK convention, two square brackets). The square
+brackets will be escaped; other characters will not, but will
+be used as-is.}
 
 \item{silent}{Whether to be chatty or quiet.}
 }
@@ -34,4 +43,41 @@ Invisibly, the coded source object.
 These functions add codes to one or more
 sources that were read with one of the
 \code{loading_sources} functions.
+}
+\examples{
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+### Parse single example source
+loadedExample <- rock::load_source(exampleFile);
+
+### Show line 71
+cat(loadedExample[71]);
+
+### Specify the rules to code all utterances
+### containing "Ipsum" with the code 'ipsum' and
+### all utterances containing the code
+codeSpecs <-
+  c("Ipsum" = "ipsum",
+    "BC|AD|\\\\d\\\\d\\\\d\\\\ds" = "timeRef");
+
+### Apply rules
+codedExample <- code_source(loadedExample,
+                            codeSpecs);
+
+### Show line 71
+cat(codedExample[71]);
+
+### Also add code "foo" to utteranced with code 'ipsum'
+moreCodedExample <- code_source(codedExample,
+                                c("[[ipsum]]" = "foo"));
+
+### Show line 71
+cat(moreCodedExample[71]);
+
 }
