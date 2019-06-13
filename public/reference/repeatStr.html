@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate utterance identifiers (UIDs) — generate_uids • rock</title>
+<title>Repeat a string a number of times — repeatStr • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Generate utterance identifiers (UIDs) — generate_uids" />
+<meta property="og:title" content="Repeat a string a number of times — repeatStr" />
 
-<meta property="og:description" content="Generate utterance identifiers (UIDs)" />
+<meta property="og:description" content="Repeat a string a number of times" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,49 +106,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate utterance identifiers (UIDs)</h1>
+    <h1>Repeat a string a number of times</h1>
     
-    <div class="hidden name"><code>generate_uids.Rd</code></div>
+    <div class="hidden name"><code>repeatStr.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generate utterance identifiers (UIDs)</p>
+    <p>Repeat a string a number of times</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_uids</span>(<span class='no'>x</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())</pre>
+    <pre class="usage"><span class='fu'>repeatStr</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>str</span> <span class='kw'>=</span> <span class='st'>" "</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>The number of identifiers te generate.</p></td>
-    </tr>
-    <tr>
-      <th>origin</th>
-      <td><p>The origin to use when generating the actual
-identifiers. These identifiers are the present UNIX timestamp
-(i.e. the number of seconds elapsed since the UNIX epoch,
-the first of january 1970), accurate to two decimal places
-(i.e. to centiseconds), converted to the base 30 system using
-<code><a href='base30conversion.html'>numericToBase30()</a></code>. By default, the present time is used as
-origin, one one centisecond is added for every identifiers to
-generate. <code>origin</code> can be set to other values to work with
-different origins (of course, don't use this unless you
-understand very well what you're doing!).</p></td>
+      <th>n, str</th>
+      <td><p>Normally, respectively the frequency with which to
+repeat the string and the string to repeat; but the order of the
+inputs can be switched as well.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of UIDs.</p>
+    <p>A character vector of length 1.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span>(<span class='fl'>5</span>);</div><div class='output co'>#&gt; [1] "[[uid:741jkp81]]" "[[uid:741jkp82]]" "[[uid:741jkp83]]" "[[uid:741jkp84]]"
-#&gt; [5] "[[uid:741jkp85]]"</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>### 10 spaces:</span>
+<span class='fu'>repStr</span>(<span class='fl'>10</span>);</div><div class='output co'>#&gt; [1] "          "</div><div class='input'>
+<span class='co'>### Three euro symbols:</span>
+<span class='fu'>repStr</span>(<span class='st'>"\u20ac"</span>, <span class='fl'>3</span>);</div><div class='output co'>#&gt; [1] "\200\200\200"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

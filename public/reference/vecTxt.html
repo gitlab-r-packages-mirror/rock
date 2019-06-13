@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate utterance identifiers (UIDs) — generate_uids • rock</title>
+<title>Easily parse a vector into a character value — vecTxt • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Generate utterance identifiers (UIDs) — generate_uids" />
+<meta property="og:title" content="Easily parse a vector into a character value — vecTxt" />
 
-<meta property="og:description" content="Generate utterance identifiers (UIDs)" />
+<meta property="og:description" content="Easily parse a vector into a character value" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,49 +106,71 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate utterance identifiers (UIDs)</h1>
+    <h1>Easily parse a vector into a character value</h1>
     
-    <div class="hidden name"><code>generate_uids.Rd</code></div>
+    <div class="hidden name"><code>vecTxt.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generate utterance identifiers (UIDs)</p>
+    <p>Easily parse a vector into a character value</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_uids</span>(<span class='no'>x</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())</pre>
+    <pre class="usage"><span class='fu'>vecTxt</span>(<span class='no'>vector</span>, <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>useQuote</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>firstDelimiter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lastDelimiter</span> <span class='kw'>=</span> <span class='st'>" &amp; "</span>, <span class='kw'>firstElements</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>lastElements</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lastHasPrecedence</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>vecTxtQ</span>(<span class='no'>vector</span>, <span class='kw'>useQuote</span> <span class='kw'>=</span> <span class='st'>"'"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>The number of identifiers te generate.</p></td>
+      <th>vector</th>
+      <td><p>The vector to process.</p></td>
     </tr>
     <tr>
-      <th>origin</th>
-      <td><p>The origin to use when generating the actual
-identifiers. These identifiers are the present UNIX timestamp
-(i.e. the number of seconds elapsed since the UNIX epoch,
-the first of january 1970), accurate to two decimal places
-(i.e. to centiseconds), converted to the base 30 system using
-<code><a href='base30conversion.html'>numericToBase30()</a></code>. By default, the present time is used as
-origin, one one centisecond is added for every identifiers to
-generate. <code>origin</code> can be set to other values to work with
-different origins (of course, don't use this unless you
-understand very well what you're doing!).</p></td>
+      <th>delimiter, firstDelimiter, lastDelimiter</th>
+      <td><p>The delimiters
+to use for respectively the middle, first
+<code>firstElements</code>, and last <code>lastElements</code> elements.</p></td>
+    </tr>
+    <tr>
+      <th>useQuote</th>
+      <td><p>This character string is pre- and appended to all elements;
+so use this to quote all elements (<code>useQuote="'"</code>), doublequote all
+elements (<code>useQuote='"'</code>), or anything else (e.g. <code>useQuote='|'</code>).
+The only difference between <code>vecTxt</code> and <code>vecTxtQ</code> is that the
+latter by default quotes the elements.</p></td>
+    </tr>
+    <tr>
+      <th>firstElements, lastElements</th>
+      <td><p>The number of elements for which to use
+the first respective last delimiters</p></td>
+    </tr>
+    <tr>
+      <th>lastHasPrecedence</th>
+      <td><p>If the vector is very short, it's possible that the
+sum of firstElements and lastElements is larger than the vector length. In
+that case, downwardly adjust the number of elements to separate with the
+first delimiter (<code>TRUE</code>) or the number of elements to separate with the
+last delimiter (<code>FALSE</code>)?</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Any addition arguments to <code>vecTxtQ</code> are passed on to
+<code>vecTxt</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of UIDs.</p>
+    <p>A character vector of length 1.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span>(<span class='fl'>5</span>);</div><div class='output co'>#&gt; [1] "[[uid:741jkp81]]" "[[uid:741jkp82]]" "[[uid:741jkp83]]" "[[uid:741jkp84]]"
-#&gt; [5] "[[uid:741jkp85]]"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>vecTxtQ</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>mtcars</span>));</div><div class='output co'>#&gt; [1] "'mpg', 'cyl', 'disp', 'hp', 'drat', 'wt', 'qsec', 'vs', 'am', 'gear' &amp; 'carb'"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

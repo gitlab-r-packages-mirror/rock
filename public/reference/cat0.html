@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate utterance identifiers (UIDs) — generate_uids • rock</title>
+<title>Concatenate to screen without spaces — cat0 • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Generate utterance identifiers (UIDs) — generate_uids" />
+<meta property="og:title" content="Concatenate to screen without spaces — cat0" />
 
-<meta property="og:description" content="Generate utterance identifiers (UIDs)" />
+<meta property="og:description" content="The cat0 function is to cat what paste0 is to paste; it
+simply makes concatenating many strings without a separator easier." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,49 +107,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate utterance identifiers (UIDs)</h1>
+    <h1>Concatenate to screen without spaces</h1>
     
-    <div class="hidden name"><code>generate_uids.Rd</code></div>
+    <div class="hidden name"><code>cat0.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generate utterance identifiers (UIDs)</p>
+    <p>The cat0 function is to cat what paste0 is to paste; it
+simply makes concatenating many strings without a separator easier.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_uids</span>(<span class='no'>x</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())</pre>
+    <pre class="usage"><span class='fu'>cat0</span>(<span class='no'>...</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>The number of identifiers te generate.</p></td>
+      <th>...</th>
+      <td><p>The character vector(s) to print; passed to <a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a>.</p></td>
     </tr>
     <tr>
-      <th>origin</th>
-      <td><p>The origin to use when generating the actual
-identifiers. These identifiers are the present UNIX timestamp
-(i.e. the number of seconds elapsed since the UNIX epoch,
-the first of january 1970), accurate to two decimal places
-(i.e. to centiseconds), converted to the base 30 system using
-<code><a href='base30conversion.html'>numericToBase30()</a></code>. By default, the present time is used as
-origin, one one centisecond is added for every identifiers to
-generate. <code>origin</code> can be set to other values to work with
-different origins (of course, don't use this unless you
-understand very well what you're doing!).</p></td>
+      <th>sep</th>
+      <td><p>The separator to pass to <a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a>, of course, <code>""</code> by default.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of UIDs.</p>
+    <p>Nothing (invisible <code>NULL</code>, like <a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span>(<span class='fl'>5</span>);</div><div class='output co'>#&gt; [1] "[[uid:741jkp81]]" "[[uid:741jkp82]]" "[[uid:741jkp83]]" "[[uid:741jkp84]]"
-#&gt; [5] "[[uid:741jkp85]]"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>cat0</span>(<span class='st'>"The first variable is '"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>mtcars</span>)[<span class='fl'>1</span>], <span class='st'>"'."</span>);</div><div class='output co'>#&gt; The first variable is 'mpg'.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

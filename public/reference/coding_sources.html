@@ -121,7 +121,8 @@ sources that were read with one of the
     
     </div>
 
-    <pre class="usage"><span class='fu'>code_source</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>code_source</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>indices</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>codeDelimiters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[["</span>,
+  <span class='st'>"]]"</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>code_sources</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
@@ -139,15 +140,30 @@ produced by one of the <code>loading_sources</code> functions.</p></td>
 is the code to be added to the matching utterance, and
 the corresponding name is either an utterance identifier
 (in which case the utterance with that identifier will be
-coded with that code), a digit (in which case the utterance
-at that line number in the source will be coded with that
+coded with that code), a code (in which case all utterances
+with that code will be coded with the new code as well), a
+digit (in which case the utterance at that line number in
+the source will be coded with that
 code), or a regular expression, in which case all utterances
 matching that regular expression will be coded with that
-source.</p></td>
+source. If specifying an utterance ID or code, make sure
+that the code delimiters are included (normally, two square
+brackets).</p></td>
     </tr>
     <tr>
-      <th>encoding</th>
-      <td><p>The encoding of the source file.</p></td>
+      <th>indices</th>
+      <td><p>A logical vector of the same length as <code>input</code>
+that indicates to which utterance the code in <code>codes</code> should be
+applied. Note that if <code>indiced</code> is provided, only the first
+element of <code>codes</code> is used, and its name is ignored.</p></td>
+    </tr>
+    <tr>
+      <th>codeDelimiters</th>
+      <td><p>A character vector of two elements
+specifying the opening and closing delimiters of codes (conform
+the default ROCK convention, two square brackets). The square
+brackets will be escaped; other characters will not, but will
+be used as-is.</p></td>
     </tr>
     <tr>
       <th>silent</th>
@@ -160,6 +176,47 @@ source.</p></td>
     <p>Invisibly, the coded source object.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Get a path to one example file</span>
+<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+
+<span class='co'>### Parse single example source</span>
+<span class='no'>loadedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/loading_sources'>load_source</a></span>(<span class='no'>exampleFile</span>);
+
+<span class='co'>### Show line 71</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='no'>loadedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for</div><div class='input'>
+<span class='co'>### Specify the rules to code all utterances</span>
+<span class='co'>### containing "Ipsum" with the code 'ipsum' and</span>
+<span class='co'>### all utterances containing the code</span>
+<span class='no'>codeSpecs</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"(?i)ipsum"</span> <span class='kw'>=</span> <span class='st'>"ipsum"</span>,
+    <span class='st'>"BC|AD|\\d\\d\\d\\ds"</span> <span class='kw'>=</span> <span class='st'>"timeRef"</span>);
+
+<span class='co'>### Apply rules</span>
+<span class='no'>codedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>loadedExample</span>,
+                            <span class='no'>codeSpecs</span>);
+
+<span class='co'>### Show line 71</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='no'>codedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]]</div><div class='input'>
+<span class='co'>### Also add code "foo" to utteranced with code 'ipsum'</span>
+<span class='no'>moreCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>codedExample</span>,
+                                <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"[[ipsum]]"</span> <span class='kw'>=</span> <span class='st'>"foo"</span>));
+
+<span class='co'>### Show line 71</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='no'>moreCodedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]] [[foo]]</div><div class='input'>
+<span class='co'>### Use the 'indices' argument to add the code 'bar' to</span>
+<span class='co'>### line 71</span>
+<span class='no'>overCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>moreCodedExample</span>,
+                                <span class='st'>"bar"</span>,
+                                <span class='kw'>indices</span><span class='kw'>=</span><span class='fl'>71</span>);
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='no'>overCodedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]] [[foo]]</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -167,7 +224,9 @@ source.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

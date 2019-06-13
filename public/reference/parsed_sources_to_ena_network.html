@@ -163,14 +163,17 @@ metadata. By default, takes all read metadata.</p></td>
 <span class='co'>### Parse all example sources in that directory</span>
 <span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_sources</a></span>(<span class='no'>examplePath</span>);
 
-<span class='co'>### Add something to indicate which units belong together</span>
+<span class='co'>### Add something to indicate which units belong together; normally,</span>
+<span class='co'>### these would probably be indicated using one of the identifier,</span>
+<span class='co'>### for example the stanza identifiers, the sid's</span>
 <span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>units</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>11</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>9</span>);
 
-<span class='co'>### Generate ENA plot - this is not run during testing because</span>
-<span class='co'>### it takes too long</span></div><span class='co'># NOT RUN {</span>
-<span class='fu'>parsed_sources_to_ena_network</span>(<span class='no'>parsedExamples</span>,
-                              <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);
-<span class='co'># }</span><div class='input'>
+<span class='co'>### Generate ENA plot</span>
+<span class='no'>enaPlot</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsed_sources_to_ena_network'>parsed_sources_to_ena_network</a></span>(<span class='no'>parsedExamples</span>,
+                                      <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);
+
+<span class='co'>### Show the resulting plot</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>enaPlot</span>);</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
