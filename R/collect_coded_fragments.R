@@ -60,7 +60,7 @@ collect_coded_fragments <- function(x,
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
-    stop(glue::glue("The object you provided (as argument `x`) has class '{ufs::vecTxtQ(class(x))}', ",
+    stop(glue::glue("The object you provided (as argument `x`) has class '{vecTxtQ(class(x))}', ",
                     "but I can only process objects obtained by parsing one or more sources (with ",
                     "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
                     "or 'rockParsedSources'."));
@@ -72,9 +72,9 @@ collect_coded_fragments <- function(x,
   dat <- x$mergedSourceDf;
 
   if (!silent) {
-    ufs::cat0("The regular expression passed in argument `codes` ('",
+    cat0("The regular expression passed in argument `codes` ('",
               codes, "') matches the following codings: ",
-              ufs::vecTxtQ(codes), ".\n\n");
+              vecTxtQ(codes), ".\n\n");
   }
 
   ### Get line numbers of the fragments to extract,
@@ -108,30 +108,30 @@ collect_coded_fragments <- function(x,
     if (is.null(heading)) {
       if (length(codes) > 5) {
         heading <-
-          paste0(ufs::repStr("#", headingLevel), " ",
+          paste0(repStr("#", headingLevel), " ",
                  "Collected coded fragments with ",
                  context, " lines of context",
                  "\n\n");
       } else {
         heading <-
-          paste0(ufs::repStr("#", headingLevel), " ",
+          paste0(repStr("#", headingLevel), " ",
                  "Collected coded fragments for codes ",
-                 ufs::vecTxtQ(codes), " with ",
+                 vecTxtQ(codes), " with ",
                  context, " lines of context",
                  "\n\n");
       }
       codePrefix <-
-        paste0(ufs::repStr("#", headingLevel+1), " ");
+        paste0(repStr("#", headingLevel+1), " ");
     } else if (is.character(heading)) {
       heading <-
-        paste0(ufs::repStr("#", headingLevel), " ",
+        paste0(repStr("#", headingLevel), " ",
                heading, "\n\n");
       codePrefix <-
-        paste0(ufs::repStr("#", headingLevel+1), " ");
+        paste0(repStr("#", headingLevel+1), " ");
     } else {
       heading <- FALSE;
       codePrefix <-
-        paste0(ufs::repStr("#", headingLevel), " ");
+        paste0(repStr("#", headingLevel), " ");
     }
 
     ### Combine all fragments within each code

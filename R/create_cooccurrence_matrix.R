@@ -27,7 +27,7 @@ create_cooccurrence_matrix <- function(x,
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
-    stop(glue::glue("The object you provided (as argument `x`) has class '{ufs::vecTxtQ(class(x))}', ",
+    stop(glue::glue("The object you provided (as argument `x`) has class '{vecTxtQ(class(x))}', ",
                     "but I can only process objects obtained by parsing one or more sources (with ",
                     "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
                     "or 'rockParsedSources'."));

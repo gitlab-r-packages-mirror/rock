@@ -30,7 +30,6 @@ Imports: data.tree (>= 0.7.8),
          graphics (>= 3.0.0),
          purrr (>= 0.2.5),
          stats (>= 3.0.0),
-         ufs (>= 0.2.0),
          utils (>= 3.5.0),
          yum (>= 0.0.1)
 Suggests: 

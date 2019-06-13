@@ -49,7 +49,7 @@ parse_sources <- function(path,
   res <- list(input=as.list(environment()));
 
   if (!silent) {
-    ufs::cat0("\nStarting to process all files matching regular expression '",
+    cat0("\nStarting to process all files matching regular expression '",
               regex, "' in directory '", path, "'.\n\n");
   }
 
@@ -73,7 +73,7 @@ parse_sources <- function(path,
            silent=silent);
 
   if (!silent) {
-    ufs::cat0("Done parsing all sources in directory '", path, "'.\n");
+    cat0("Done parsing all sources in directory '", path, "'.\n");
   }
 
   names(res$parsedSources) <-
@@ -114,7 +114,7 @@ parse_sources <- function(path,
   })));
 
   if (!silent) {
-    ufs::cat0("Found codes with names ", ufs::vecTxtQ(codeNames), ".\n");
+    cat0("Found codes with names ", vecTxtQ(codeNames), ".\n");
   }
 
   res$inductiveSplitCodes <-
@@ -161,7 +161,7 @@ parse_sources <- function(path,
     codeNames;
 
   if (!silent) {
-    ufs::cat0("Successfully extracted and combined the inductive codes from each source. Starting building the inductive code tree.\n");
+    cat0("Successfully extracted and combined the inductive codes from each source. Starting building the inductive code tree.\n");
   }
 
   res$inductiveCodeTrees <-
@@ -176,7 +176,7 @@ parse_sources <- function(path,
            });
 
   if (!silent) {
-    ufs::cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
+    cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
   }
 
   ### Merge source dataframes
@@ -199,7 +199,7 @@ parse_sources <- function(path,
            });
 
   if (!silent) {
-    ufs::cat0("Merged all source dataframes together and set NA occurrences to 0.\n");
+    cat0("Merged all source dataframes together and set NA occurrences to 0.\n");
   }
 
   ###--------------------------------------------------------------------------
@@ -223,7 +223,7 @@ parse_sources <- function(path,
   #          collapse="\n");
   #
   # if (!silent) {
-  #   ufs::cat0("Extracted the following YAML fragments:\n\n",
+  #   cat0("Extracted the following YAML fragments:\n\n",
   #             paste0(unlist(yamlLineSets),
   #                    collapse="\n\n"));
   # }
@@ -262,7 +262,7 @@ parse_sources <- function(path,
   #   dplyr::bind_rows(metadataDfs);
 
   if (!silent) {
-    ufs::cat0("Creating metadata dataframe and merging with source dataframe.\n");
+    cat0("Creating metadata dataframe and merging with source dataframe.\n");
   }
 
   metadataDf <-
@@ -295,7 +295,7 @@ parse_sources <- function(path,
   }
 
   if (!silent) {
-    ufs::cat0("Finished merging metadata with source dataframe. Starting to collect deductive code trees.\n");
+    cat0("Finished merging metadata with source dataframe. Starting to collect deductive code trees.\n");
   }
 
   deductiveCodeLists <-
@@ -308,12 +308,12 @@ parse_sources <- function(path,
   if (is.null(deductiveCodeLists)) {
     res$deductiveCodeTrees <- NA;
     if (!silent) {
-      ufs::cat0("No deductive code trees found.\n");
+      cat0("No deductive code trees found.\n");
     }
   } else {
 
     if (!silent) {
-      ufs::cat0("Specifications of deductive code trees found: combining them into actual tree.\n");
+      cat0("Specifications of deductive code trees found: combining them into actual tree.\n");
     }
 
     class(deductiveCodeLists) <-
@@ -341,7 +341,7 @@ parse_sources <- function(path,
                         c("fillcolor", "#FFFFFF", "node"));
 
     if (!silent) {
-      ufs::cat0("Successfully combined deductive code tree specifications into actual tree. Starting merging with inductive code trees.\n");
+      cat0("Successfully combined deductive code tree specifications into actual tree. Starting merging with inductive code trees.\n");
     }
 
   }
@@ -378,7 +378,7 @@ parse_sources <- function(path,
     }
 
     if (!silent) {
-      ufs::cat0("Successfully merged deductive code tree with inductive code trees.\n");
+      cat0("Successfully merged deductive code tree with inductive code trees.\n");
     }
 
   } else {
@@ -457,7 +457,7 @@ parse_sources <- function(path,
 print.rockParsedSources <- function(x, prefix="### ",  ...) {
   sourceFileNames <- names(x$parsedSources);
   print(glue::glue("Parsed {length(sourceFileNames)} sources, with filenames ",
-                   "{ufs::vecTxtQ(sourceFileNames)}."));
+                   "{vecTxtQ(sourceFileNames)}."));
   print(graphics::plot(x));
   invisible(x);
 }

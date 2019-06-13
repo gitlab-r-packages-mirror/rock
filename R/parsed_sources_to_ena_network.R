@@ -46,7 +46,7 @@ parsed_sources_to_ena_network <- function(x,
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
-    stop(glue::glue("The object you provided (as argument `x`) has class '{ufs::vecTxtQ(class(x))}', ",
+    stop(glue::glue("The object you provided (as argument `x`) has class '{vecTxtQ(class(x))}', ",
                     "but I can only process objects obtained by parsing one or more sources (with ",
                     "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
                     "or 'rockParsedSources'."));
@@ -60,11 +60,11 @@ parsed_sources_to_ena_network <- function(x,
 
   if (!all(allCols %in% names(x$mergedSourceDf))) {
     stop(glue::glue("Not all columns you specified exist in the 'mergedSourceDf' in the object you provided! Specifically, you provided:\n\n",
-                    "unitCols = {ufs::vecTxtQ(unitCols)}\n",
-                    "conversationCols = {ufs::vecTxtQ(conversationCols)}\n",
-                    "codes = {ufs::vecTxtQ(codes)}\n",
-                    "metadata = {ufs::vecTxtQ(metadata)}\n\n",
-                    "However, the following columns were not found: {ufs::vecTxtQ(allCols[!(allCols %in% names(x$mergedSourceDf))])}."));
+                    "unitCols = {vecTxtQ(unitCols)}\n",
+                    "conversationCols = {vecTxtQ(conversationCols)}\n",
+                    "codes = {vecTxtQ(codes)}\n",
+                    "metadata = {vecTxtQ(metadata)}\n\n",
+                    "However, the following columns were not found: {vecTxtQ(allCols[!(allCols %in% names(x$mergedSourceDf))])}."));
   }
 
   dat <-

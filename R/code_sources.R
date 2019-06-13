@@ -9,7 +9,7 @@ code_sources <- function(input,
          "stored in an object of class `rock_loaded_sources_list`, ",
          "as produced by a call to `load_sources`. The object ",
          "you provided has class ",
-         ufs::vecTxtQ(class(input)), ".");
+         vecTxtQ(class(input)), ".");
   }
 
   sourceNames <-

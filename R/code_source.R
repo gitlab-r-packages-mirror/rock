@@ -93,9 +93,9 @@ code_source <- function(input,
                         codes[1],
                         codeDelimiters[2]);
     if (!silent) {
-      ufs::cat0("The first argument is a logical vector indicating to which utterances to apply code '",
+      cat0("The first argument is a logical vector indicating to which utterances to apply code '",
                 codes[1], "' (specifically, the utterances on lines ",
-                ufs::vecTxt(which(indices)), ").\n");
+                vecTxt(which(indices)), ").\n");
     }
   } else if (!is.null(indices) && (is.numeric(indices)) && ((min(indices) > 1) && (max(indices) <= length(input)))) {
     ### The indices are already set as a (valid) numeric vector
@@ -103,9 +103,9 @@ code_source <- function(input,
                         codes[1],
                         codeDelimiters[2]);
     if (!silent) {
-      ufs::cat0("The first argument is a numeric vector indicating to which utterances to apply code '",
+      cat0("The first argument is a numeric vector indicating to which utterances to apply code '",
                 codes[1], "' (specifically, the utterances on lines ",
-                ufs::vecTxt(indices), ").\n");
+                vecTxt(indices), ").\n");
     }
   } else {
 
@@ -119,10 +119,10 @@ code_source <- function(input,
              "$");
 
     if (!silent) {
-      ufs::cat0("Multiple codes to check have been specified. Starting processing of ",
-                ufs::vecTxtQ(names(codes)),
+      cat0("Multiple codes to check have been specified. Starting processing of ",
+                vecTxtQ(names(codes)),
                 " against the regular expression ",
-                ufs::vecTxtQ(regexMatchingCode), ".\n");
+                vecTxtQ(regexMatchingCode), ".\n");
     }
 
     for (i in seq_along(codes)) {
@@ -149,9 +149,9 @@ code_source <- function(input,
                perl=TRUE);
 
         if (!silent) {
-          ufs::cat0("Looking for code or utterance id '",
+          cat0("Looking for code or utterance id '",
                     escapedCodeToFind, "'; found in utterances with line numbers ",
-                    ufs::vecTxt(indices), ".\n");
+                    vecTxt(indices), ".\n");
         }
 
       } else if (grepl("^[0-9]+$", names(codes)[i])) {
@@ -174,9 +174,9 @@ code_source <- function(input,
                         input,
                         perl=TRUE);
         if (!silent) {
-          ufs::cat0("Looking for a text match with regular expression '",
+          cat0("Looking for a text match with regular expression '",
                     names(codes)[i], "'; found in utterances with line numbers ",
-                    ufs::vecTxt(indices), ".\n");
+                    vecTxt(indices), ".\n");
         }
       }
 
@@ -187,7 +187,7 @@ code_source <- function(input,
               sep=" ");
 
       if (!silent) {
-        ufs::cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
+        cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
       }
     }
   }

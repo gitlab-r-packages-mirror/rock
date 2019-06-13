@@ -129,7 +129,7 @@ parse_source <- function(text,
                        encoding=encoding,
                        warn=FALSE);
         if (!silent) {
-          ufs::cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
+          cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
         }
       } else {
         x <- text;
@@ -139,7 +139,7 @@ parse_source <- function(text,
                      "\n")[[1]];
         }
         if (!silent) {
-          ufs::cat0("Read input string (", length(x), " lines read).\n\n");
+          cat0("Read input string (", length(x), " lines read).\n\n");
         }
       }
     }
@@ -149,7 +149,7 @@ parse_source <- function(text,
                      encoding=encoding,
                      warn=FALSE);
       if (!silent) {
-        ufs::cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
+        cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
       }
     } else {
       stop("The file you specified in argument `file` ('",
@@ -177,13 +177,13 @@ parse_source <- function(text,
   ### Process metadata and deductive code trees
   if (!is.null(res$yamlFragments)) {
     if (!silent) {
-      ufs::cat0("Encountered YAML fragments. Parsing them for metadata.\n");
+      cat0("Encountered YAML fragments. Parsing them for metadata.\n");
     }
     res$metadata <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(metadataContainers, collapse="|"));
     if (!silent) {
-      ufs::cat0("Read ", length(unlist(res$metadata)),
+      cat0("Read ", length(unlist(res$metadata)),
                 " metadata specifications. Continuing with deductive code trees.\n");
     }
     res$rawDeductiveCodes <-
@@ -197,9 +197,9 @@ parse_source <- function(text,
     res$deductiveCodes <-
       res$deductiveCodes[nchar(res$deductiveCodes)>0];
     if (!silent) {
-      ufs::cat0("Read ", length(res$deductiveCodes),
+      cat0("Read ", length(res$deductiveCodes),
                 " deductive codes (",
-                ufs::vecTxtQ(res$deductiveCodes), ").\n");
+                vecTxtQ(res$deductiveCodes), ").\n");
     }
     ### Store tree, unless we should postpone that
     if (!postponeDeductiveTreeBuilding) {
@@ -669,7 +669,7 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
     codingInfo <-
       glue::glue("These {nrow(x$sourceDf)} utterances were coded ",
                  "{totalCodingMatches} times in total using these codes: ",
-                 "{ufs::vecTxtQ(appliedCodes)}.");
+                 "{vecTxtQ(appliedCodes)}.");
   } else {
     codingInfo <-
       glue::glue("These {nrow(x$sourceDf)} utterances were not coded at all.");
@@ -712,7 +712,7 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
       glue::glue("This source contained matches with identifier regular expressions. Specifically, ",
                  glue::glue_collapse(lapply(names(actualIdentifiers),
                                             function(x) return(glue::glue("identifier regular expression '{x}' matched ",
-                                                                          "with identifiers {ufs::vecTxtQ(actualIdentifiers[[x]])}"))),
+                                                                          "with identifiers {vecTxtQ(actualIdentifiers[[x]])}"))),
                                      ", "),
                  ".");
   } else {
@@ -728,11 +728,11 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "make up the {length(x$yamlFragments)} YAML fragments with metadata or ",
                    "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.",
                    " {totalSectionMatches} of these matched one of the section regular ",
-                   "expressions ({ufs::vecTxtQ(x$arguments$sectionRegexes)}), and after ",
+                   "expressions ({vecTxtQ(x$arguments$sectionRegexes)}), and after ",
                    " removing these lines and all lines that were empty after removing ",
                    " characters that matched one or more identifier ",
-                   "({ufs::vecTxtQ(x$arguments$idRegexes)}) and coding ",
-                   "({ufs::vecTxtQ(x$arguments$codeRegexes)}) regular expressions, ",
+                   "({vecTxtQ(x$arguments$idRegexes)}) and coding ",
+                   "({vecTxtQ(x$arguments$codeRegexes)}) regular expressions, ",
                    "{nrow(x$sourceDf)} utterances remained.",
                    "\n\n",
                    "{prefix}Identifiers\n\n",
