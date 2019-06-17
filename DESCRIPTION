@@ -5,7 +5,8 @@ Authors@R:
     person(given = "Gjalt-Jorn Ygram",
            family = "Peters",
            role = c("aut", "cre"),
-           email = "gjalt-jorn@behaviorchange.eu")
+           email = "gjalt-jorn@behaviorchange.eu",
+           comment = c(ORCID = "0000-0002-0336-9589"))
 Maintainer: Gjalt-Jorn Ygram Peters <gjalt-jorn@behaviorchange.eu>
 Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
   was developed to facilitate reproducible and open coding, specifically
