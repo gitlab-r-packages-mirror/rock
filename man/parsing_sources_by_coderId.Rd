@@ -18,7 +18,7 @@ parse_source_by_coderId(input,
   "coderId"), noCodes = "^uid:|^uid=|^dct:|^ci:",
   delimiterRegEx = "^---$", ignoreRegex = "^#",
   ignoreOddDelimiters = FALSE, postponeDeductiveTreeBuilding = FALSE,
-  silent = TRUE)
+  encoding = "UTF-8", silent = TRUE)
 }
 \arguments{
 \item{input}{For \code{parse_source_by_coderId}, either a character vector
@@ -66,6 +66,8 @@ should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE
 tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping
 this is useful if the full tree information is distributed over multiple files (in which case
 you should probably call \code{parse_sources} instead of \code{parse_source}).}
+
+\item{encoding}{The encoding of the file to read (in \code{file}).}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
