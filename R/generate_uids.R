@@ -17,7 +17,9 @@
 #'
 #' @examples generate_uids(5);
 generate_uids <- function(x,
-                          origin=Sys.time()) {
+                          origin=Sys.time(),
+                          prefix="uid=",
+                          delimiters = c("[[", "]]")) {
 
   timeNrString <- as.character(round(as.numeric(origin) * 100, 0));
   timeNrs <-
@@ -25,5 +27,5 @@ generate_uids <- function(x,
   res <-
     unlist(lapply(timeNrs,
                   numericToBase30));
-  return(paste0("[[uid:", res, "]]"));
+  return(paste0(delimiters[1], prefix, res, delimiters[2]));
 }
