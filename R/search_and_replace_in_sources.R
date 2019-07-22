@@ -54,30 +54,41 @@ search_and_replace_in_sources <- function(input,
 
   res <- character();
   for (filename in rawSourceFiles) {
-    newFilename <-
-      paste0(filenamePrefix,
-             sub("^(.*)\\.[a-zA-Z0-9]+$",
-                 "\\1",
-                 basename(filename)),
-             filenameSuffix,
-             ".rock");
-    if (tolower(output) == "same") {
-      newFileDir <-
-        dirname(filename);
+    if (grepl(filenamePrefix,
+              basename(filename)) ||
+        grepl(filenameSuffix,
+              basename(filename))) {
+      if (!silent) {
+        message("File '", basename(filename), "' already contains ",
+                "the prefix ('", filenamePrefix, "') or suffix ('",
+                filenameSuffix, "') string; skipping this file!");
+      }
     } else {
-      newFileDir <-
-        output;
+      newFilename <-
+        paste0(filenamePrefix,
+               sub("^(.*)\\.[a-zA-Z0-9]+$",
+                   "\\1",
+                   basename(filename)),
+               filenameSuffix,
+               ".rock");
+      if (tolower(output) == "same") {
+        newFileDir <-
+          dirname(filename);
+      } else {
+        newFileDir <-
+          output;
+      }
+      search_and_replace_in_source(input = filename,
+                                   output = file.path(newFileDir,
+                                                      newFilename),
+                                   replacements=replacements,
+                                   preventOverwriting=preventOverwriting,
+                                   encoding=encoding,
+                                   silent=TRUE);
+      res <-
+        c(res,
+          newFilename);
     }
-    search_and_replace_in_source(input = filename,
-                                 output = file.path(newFileDir,
-                                                    newFilename),
-                                 replacements=replacements,
-                                 preventOverwriting=preventOverwriting,
-                                 encoding=encoding,
-                                 silent=TRUE);
-    res <-
-      c(res,
-        newFilename);
   }
   if (!silent) {
     message("I just wrote ", length(rawSourceFiles), " 'post-search-replace-sources' to path '",
