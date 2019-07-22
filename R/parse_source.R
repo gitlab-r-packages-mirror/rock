@@ -103,14 +103,13 @@ parse_source <- function(text,
                          file,
                          codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                          idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
-                                       stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]",
-                                       coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"),
+                                       stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"),
                          sectionRegexes = c(paragraphs = "---paragraph-break---",
                                             secondary = "---<[a-zA-Z0-9]?>---"),
                          uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
                          autoGenerateIds = c('stanzaId'),
-                         persistentIds = c('caseId', 'coderId'),
-                         noCodes = "^uid:|^uid=|^dct:|^ci:",
+                         persistentIds = c('caseId'),
+                         noCodes = "^uid:|^dct:|^ci:",
                          inductiveCodingHierarchyMarker = ">",
                          metadataContainers = c("metadata"),
                          codesContainers = c("codes", "dct"),
@@ -120,7 +119,6 @@ parse_source <- function(text,
                          encoding="UTF-8",
                          postponeDeductiveTreeBuilding = FALSE,
                          silent=TRUE) {
-
 
   if (missing(file)) {
     if (missing(text)) {
@@ -534,9 +532,22 @@ parse_source <- function(text,
     }
   }
 
-  ### Trim spaces from front and back and store clean utterances
-  sourceDf$utterances_clean <-
+  ### Trim spaces from front and back and store almost clean utterances
+  sourceDf$utterances_clean_with_uids <-
     trimws(x);
+
+  ### Extract and store UIDs
+  sourceDf$uids <-
+    gsub(uidRegex,
+         "\\1",
+         sourceDf$utterances_clean_with_uids,
+         perl=TRUE);
+
+  ### Store really clear utterances
+  sourceDf$utterances_clean <-
+    gsub(uidRegex,
+         "",
+         sourceDf$utterances_clean_with_uids);
 
   if (nrow(sourceDf) > 0) {
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
