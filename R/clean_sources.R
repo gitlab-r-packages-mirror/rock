@@ -1,5 +1,7 @@
 #' @rdname cleaning_sources
 #' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
+#' @param filenameRegex A regular expression to match against located files; only
+#' files matching this regular expression are processed.
 #' @param filenamePrefix,filenamePrefix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk.
 #' @export
@@ -21,6 +23,7 @@ clean_sources <- function(input,
                           filenameSuffix = "",
                           preventOverwriting=TRUE,
                           recursive=TRUE,
+                          filenameRegex=".*",
                           removeNewlines = FALSE,
                           encoding = "UTF-8",
                           silent=FALSE) {
@@ -52,6 +55,7 @@ clean_sources <- function(input,
   rawSourceFiles <-
     list.files(input,
                full.names=TRUE,
+               pattern = filenameRegex,
                recursive=recursive);
 
   ### Delete directories, if any were present

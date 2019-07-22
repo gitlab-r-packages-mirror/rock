@@ -29,15 +29,16 @@ clean_sources(input, output,
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
   extraReplacementsPost = NULL, filenamePrefix = "",
   filenameSuffix = "", preventOverwriting = TRUE, recursive = TRUE,
-  removeNewlines = FALSE, encoding = "UTF-8", silent = FALSE)
+  filenameRegex = ".*", removeNewlines = FALSE, encoding = "UTF-8",
+  silent = FALSE)
 
 search_and_replace_in_source(input, replacements = NULL, output = NULL,
   preventOverwriting = TRUE, encoding = "UTF-8", silent = FALSE)
 
 search_and_replace_in_sources(input, output, replacements = NULL,
   filenamePrefix = "", filenameSuffix = "_postReplacing",
-  preventOverwriting = TRUE, recursive = TRUE, encoding = "UTF-8",
-  silent = FALSE)
+  preventOverwriting = TRUE, recursive = TRUE, filenameRegex = ".*",
+  encoding = "UTF-8", silent = FALSE)
 }
 \arguments{
 \item{input}{For \code{clean_source}, either a character vector containing the text
@@ -85,6 +86,9 @@ starting to clean them.}
 filenames when writing the processed files to disk.}
 
 \item{recursive}{Whether to search all subdirectories (\code{TRUE}) as well or not.}
+
+\item{filenameRegex}{A regular expression to match against located files; only
+files matching this regular expression are processed.}
 
 \item{replacements}{The strings to search & replace, as a list of two-element vectors,
 where the first element in each vector contains a regular expression to search for

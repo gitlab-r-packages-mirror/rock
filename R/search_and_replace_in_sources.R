@@ -7,6 +7,7 @@ search_and_replace_in_sources <- function(input,
                                           filenameSuffix = "_postReplacing",
                                           preventOverwriting = TRUE,
                                           recursive=TRUE,
+                                          filenameRegex=".*",
                                           encoding = "UTF-8",
                                           silent=FALSE) {
 
@@ -42,6 +43,7 @@ search_and_replace_in_sources <- function(input,
   rawSourceFiles <-
     list.files(input,
                full.names=TRUE,
+               pattern = filenameRegex,
                recursive=recursive);
 
   ### Delete directories, if any were present
