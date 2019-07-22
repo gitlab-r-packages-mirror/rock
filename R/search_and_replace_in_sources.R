@@ -24,12 +24,14 @@ search_and_replace_in_sources <- function(input,
          "') does not exist!");
   }
 
-  if (!dir.exists(output)) {
-    warning("Directory provided to write to ('",
-            output,
-            "') does not exist - creating it!");
-    dir.create(output,
-               recursive = TRUE);
+  if (!(tolower(output) == "same")) {
+    if (!dir.exists(output)) {
+      warning("Directory provided to write to ('",
+              output,
+              "') does not exist - creating it!");
+      dir.create(output,
+                 recursive = TRUE);
+    }
   }
 
   if ((nchar(filenamePrefix) == 0) && (nchar(filenameSuffix) == 0)) {
@@ -57,8 +59,15 @@ search_and_replace_in_sources <- function(input,
                  basename(filename)),
              filenameSuffix,
              ".rock");
+    if (tolower(output) == "same") {
+      newFileDir <-
+        dirname(filename);
+    } else {
+      newFileDir <-
+        output;
+    }
     search_and_replace_in_source(input = filename,
-                                 output = file.path(output,
+                                 output = file.path(newFileDir,
                                                     newFilename),
                                  replacements=replacements,
                                  preventOverwriting=preventOverwriting,
