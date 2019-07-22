@@ -54,10 +54,12 @@ search_and_replace_in_sources <- function(input,
 
   res <- character();
   for (filename in rawSourceFiles) {
-    if (grepl(filenamePrefix,
-              basename(filename)) ||
-        grepl(filenameSuffix,
-              basename(filename))) {
+    if (((nchar(filenamePrefix) > 0) &&
+          grepl(filenamePrefix,
+                basename(filename))) ||
+        ((nchar(filenameSuffix) > 0) &&
+          grepl(filenameSuffix,
+                basename(filename)))) {
       if (!silent) {
         message("File '", basename(filename), "' already contains ",
                 "the prefix ('", filenamePrefix, "') or suffix ('",

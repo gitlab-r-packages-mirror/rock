@@ -540,8 +540,7 @@ parse_source <- function(text,
   sourceDf$uids <-
     gsub(uidRegex,
          "\\1",
-         sourceDf$utterances_clean_with_uids,
-         perl=TRUE);
+         sourceDf$utterances_clean_with_uids);
 
   ### Store really clear utterances
   sourceDf$utterances_clean <-
