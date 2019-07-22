@@ -5,6 +5,8 @@ prepend_ids_to_sources <- function(input,
                                    preventOverwriting = TRUE,
                                    encoding="UTF-8",
                                    origin=Sys.time(),
+                                   prefix="uid=",
+                                   delimiters = c("[[", "]]"),
                                    silent=FALSE) {
 
   if (!is.character(input) || !length(input)==1) {
@@ -41,6 +43,8 @@ prepend_ids_to_sources <- function(input,
                                                basename(filename)),
                             preventOverwriting = preventOverwriting,
                             origin=origin,
+                            prefix=prefix,
+                            delimiters = delimiters,
                             encoding = encoding,
                             silent=TRUE);
     ### Setting origin to a few seconds in the future to make sure all

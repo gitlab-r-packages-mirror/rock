@@ -25,6 +25,8 @@
 prepend_ids_to_source <- function(input,
                                   output = NULL,
                                   origin=Sys.time(),
+                                  prefix="uid=",
+                                  delimiters = c("[[", "]]"),
                                   preventOverwriting=TRUE,
                                   encoding="UTF-8",
                                   silent=FALSE) {
@@ -42,7 +44,9 @@ prepend_ids_to_source <- function(input,
 
   uids <-
     generate_uids(length(res),
-                  origin=origin);
+                  origin=origin,
+                  prefix=prefix,
+                  delimiters = delimiters);
 
   res <- paste0(uids, " ", res);
 

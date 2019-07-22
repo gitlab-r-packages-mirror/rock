@@ -14,6 +14,8 @@ clean_sources <- function(input,
                           replacementsPost = list(c("([^\\,]),([^\\s])",
                                                     "\\1, \\2")),
                           extraReplacementsPost = NULL,
+                          filenamePrefix = "",
+                          filenameSuffix = "",
                           preventOverwriting=TRUE,
                           removeNewlines = FALSE,
                           encoding = "UTF-8",
@@ -45,12 +47,23 @@ clean_sources <- function(input,
     list.files(input,
                full.names=TRUE);
 
+  if (any(grepl("\\.rock$",
+                rawSourceFiles))) {
+    if ((nchar(filenamePrefix) == 0) && (nchar(filenameSuffix) == 0)) {
+      stop("At least one of the input files already has the .rock extension! ",
+           "Therefore, you have to provide at least one of `filenamePrefix` and `filenameSuffix` ",
+           "to allow saving the files to new names!");
+    }
+  }
+
   res <- character();
   for (filename in rawSourceFiles) {
     newFilename <-
-      paste0(sub("^(.*)\\.[a-zA-Z0-9]+$",
+      paste0(filenamePrefix,
+             sub("^(.*)\\.[a-zA-Z0-9]+$",
                  "\\1",
                  basename(filename)),
+             filenameSuffix,
              ".rock");
     clean_source(input = filename,
                  output = file.path(output,

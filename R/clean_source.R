@@ -1,10 +1,10 @@
-#' Cleaning sources
+#' Cleaning & editing sources
 #'
-#' These function can be used to 'clean' one or more sources. Cleaning consists
-#' of two operations: splitting the source at utterance markers, and conducting
-#' search and replaces using regular expressions.
+#' These function can be used to 'clean' one or more sources or perform search and
+#' replace taks. Cleaning consists of two operations: splitting the source at
+#' utterance markers, and conducting search and replaces using regular expressions.
 #'
-#' When called with its default arguments, the following will happen:
+#' The cleaning functions, when called with their default arguments, will do the following:
 #'
 #' - Double periods (`..`) will be replaced with single periods (`.`)
 #' - Four or more periods (`...` or `.....`) will be replaced with three periods
