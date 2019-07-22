@@ -538,15 +538,15 @@ parse_source <- function(text,
 
   ### Extract and store UIDs
   sourceDf$uids <-
-    gsub(uidRegex,
+    gsub(paste0(".*", uidRegex, ".*"),
          "\\1",
          sourceDf$utterances_clean_with_uids);
 
   ### Store really clear utterances
   sourceDf$utterances_clean <-
-    gsub(uidRegex,
-         "",
-         sourceDf$utterances_clean_with_uids);
+    trimws(gsub(uidRegex,
+                "",
+                sourceDf$utterances_clean_with_uids));
 
   if (nrow(sourceDf) > 0) {
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
