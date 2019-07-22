@@ -43,7 +43,7 @@ parse_source_by_coderId <- function(input,
                                     delimiterRegEx = "^---$",
                                     ignoreRegex = "^#",
                                     ignoreOddDelimiters=FALSE,
-                                    postponeDeductiveTreeBuilding = FALSE,
+                                    postponeDeductiveTreeBuilding = TRUE,
                                     encoding="UTF-8",
                                     silent=TRUE) {
 
