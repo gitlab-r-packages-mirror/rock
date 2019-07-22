@@ -11,10 +11,13 @@
 parse_source(text, file, codeRegexes = c(codes =
   "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
-  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
+  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]", coderId =
+  "\\\\[\\\\[coderId=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
-  "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
-  persistentIds = c("caseId"), noCodes = "^uid:|^dct:|^ci:",
+  "---<[a-zA-Z0-9]?>---"),
+  uidRegex = "\\\\[\\\\[uid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
+  autoGenerateIds = c("stanzaId"), persistentIds = c("caseId",
+  "coderId"), noCodes = "^uid:|^dct:|^ci:",
   inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
   "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
@@ -27,10 +30,11 @@ parse_sources(path, extension = "rock|dct", regex = NULL,
   recursive = TRUE, codeRegexes = c(codes =
   "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
   "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
-  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
+  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]", coderId =
+  "\\\\[\\\\[coderId=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
   sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
   "---<[a-zA-Z0-9]?>---"), autoGenerateIds = c("stanzaId"),
-  persistentIds = c("caseId"), noCodes = "^uid:|^dct:|^ci:",
+  persistentIds = c("caseId", "coderId"), noCodes = "^uid:|^dct:|^ci:",
   inductiveCodingHierarchyMarker = ">",
   metadataContainers = c("metadata"), codesContainers = c("codes",
   "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",

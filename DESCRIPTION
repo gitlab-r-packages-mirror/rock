@@ -9,7 +9,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-0336-9589")),
       person(given = "Szilvia",
              family = "Zorgo",
-             role = c("ctb").
+             role = c("ctb"),
              comment = c(ORCID = "0000-0002-6916-2097")))
 Maintainer: Gjalt-Jorn Ygram Peters <gjalt-jorn@behaviorchange.eu>
 Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
