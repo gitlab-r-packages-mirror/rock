@@ -1,4 +1,33 @@
-parse_source_by_coderId <- function(x,
+#' Parsing sources separately for each coder
+#'
+#' @param input For `parse_source_by_coderId`, either a character vector
+#' containing the text of the relevant source *or* a path to a file that
+#' contains the source text; for `parse_sources_by_coderId`, a path to a
+#' directory that contains the sources to parse.
+#' @param coderId The regular expression designating the coder identifier.
+#' @param idForOmittedCoderIds The identifier to use for utterances that have
+#' not been marked by a coder identifier.
+#' @param codeRegexes,idRegexes,sectionRegexes These are named character vectors with one
+#' or more regular expressions. For `codeRegexes`, these specify how to extract the codes
+#' (that were used to code the sources). For `idRegexes`, these specify how to extract the
+#' different types of identifiers. For `sectionRegexes`, these specify how to extract the
+#' different types of sections. The `codeRegexes` and `idRegexes` must each contain one
+#' capturing group to capture the codes and identifiers, respectively.
+#' @inheritParams parse_source
+#' @rdname parsing_sources_by_coderId
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Parse single example source
+#' parsedExample <- rock::parse_source_by_coderId(exampleFile);
+#'
+#' @export
+parse_source_by_coderId <- function(input,
                                     coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
                                     idForOmittedCoderIds = "noCoderId",
                                     codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
@@ -15,7 +44,16 @@ parse_source_by_coderId <- function(x,
                                     ignoreRegex = "^#",
                                     ignoreOddDelimiters=FALSE,
                                     postponeDeductiveTreeBuilding = FALSE,
+                                    encoding="UTF-8",
                                     silent=TRUE) {
+
+  ### Read input, if it's a file
+  if (file.exists(input)) {
+    x <- readLines(input,
+                   encoding=encoding);
+  } else {
+    x <- input;
+  }
 
   ### Get all coders that coded this source
   codersIdAtLines <- grep(coderId,

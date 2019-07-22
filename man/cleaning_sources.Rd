@@ -41,9 +41,10 @@ search_and_replace_in_sources(input, output, replacements = NULL,
   encoding = "UTF-8", silent = FALSE)
 }
 \arguments{
-\item{input}{For \code{clean_source}, either a character vector containing the text
-of the relevant source \emph{or} a path to a file that contains the source text;
-for \code{clean_sources}, a path to a directory that contains the sources to clean.}
+\item{input}{For \code{clean_source} and \code{search_and_replace_in_source}, either a character
+vector containing the text of the relevant source \emph{or} a path to a file that contains
+the source text; for \code{clean_sources} and \code{search_and_replace_in_sources}, a path to a
+directory that contains the sources to clean.}
 
 \item{output}{For \code{clean_source} and \code{search_and_replace_in_source}, if not \code{NULL},
 this is the name (and path) of the file in which to save the processed source (if it

@@ -16,9 +16,10 @@
 #' considered sentence ends, wheread ellipses ("…" or unicode 2026, see the example) *are*.
 #' - If there are comma's without a space following them, a space will be inserted.
 #'
-#' @param input For `clean_source`, either a character vector containing the text
-#' of the relevant source *or* a path to a file that contains the source text;
-#' for `clean_sources`, a path to a directory that contains the sources to clean.
+#' @param input For `clean_source` and `search_and_replace_in_source`, either a character
+#' vector containing the text of the relevant source *or* a path to a file that contains
+#' the source text; for `clean_sources` and `search_and_replace_in_sources`, a path to a
+#' directory that contains the sources to clean.
 #' @param output For `clean_source` and `search_and_replace_in_source`, if not `NULL`,
 #' this is the name (and path) of the file in which to save the processed source (if it
 #' *is* `NULL`, the result will be returned visibly). For `clean_sources` and
