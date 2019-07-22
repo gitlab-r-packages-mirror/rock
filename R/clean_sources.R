@@ -1,4 +1,7 @@
 #' @rdname cleaning_sources
+#' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
+#' @param filenamePrefix,filenamePrefix The prefix and suffix to add to the
+#' filenames when writing the processed files to disk.
 #' @export
 clean_sources <- function(input,
                           output,
@@ -17,6 +20,7 @@ clean_sources <- function(input,
                           filenamePrefix = "",
                           filenameSuffix = "",
                           preventOverwriting=TRUE,
+                          recursive=TRUE,
                           removeNewlines = FALSE,
                           encoding = "UTF-8",
                           silent=FALSE) {
@@ -45,7 +49,14 @@ clean_sources <- function(input,
 
   rawSourceFiles <-
     list.files(input,
-               full.names=TRUE);
+               full.names=TRUE,
+               recursive=recursive);
+
+  ### Delete directories, if any were present
+  rawSourceFiles <-
+    setdiff(rawSourceFiles,
+            list.dirs(input,
+                      full.names=TRUE));
 
   if (any(grepl("\\.rock$",
                 rawSourceFiles))) {

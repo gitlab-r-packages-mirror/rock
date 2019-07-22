@@ -1,6 +1,4 @@
 #' @rdname cleaning_sources
-#' @param filenamePrefix,filenamePrefix The prefix and suffix to add to the
-#' filenames when writing the processed files to disk.
 #' @export
 search_and_replace_in_sources <- function(input,
                                           output,
@@ -8,6 +6,7 @@ search_and_replace_in_sources <- function(input,
                                           filenamePrefix = "",
                                           filenameSuffix = "_postReplacing",
                                           preventOverwriting = TRUE,
+                                          recursive=TRUE,
                                           encoding = "UTF-8",
                                           silent=FALSE) {
 
@@ -40,7 +39,14 @@ search_and_replace_in_sources <- function(input,
 
   rawSourceFiles <-
     list.files(input,
-               full.names=TRUE);
+               full.names=TRUE,
+               recursive=recursive);
+
+  ### Delete directories, if any were present
+  rawSourceFiles <-
+    setdiff(rawSourceFiles,
+            list.dirs(input,
+                      full.names=TRUE));
 
   res <- character();
   for (filename in rawSourceFiles) {
