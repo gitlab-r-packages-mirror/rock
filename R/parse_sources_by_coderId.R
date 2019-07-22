@@ -48,7 +48,6 @@ parse_sources_by_coderId <- function(input,
     res <-
       lapply(rawSourceFiles,
              parse_source_by_coderId,
-             output=NULL,
              coderId=coderId,
              idForOmittedCoderIds=idForOmittedCoderIds,
              codeRegexes=codeRegexes,
