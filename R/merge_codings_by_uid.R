@@ -27,7 +27,9 @@ merge_codings_by_uid <- function(input,
 
   ### Then construct objects with codes for each utterance
 
-  browser();
+  res <- parsedSources;
+
+
 
 
 
