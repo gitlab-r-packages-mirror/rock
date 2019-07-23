@@ -26,7 +26,7 @@ devtools-check:
   stage: test
   image: rocker/tidyverse
   script:
-    - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr"))'
+    - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("knitr", "rmarkdown", "covr", "testthat", "rENA"))'
     - R -e 'devtools::install_gitlab("r-packages/yum")'
     - R -e 'devtools::check()'
@@ -47,7 +47,7 @@ coverage:
     - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   script:
     - install2.r covr
-    - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr"))'
+    - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("devtools", "covr", "testthat", "here", "rENA"))'
     - R -e 'devtools::install_gitlab("r-packages/yum")'
     - R -e 'devtools::install()'

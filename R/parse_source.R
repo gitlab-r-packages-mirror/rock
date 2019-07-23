@@ -538,9 +538,13 @@ parse_source <- function(text,
 
   ### Extract and store UIDs
   sourceDf$uids <-
-    gsub(paste0(".*", uidRegex, ".*"),
-         "\\1",
-         sourceDf$utterances_clean_with_uids);
+    ifelse(grepl(uidRegex,
+                 sourceDf$utterances_clean_with_uids,
+                 perl=TRUE),
+           gsub(paste0(".*", uidRegex, ".*"),
+                       "\\1",
+                       sourceDf$utterances_clean_with_uids),
+           "");
 
   ### Store really clear utterances
   sourceDf$utterances_clean <-
