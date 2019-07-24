@@ -25,9 +25,100 @@ merge_codings_by_uid <- function(input,
     do.call(parse_sources_by_coderId,
             as.list(environment()));
 
-  ### Then construct objects with codes for each utterance
+  sectionMatchCols <- paste0(names(sectionRegexes), "_match");
+  idNames <- names(idRegexes);
 
-  res <- parsedSources;
+  ### Then construct objects with codes for each utterance
+  res <- list(parsedSources = parsedSources,
+              codingsByCoder = list();
+              utterances = list());
+  for (filename in seq_along(parsedSources)) {
+    for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
+      if ('uid' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+        ### For convenience, store some stuff
+        sourceDf <-
+          parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf;
+        codings <-
+          parsedSources[[filename]]$parsedSubsources[[coderId]]$codings;
+        codingsList <-
+          apply(sourceDf[, c('uids', codings)],
+                1,
+                function(x) {
+                  uid <-
+                    x[1];
+                  codingNames <-
+                    tail(names(x), -1);
+                  logicalCodings <-
+                    as.logical(as.numeric(tail(x, -1)));
+                  return(c(uid,
+                           codingNames[logicalCodings]));
+                });
+        names(codingsList) <-
+          purrr::map_chr(codingsList,
+                         'uids');
+        res$codingsByCoder[[filename]][[coderId]] <-
+          codingsList;
+
+
+
+        # for (i in 1:nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+        #
+        #   ### First store the utterance id of this row, of the last row, and of the next row
+        #   uid_prev <-
+        #     parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[
+        #       max(which((nchar(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[1:i, 'uid']) > 0))),
+        #       'uid'];
+        #   uid_current <-
+        #     parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i, 'uid'];
+        #   uid_next <-
+        #     parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[
+        #       min(which((nchar(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i:nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf), 'uid']) > 0))),
+        #       'uid'];
+        #
+        #   ### Check whether this row represents an utterance or not
+        #   ### (in which case it's probably a section break)
+        #   if (nchar(uid_current) > 0) {
+        #     ### It's an utterance
+        #     if (uid_current %in% names(utterances)) {
+        #       ### Get the codes that were applied to this utterance
+        #
+        #     } else {
+        #
+        #     }
+        #   } else {
+        #     ### Check for matches with section breaks
+        #     for (j in sectionMatchCols) {
+        #       if (parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i, j]) {
+        #         ### We have a match with this section break
+        #         if (i == nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+        #           ### This is the final row; use last row with utterance id
+        #           uid_use <- uid_prev;
+        #           store_type <- "sectionBreaksAfter";
+        #         } else {
+        #           ### This is not the final row, so use the uid of the next row that has one
+        #           uid_use <- uid_next;
+        #           store_type <- "sectionBreaksBefore";
+        #         }
+        #         if (uid_use %in% names(utterances)) {
+        #           ### Already exists
+        #           res$utterances[[uid_use]][[store_type]] <-
+        #             c(res$utterances[[uid_use]][[store_type]],
+        #               j);
+        #         } else {
+        #           ### Didn't exist yet
+        #           res$utterances[[uid_use]] <-
+        #             stats::setNames(list(j),
+        #                             store_type);
+        #         }
+        #       }
+        #     } ### End checking for matching sections
+        #   }
+        # }
+
+      } ### End if section that's only run if 'uids' exists in the sourceDf
+    }
+  }
+
 
 
 
