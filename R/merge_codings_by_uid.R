@@ -1,3 +1,4 @@
+#' @export
 merge_codings_by_uid <- function(input,
                                  coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
                                  idForOmittedCoderIds = "noCoderId",
@@ -28,10 +29,11 @@ merge_codings_by_uid <- function(input,
   sectionMatchCols <- paste0(names(sectionRegexes), "_match");
   idNames <- names(idRegexes);
 
-  ### Then construct objects with codes for each utterance
   res <- list(parsedSources = parsedSources,
               codingsByCoder = list(),
               utterances = list());
+
+  ### Construct objects with codes for each utterance
   for (filename in seq_along(parsedSources)) {
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
       if ('uid' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
