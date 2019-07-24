@@ -75,13 +75,17 @@ merge_codings_by_uid <- function(input,
           uid_current <-
             sourceDf[i, 'uids'];
           uid_next <-
-            sourceDf[
-              min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
-              'uids'];
+            sourceDf[min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
+                     'uids'];
+
+          print(sectionMatchCols);
 
           ### Check for matches with section breaks
           for (j in sectionMatchCols) {
             if (sourceDf[i, j]) {
+
+              print(paste0("Match!"));
+
               ### We have a match with this section break
               if (i == nrow(sourceDf)) {
                 ### This is the final row; use last row with utterance id
