@@ -30,7 +30,7 @@ merge_codings_by_uid <- function(input,
 
   ### Then construct objects with codes for each utterance
   res <- list(parsedSources = parsedSources,
-              codingsByCoder = list();
+              codingsByCoder = list(),
               utterances = list());
   for (filename in seq_along(parsedSources)) {
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
