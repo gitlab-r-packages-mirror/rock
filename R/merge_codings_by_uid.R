@@ -65,25 +65,25 @@ merge_codings_by_uid <- function(input,
         res$codingsByCoder[[filename]][[coderId]] <-
           codingsList;
 
-        for (i in 1:nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+        for (i in 1:nrow(sourceDf)) {
 
           ### First store the utterance id of this row, of the last row, and of the next row
           uid_prev <-
-            parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[
-              max(which((nchar(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[1:i, 'uid']) > 0))),
-              'uid'];
+            sourceDf[
+              max(which((nchar(sourceDf[1:i, 'uids']) > 0))),
+              'uids'];
           uid_current <-
-            parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i, 'uid'];
+            sourceDf[i, 'uids'];
           uid_next <-
-            parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[
-              min(which((nchar(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i:nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf), 'uid']) > 0))),
-              'uid'];
+            sourceDf[
+              min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
+              'uids'];
 
           ### Check for matches with section breaks
           for (j in sectionMatchCols) {
-            if (parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf[i, j]) {
+            if (sourceDf[i, j]) {
               ### We have a match with this section break
-              if (i == nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+              if (i == nrow(sourceDf)) {
                 ### This is the final row; use last row with utterance id
                 uid_use <- uid_prev;
                 store_type <- "sectionBreaksAfter";
