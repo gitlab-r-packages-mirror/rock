@@ -34,7 +34,7 @@ merge_codings_by_uid <- function(input,
               utterances = list());
 
   ### Construct objects with codes for each utterance
-  for (filename in seq_along(parsedSources)) {
+  for (filename in names(parsedSources)) {
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
       if ('uids' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
         ### For convenience, store some stuff
@@ -49,18 +49,15 @@ merge_codings_by_uid <- function(input,
             apply(sourceDf[, c('uids', codings)],
                   1,
                   function(x) {
-                    uid <-
-                      x[1];
                     codingNames <-
                       tail(names(x), -1);
                     logicalCodings <-
                       as.logical(as.numeric(tail(x, -1)));
-                    return(c(uid,
-                             codingNames[logicalCodings]));
+                    return(codingNames[logicalCodings]);
                   });
+
           names(codingsList) <-
-            purrr::map_chr(codingsList,
-                           'uids');
+            sourceDf$uids;
         }
         if (!(filename %in% names(res$codingsByCoder))) {
           res$codingsByCoder[[filename]] <- list();
