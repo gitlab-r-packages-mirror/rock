@@ -72,7 +72,7 @@ merge_codings_by_uid <- function(input,
         }
 
         res$utterances[[filename]][[coderId]] <-
-          hitList();
+          hitList;
 
         for (i in 1:nrow(sourceDf)) {
 
