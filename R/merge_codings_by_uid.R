@@ -36,7 +36,7 @@ merge_codings_by_uid <- function(input,
   ### Construct objects with codes for each utterance
   for (filename in seq_along(parsedSources)) {
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
-      if ('uid' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+      if ('uids' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
         ### For convenience, store some stuff
         sourceDf <-
           parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf;
