@@ -58,10 +58,11 @@ merge_codings_by_uid <- function(input,
         names(codingsList) <-
           purrr::map_chr(codingsList,
                          'uids');
+        if (!(filename %in% names(res$codingsByCoder))) {
+          res$codingsByCoder[[filename]] <- list();
+        }
         res$codingsByCoder[[filename]][[coderId]] <-
           codingsList;
-
-
 
         # for (i in 1:nrow(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
         #
