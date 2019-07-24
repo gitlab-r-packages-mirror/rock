@@ -42,22 +42,26 @@ merge_codings_by_uid <- function(input,
           parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf;
         codings <-
           parsedSources[[filename]]$parsedSubsources[[coderId]]$codings;
-        codingsList <-
-          apply(sourceDf[, c('uids', codings)],
-                1,
-                function(x) {
-                  uid <-
-                    x[1];
-                  codingNames <-
-                    tail(names(x), -1);
-                  logicalCodings <-
-                    as.logical(as.numeric(tail(x, -1)));
-                  return(c(uid,
-                           codingNames[logicalCodings]));
-                });
-        names(codingsList) <-
-          purrr::map_chr(codingsList,
-                         'uids');
+        if (length(codings) == 0) {
+          codingsList <- NA;
+        } else {
+          codingsList <-
+            apply(sourceDf[, c('uids', codings)],
+                  1,
+                  function(x) {
+                    uid <-
+                      x[1];
+                    codingNames <-
+                      tail(names(x), -1);
+                    logicalCodings <-
+                      as.logical(as.numeric(tail(x, -1)));
+                    return(c(uid,
+                             codingNames[logicalCodings]));
+                  });
+          names(codingsList) <-
+            purrr::map_chr(codingsList,
+                           'uids');
+        }
         if (!(filename %in% names(res$codingsByCoder))) {
           res$codingsByCoder[[filename]] <- list();
         }
