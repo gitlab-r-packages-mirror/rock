@@ -113,12 +113,12 @@ merge_sources <- function(input,
         paste0(outputPrefix,
                sub("^(.*)\\.[a-zA-Z0-9]+$",
                    "\\1",
-                   basename(j)),
+                   basename(i)),
                outputSuffix,
                ".rock");
       if (tolower(output) == "same") {
         newFileDir <-
-          dirname(j);
+          dirname(i);
       } else {
         newFileDir <-
           output;
