@@ -34,12 +34,14 @@ merge_sources <- function(input,
 
   ### Store all arguments and delete the ones specific to this function
   args <- as.list(environment());
-  args$primarySourcesRegex <- NULL;
-  args$primarySourcesPath <- NULL;
-  args$primarySourcesRecursive <- NULL;
-  args$output <- NULL;
-  args$outputPrefix <- NULL;
-  args$outputSuffix <- NULL;
+  args <-
+    args[setdiff(names(args),
+                 c('primarySourcesRegex',
+                   'primarySourcesPath',
+                   'primarySourcesRecursive',
+                   'output',
+                   'outputPrefix',
+                   'outputSuffix'))];
 
   ### Then pass arguments along to extract_codings_by_coderId and store result
   parsedSources <-
