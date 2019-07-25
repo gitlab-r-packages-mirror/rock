@@ -79,7 +79,7 @@ merge_sources <- function(input,
                    perl=TRUE),
              gsub(paste0(".*", uidRegex, ".*"),
                   "\\1",
-                  sourceDf$utterances_clean_with_uids),
+                  primarySources[[i]]),
              "");
 
     mergedSources[[i]] <- primarySources[[i]];
