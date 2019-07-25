@@ -36,10 +36,11 @@ merge_codings_by_uid <- function(input,
   ### Construct objects with codes for each utterance
   for (filename in names(parsedSources)) {
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
-      if ('uids' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf)) {
+      if ('uids' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$rawSourceDf)) {
         ### For convenience, store some stuff
+        ### Note that we use 'rawSourceDf' since that still has lines with section breaks
         sourceDf <-
-          parsedSources[[filename]]$parsedSubsources[[coderId]]$sourceDf;
+          parsedSources[[filename]]$parsedSubsources[[coderId]]$rawSourceDf;
         codings <-
           parsedSources[[filename]]$parsedSubsources[[coderId]]$codings;
         if (length(codings) == 0) {
@@ -73,54 +74,54 @@ merge_codings_by_uid <- function(input,
 
         res$utterances[[filename]][[coderId]] <-
           hitList;
-
-        for (i in 1:nrow(sourceDf)) {
-
-          ### First store the utterance id of this row, of the last row, and of the next row
-          uid_prev <-
-            sourceDf[
-              max(which((nchar(sourceDf[1:i, 'uids']) > 0))),
-              'uids'];
-          uid_current <-
-            sourceDf[i, 'uids'];
-          uid_next <-
-            sourceDf[min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
-                     'uids'];
-
-          print(sectionMatchCols);
-
-          # ### Check for matches with section breaks
-          # for (j in sectionMatchCols) {
-          #   if (sourceDf[i, j]) {
-          #
-          #     print(paste0("Match!"));
-          #
-          #     ### We have a match with this section break
-          #     if (i == nrow(sourceDf)) {
-          #       ### This is the final row; use last row with utterance id
-          #       uid_use <- uid_prev;
-          #       store_type <- "sectionBreaksAfter";
-          #     } else {
-          #       ### This is not the final row, so use the uid of the next row that has one
-          #       uid_use <- uid_next;
-          #       store_type <- "sectionBreaksBefore";
-          #     }
-          #     if (uid_use %in% names(utterances)) {
-          #       ### Already exists
-          #       res$utterances[[uid_use]][[store_type]] <-
-          #         c(res$utterances[[uid_use]][[store_type]],
-          #           j);
-          #     } else {
-          #       ### Didn't exist yet
-          #       res$utterances[[uid_use]] <-
-          #         stats::setNames(list(j),
-          #                         store_type);
-          #     }
-          #   }
-          # } ### End checking for matching sections
-
-
-        } ### End of for loop processing each dataframe row
+#
+#         for (i in 1:nrow(sourceDf)) {
+#
+#           ### First store the utterance id of this row, of the last row, and of the next row
+#           uid_prev <-
+#             sourceDf[
+#               max(which((nchar(sourceDf[1:i, 'uids']) > 0))),
+#               'uids'];
+#           uid_current <-
+#             sourceDf[i, 'uids'];
+#           uid_next <-
+#             sourceDf[min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
+#                      'uids'];
+#
+#           print(sectionMatchCols);
+#
+#           # ### Check for matches with section breaks
+#           # for (j in sectionMatchCols) {
+#           #   if (sourceDf[i, j]) {
+#           #
+#           #     print(paste0("Match!"));
+#           #
+#           #     ### We have a match with this section break
+#           #     if (i == nrow(sourceDf)) {
+#           #       ### This is the final row; use last row with utterance id
+#           #       uid_use <- uid_prev;
+#           #       store_type <- "sectionBreaksAfter";
+#           #     } else {
+#           #       ### This is not the final row, so use the uid of the next row that has one
+#           #       uid_use <- uid_next;
+#           #       store_type <- "sectionBreaksBefore";
+#           #     }
+#           #     if (uid_use %in% names(utterances)) {
+#           #       ### Already exists
+#           #       res$utterances[[uid_use]][[store_type]] <-
+#           #         c(res$utterances[[uid_use]][[store_type]],
+#           #           j);
+#           #     } else {
+#           #       ### Didn't exist yet
+#           #       res$utterances[[uid_use]] <-
+#           #         stats::setNames(list(j),
+#           #                         store_type);
+#           #     }
+#           #   }
+#           # } ### End checking for matching sections
+#
+#
+#         } ### End of for loop processing each dataframe row
       } ### End if section that's only run if 'uids' exists in the sourceDf
     }
   }
