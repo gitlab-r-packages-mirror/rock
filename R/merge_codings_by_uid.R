@@ -66,15 +66,13 @@ merge_codings_by_uid <- function(input,
         res$codingsByCoder[[filename]][[coderId]] <-
           codingsList;
 
-        sectionMatchIndices <- list();
+        sectionMatches <- list();
 
         for (j in sectionMatchCols) {
-          sectionMatchIndices[[j]] <-
-            which(sourceDf[, j]);
-          sectionMatch_uids_at[[j]] <-
-            sourceDf[sectionMatchIndices[[j]], "uids"];
-          sectionMatch_uids_pre[[j]] <-
-            unlist(lapply(sectionMatchIndices[[j]]-1,
+          sectionMatches[[j]] <-
+            list(index = which(sourceDf[, j]));
+          sectionMatches[[j]]$uid_pre <-
+            unlist(lapply(sectionMatches[[j]]$index-1,
                           function(i) {
                             if (i < 1) {
                               return(NA);
@@ -84,8 +82,10 @@ merge_codings_by_uid <- function(input,
                                 'uids']);
                             }
                           }));
-          sectionMatch_uids_post[[j]] <-
-            unlist(lapply(sectionMatchIndices[[j]]+1,
+          sectionMatches[[j]]$uid_at <-
+            sourceDf[sectionMatchIndices[[j]], "uids"];
+          sectionMatches[[j]]$uid_post <-
+            unlist(lapply(sectionMatches[[j]]$index+1,
                           function(i) {
                             if (i > nrow(sourceDf)) {
                               return(NA);
@@ -102,10 +102,8 @@ merge_codings_by_uid <- function(input,
         }
 
         res$sectionBreaksByCoder[[filename]][[coderId]] <-
-          list(sectionMatchIndices = sectionMatchIndices,
-               sectionMatch_uids_pre = sectionMatch_uids_pre,
-               sectionMatch_uids_at = sectionMatch_uids_at,
-               sectionMatch_uids_post = sectionMatch_uids_post);
+          sectionMatches;
+
 #
 #         for (i in 1:nrow(sourceDf)) {
 #
