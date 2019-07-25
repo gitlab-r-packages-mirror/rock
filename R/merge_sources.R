@@ -75,9 +75,6 @@ merge_sources <- function(input,
                  ignoreRegex=primarySourcesIgnoreRegex,
                  silent=silent);
 
-  primarySources
-  primarySourcesIgnoreRegex
-
   if (!(tolower(output) == "same")) {
     if (!dir.exists(output)) {
       warning("Directory provided to write to ('",
