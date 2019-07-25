@@ -119,9 +119,7 @@ extract_codings_by_coderId <- function(input,
       codedUtterances <-
         which(unlist(lapply(res$codingsByCoder[[i]][[j]],
                             length)) > 0);
-      print(codedUtterances);
-      browser()
-      for (k in seq_along(utterancesInSource[codedUtterances])) {
+      for (k in utterancesInSource[codedUtterances]) {
         ### Loop through all coded utterances by this coder in this source
         codingInfo <-
           stats::setNames(list(res$codingsByCoder[[i]][[j]][[k]]),
