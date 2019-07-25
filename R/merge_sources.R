@@ -4,6 +4,7 @@ merge_sources <- function(input,
                           outputPrefix = "",
                           outputSuffix = "_merged",
                           primarySourcesRegex=".*",
+                          primarySourcesIgnoreRegex=outputSuffix,
                           primarySourcesPath = input,
                           coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
                           idForOmittedCoderIds = "noCoderId",
@@ -38,6 +39,7 @@ merge_sources <- function(input,
   args <-
     args[setdiff(names(args),
                  c('primarySourcesRegex',
+                   'primarySourcesIgnoreRegex',
                    'primarySourcesPath',
                    'primarySourcesRecursive',
                    'output',
@@ -70,7 +72,11 @@ merge_sources <- function(input,
                  filenameRegex=primarySourcesRegex,
                  recursive=primarySourcesRecursive,
                  full.names=TRUE,
+                 ignoreRegex=primarySourcesIgnoreRegex,
                  silent=silent);
+
+  primarySources
+  primarySourcesIgnoreRegex
 
   if (!(tolower(output) == "same")) {
     if (!dir.exists(output)) {

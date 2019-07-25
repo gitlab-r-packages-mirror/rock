@@ -2,10 +2,12 @@
 #' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
 #' @param filenameRegex A regular expression to match against located files; only
 #' files matching this regular expression are processed.
+#' @param ignoreRegex Regular expression indicating which files to ignore.
 #' @export
 load_sources <- function(input,
                          encoding="UTF-8",
                          filenameRegex=".*",
+                         ignoreRegex=NULL,
                          recursive=TRUE,
                          full.names=FALSE,
                          silent=FALSE) {
@@ -25,6 +27,13 @@ load_sources <- function(input,
                pattern=filenameRegex,
                recursive=recursive,
                full.names=TRUE);
+
+  if (!is.null(ignoreRegex)) {
+    rawSourceFiles <-
+      rawSourceFiles[!grepl(ignoreRegex,
+                            rawSourceFiles,
+                            perl=TRUE)];
+  }
 
   res <- list();
   for (filename in rawSourceFiles) {
