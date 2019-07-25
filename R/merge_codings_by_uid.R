@@ -31,7 +31,7 @@ merge_codings_by_uid <- function(input,
 
   res <- list(parsedSources = parsedSources,
               codingsByCoder = list(),
-              utterances = list());
+              sectionBreaksByCoder = list());
 
   ### Construct objects with codes for each utterance
   for (filename in names(parsedSources)) {
@@ -66,27 +66,59 @@ merge_codings_by_uid <- function(input,
         res$codingsByCoder[[filename]][[coderId]] <-
           codingsList;
 
-        hitList <- list();
+        sectionMatchIndices <- list();
+
         for (j in sectionMatchCols) {
-          hitList[[j]] <-
+          sectionMatchIndices[[j]] <-
             which(sourceDf[, j]);
+          sectionMatch_uids_at[[j]] <-
+            sourceDf[sectionMatchIndices[[j]], "uids"];
+          sectionMatch_uids_pre[[j]] <-
+            unlist(lapply(sectionMatchIndices[[j]]-1,
+                          function(i) {
+                            if (i < 1) {
+                              return(NA);
+                            } else {
+                              return(sourceDf[
+                                max(which(nchar(sourceDf[1:i, 'uids']) > 0)),
+                                'uids']);
+                            }
+                          }));
+          sectionMatch_uids_post[[j]] <-
+            unlist(lapply(sectionMatchIndices[[j]]+1,
+                          function(i) {
+                            if (i > nrow(sourceDf)) {
+                              return(NA);
+                            } else {
+                              return(sourceDf[
+                                min(which(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)),
+                                'uids']);
+                            }
+                          }));
         }
 
-        res$utterances[[filename]][[coderId]] <-
-          hitList;
+        if (!(filename %in% names(res$sectionBreaksByCoder))) {
+          res$sectionBreaksByCoder[[filename]] <- list();
+        }
+
+        res$sectionBreaksByCoder[[filename]][[coderId]] <-
+          list(sectionMatchIndices = sectionMatchIndices,
+               sectionMatch_uids_pre = sectionMatch_uids_pre,
+               sectionMatch_uids_at = sectionMatch_uids_at,
+               sectionMatch_uids_post = sectionMatch_uids_post);
 #
 #         for (i in 1:nrow(sourceDf)) {
 #
 #           ### First store the utterance id of this row, of the last row, and of the next row
-#           uid_prev <-
-#             sourceDf[
-#               max(which((nchar(sourceDf[1:i, 'uids']) > 0))),
-#               'uids'];
-#           uid_current <-
-#             sourceDf[i, 'uids'];
-#           uid_next <-
-#             sourceDf[min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
-#                      'uids'];
+          # uid_prev <-
+          #   sourceDf[
+          #     max(which((nchar(sourceDf[1:i, 'uids']) > 0))),
+          #     'uids'];
+          # uid_current <-
+          #   sourceDf[i, 'uids'];
+          # uid_next <-
+          #   sourceDf[min(which((nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0))),
+          #            'uids'];
 #
 #           print(sectionMatchCols);
 #
