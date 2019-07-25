@@ -116,18 +116,18 @@ extract_codings_by_coderId <- function(input,
     for (j in names(res$codingsByCoder[[i]])) {
       utterancesInSource <-
         names(res$codingsByCoder[[i]][[j]]);
-      print(unlist(lapply(res$codingsByCoder[[i]][[j]],
-                          length)));
       codedUtterances <-
-        which(as.numeric(unlist(lapply(res$codingsByCoder[[i]][[j]],
-                                       length))) > 0);
+        which(unlist(lapply(res$codingsByCoder[[i]][[j]],
+                            length)) > 0);
+      print(codedUtterances);
+      browser()
       for (k in seq_along(utterancesInSource[codedUtterances])) {
         ### Loop through all coded utterances by this coder in this source
         codingInfo <-
           stats::setNames(list(res$codingsByCoder[[i]][[j]][[k]]),
                           i);
-        print(k);
-        print(codingInfo);
+        # print(k);
+        # print(codingInfo);
         if (k %in% res$utterances) {
           ### If this uid already contains information, append the new info
           if (j %in% names(res$utterances[[k]])) {
