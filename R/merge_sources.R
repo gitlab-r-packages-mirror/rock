@@ -22,6 +22,7 @@ merge_sources <- function(input,
                           filenameRegex = ".*",
                           delimiterRegEx = "^---$",
                           ignoreRegex = "^#",
+                          overwrite = FALSE,
                           ignoreOddDelimiters=FALSE,
                           postponeDeductiveTreeBuilding = TRUE,
                           encoding="UTF-8",
@@ -41,7 +42,8 @@ merge_sources <- function(input,
                    'primarySourcesRecursive',
                    'output',
                    'outputPrefix',
-                   'outputSuffix'))];
+                   'outputSuffix',
+                   'overwrite'))];
 
   ### Then pass arguments along to extract_codings_by_coderId and store result
   parsedSources <-
@@ -57,6 +59,7 @@ merge_sources <- function(input,
                  encoding=encoding,
                  filenameRegex=primarySourcesRegex,
                  recursive=primarySourcesRecursive,
+                 full.names=TRUE,
                  silent=silent);
 
   if (!(tolower(output) == "same")) {
@@ -98,11 +101,45 @@ merge_sources <- function(input,
           unlist(lapply(codings,
                         grepl,
                         x = mergedSources[[i]][j]));
+        ### Add new codes
         mergedSources[[i]][j] <-
           paste0(mergedSources[[i]][j], " ",
                  paste0(codings[!alreadyAppliedCodings],
                         collapse = " "));
+
       }
+
+      newFilename <-
+        paste0(outputPrefix,
+               sub("^(.*)\\.[a-zA-Z0-9]+$",
+                   "\\1",
+                   basename(j)),
+               outputSuffix,
+               ".rock");
+      if (tolower(output) == "same") {
+        newFileDir <-
+          dirname(j);
+      } else {
+        newFileDir <-
+          output;
+      }
+      newFullname <- file.path(newFileDir,
+                               newFilename);
+
+      if (file.exists(newFullname) && (!overwrite)) {
+        if (!silent) {
+          message("Output file '", newFilename, "' already exists and ",
+                  "`overwrite` is set to FALSE - not writing output file!");
+        }
+      } else {
+        con <- file(description=,
+                    open="w",
+                    encoding=encoding);
+        writeLines(text=mergedSources[[i]],
+                   con=con);
+        close(con);
+      }
+
     }
   }
 

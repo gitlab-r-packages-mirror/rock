@@ -7,6 +7,7 @@ load_sources <- function(input,
                          encoding="UTF-8",
                          filenameRegex=".*",
                          recursive=TRUE,
+                         full.names=FALSE,
                          silent=FALSE) {
 
   if (!is.character(input) || !length(input)==1) {
@@ -27,7 +28,12 @@ load_sources <- function(input,
 
   res <- list();
   for (filename in rawSourceFiles) {
-    res[[basename(filename)]] <-
+    fileNameToUse <-
+      ifelse(full.names,
+             filename,
+             basename(filename));
+
+    res[[fileNameToUse]] <-
       load_source(filename,
                   encoding=encoding,
                   silent=TRUE);
