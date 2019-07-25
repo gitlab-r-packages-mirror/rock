@@ -18,6 +18,7 @@ merge_sources <- function(input,
                           persistentIds = c('caseId', 'coderId'),
                           noCodes = "^uid:|^uid=|^dct:|^ci:",
                           recursive = TRUE,
+                          primarySourcesRecursive = recursive,
                           filenameRegex = ".*",
                           delimiterRegEx = "^---$",
                           ignoreRegex = "^#",
@@ -33,7 +34,9 @@ merge_sources <- function(input,
 
   ### Store all arguments and delete the ones specific to this function
   args <- as.list(environment());
-  args$primarySourceRegex <- NULL;
+  args$primarySourcesRegex <- NULL;
+  args$primarySourcesPath <- NULL;
+  args$primarySourcesRecursive <- NULL;
   args$output <- NULL;
   args$outputPrefix <- NULL;
   args$outputSuffix <- NULL;
@@ -48,7 +51,7 @@ merge_sources <- function(input,
     load_sources(input = primarySourcesPath,
                  encoding=encoding,
                  filenameRegex=primarySourcesRegex,
-                 recursive=recursive,
+                 recursive=primarySourcesRecursive,
                  silent=silent);
 
   res <- list(parsedSources,
