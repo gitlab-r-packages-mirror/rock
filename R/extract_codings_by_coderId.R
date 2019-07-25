@@ -129,7 +129,8 @@ extract_codings_by_coderId <- function(input,
             'utterances_raw'];
         rawCodings <-
           regmatches(originalSourceLine,
-                     gregexpr(codeRegexes[codeRegex], originalSourceLine));
+                     gregexpr(paste0(codeRegexes, collapse="|"),
+                              originalSourceLine));
         codingInfo <-
           stats::setNames(rawCodings, #list(res$codingsByCoder[[i]][[j]][[k]]),
                           i);
