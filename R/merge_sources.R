@@ -45,6 +45,11 @@ merge_sources <- function(input,
                    'outputSuffix',
                    'overwrite'))];
 
+  if (!silent) {
+    cat0("\n\nStarting to extracting codings from sources in directory '",
+         input, "'.\n\n");
+  }
+
   ### Then pass arguments along to extract_codings_by_coderId and store result
   parsedSources <-
     do.call(extract_codings_by_coderId,
@@ -52,6 +57,11 @@ merge_sources <- function(input,
 
   allCodedUtterances <-
     names(parsedSources$utterances);
+
+  if (!silent) {
+    cat0("\n\nStarting to load primary sources in directory '",
+         primarySourcesPath, "'.\n\n");
+  }
 
   ### Read primary sources
   primarySources <-
@@ -70,6 +80,10 @@ merge_sources <- function(input,
       dir.create(output,
                  recursive = TRUE);
     }
+  }
+
+  if (!silent) {
+    cat0("\n\nStarting to merge codes into primary sources.\n\n");
   }
 
   mergedSources <- list();
@@ -141,7 +155,7 @@ merge_sources <- function(input,
                   "`overwrite` is set to FALSE - not writing output file!");
         }
       } else {
-        con <- file(description=,
+        con <- file(description=newFullname,
                     open="w",
                     encoding=encoding);
         writeLines(text=mergedSources[[i]],
