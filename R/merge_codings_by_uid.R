@@ -91,7 +91,9 @@ merge_codings_by_uid <- function(input,
                               return(NA);
                             } else {
                               return(sourceDf[
-                                min(which(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)),
+                                ### Correct for index starting at i (i starts at next row)
+                                i-1 +
+                                  min(which(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)),
                                 'uids']);
                             }
                           }));
