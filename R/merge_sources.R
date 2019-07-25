@@ -126,44 +126,45 @@ merge_sources <- function(input,
                         collapse = " "));
 
       }
-
-      newFilename <-
-        paste0(outputPrefix,
-               sub("^(.*)\\.[a-zA-Z0-9]+$",
-                   "\\1",
-                   basename(i)),
-               outputSuffix,
-               ".rock");
-      if (tolower(output) == "same") {
-        newFileDir <-
-          dirname(i);
-      } else {
-        newFileDir <-
-          output;
-      }
-      newFullname <- file.path(newFileDir,
-                               newFilename);
-
-      if (!silent) {
-        cat0("\nStarting to write merged source '", newFilename,
-             "' to directory '", newFileDir, "'.\n");
-      }
-
-      if (file.exists(newFullname) && (!overwrite)) {
-        if (!silent) {
-          message("Output file '", newFilename, "' already exists and ",
-                  "`overwrite` is set to FALSE - not writing output file!");
-        }
-      } else {
-        con <- file(description=newFullname,
-                    open="w",
-                    encoding=encoding);
-        writeLines(text=mergedSources[[i]],
-                   con=con);
-        close(con);
-      }
-
     }
+
+
+    newFilename <-
+      paste0(outputPrefix,
+             sub("^(.*)\\.[a-zA-Z0-9]+$",
+                 "\\1",
+                 basename(i)),
+             outputSuffix,
+             ".rock");
+    if (tolower(output) == "same") {
+      newFileDir <-
+        dirname(i);
+    } else {
+      newFileDir <-
+        output;
+    }
+    newFullname <- file.path(newFileDir,
+                             newFilename);
+
+    if (!silent) {
+      cat0("\nStarting to write merged source '", newFilename,
+           "' to directory '", newFileDir, "'.\n");
+    }
+
+    if (file.exists(newFullname) && (!overwrite)) {
+      if (!silent) {
+        message("Output file '", newFilename, "' already exists and ",
+                "`overwrite` is set to FALSE - not writing output file!");
+      }
+    } else {
+      con <- file(description=newFullname,
+                  open="w",
+                  encoding=encoding);
+      writeLines(text=mergedSources[[i]],
+                 con=con);
+      close(con);
+    }
+
   }
 
   res <- list(parsedSources = parsedSources,
