@@ -116,6 +116,8 @@ extract_codings_by_coderId <- function(input,
     for (j in names(res$codingsByCoder[[i]])) {
       utterancesInSource <-
         names(res$codingsByCoder[[i]][[j]]);
+      print(unlist(lapply(res$codingsByCoder[[i]][[j]],
+                          length)));
       codedUtterances <-
         which(unlist(lapply(res$codingsByCoder[[i]][[j]],
                             length)) > 0);
