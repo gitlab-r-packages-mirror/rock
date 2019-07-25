@@ -48,6 +48,9 @@ merge_sources <- function(input,
     do.call(extract_codings_by_coderId,
             args);
 
+  allCodedUtterances <-
+    names(parsedSources$utterances);
+
   ### Read primary sources
   primarySources <-
     load_sources(input = primarySourcesPath,
@@ -56,9 +59,57 @@ merge_sources <- function(input,
                  recursive=primarySourcesRecursive,
                  silent=silent);
 
-  res <- list(parsedSources,
-              primarySources);
+  if (!(tolower(output) == "same")) {
+    if (!dir.exists(output)) {
+      warning("Directory provided to write to ('",
+              output,
+              "') does not exist - creating it!");
+      dir.create(output,
+                 recursive = TRUE);
+    }
+  }
 
-  return(res);
+  mergedSources <- list();
+  primarySourceUids <- list();
+  for (i in names(primarySources)) {
+
+    primarySourceUids[[i]] <-
+      ifelse(grepl(uidRegex,
+                   primarySources[[i]],
+                   perl=TRUE),
+             gsub(paste0(".*", uidRegex, ".*"),
+                  "\\1",
+                  sourceDf$utterances_clean_with_uids),
+             "");
+
+    mergedSources[[i]] <- primarySources[[i]];
+
+    ### This way, 'j' is both the index for the UID vector and
+    ### for the corresponding line in the sources
+    for (j in seq_along(primarySourceUids[[i]])) {
+
+      currentUID <- primarySourceUids[[i]][j];
+
+      if (currentUID %in% allCodedUtterances) {
+        ### Check whether one of them is already applied
+        codings <-
+          unname(unlist(parsedSources$utterances[[currentUID]]));
+        alreadyAppliedCodings <-
+          unlist(lapply(codings,
+                        grepl,
+                        x = mergedSources[[i]][j]));
+        mergedSources[[i]][j] <-
+          paste0(mergedSources[[i]][j], " ",
+                 paste0(codings[!alreadyAppliedCodings],
+                        collapse = " "));
+      }
+    }
+  }
+
+  res <- list(parsedSources = parsedSources,
+              primarySources = primarySources,
+              mergedSources = mergedSources);
+
+  return(invisible(res));
 
 }
