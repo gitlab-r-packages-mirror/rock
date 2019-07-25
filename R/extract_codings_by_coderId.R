@@ -21,6 +21,11 @@ extract_codings_by_coderId <- function(input,
                                        encoding="UTF-8",
                                        silent=TRUE) {
 
+  if (!silent) {
+    cat0("\n\nStarting to parse sources in directory '",
+         input, "' by coder identifier.\n\n");
+  }
+
   ### First parse all sources by coderId
   parsedSources <-
     do.call(parse_sources_by_coderId,
@@ -33,8 +38,17 @@ extract_codings_by_coderId <- function(input,
               codingsByCoder = list(),
               sectionBreaksByCoder = list());
 
+  if (!silent) {
+    cat0("\n\nStarting to extract codings for each utterance identifier.\n\n");
+  }
+
   ### Construct objects with codes for each utterance
   for (filename in names(parsedSources)) {
+
+    if (!silent) {
+      cat0("\nStarting to extract codings from '", filename, "'.\n");
+    }
+
     for (coderId in names(parsedSources[[filename]]$parsedSubsources)) {
       if ('uids' %in% names(parsedSources[[filename]]$parsedSubsources[[coderId]]$rawSourceDf)) {
         ### For convenience, store some stuff
@@ -108,6 +122,10 @@ extract_codings_by_coderId <- function(input,
 
       } ### End if section that's only run if 'uids' exists in the sourceDf
     }
+  }
+
+  if (!silent) {
+    cat0("\n\nStarting to organise codings per utterance identifier.\n\n");
   }
 
   res$utterances <- list();
