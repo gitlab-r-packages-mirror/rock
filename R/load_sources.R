@@ -21,6 +21,8 @@ load_sources <- function(input,
 
   rawSourceFiles <-
     list.files(input,
+               pattern=filenameRegex,
+               recursive=recursive,
                full.names=TRUE);
 
   res <- list();
@@ -28,8 +30,6 @@ load_sources <- function(input,
     res[[basename(filename)]] <-
       load_source(filename,
                   encoding=encoding,
-                  pattern=filenameRegex,
-                  recursive=recursive,
                   silent=TRUE);
   }
 
