@@ -83,7 +83,7 @@ merge_codings_by_uid <- function(input,
                             }
                           }));
           sectionMatches[[j]]$uid_at <-
-            sourceDf[sectionMatchIndices[[j]], "uids"];
+            sourceDf[sectionMatches[[j]]$index, "uids"];
           sectionMatches[[j]]$uid_post <-
             unlist(lapply(sectionMatches[[j]]$index+1,
                           function(i) {
