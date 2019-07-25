@@ -121,11 +121,20 @@ extract_codings_by_coderId <- function(input,
                             length)) > 0);
       for (k in utterancesInSource[codedUtterances]) {
         ### Loop through all coded utterances by this coder in this source
+
+        ### Get original codings from original source
+        originalSourceLine <-
+          parsedSources[[i]]$parsedSubsources[[j]]$rawSourceDf[
+            parsedSources[[i]]$parsedSubsources[[j]]$rawSourceDf$uids == k,
+            'utterances_raw'];
+        rawCodings <-
+          regmatches(originalSourceLine,
+                     gregexpr(codeRegexes[codeRegex], originalSourceLine));
         codingInfo <-
-          stats::setNames(list(res$codingsByCoder[[i]][[j]][[k]]),
+          stats::setNames(rawCodings, #list(res$codingsByCoder[[i]][[j]][[k]]),
                           i);
-        # print(k);
-        # print(codingInfo);
+
+
         if (k %in% res$utterances) {
           ### If this uid already contains information, append the new info
           if (j %in% names(res$utterances[[k]])) {
