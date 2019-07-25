@@ -76,6 +76,10 @@ merge_sources <- function(input,
   primarySourceUids <- list();
   for (i in names(primarySources)) {
 
+    if (!silent) {
+      cat0("\nStarting to process primary source '", i, "'.\n");
+    }
+
     primarySourceUids[[i]] <-
       ifelse(grepl(uidRegex,
                    primarySources[[i]],
@@ -125,6 +129,11 @@ merge_sources <- function(input,
       }
       newFullname <- file.path(newFileDir,
                                newFilename);
+
+      if (!silent) {
+        cat0("\nStarting to write merged source '", newFilename,
+             "' to directory '", newFileDir, "'.\n");
+      }
 
       if (file.exists(newFullname) && (!overwrite)) {
         if (!silent) {
