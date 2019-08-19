@@ -131,7 +131,18 @@ extract_codings_by_coderId <- function(input,
   res$utterances <- list();
 
   for (i in names(res$codingsByCoder)) {
+
+
+    if (!silent) {
+      cat0("\nProcessing source '", i, "'.\n");
+    }
+
     for (j in names(res$codingsByCoder[[i]])) {
+
+      if (!silent) {
+        cat0("\nProcessing codings by coder with identifier '", j, "'.\n");
+      }
+
       utterancesInSource <-
         names(res$codingsByCoder[[i]][[j]]);
       codedUtterances <-

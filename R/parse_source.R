@@ -47,8 +47,8 @@
 #' be considered the parent code of the code on the right hand side. More than two levels
 #' can be specified in one code (for example, if the `inductiveCodingHierarchyMarker` is '>',
 #' the code `grandparent>child>grandchild` would indicate codes at three levels.
-#' @param metadataContainers The name of YAML fragments containing metadata (i.e. attributes
-#' about cases).
+#' @param attributeContainers The name of YAML fragments containing case attributes (e.g.
+#' metadata, demographic variables, quantitative data about cases, etc).
 #' @param codesContainers The name of YAML fragments containing (parts of) deductive coding
 #' trees.
 #' @param delimiterRegEx The regular expression that is used to extract the YAML fragments.
@@ -111,7 +111,7 @@ parse_source <- function(text,
                          persistentIds = c('caseId'),
                          noCodes = "^uid:|^dct:|^ci:",
                          inductiveCodingHierarchyMarker = ">",
-                         metadataContainers = c("metadata"),
+                         attributeContainers = c("rock_attributes"),
                          codesContainers = c("codes", "dct"),
                          delimiterRegEx = "^---$",
                          ignoreRegex = "^#",
@@ -181,7 +181,7 @@ parse_source <- function(text,
     }
     res$metadata <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
-                             select=paste0(metadataContainers, collapse="|"));
+                             select=paste0(attributeContainers, collapse="|"));
     if (!silent) {
       cat0("Read ", length(unlist(res$metadata)),
                 " metadata specifications. Continuing with deductive code trees.\n");
@@ -231,7 +231,7 @@ parse_source <- function(text,
       list(metadataVars =
              setdiff(names(res$metadataDf),
                      c(names(idRegexes),
-                       names(metadataContainers))));
+                       names(attributeContainers))));
 
   } else {
 
