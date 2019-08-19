@@ -235,6 +235,8 @@ parse_source <- function(text,
 
   } else {
 
+    res$metadataDf <- data.frame();
+
     res$convenience <-
       list(metadataVars = NULL);
 
@@ -591,6 +593,17 @@ parse_source <- function(text,
     res$mergedSourceDf <-
       res$sourceDf;
 
+  }
+
+  ### Check for identifier column existence and convert to character
+  for (i in names(idRegexes)) {
+    if (i %in% names(res$mergedSourceDf)) {
+      res$mergedSourceDf[, i] <-
+        as.character(res$mergedSourceDf[, i]);
+    } else {
+      res$mergedSourceDf[, i] <-
+        rep("", nrow(res$mergedSourceDf));
+    }
   }
 
   ### Add codings and leaves only to the convenience list

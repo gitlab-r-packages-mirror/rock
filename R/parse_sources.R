@@ -94,6 +94,18 @@ parse_sources <- function(path,
   res$convenience$codingLeaves <-
     sort(unique(unlist(res$convenience$rawCodingLeaves)));
 
+  # res$convenience$metadata <-
+  #   dplyr::bind_rows(
+  #     lapply(res$parsedSource,
+  #            function(x) {
+  #              if (is.data.frame(x$metadataDf)) {
+  #                return(x$metadataDf);
+  #              } else {
+  #                return(NULL);
+  #              }
+  #            })
+  #   );
+
   res$convenience$metadata <-
     dplyr::bind_rows(purrr::map(res$parsedSource,
                                 'metadataDf'));
@@ -187,9 +199,19 @@ parse_sources <- function(path,
     dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'sourceDf'));
 
+
   ### Merge merged source dataframes
   res$mergedSourceDf <-
-    dplyr::bind_rows(purrr::map(res$parsedSources,
+    dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
+                                       function(x) {
+                                         if (is.data.frame(x$mergedSourceDf)) {
+                                           return(x);
+                                         } else {
+                                           x$mergedSourceDf <-
+                                             NULL;
+                                           return(x);
+                                         }
+                                       }),
                                 'mergedSourceDf'),
                      .id="originalSource");
 
@@ -270,10 +292,8 @@ parse_sources <- function(path,
 
   metadataDf <-
     res$metadataDf <-
-    dplyr::bind_rows(lapply(purrr::map(res$parsedSources,
-                                       'metadata'),
-                            as.data.frame,
-                            stringsAsFactors=FALSE));
+    dplyr::bind_rows(purrr::map(res$parsedSources,
+                                'metadataDf'));
 
   ### Add metadata to the utterances
   for (i in seq_along(idRegexes)) {
@@ -282,12 +302,26 @@ parse_sources <- function(path,
       if (!silent) {
         print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, metadata was provided: proceeding to join to sources dataframe.\n"));
       }
-      ### Convert to character to avoid errors
-      metadataDf[, names(idRegexes)[i]] <-
-        as.character(metadataDf[, names(idRegexes)[i]]);
+      ### Convert to character to avoid errors and delete
+      ### empty columns from merged source dataframe
+      usedIdRegexes <-
+        names(idRegexes)[names(idRegexes) %in% names(metadataDf)];
+      for (j in usedIdRegexes) {
+        metadataDf[, j] <-
+          as.character(metadataDf[, j]);
+      }
+      for (j in intersect(names(res$mergedSourceDf),
+                          names(metadataDf))) {
+        if (all(is.na(res$mergedSourceDf[, j]))) {
+          res$mergedSourceDf[, j] <- NULL;
+        }
+      }
+
+      # metadataDf[, names(idRegexes)[i]] <-
+      #   as.character(metadataDf[, names(idRegexes)[i]]);
       ### Join metadata based on identifier
-      res$sourcesDf <-
-        dplyr::left_join(res$sourcesDf,
+      res$mergedSourceDf <-
+        dplyr::left_join(res$mergedSourceDf,
                          metadataDf[, setdiff(names(metadataDf), 'type')],
                          by=names(idRegexes)[i]);
     } else {
