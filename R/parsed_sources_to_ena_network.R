@@ -76,7 +76,7 @@ parsed_sources_to_ena_network <- function(x,
       conversation = dat[, conversationCols, drop=FALSE],
       codes = dat[, codes, drop=FALSE],
       metadata = dat[, metadata, drop=FALSE],
-      window = "conversation"
+      window = "Conversation"
     );
 
   ENA_set <-
