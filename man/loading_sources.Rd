@@ -8,7 +8,8 @@
 load_source(input, encoding = "UTF-8", silent = FALSE)
 
 load_sources(input, encoding = "UTF-8", filenameRegex = ".*",
-  recursive = TRUE, silent = FALSE)
+  ignoreRegex = NULL, recursive = TRUE, full.names = FALSE,
+  silent = FALSE)
 }
 \arguments{
 \item{input}{The filename or contents of the source
@@ -21,6 +22,8 @@ sources for \code{load_sources}.}
 
 \item{filenameRegex}{A regular expression to match against located files; only
 files matching this regular expression are processed.}
+
+\item{ignoreRegex}{Regular expression indicating which files to ignore.}
 
 \item{recursive}{Whether to search all subdirectories (\code{TRUE}) as well or not.}
 }

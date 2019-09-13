@@ -131,7 +131,8 @@ functions.</p>
 
     <pre class="usage"><span class='fu'>load_source</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>load_sources</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>load_sources</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +150,15 @@ sources for <code>load_sources</code>.</p></td>
     <tr>
       <th>silent</th>
       <td><p>Whether to be chatty or quiet.</p></td>
+    </tr>
+    <tr>
+      <th>filenameRegex</th>
+      <td><p>A regular expression to match against located files; only
+files matching this regular expression are processed.</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>Whether to search all subdirectories (<code>TRUE</code>) as well or not.</p></td>
     </tr>
     </table>
     

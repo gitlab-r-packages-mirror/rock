@@ -122,14 +122,12 @@ contained identifiers, sections, and codes.</p>
     <pre class="usage"><span class='fu'>parse_source</span>(<span class='no'>text</span>, <span class='no'>file</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>codes</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[([a-zA-Z0-9._&gt;-]+)\\]\\]"</span>), <span class='kw'>idRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>caseId</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>stanzaId</span> <span class='kw'>=</span>
-  <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>coderId</span> <span class='kw'>=</span>
-  <span class='st'>"\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"</span>),
+  <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>),
   <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span>
   <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
   <span class='kw'>uidRegex</span> <span class='kw'>=</span> <span class='st'>"\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]"</span>,
-  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>,
-  <span class='st'>"coderId"</span>), <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^dct:|^ci:"</span>,
-  <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
+  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>),
+  <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^dct:|^ci:"</span>, <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
   <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
   <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
   <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
@@ -145,8 +143,10 @@ contained identifiers, sections, and codes.</p>
   <span class='st'>"\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>coderId</span> <span class='kw'>=</span>
   <span class='st'>"\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"</span>),
   <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span>
-  <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>), <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>),
-  <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>, <span class='st'>"coderId"</span>), <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^dct:|^ci:"</span>,
+  <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
+  <span class='kw'>uidRegex</span> <span class='kw'>=</span> <span class='st'>"\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]"</span>,
+  <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>,
+  <span class='st'>"coderId"</span>), <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^uid=|^dct:|^ci:"</span>,
   <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
   <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
   <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
@@ -326,7 +326,7 @@ or not (<code>FALSE</code>).</p></td>
 <span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_source</a></span>(<span class='no'>exampleFile</span>,
                                     <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; Read the contents of file 'B:/Data/R/rock/inst/extdata/example-1.rock' (111 lines read).
 #&gt; Encountered YAML fragments. Parsing them for metadata.
-#&gt; Read 3 metadata specifications. Continuing with deductive code trees.
+#&gt; Read 0 metadata specifications. Continuing with deductive code trees.
 #&gt; Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').
 #&gt; 
 #&gt; Starting to process the inductive codes and building a code tree.

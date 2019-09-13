@@ -17,10 +17,11 @@ parse_source(text, file, codeRegexes = c(codes =
   uidRegex = "\\\\[\\\\[uid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
   autoGenerateIds = c("stanzaId"), persistentIds = c("caseId"),
   noCodes = "^uid:|^dct:|^ci:", inductiveCodingHierarchyMarker = ">",
-  metadataContainers = c("metadata"), codesContainers = c("codes",
-  "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
-  ignoreOddDelimiters = FALSE, encoding = "UTF-8",
-  postponeDeductiveTreeBuilding = FALSE, silent = TRUE)
+  attributeContainers = c("rock_attributes"),
+  codesContainers = c("codes", "dct"), delimiterRegEx = "^---$",
+  ignoreRegex = "^#", ignoreOddDelimiters = FALSE,
+  encoding = "UTF-8", postponeDeductiveTreeBuilding = FALSE,
+  silent = TRUE)
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
@@ -36,9 +37,10 @@ parse_sources(path, extension = "rock|dct", regex = NULL,
   autoGenerateIds = c("stanzaId"), persistentIds = c("caseId",
   "coderId"), noCodes = "^uid:|^uid=|^dct:|^ci:",
   inductiveCodingHierarchyMarker = ">",
-  metadataContainers = c("metadata"), codesContainers = c("codes",
-  "dct"), delimiterRegEx = "^---$", ignoreRegex = "^#",
-  ignoreOddDelimiters = FALSE, encoding = "UTF-8", silent = TRUE)
+  attributeContainers = c("rock_attributes"),
+  codesContainers = c("codes", "dct"), delimiterRegEx = "^---$",
+  ignoreRegex = "^#", ignoreOddDelimiters = FALSE,
+  encoding = "UTF-8", silent = TRUE)
 
 \method{print}{rockParsedSources}(x, prefix = "### ", ...)
 
@@ -87,8 +89,8 @@ be considered the parent code of the code on the right hand side. More than two 
 can be specified in one code (for example, if the \code{inductiveCodingHierarchyMarker} is '>',
 the code \code{grandparent>child>grandchild} would indicate codes at three levels.}
 
-\item{metadataContainers}{The name of YAML fragments containing metadata (i.e. attributes
-about cases).}
+\item{attributeContainers}{The name of YAML fragments containing case attributes (e.g.
+metadata, demographic variables, quantitative data about cases, etc).}
 
 \item{codesContainers}{The name of YAML fragments containing (parts of) deductive coding
 trees.}

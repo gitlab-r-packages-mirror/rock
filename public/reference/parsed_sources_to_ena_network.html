@@ -166,14 +166,20 @@ metadata. By default, takes all read metadata.</p></td>
 <span class='co'>### Add something to indicate which units belong together; normally,</span>
 <span class='co'>### these would probably be indicated using one of the identifier,</span>
 <span class='co'>### for example the stanza identifiers, the sid's</span>
-<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>units</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>11</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>9</span>);
-
+<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>units</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>11</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>9</span>);</div><div class='output co'>#&gt; <span class='error'>Error in `$&lt;-.data.frame`(`*tmp*`, units, value = c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 5L, 5L, 5L, 5L, 5L, 5L, 5L, 5L, 5L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 7L, 7L, 7L, 7L, 7L, 7L, 7L, 7L, 7L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 9L, 9L, 9L, 9L, 9L, 9L, 9L, 9L, 9L, 10L, 10L, 10L, 10L, 10L, 10L, 10L, 10L, 10L, 11L, 11L, 11L, 11L, 11L, 11L, 11L, 11L, 11L)): replacement has 99 rows, data has 127</span></div><div class='input'>
 <span class='co'>### Generate ENA plot</span>
 <span class='no'>enaPlot</span> <span class='kw'>&lt;-</span>
   <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsed_sources_to_ena_network'>parsed_sources_to_ena_network</a></span>(<span class='no'>parsedExamples</span>,
-                                      <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);
-
-<span class='co'>### Show the resulting plot</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>enaPlot</span>);</div><div class='input'>
+                                      <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);</div><div class='output co'>#&gt; <span class='error'>Error in rock::parsed_sources_to_ena_network(parsedExamples, unitCols = "units"): Not all columns you specified exist in the 'mergedSourceDf' in the object you provided! Specifically, you provided:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>unitCols = 'units'</span>
+#&gt; <span class='error'>conversationCols = 'originalSource'</span>
+#&gt; <span class='error'>codes = 'att_ins_eval', 'bla2', 'bla3', 'chairs', 'childCode1', 'childCode2', 'childCode3', 'childCode4', 'childCode5', 'flups', 'grandchildCode1', 'grandchildCode2', 'grandchildCode3', 'grandchildCode4', 'grandchildCode5', 'grandchildCode6', 'grandchildCode7', 'hairy', 'inducChild1', 'inducChild2', 'inducChild3', 'inducChild4', 'inducChild5', 'internet', 'love', 'oaken_chests', 'people', 'siamese', 'someOtherCode', 'subbla', 'subbla2', 'tables', 'Topic1' &amp; 'Topic2'</span>
+#&gt; <span class='error'>metadata = ''</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>However, the following columns were not found: 'units'.</span></div><div class='input'>
+### Show the resulting plot
+</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>enaPlot</span>);</div><div class='output co'>#&gt; <span class='error'>Error in print(enaPlot): object 'enaPlot' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

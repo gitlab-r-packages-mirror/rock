@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cleaning sources — clean_source • rock</title>
+<title>Cleaning &amp; editing sources — clean_source • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Cleaning sources — clean_source" />
+<meta property="og:title" content="Cleaning &amp; editing sources — clean_source" />
 
-<meta property="og:description" content="These function can be used to 'clean' one or more sources. Cleaning consists
-of two operations: splitting the source at utterance markers, and conducting
-search and replaces using regular expressions." />
+<meta property="og:description" content="These function can be used to 'clean' one or more sources or perform search and
+replace taks. Cleaning consists of two operations: splitting the source at
+utterance markers, and conducting search and replaces using regular expressions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,16 +108,16 @@ search and replaces using regular expressions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cleaning sources</h1>
+    <h1>Cleaning &amp; editing sources</h1>
     
     <div class="hidden name"><code>cleaning_sources.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These function can be used to 'clean' one or more sources. Cleaning consists
-of two operations: splitting the source at utterance markers, and conducting
-search and replaces using regular expressions.</p>
+    <p>These function can be used to 'clean' one or more sources or perform search and
+replace taks. Cleaning consists of two operations: splitting the source at
+utterance markers, and conducting search and replaces using regular expressions.</p>
     
     </div>
 
@@ -140,24 +140,38 @@ search and replaces using regular expressions.</p>
   <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([\\?\\!]+\\s?|…\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"</span>),
   <span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n"</span>,
   <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"([^\\,]),([^\\s])"</span>, <span class='st'>"\\1, \\2"</span>)),
-  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filenamePrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>filenameSuffix</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>search_and_replace_in_source</span>(<span class='no'>input</span>, <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>search_and_replace_in_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>, <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>filenamePrefix</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>filenameSuffix</span> <span class='kw'>=</span> <span class='st'>"_postReplacing"</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>For <code>clean_source</code>, either a character vector containing the text
-of the relevant source <em>or</em> a path to a file that contains the source text;
-for <code>clean_sources</code>, a path to a directory that contains the sources to clean.</p></td>
+      <td><p>For <code>clean_source</code> and <code>search_and_replace_in_source</code>, either a character
+vector containing the text of the relevant source <em>or</em> a path to a file that contains
+the source text; for <code>clean_sources</code> and <code>search_and_replace_in_sources</code>, a path to a
+directory that contains the sources to clean.</p></td>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>For <code>clean_source</code>, if not <code>NULL</code>, this is the name (and path) of the file in
-which to save the cleaned source (if it <em>is</em> <code>NULL</code>, the result will be returned visible). For
-<code>clean_sources</code>, <code>output</code> is mandatory and is the path to the directory where to store
-the cleaned sources. This path will be created with a warning if it does not exist.</p></td>
+      <td><p>For <code>clean_source</code> and <code>search_and_replace_in_source</code>, if not <code>NULL</code>,
+this is the name (and path) of the file in which to save the processed source (if it
+<em>is</em> <code>NULL</code>, the result will be returned visibly). For <code>clean_sources</code> and
+<code>search_and_replace_in_sources</code>, <code>output</code> is mandatory and is the path to the
+directory where to store the processed sources. This path will be created with a
+warning if it does not exist. An exception is if "<code>same</code>" is specified - in that
+case, every file will be written to the same directory it was read from.</p></td>
     </tr>
     <tr>
       <th>replacementsPre, replacementsPost</th>
@@ -204,6 +218,29 @@ starting to clean them.</p></td>
       <th>silent</th>
       <td><p>Whether to suppress the warning about not editing the cleaned source.</p></td>
     </tr>
+    <tr>
+      <th>filenamePrefix, filenamePrefix</th>
+      <td><p>The prefix and suffix to add to the
+filenames when writing the processed files to disk.</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>Whether to search all subdirectories (<code>TRUE</code>) as well or not.</p></td>
+    </tr>
+    <tr>
+      <th>filenameRegex</th>
+      <td><p>A regular expression to match against located files; only
+files matching this regular expression are processed.</p></td>
+    </tr>
+    <tr>
+      <th>replacements</th>
+      <td><p>The strings to search &amp; replace, as a list of two-element vectors,
+where the first element in each vector contains a regular expression to search for
+in the source(s), and the second element contains the replacement (these are passed
+as <code>perl</code> regular expressions; see <code><a href='https://www.rdocumentation.org/packages/base/topics/regex'>regex</a></code> for more information).
+Instead of regular expressions, simple words or phrases can also be entered of
+course (since those are valid regular expressions).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -212,7 +249,7 @@ starting to clean them.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When called with its default arguments, the following will happen:</p><ul>
+    <p>The cleaning functions, when called with their default arguments, will do the following:</p><ul>
 <li><p>Double periods (<code>..</code>) will be replaced with single periods (<code>.</code>)</p></li>
 <li><p>Four or more periods (<code>...</code> or <code>.....</code>) will be replaced with three periods</p></li>
 <li><p>Three or more newline characters will be replaced by one newline character (which
@@ -246,6 +283,29 @@ but otherwise... not really, actually."</span>
 #&gt; Well, that depends… 
 #&gt; Sometimes, when it's... Nice. 
 #&gt; Then I do, but otherwise... not really, actually.</div><div class='input'>
+<span class='no'>exampleSource</span> <span class='kw'>&lt;-</span>
+<span class='st'>"Do you like icecream?
+
+
+Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,
+but otherwise... not really, actually."</span>
+
+<span class='co'>### Simple text replacements:</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>search_and_replace_in_source</span>(<span class='no'>exampleSource</span>,
+                                 <span class='kw'>replacements</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"\u2026"</span>, <span class='st'>"..."</span>),
+                                                   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Nice"</span>, <span class='st'>"Great"</span>))));</div><div class='output co'>#&gt; Do you like icecream?
+#&gt; 
+#&gt; 
+#&gt; Well, that depends... Sometimes, when it's..... Great. Then I do,
+#&gt; but otherwise... not really, actually.</div><div class='input'>
+<span class='co'>### Using a regular expression to capitalize all words following</span>
+<span class='co'>### a period:</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>search_and_replace_in_source</span>(<span class='no'>exampleSource</span>,
+                                 <span class='kw'>replacements</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"\\.(\\s*)([a-z])"</span>, <span class='st'>".\\1\\U\\2"</span>))));</div><div class='output co'>#&gt; Do you like icecream?
+#&gt; 
+#&gt; 
+#&gt; Well, that depends… Sometimes, when it's..... Nice. Then I do,
+#&gt; but otherwise... Not really, actually.</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
