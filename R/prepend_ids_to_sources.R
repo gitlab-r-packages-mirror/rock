@@ -49,8 +49,10 @@ prepend_ids_to_sources <- function(input,
                             silent=TRUE);
     ### Setting origin to a few seconds in the future to make sure all
     ### uids are unique
+    regexToMatch <-
+      paste0("^\\[\\[", prefix, "([^]]*)\\]\\].*$");
     last_uid <-
-      gsub("^\\[\\[(.*)\\]\\].*$", "\\1", utils::tail(tmp, 1));
+      gsub(regexToMatch, "\\1", utils::tail(tmp, 1));
     origin <-
       as.POSIXct((1+base30toNumeric(last_uid)) / 100, origin="1970-01-01");
   }
