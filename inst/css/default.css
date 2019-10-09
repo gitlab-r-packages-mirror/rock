@@ -1,0 +1,16 @@
+.code {
+  background-color: #f4d142;
+}
+
+.identifier {
+  background-color: #aaaaff;
+}
+
+.sectionBreak {
+  background-color: #eeeeff;
+}
+
+.uid {
+  background-color: #eeeeee;
+  color: #bbbbbb;
+}
