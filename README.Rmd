@@ -36,21 +36,28 @@ dependency_url <-
 pkgdown_url <-
   paste0("https://r-packages.gitlab.io/", packagename);
 
+cran_url <-
+  paste0("https://cran.r-project.org/package=", packagename);
+cranVersion_badge <-
+  paste0("https://www.r-pkg.org/badges/version/", packagename, "?color=brightgreen");
+cranLastMonth_badge <-
+  paste0("https://cranlogs.r-pkg.org/badges/last-month/", packagename, "?color=brightgreen");
+cranTotal_badge <-
+  paste0("https://cranlogs.r-pkg.org/badges/grand-total/", packagename, "?color=brightgreen");
+
 ```
+
+<!-- badges: start -->[![Pipeline status](`r gitLab_ci_badge`)](`r gitLab_ci_url`)
+[![Coverage status](`r codecov_badge`)](`r codecov_url`)
+[![Version on CRAN](`r cranVersion_badge`)](`r cran_url`)
+[![Version on CRAN](`r cranLastMonth_badge`)](`r cran_url`)
+[![Version on CRAN](`r cranTotal_badge`)](`r cran_url`)
+<!-- [![Dependency status](`r dependency_badge`)](`r dependency_url`) -->
+<!-- badges: end -->
 
 # <img src='img/hex-logo.png' align="right" height="200" /> `r paste(packagename, "\U1F4E6")`
 
 ## `r packageSubtitle`
-
-<!-- badges: start -->
-
-[![Pipeline status](`r gitLab_ci_badge`)](`r gitLab_ci_url`)
-
-[![Coverage status](`r codecov_badge`)](`r codecov_url`)
-
-<!-- [![Dependency status](`r dependency_badge`)](`r dependency_url`) -->
-
-<!-- badges: end -->
 
 The pkgdown website for this project is located at `r pkgdown_url`.
 
@@ -70,6 +77,7 @@ construct taxonomy (DCT).
 See the [introductory vignette](https://r-packages.gitlab.io/rock/articles/introduction_to_rock.html) for an introduction.
 
 There is a FLOSS interface for the ROCK, iROCK, available at https://r-packages.gitlab.io/rock/iROCK/
+
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->
 <!--------------------------------------------->

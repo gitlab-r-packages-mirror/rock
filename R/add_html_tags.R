@@ -1,3 +1,22 @@
+#' Add HTML tags to a source
+#'
+#' This function adds HTML tags to a source to allow pretty printing/viewing.
+#'
+#' @inheritParams parsing_sources
+#' @param x A character vector with the source
+#' @param codeClass The classes to use for, respectively, codes,
+#' identifiers (such as case identifiers or coder identifiers), section
+#' breaks, utterance identifiers, and full utterances. All `<span>` elements
+#' except for the full utterances, which are placed in `<div>` elements.
+#'
+#' @return The character vector witht he replacements made.
+#' @export
+#'
+#' @examples add_html_tags("[[cid=participant1]]
+#' This is something this participant may have said.
+#' Just like this. [[thisIsACode]]
+#' ---paragraph-break---
+#' And another utterance.");
 add_html_tags <- function(x,
                           codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
                           idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]",
@@ -9,9 +28,19 @@ add_html_tags <- function(x,
                           codeClass = "code",
                           idClass = "identifier",
                           sectionClass = "sectionBreak",
-                          uidClass = "uid") {
+                          uidClass = "uid",
+                          utteranceClass = "utterance") {
 
   res <- x;
+
+  ### First replace smaller than and bigger than symbols
+  ### with the corresponding entities
+  res <- gsub("<", "&lt;", res, fixed=TRUE);
+  res <- gsub(">", "&gt;", res, fixed=TRUE);
+
+  ### Also replace <> symbols in all codeRegexes
+  codeRegexes <- gsub("<", "&lt;", codeRegexes, fixed=TRUE);
+  codeRegexes <- gsub(">", "&gt;", codeRegexes, fixed=TRUE);
 
   ### Add html tags
   for (currentCodeRegexName in names(codeRegexes)) {
@@ -48,6 +77,10 @@ add_html_tags <- function(x,
     }
   }
 
+  ### Also replace <> symbols in all sectionRegexes
+  sectionRegexes <- gsub("<", "&lt;", sectionRegexes, fixed=TRUE);
+  sectionRegexes <- gsub(">", "&gt;", sectionRegexes, fixed=TRUE);
+
   ### Add break tags
   for (currentBreakRegexName in names(sectionRegexes)) {
     currentBreakRegex <- sectionRegexes[currentBreakRegexName];
@@ -75,6 +108,10 @@ add_html_tags <- function(x,
     }
   }
 
+  ### Also replace <> symbols in all idRegexes
+  idRegexes <- gsub("<", "&lt;", idRegexes, fixed=TRUE);
+  idRegexes <- gsub(">", "&gt;", idRegexes, fixed=TRUE);
+
   ### Add identifier tags
   for (currentIdRegexName in names(idRegexes)) {
     currentIdRegex <- idRegexes[currentIdRegexName];
@@ -95,6 +132,8 @@ add_html_tags <- function(x,
          paste0('<span class="', uidClass,
                 '">\\1</span>'),
          res);
+
+  res <- paste0('<div class="', utteranceClass, '">', res, '</div>\n');
 
   return(res);
 

@@ -14,3 +14,7 @@
   background-color: #eeeeee;
   color: #bbbbbb;
 }
+
+.utterance {
+  border-bottom: 0.5px dotted black;
+}

@@ -164,7 +164,6 @@ extract_codings_by_coderId <- function(input,
           stats::setNames(rawCodings, #list(res$codingsByCoder[[i]][[j]][[k]]),
                           i);
 
-
         if (k %in% res$utterances) {
           ### If this uid already contains information, append the new info
           if (j %in% names(res$utterances[[k]])) {
@@ -184,9 +183,6 @@ extract_codings_by_coderId <- function(input,
       }
     }
   }
-
-
-
 
   return(res);
 

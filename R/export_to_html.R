@@ -87,8 +87,14 @@ export_to_html <- function(input,
     "</div>\n";
 
   if ("rockParsedSource" %in% class(input)) {
+
     res <-
-      add_html_tags(input$rawSourceDf$utterances_raw);
+      add_html_tags(x = input$rawSourceDf$utterances_raw,
+                    codeRegexes = input$arguments$codeRegexes,
+                    idRegexes = input$arguments$idRegexes,
+                    sectionRegexes = input$arguments$sectionRegexes,
+                    uidRegex = input$arguments$uidRegex,
+                    inductiveCodingHierarchyMarker = input$arguments$inductiveCodingHierarchyMarker);
     res <- paste0(utterancePre, res, utterancePost);
     res <- paste0(htmlPre,
                   fullCSS,
@@ -133,6 +139,7 @@ export_to_html <- function(input,
       dir.create(output,
                  recursive = TRUE);
     }
+
     res <-
       lapply(filenames,
              function(x) {
@@ -140,7 +147,10 @@ export_to_html <- function(input,
                  export_to_html(input=input$parsedSources[[x]],
                                 output=file.path(output,
                                                  paste0(basename(x), ".html")),
-                                preventOverwriting = preventOverwriting);
+                                template = template,
+                                preventOverwriting = preventOverwriting,
+                                encoding = encoding,
+                                silent=silent);
              });
   } else {
     stop("As argument 'input', only provide an object with parsed sources, ",

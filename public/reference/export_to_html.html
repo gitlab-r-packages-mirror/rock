@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load a source from a file or a string — load_source • rock</title>
+<title>Export parsed sources to HTML — export_to_html • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,15 +30,9 @@
 
 
 
-<meta property="og:title" content="Load a source from a file or a string — load_source" />
+<meta property="og:title" content="Export parsed sources to HTML — export_to_html" />
 
-<meta property="og:description" content="These functions load one or more source(s) from a file or
-a string and store it in memory for further processing.
-Note that you'll probably want to clean the sources
-first, using one of the clean_sources() functions,
-and you'll probably want to add utterance identifiers
-to each utterance using one of the prepending_uids()
-functions." />
+<meta property="og:description" content="These function can be used to convert one or more parsed sources to HTML." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,67 +106,70 @@ functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load a source from a file or a string</h1>
+    <h1>Export parsed sources to HTML</h1>
     
-    <div class="hidden name"><code>loading_sources.Rd</code></div>
+    <div class="hidden name"><code>export_to_html.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These functions load one or more source(s) from a file or
-a string and store it in memory for further processing.
-Note that you'll probably want to clean the sources
-first, using one of the <code><a href='cleaning_sources.html'>clean_sources()</a></code> functions,
-and you'll probably want to add utterance identifiers
-to each utterance using one of the <code><a href='prepending_uids.html'>prepending_uids()</a></code>
-functions.</p>
+    <p>These function can be used to convert one or more parsed sources to HTML.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>load_source</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>load_sources</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>export_to_html</span>(<span class='no'>input</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>The filename or contents of the source
-for <code>load_source</code> and the directory containing the
-sources for <code>load_sources</code>.</p></td>
+      <td><p>An object of class <code>rockParsedSource</code> (as resulting from a call
+to <code><a href='parsing_sources.html'>rock::parse_source()</a></code>) or of class <code>rockParsedSources</code> (as resulting from a call
+to <code><a href='parsing_sources.html'>rock::parse_sources()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>Either NULL to not write any files, or, if <code>input</code> is a single
+<code>rockParsedSource</code>, the filename to write to, and if <code>input</code> is a <code>rockParsedSources</code>
+object, the path to write to. This path will be created with a warning
+if it does not exist.</p></td>
+    </tr>
+    <tr>
+      <th>preventOverwriting</th>
+      <td><p>Whether to prevent overwriting of output files.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>The encoding of the file(s).</p></td>
+      <td><p>The encoding to use when writing the exported source(s).</p></td>
     </tr>
     <tr>
       <th>silent</th>
-      <td><p>Whether to be chatty or quiet.</p></td>
-    </tr>
-    <tr>
-      <th>filenameRegex</th>
-      <td><p>A regular expression to match against located files; only
-files matching this regular expression are processed.</p></td>
-    </tr>
-    <tr>
-      <th>ignoreRegex</th>
-      <td><p>Regular expression indicating which files to ignore.</p></td>
-    </tr>
-    <tr>
-      <th>recursive</th>
-      <td><p>Whether to search all subdirectories (<code>TRUE</code>) as well or not.</p></td>
+      <td><p>Whether to suppress messages.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly, an R character vector of
-classes <code>rock_source</code> and <code>character</code>.</p>
+    <p>A list of character vectors.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Parse all example sources in that directory</span>
+<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rock/topics/parsing_sources'>parse_sources</a></span>(<span class='no'>examplePath</span>);
+
+<span class='co'>### Export results to a temporary directory</span>
+<span class='no'>tmpDir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(<span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>);
+<span class='no'>prettySources</span> <span class='kw'>&lt;-</span>
+  <span class='fu'>export_to_html</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>parsedExamples</span>);</div><div class='output co'>#&gt; <span class='error'>Error in dir.exists(output): invalid filename argument</span></div><div class='input'>
+<span class='co'>### Show first one</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>prettySources</span><span class='kw'>[[</span><span class='fl'>1</span>]]);</div><div class='output co'>#&gt; <span class='error'>Error in print(prettySources[[1]]): object 'prettySources' not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -180,7 +177,9 @@ classes <code>rock_source</code> and <code>character</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load a source from a file or a string — load_source • rock</title>
+<title>Add HTML tags to a source — add_html_tags • rock</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,15 +30,9 @@
 
 
 
-<meta property="og:title" content="Load a source from a file or a string — load_source" />
+<meta property="og:title" content="Add HTML tags to a source — add_html_tags" />
 
-<meta property="og:description" content="These functions load one or more source(s) from a file or
-a string and store it in memory for further processing.
-Note that you'll probably want to clean the sources
-first, using one of the clean_sources() functions,
-and you'll probably want to add utterance identifiers
-to each utterance using one of the prepending_uids()
-functions." />
+<meta property="og:description" content="This function adds HTML tags to a source to allow pretty printing/viewing." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,65 +106,47 @@ functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load a source from a file or a string</h1>
+    <h1>Add HTML tags to a source</h1>
     
-    <div class="hidden name"><code>loading_sources.Rd</code></div>
+    <div class="hidden name"><code>add_html_tags.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These functions load one or more source(s) from a file or
-a string and store it in memory for further processing.
-Note that you'll probably want to clean the sources
-first, using one of the <code><a href='cleaning_sources.html'>clean_sources()</a></code> functions,
-and you'll probably want to add utterance identifiers
-to each utterance using one of the <code><a href='prepending_uids.html'>prepending_uids()</a></code>
-functions.</p>
+    <p>This function adds HTML tags to a source to allow pretty printing/viewing.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>load_source</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>load_sources</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>add_html_tags</span>(<span class='no'>x</span>, <span class='kw'>codeRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>codes</span> <span class='kw'>=</span>
+  <span class='st'>"\\[\\[([a-zA-Z0-9._&gt;-]+)\\]\\]"</span>), <span class='kw'>idRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>caseId</span> <span class='kw'>=</span>
+  <span class='st'>"\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]"</span>, <span class='kw'>stanzaId</span> <span class='kw'>=</span>
+  <span class='st'>"\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]"</span>),
+  <span class='kw'>sectionRegexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"---paragraph-break---"</span>, <span class='kw'>secondary</span> <span class='kw'>=</span>
+  <span class='st'>"---&lt;[a-zA-Z0-9]?&gt;---"</span>),
+  <span class='kw'>uidRegex</span> <span class='kw'>=</span> <span class='st'>"\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]"</span>,
+  <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>, <span class='kw'>codeClass</span> <span class='kw'>=</span> <span class='st'>"code"</span>,
+  <span class='kw'>idClass</span> <span class='kw'>=</span> <span class='st'>"identifier"</span>, <span class='kw'>sectionClass</span> <span class='kw'>=</span> <span class='st'>"sectionBreak"</span>,
+  <span class='kw'>uidClass</span> <span class='kw'>=</span> <span class='st'>"uid"</span>, <span class='kw'>utteranceClass</span> <span class='kw'>=</span> <span class='st'>"utterance"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input</th>
-      <td><p>The filename or contents of the source
-for <code>load_source</code> and the directory containing the
-sources for <code>load_sources</code>.</p></td>
+      <th>x</th>
+      <td><p>A character vector with the source</p></td>
     </tr>
     <tr>
-      <th>encoding</th>
-      <td><p>The encoding of the file(s).</p></td>
-    </tr>
-    <tr>
-      <th>silent</th>
-      <td><p>Whether to be chatty or quiet.</p></td>
-    </tr>
-    <tr>
-      <th>filenameRegex</th>
-      <td><p>A regular expression to match against located files; only
-files matching this regular expression are processed.</p></td>
-    </tr>
-    <tr>
-      <th>ignoreRegex</th>
-      <td><p>Regular expression indicating which files to ignore.</p></td>
-    </tr>
-    <tr>
-      <th>recursive</th>
-      <td><p>Whether to search all subdirectories (<code>TRUE</code>) as well or not.</p></td>
+      <th>codeClass</th>
+      <td><p>The classes to use for, respectively, codes,
+identifiers (such as case identifiers or coder identifiers), section
+breaks, utterance identifiers, and full utterances. All <code>&lt;span&gt;</code> elements
+except for the full utterances, which are placed in <code>&lt;div&gt;</code> elements.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly, an R character vector of
-classes <code>rock_source</code> and <code>character</code>.</p>
+    <p>The character vector witht he replacements made.</p>
     
 
   </div>

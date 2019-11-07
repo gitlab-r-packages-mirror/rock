@@ -128,10 +128,11 @@ contained identifiers, sections, and codes.</p>
   <span class='kw'>uidRegex</span> <span class='kw'>=</span> <span class='st'>"\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]"</span>,
   <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>),
   <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^dct:|^ci:"</span>, <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
-  <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
-  <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>attributeContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"rock_attributes"</span>),
+  <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>, <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
+  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for rockParsedSource</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
@@ -148,9 +149,10 @@ contained identifiers, sections, and codes.</p>
   <span class='kw'>autoGenerateIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stanzaId"</span>), <span class='kw'>persistentIds</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"caseId"</span>,
   <span class='st'>"coderId"</span>), <span class='kw'>noCodes</span> <span class='kw'>=</span> <span class='st'>"^uid:|^uid=|^dct:|^ci:"</span>,
   <span class='kw'>inductiveCodingHierarchyMarker</span> <span class='kw'>=</span> <span class='st'>"&gt;"</span>,
-  <span class='kw'>metadataContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"metadata"</span>), <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>,
-  <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>, <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>attributeContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"rock_attributes"</span>),
+  <span class='kw'>codesContainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"codes"</span>, <span class='st'>"dct"</span>), <span class='kw'>delimiterRegEx</span> <span class='kw'>=</span> <span class='st'>"^---$"</span>,
+  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='st'>"^#"</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for rockParsedSources</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
@@ -216,9 +218,9 @@ can be specified in one code (for example, if the <code>inductiveCodingHierarchy
 the code <code>grandparent&gt;child&gt;grandchild</code> would indicate codes at three levels.</p></td>
     </tr>
     <tr>
-      <th>metadataContainers</th>
-      <td><p>The name of YAML fragments containing metadata (i.e. attributes
-about cases).</p></td>
+      <th>attributeContainers</th>
+      <td><p>The name of YAML fragments containing case attributes (e.g.
+metadata, demographic variables, quantitative data about cases, etc).</p></td>
     </tr>
     <tr>
       <th>codesContainers</th>
