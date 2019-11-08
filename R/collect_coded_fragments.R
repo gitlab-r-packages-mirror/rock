@@ -54,7 +54,8 @@ collect_coded_fragments <- function(x,
                                     heading = NULL,
                                     headingLevel = 2,
                                     fragmentDelimiter = "\n\n-----\n\n",
-                                    addSource = TRUE,
+                                    utteranceGlue = "\n\n",
+                                    sourceFormat = "\n\n**Source: `%s`**\n\n",
                                     rawResult = FALSE,
                                     output = NULL,
                                     cleanUtterances = TRUE,
@@ -85,19 +86,32 @@ collect_coded_fragments <- function(x,
                 function(i) {
                   return(lapply(which(dat[, i] == 1),
                            function(center) {
-                             res <- seq(center - context,
-                                        center + context);
+                             indices <- seq(center - context,
+                                            center + context);
                              ### Shift forwards or backwards to make sure early or late
                              ### fragments don't exceed valid utterance (line) numbers
-                             res <- res - min(0, (min(res) - 1));
-                             res <- res - max(0, (max(res) - nrow(dat)));
+
+                             ###-------------------------------------------------------
+                             ### Fix this to work within sources, not for _all_ utterances
+                             ###-------------------------------------------------------
+
+                             indices <- indices - min(0, (min(indices) - 1));
+                             indices <- indices - max(0, (max(indices) - nrow(dat)));
+                             ### Get clean or raw utterances
                              if (cleanUtterances) {
-                               return(paste0(dat[res, 'utterances_clean'],
-                                             collapse="\n"));
+                               res <- paste0(dat[indices, 'utterances_clean'],
+                                             collapse=utteranceGlue);
                              } else {
-                               return(paste0(dat[res, 'utterances_raw'],
-                                             collapse="\n"));
+                               res <- paste0(dat[indices, 'utterances_raw'],
+                                             collapse=utteranceGlue);
                              }
+                             ### Add the sources, if necessary
+                             if (!identical(sourceFormat, FALSE)) {
+                               res <- paste0(sprintf(sourceFormat, dat[center, 'originalSource']),
+                                             res);
+                             }
+                             ### Return result
+                             return(res);
                            }));
                 });
 
