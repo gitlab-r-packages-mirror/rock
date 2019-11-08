@@ -53,6 +53,8 @@ collect_coded_fragments <- function(x,
                                     context = 0,
                                     heading = NULL,
                                     headingLevel = 2,
+                                    fragmentDelimiter = "\n\n-----\n\n",
+                                    addSource = TRUE,
                                     rawResult = FALSE,
                                     output = NULL,
                                     cleanUtterances = TRUE,
@@ -66,20 +68,20 @@ collect_coded_fragments <- function(x,
                     "or 'rockParsedSources'."));
   }
 
-  codes <- grep(codes,
-                x$convenience$codingLeaves,
-                value=TRUE);
+  matchedCodes <- grep(codes,
+                       x$convenience$codingLeaves,
+                       value=TRUE);
   dat <- x$mergedSourceDf;
 
   if (!silent) {
     cat0("The regular expression passed in argument `codes` ('",
               codes, "') matches the following codings: ",
-              vecTxtQ(codes), ".\n\n");
+              vecTxtQ(matchedCodes), ".\n\n");
   }
 
   ### Get line numbers of the fragments to extract,
   ### get fragments, store them
-  res <- lapply(codes,
+  res <- lapply(matchedCodes,
                 function(i) {
                   return(lapply(which(dat[, i] == 1),
                            function(center) {
@@ -101,12 +103,12 @@ collect_coded_fragments <- function(x,
 
   if (rawResult) {
     names(res) <-
-      codes;
+      matchedCodes;
   } else {
     ### Set codePrefix based on whether a heading
     ### will be included
     if (is.null(heading)) {
-      if (length(codes) > 5) {
+      if (length(matchedCodes) > 5) {
         heading <-
           paste0(repStr("#", headingLevel), " ",
                  "Collected coded fragments with ",
@@ -116,7 +118,7 @@ collect_coded_fragments <- function(x,
         heading <-
           paste0(repStr("#", headingLevel), " ",
                  "Collected coded fragments for codes ",
-                 vecTxtQ(codes), " with ",
+                 vecTxtQ(matchedCodes), " with ",
                  context, " lines of context",
                  "\n\n");
       }
@@ -137,12 +139,12 @@ collect_coded_fragments <- function(x,
     ### Combine all fragments within each code
     res <- lapply(res,
                   paste0,
-                  collapse="\n\n-----\n\n");
+                  collapse=fragmentDelimiter);
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
-    res <- paste0(codePrefix, codes, "\n\n-----\n\n",
-                  res, "\n\n-----\n");
+    res <- paste0(codePrefix, matchedCodes, fragmentDelimiter,
+                  res, fragmentDelimiter);
     ### Collapse into one character value
     res <- paste0(res, collapse="\n");
     ### Add title heading
