@@ -58,8 +58,9 @@ collect_coded_fragments <- function(x,
                                     sourceFormat = "\n\n**Source: `%s`**\n\n",
                                     add_html_tags = TRUE,
                                     rawResult = FALSE,
-                                    output = NULL,
                                     cleanUtterances = TRUE,
+                                    template = "default",
+                                    output = NULL,
                                     silent=TRUE) {
 
   if (!("rockParsedSource" %in% class(x)) &&
@@ -171,6 +172,43 @@ collect_coded_fragments <- function(x,
 
   if (add_html_tags) {
     res <- add_html_tags(res);
+
+    ### Load stylesheets
+    bootstrapCSS <-
+      paste0(readLines(system.file("css", "bootstrap.min.css", package="rock")),
+             collapse="\n");
+    basicCSS <-
+      paste0(readLines(system.file("css", "basic.css", package="rock")),
+             collapse="\n");
+
+    if (file.exists(template)) {
+      templateCSS <-
+        paste0(readLines(template),
+               collapse="\n");
+    } else if (file.exists(system.file("css", paste0(template, ".css"), package="rock"))) {
+      templateCSS <-
+        paste0(readLines(system.file("css", "default.css", package="rock")),
+               collapse="\n");
+    } else {
+      templateCSS <-
+        paste0(readLines(system.file("css", "default.css", package="rock")),
+               collapse="\n");
+    }
+
+    ### Merge stylesheets
+    fullCSS <-
+      paste0("\n<style\n>",
+             bootstrapCSS,
+             "\n\n",
+             basicCSS,
+             "\n\n",
+             templateCSS,
+             "\n</style>\n");
+
+    res <- paste0(fullCSS,
+                  "\n\n",
+                  res);
+
   }
 
   if (is.null(output)) {
