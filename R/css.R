@@ -1,0 +1,37 @@
+css <- function(template = "default") {
+
+  ### Load stylesheets
+  bootstrapCSS <-
+    paste0(readLines(system.file("css", "bootstrap.min.css", package="rock")),
+           collapse="\n");
+  basicCSS <-
+    paste0(readLines(system.file("css", "basic.css", package="rock")),
+           collapse="\n");
+
+  if (file.exists(template)) {
+    templateCSS <-
+      paste0(readLines(template),
+             collapse="\n");
+  } else if (file.exists(system.file("css", paste0(template, ".css"), package="rock"))) {
+    templateCSS <-
+      paste0(readLines(system.file("css", "default.css", package="rock")),
+             collapse="\n");
+  } else {
+    templateCSS <-
+      paste0(readLines(system.file("css", "default.css", package="rock")),
+             collapse="\n");
+  }
+
+  ### Merge stylesheets
+  fullCSS <-
+    paste0("\n<style\n>",
+           bootstrapCSS,
+           "\n\n",
+           basicCSS,
+           "\n\n",
+           templateCSS,
+           "\n</style>\n");
+
+  return(fullCSS);
+
+}
