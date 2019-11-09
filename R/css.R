@@ -1,3 +1,4 @@
+#' @export
 css <- function(template = "default") {
 
   ### Load stylesheets
