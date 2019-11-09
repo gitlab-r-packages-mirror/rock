@@ -26,13 +26,9 @@ parse_source(text, file, codeRegexes = c(codes =
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
 parse_sources(path, extension = "rock|dct", regex = NULL,
-  recursive = TRUE, codeRegexes = c(codes =
-  "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
-  "\\\\[\\\\[cid=([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
-  "\\\\[\\\\[sid=([a-zA-Z0-9._-]+)\\\\]\\\\]", coderId =
-  "\\\\[\\\\[coderId=([a-zA-Z0-9._-]+)\\\\]\\\\]"),
-  sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
-  "---<[a-zA-Z0-9]?>---"),
+  recursive = TRUE, codeRegexes = rock::opts$get(codeRegexes),
+  idRegexes = rock::opts$get(idRegexes),
+  sectionRegexes = rock::opts$get(sectionRegexes),
   uidRegex = "\\\\[\\\\[uid=([a-zA-Z0-9._-]+)\\\\]\\\\]",
   autoGenerateIds = c("stanzaId"), persistentIds = c("caseId",
   "coderId"), noCodes = "^uid:|^uid=|^dct:|^ci:",

@@ -5,8 +5,12 @@
 \title{Create an overview of coded fragments}
 \usage{
 collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
-  headingLevel = 2, rawResult = FALSE, output = NULL,
-  cleanUtterances = TRUE, silent = TRUE)
+  headingLevel = 2,
+  fragmentDelimiter = rock::opts$get(fragmentDelimiter),
+  utteranceGlue = "\\n\\n",
+  sourceFormat = "\\n\\n**Source: `\%s`**\\n\\n", add_html_tags = TRUE,
+  rawResult = FALSE, output = NULL, cleanUtterances = TRUE,
+  silent = TRUE)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}

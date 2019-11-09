@@ -53,9 +53,10 @@ collect_coded_fragments <- function(x,
                                     context = 0,
                                     heading = NULL,
                                     headingLevel = 2,
-                                    fragmentDelimiter = "\n\n-----\n\n",
+                                    fragmentDelimiter = rock::opts$get(fragmentDelimiter),
                                     utteranceGlue = "\n\n",
                                     sourceFormat = "\n\n**Source: `%s`**\n\n",
+                                    add_html_tags = TRUE,
                                     rawResult = FALSE,
                                     output = NULL,
                                     cleanUtterances = TRUE,
@@ -166,6 +167,10 @@ collect_coded_fragments <- function(x,
       res <- paste0(heading,
                     res);
     }
+  }
+
+  if (add_html_tags) {
+    res <- add_html_tags(res);
   }
 
   if (is.null(output)) {

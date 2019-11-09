@@ -14,7 +14,7 @@ clean_source(input, output = NULL,
   "\\\\1...\\\\3"), c("(\\\\s*\\\\r?\\\\n){3,}", "\\n")),
   extraReplacementsPre = NULL,
   utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
-  utteranceMarker = "\\n",
+  utteranceMarker = rock::opts$get(utteranceMarker),
   replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
   extraReplacementsPost = NULL, preventOverwriting = TRUE,
   removeNewlines = FALSE, encoding = "UTF-8", silent = FALSE)

@@ -4,16 +4,16 @@
 \alias{add_html_tags}
 \title{Add HTML tags to a source}
 \usage{
-add_html_tags(x, codeRegexes = c(codes =
-  "\\\\[\\\\[([a-zA-Z0-9._>-]+)\\\\]\\\\]"), idRegexes = c(caseId =
-  "\\\\[\\\\[cid[=:]([a-zA-Z0-9._-]+)\\\\]\\\\]", stanzaId =
-  "\\\\[\\\\[sid[=:]([a-zA-Z0-9._-]+)\\\\]\\\\]"),
-  sectionRegexes = c(paragraphs = "---paragraph-break---", secondary =
-  "---<[a-zA-Z0-9]?>---"),
-  uidRegex = "\\\\[\\\\[uid[=:]([a-zA-Z0-9._-]+)\\\\]\\\\]",
-  inductiveCodingHierarchyMarker = ">", codeClass = "code",
-  idClass = "identifier", sectionClass = "sectionBreak",
-  uidClass = "uid", utteranceClass = "utterance")
+add_html_tags(x, codeRegexes = rock::opts$get(codeRegexes),
+  idRegexes = rock::opts$get(idRegexes),
+  sectionRegexes = rock::opts$get(sectionRegexes),
+  uidRegex = rock::opts$get(uidRegex),
+  inductiveCodingHierarchyMarker = rock::opts$get(inductiveCodingHierarchyMarker),
+  codeClass = rock::opts$get(codeClass),
+  idClass = rock::opts$get(idClass),
+  sectionClass = rock::opts$get(sectionClass),
+  uidClass = rock::opts$get(uidClass),
+  utteranceClass = rock::opts$get(utteranceClass))
 }
 \arguments{
 \item{x}{A character vector with the source}
@@ -24,7 +24,7 @@ breaks, utterance identifiers, and full utterances. All \code{<span>} elements
 except for the full utterances, which are placed in \code{<div>} elements.}
 }
 \value{
-The character vector witht he replacements made.
+The character vector with the replacements made.
 }
 \description{
 This function adds HTML tags to a source to allow pretty printing/viewing.

@@ -9,7 +9,7 @@
 #' breaks, utterance identifiers, and full utterances. All `<span>` elements
 #' except for the full utterances, which are placed in `<div>` elements.
 #'
-#' @return The character vector witht he replacements made.
+#' @return The character vector with the replacements made.
 #' @export
 #'
 #' @examples add_html_tags("[[cid=participant1]]
@@ -18,18 +18,16 @@
 #' ---paragraph-break---
 #' And another utterance.");
 add_html_tags <- function(x,
-                          codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-                          idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                                        stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]"),
-                          sectionRegexes = c(paragraphs = "---paragraph-break---",
-                                             secondary = "---<[a-zA-Z0-9]?>---"),
-                          uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                          inductiveCodingHierarchyMarker = ">",
-                          codeClass = "code",
-                          idClass = "identifier",
-                          sectionClass = "sectionBreak",
-                          uidClass = "uid",
-                          utteranceClass = "utterance") {
+                          codeRegexes = rock::opts$get(codeRegexes),
+                          idRegexes = rock::opts$get(idRegexes),
+                          sectionRegexes = rock::opts$get(sectionRegexes),
+                          uidRegex = rock::opts$get(uidRegex),
+                          inductiveCodingHierarchyMarker = rock::opts$get(inductiveCodingHierarchyMarker),
+                          codeClass = rock::opts$get(codeClass),
+                          idClass = rock::opts$get(idClass),
+                          sectionClass = rock::opts$get(sectionClass),
+                          uidClass = rock::opts$get(uidClass),
+                          utteranceClass = rock::opts$get(utteranceClass)) {
 
   res <- x;
 
