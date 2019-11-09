@@ -9,8 +9,8 @@ collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
   fragmentDelimiter = rock::opts$get(fragmentDelimiter),
   utteranceGlue = "\\n\\n",
   sourceFormat = "\\n\\n**Source: `\%s`**\\n\\n", add_html_tags = TRUE,
-  rawResult = FALSE, output = NULL, cleanUtterances = TRUE,
-  silent = TRUE)
+  rawResult = FALSE, cleanUtterances = TRUE, template = "default",
+  output = NULL, silent = TRUE)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}
@@ -35,12 +35,12 @@ instead of \code{headingLevel+1} hashes.}
 \item{rawResult}{Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.}
 
+\item{cleanUtterances}{Whether to use the clean or the raw utterances
+when constructing the fragments (the raw versions contain all codes).}
+
 \item{output}{Here, a path and filename can be provided where the
 result will be written. If provided, the result will be returned
 invisibly.}
-
-\item{cleanUtterances}{Whether to use the clean or the raw utterances
-when constructing the fragments (the raw versions contain all codes).}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
