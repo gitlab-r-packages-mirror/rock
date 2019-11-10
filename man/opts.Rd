@@ -9,17 +9,7 @@
 \title{Options for the rock package}
 \format{An object of class \code{list} of length 4.}
 \usage{
-rock::opts
-}
-\arguments{
-\item{...}{For \code{rock::opts$set}, the dots can be used to specify the options
-to set, in the format \code{option = value}, for example, \code{utteranceMarker = "\n"}. For
-\code{rock::opts$reset}, a list of options to be reset can be passed.}
-
-\item{option}{The name of the option to set.}
-
-\item{default}{The default value to return if the option has not been manually
-specified.}
+opts
 }
 \description{
 The \code{rock::opts} object contains three functions to set, get, and reset
@@ -28,11 +18,24 @@ options used by the rock package. Use \code{rock::opts$set} to set options,
 all options to their default values.
 }
 \details{
-It is normally not necessary to get or set \code{rock} options. The defauls implement
+It is normally not necessary to get or set \code{rock} options. The defaults implement
 the Reproducible Open Coding Kit (ROCK) standard, and deviating from these defaults
 therefore means the processed sources and codes are not compatible and cannot be
 processed by other software that implements the ROCK. Still, in some cases this
-degree of customization might be desirable. The following options can be set:
+degree of customization might be desirable.
+
+The following arguments can be passed:
+
+\describe{
+\item{...}{For \code{rock::opts$set}, the dots can be used to specify the options
+to set, in the format \code{option = value}, for example, \code{utteranceMarker = "\n"}. For
+\code{rock::opts$reset}, a list of options to be reset can be passed.}
+\item{option}{For \code{rock::opts$set}, the name of the option to set.}
+\item{default}{For \code{rock::opts$get}, the default value to return if the
+option has not been manually specified.}
+}
+
+The following options can be set:
 
 \describe{
 \item{codeRegexes}{A named character vector with one or more regular
