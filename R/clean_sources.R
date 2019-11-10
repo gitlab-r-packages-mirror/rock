@@ -2,31 +2,26 @@
 #' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
 #' @param filenameRegex A regular expression to match against located files; only
 #' files matching this regular expression are processed.
-#' @param filenamePrefix,filenamePrefix The prefix and suffix to add to the
+#' @param filenamePrefix,filenameSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk.
 #' @export
 clean_sources <- function(input,
                           output,
-                          replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
-                                                   "\\1.\\3"),
-                                                 c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
-                                                   "\\1...\\3"),
-                                                 c("(\\s*\\r?\\n){3,}",
-                                                   "\n")),
-                          extraReplacementsPre = NULL,
-                          utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
-                          utteranceMarker = "\n",
-                          replacementsPost = list(c("([^\\,]),([^\\s])",
-                                                    "\\1, \\2")),
-                          extraReplacementsPost = NULL,
                           filenamePrefix = "",
                           filenameSuffix = "",
-                          preventOverwriting=TRUE,
                           recursive=TRUE,
                           filenameRegex=".*",
+                          replacementsPre = rock::opts$get(replacementsPre),
+                          replacementsPost = rock::opts$get(replacementsPost),
+                          extraReplacementsPre = NULL,
+                          extraReplacementsPost = NULL,
                           removeNewlines = FALSE,
-                          encoding = "UTF-8",
-                          silent=FALSE) {
+                          utteranceSplits = rock::opts$get(utteranceSplits),
+                          preventOverwriting = rock::opts$get(preventOverwriting),
+                          encoding = rock::opts$get(encoding),
+                          silent=rock::opts$get(silent)) {
+
+  utteranceMarker <- rock::opts$get(utteranceMarker);
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
@@ -95,13 +90,12 @@ clean_sources <- function(input,
                  replacementsPre=replacementsPre,
                  extraReplacementsPre=extraReplacementsPre,
                  utteranceSplits=utteranceSplits,
-                 utteranceMarker=utteranceMarker,
                  replacementsPost=replacementsPost,
                  extraReplacementsPost=extraReplacementsPost,
                  preventOverwriting=preventOverwriting,
                  removeNewlines=removeNewlines,
                  encoding=encoding,
-                 silent=TRUE);
+                 silent=silent);
     res <-
       c(res,
         newFilename);

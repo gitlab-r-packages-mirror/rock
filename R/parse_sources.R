@@ -4,21 +4,22 @@ parse_sources <- function(path,
                           extension = "rock|dct",
                           regex=NULL,
                           recursive=TRUE,
-                          codeRegexes = rock::opts$get(codeRegexes),
-                          idRegexes = rock::opts$get(idRegexes),
-                          sectionRegexes = rock::opts$get(sectionRegexes),
-                          uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
-                          autoGenerateIds = c('stanzaId'),
-                          persistentIds = c('caseId', 'coderId'),
-                          noCodes = "^uid:|^uid=|^dct:|^ci:",
-                          inductiveCodingHierarchyMarker = ">",
-                          attributeContainers = c("rock_attributes"),
-                          codesContainers = c("codes", "dct"),
-                          delimiterRegEx = "^---$",
-                          ignoreRegex = "^#",
                           ignoreOddDelimiters = FALSE,
-                          encoding="UTF-8",
-                          silent=TRUE) {
+                          encoding=rock::opts$get(encoding),
+                          silent=rock::opts$get(silent)) {
+
+  codeRegexes <- rock::opts$get(codeRegexes);
+  idRegexes <- rock::opts$get(idRegexes);
+  sectionRegexes <- rock::opts$get(sectionRegexes);
+  uidRegex <- rock::opts$get(uidRegex);
+  autoGenerateIds <- rock::opts$get(autoGenerateIds);
+  persistentIds <- rock::opts$get(persistentIds);
+  noCodes <- rock::opts$get(noCodes);
+  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  attributeContainers <- rock::opts$get(attributeContainers);
+  codesContainers <- rock::opts$get(codesContainers);
+  delimiterRegEx <- rock::opts$get(delimiterRegEx);
+  ignoreRegex <- rock::opts$get(ignoreRegex);
 
   if (!dir.exists(path)) {
     stop("Directory '",
@@ -55,18 +56,6 @@ parse_sources <- function(path,
   res$parsedSources <-
     lapply(fileList,
            parse_source,
-           codeRegexes=codeRegexes,
-           idRegexes=idRegexes,
-           sectionRegexes=sectionRegexes,
-           uidRegex=uidRegex,
-           autoGenerateIds=autoGenerateIds,
-           persistentIds=persistentIds,
-           noCodes=noCodes,
-           inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker,
-           attributeContainers=attributeContainers,
-           codesContainers=codesContainers,
-           delimiterRegEx = delimiterRegEx,
-           ignoreRegex = ignoreRegex,
            ignoreOddDelimiters = ignoreOddDelimiters,
            encoding=encoding,
            postponeDeductiveTreeBuilding = TRUE,

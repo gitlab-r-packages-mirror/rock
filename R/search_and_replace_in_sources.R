@@ -5,10 +5,10 @@ search_and_replace_in_sources <- function(input,
                                           replacements = NULL,
                                           filenamePrefix = "",
                                           filenameSuffix = "_postReplacing",
-                                          preventOverwriting = TRUE,
+                                          preventOverwriting = rock::opts$get(preventOverwriting),
                                           recursive=TRUE,
                                           filenameRegex=".*",
-                                          encoding = "UTF-8",
+                                          encoding = rock::opts$get(encoding),
                                           silent=FALSE) {
 
   if (!is.character(input) || !length(input)==1) {

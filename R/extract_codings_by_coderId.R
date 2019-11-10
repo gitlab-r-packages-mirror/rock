@@ -1,25 +1,40 @@
+#' Extract the codings by each coder using the coderId
+#'
+#' @param input The directory with the sources.
+#' @param recursive Whether to also process subdirectories.
+#' @param filenameRegex Only files matching this regular expression will be processed.
+#' @param postponeDeductiveTreeBuilding Whether to build deductive code trees, or only
+#' store YAML fragments.
+#' @param ignoreOddDelimiters Whether to throw an error when encountering an odd number of
+#' YAML delimiters.
+#' @param encoding The encoding of the files to read.
+#' @param silent Whether to be chatty or silent.
+#'
+#' @return An object with the read sources.
+#'
 #' @export
 extract_codings_by_coderId <- function(input,
-                                       coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
-                                       idForOmittedCoderIds = "noCoderId",
-                                       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-                                       idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                     stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                     coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"),
-                                       sectionRegexes = c(paragraphs = "---paragraph-break---",
-                                                          secondary = "---<[a-zA-Z0-9]?>---"),
-                                       uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
-                                       autoGenerateIds = c('stanzaId'),
-                                       persistentIds = c('caseId', 'coderId'),
-                                       noCodes = "^uid:|^uid=|^dct:|^ci:",
                                        recursive = TRUE,
                                        filenameRegex = ".*",
-                                       delimiterRegEx = "^---$",
-                                       ignoreRegex = "^#",
-                                       ignoreOddDelimiters=FALSE,
                                        postponeDeductiveTreeBuilding = TRUE,
-                                       encoding="UTF-8",
-                                       silent=TRUE) {
+                                       ignoreOddDelimiters=FALSE,
+                                       encoding=rock::opts$get(encoding),
+                                       silent=rock::opts$get(silent)) {
+
+  codeRegexes <- rock::opts$get(codeRegexes);
+  idRegexes <- rock::opts$get(idRegexes);
+  sectionRegexes <- rock::opts$get(sectionRegexes);
+  uidRegex <- rock::opts$get(uidRegex);
+  autoGenerateIds <- rock::opts$get(autoGenerateIds);
+  persistentIds <- rock::opts$get(persistentIds);
+  noCodes <- rock::opts$get(noCodes);
+  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  attributeContainers <- rock::opts$get(attributeContainers);
+  codesContainers <- rock::opts$get(codesContainers);
+  delimiterRegEx <- rock::opts$get(delimiterRegEx);
+  ignoreRegex <- rock::opts$get(ignoreRegex);
+  coderId <- rock::opts$get(coderId);
+  idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
 
   if (!silent) {
     cat0("\n\nStarting to parse sources in directory '",

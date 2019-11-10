@@ -5,12 +5,10 @@
 \title{Create an overview of coded fragments}
 \usage{
 collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
-  headingLevel = 2,
-  fragmentDelimiter = rock::opts$get(fragmentDelimiter),
-  utteranceGlue = "\\n\\n",
-  sourceFormat = "\\n\\n**Source: `\%s`**\\n\\n", add_html_tags = TRUE,
-  rawResult = FALSE, cleanUtterances = TRUE, template = "default",
-  output = NULL, silent = TRUE)
+  headingLevel = 2, add_html_tags = FALSE, cleanUtterances = TRUE,
+  output = NULL, template = "default", rawResult = FALSE,
+  preventOverwriting = rock::opts$get(preventOverwriting),
+  silent = rock::opts$get(silent))
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}
@@ -32,15 +30,24 @@ instead of \code{headingLevel+1} hashes.}
 
 \item{headingLevel}{The number of hashes to insert before the headings.}
 
-\item{rawResult}{Whether to return the raw result, a list of the
-fragments, or one character value in markdown format.}
+\item{add_html_tags}{Whether to add HTML tags to the result.}
 
 \item{cleanUtterances}{Whether to use the clean or the raw utterances
-when constructing the fragments (the raw versions contain all codes).}
+when constructing the fragments (the raw versions contain all codes). Note that
+this should be set to \code{FALSE} to have \code{add_html_tags} be of the most use.}
 
 \item{output}{Here, a path and filename can be provided where the
 result will be written. If provided, the result will be returned
 invisibly.}
+
+\item{template}{The template to load; either the name of one
+of the ROCK templates (currently, only 'default' is available), or
+the path and filename of a CSS file.}
+
+\item{rawResult}{Whether to return the raw result, a list of the
+fragments, or one character value in markdown format.}
+
+\item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }

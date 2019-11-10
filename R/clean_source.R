@@ -41,15 +41,14 @@
 #' @param utteranceSplits This is a vector of regular expressions that specify where to
 #' insert breaks between utterances in the source(s). Such breakes are specified using
 #' `utteranceMarker`.
-#' @param utteranceMarker How to specify breaks between utterances in the source(s). The
-#' ROCK convention is to use a newline (`\\n`).
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param removeNewlines Whether to remove all newline characters from the source before
 #' starting to clean them.
 #' @param encoding The encoding of the source(s).
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
-#' @return A character vector for `clean_source`, or a list of character vectors , for `clean_sources`.
+#' @return A character vector for `clean_source`, or a list of character vectors,
+#' for `clean_sources`.
 #' @rdname cleaning_sources
 #'
 #' @examples exampleSource <-
@@ -69,22 +68,17 @@
 #' @export
 clean_source <- function(input,
                          output = NULL,
-                         replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
-                                                  "\\1.\\3"),
-                                                c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
-                                                  "\\1...\\3"),
-                                                c("(\\s*\\r?\\n){3,}",
-                                                  "\n")),
+                         replacementsPre = rock::opts$get(replacementsPre),
+                         replacementsPost = rock::opts$get(replacementsPost),
                          extraReplacementsPre = NULL,
-                         utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
-                         utteranceMarker = rock::opts$get(utteranceMarker),
-                         replacementsPost = list(c("([^\\,]),([^\\s])",
-                                                   "\\1, \\2")),
                          extraReplacementsPost = NULL,
-                         preventOverwriting = TRUE,
                          removeNewlines = FALSE,
-                         encoding = "UTF-8",
-                         silent=FALSE) {
+                         utteranceSplits = rock::opts$get(utteranceSplits),
+                         preventOverwriting = rock::opts$get(preventOverwriting),
+                         encoding = rock::opts$get(encoding),
+                         silent = rock::opts$get(silent)) {
+
+  utteranceMarker <- rock::opts$get(utteranceMarker);
 
   if (file.exists(input)) {
     res <- readLines(input,

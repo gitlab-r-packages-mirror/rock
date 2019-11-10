@@ -1,26 +1,40 @@
+#' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
+#' @param filenameRegex A regular expression to match against located files; only
+#' files matching this regular expression are processed.
+#' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
+#' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
+#' @param postponeDeductiveTreeBuilding Whether to imediately try to build the deductive
+#' tree(s) based on the information in this file (`FALSE`) or whether to skip that. Skipping
+#' this is useful if the full tree information is distributed over multiple files (in which case
+#' you should probably call `parse_sources` instead of `parse_source`).
+#' @param encoding The encoding of the file to read (in `file`).
+#' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
+#'
 #' @rdname parsing_sources_by_coderId
 #' @export
 parse_sources_by_coderId <- function(input,
-                                     coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
-                                     idForOmittedCoderIds = "noCoderId",
-                                     codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-                                     idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                   stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                   coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"),
-                                     sectionRegexes = c(paragraphs = "---paragraph-break---",
-                                                        secondary = "---<[a-zA-Z0-9]?>---"),
-                                     uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
-                                     autoGenerateIds = c('stanzaId'),
-                                     persistentIds = c('caseId', 'coderId'),
-                                     noCodes = "^uid:|^uid=|^dct:|^ci:",
                                      recursive = TRUE,
                                      filenameRegex = ".*",
-                                     delimiterRegEx = "^---$",
-                                     ignoreRegex = "^#",
                                      ignoreOddDelimiters=FALSE,
                                      postponeDeductiveTreeBuilding = TRUE,
-                                     encoding="UTF-8",
-                                     silent=TRUE) {
+                                     encoding=rock::opts$get(encoding),
+                                     silent=rock::opts$get(silent)) {
+
+  codeRegexes <- rock::opts$get(codeRegexes);
+  idRegexes <- rock::opts$get(idRegexes);
+  sectionRegexes <- rock::opts$get(sectionRegexes);
+  uidRegex <- rock::opts$get(uidRegex);
+  autoGenerateIds <- rock::opts$get(autoGenerateIds);
+  persistentIds <- rock::opts$get(persistentIds);
+  noCodes <- rock::opts$get(noCodes);
+  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  attributeContainers <- rock::opts$get(attributeContainers);
+  codesContainers <- rock::opts$get(codesContainers);
+  delimiterRegEx <- rock::opts$get(delimiterRegEx);
+  ignoreRegex <- rock::opts$get(ignoreRegex);
+  coderId <- rock::opts$get(coderId);
+  idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
+
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
@@ -48,17 +62,6 @@ parse_sources_by_coderId <- function(input,
     res <-
       lapply(rawSourceFiles,
              parse_source_by_coderId,
-             coderId=coderId,
-             idForOmittedCoderIds=idForOmittedCoderIds,
-             codeRegexes=codeRegexes,
-             idRegexes=idRegexes,
-             sectionRegexes=sectionRegexes,
-             uidRegex=uidRegex,
-             autoGenerateIds=autoGenerateIds,
-             persistentIds=persistentIds,
-             noCodes=noCodes,
-             delimiterRegEx=delimiterRegEx,
-             ignoreRegex=ignoreRegex,
              ignoreOddDelimiters=ignoreOddDelimiters,
              postponeDeductiveTreeBuilding=FALSE,
              encoding=encoding,

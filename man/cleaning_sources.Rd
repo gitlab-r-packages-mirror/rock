@@ -9,36 +9,32 @@
 \title{Cleaning & editing sources}
 \usage{
 clean_source(input, output = NULL,
-  replacementsPre = list(c("([^\\\\.])(\\\\.\\\\.)([^\\\\.])",
-  "\\\\1.\\\\3"), c("([^\\\\.])(\\\\.\\\\.\\\\.\\\\.+)([^\\\\.])",
-  "\\\\1...\\\\3"), c("(\\\\s*\\\\r?\\\\n){3,}", "\\n")),
-  extraReplacementsPre = NULL,
-  utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
-  utteranceMarker = rock::opts$get(utteranceMarker),
-  replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
-  extraReplacementsPost = NULL, preventOverwriting = TRUE,
-  removeNewlines = FALSE, encoding = "UTF-8", silent = FALSE)
+  replacementsPre = rock::opts$get(replacementsPre),
+  replacementsPost = rock::opts$get(replacementsPost),
+  extraReplacementsPre = NULL, extraReplacementsPost = NULL,
+  removeNewlines = FALSE,
+  utteranceSplits = rock::opts$get(utteranceSplits),
+  preventOverwriting = rock::opts$get(preventOverwriting),
+  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
 
-clean_sources(input, output,
-  replacementsPre = list(c("([^\\\\.])(\\\\.\\\\.)([^\\\\.])",
-  "\\\\1.\\\\3"), c("([^\\\\.])(\\\\.\\\\.\\\\.\\\\.+)([^\\\\.])",
-  "\\\\1...\\\\3"), c("(\\\\s*\\\\r?\\\\n){3,}", "\\n")),
-  extraReplacementsPre = NULL,
-  utteranceSplits = c("([\\\\?\\\\!]+\\\\s?|…\\\\s?|[[:alnum:]\\\\s?]\\\\.(?!\\\\.\\\\.)\\\\s?)"),
-  utteranceMarker = "\\n",
-  replacementsPost = list(c("([^\\\\,]),([^\\\\s])", "\\\\1, \\\\2")),
-  extraReplacementsPost = NULL, filenamePrefix = "",
-  filenameSuffix = "", preventOverwriting = TRUE, recursive = TRUE,
-  filenameRegex = ".*", removeNewlines = FALSE, encoding = "UTF-8",
-  silent = FALSE)
+clean_sources(input, output, filenamePrefix = "", filenameSuffix = "",
+  recursive = TRUE, filenameRegex = ".*",
+  replacementsPre = rock::opts$get(replacementsPre),
+  replacementsPost = rock::opts$get(replacementsPost),
+  extraReplacementsPre = NULL, extraReplacementsPost = NULL,
+  removeNewlines = FALSE,
+  utteranceSplits = rock::opts$get(utteranceSplits),
+  preventOverwriting = rock::opts$get(preventOverwriting),
+  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
 
 search_and_replace_in_source(input, replacements = NULL, output = NULL,
   preventOverwriting = TRUE, encoding = "UTF-8", silent = FALSE)
 
 search_and_replace_in_sources(input, output, replacements = NULL,
   filenamePrefix = "", filenameSuffix = "_postReplacing",
-  preventOverwriting = TRUE, recursive = TRUE, filenameRegex = ".*",
-  encoding = "UTF-8", silent = FALSE)
+  preventOverwriting = rock::opts$get(preventOverwriting),
+  recursive = TRUE, filenameRegex = ".*",
+  encoding = rock::opts$get(encoding), silent = FALSE)
 }
 \arguments{
 \item{input}{For \code{clean_source} and \code{search_and_replace_in_source}, either a character
@@ -67,23 +63,20 @@ than the default set, these can be conveniently specified in \code{extraReplacem
 and \code{extraReplacementsPost}. This prevents you from having to
 manually copypaste the list of defaults to retain it.}
 
+\item{removeNewlines}{Whether to remove all newline characters from the source before
+starting to clean them.}
+
 \item{utteranceSplits}{This is a vector of regular expressions that specify where to
 insert breaks between utterances in the source(s). Such breakes are specified using
 \code{utteranceMarker}.}
 
-\item{utteranceMarker}{How to specify breaks between utterances in the source(s). The
-ROCK convention is to use a newline (\code{\\n}).}
-
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
-
-\item{removeNewlines}{Whether to remove all newline characters from the source before
-starting to clean them.}
 
 \item{encoding}{The encoding of the source(s).}
 
 \item{silent}{Whether to suppress the warning about not editing the cleaned source.}
 
-\item{filenamePrefix, filenamePrefix}{The prefix and suffix to add to the
+\item{filenamePrefix, filenameSuffix}{The prefix and suffix to add to the
 filenames when writing the processed files to disk.}
 
 \item{recursive}{Whether to search all subdirectories (\code{TRUE}) as well or not.}
@@ -99,7 +92,8 @@ Instead of regular expressions, simple words or phrases can also be entered of
 course (since those are valid regular expressions).}
 }
 \value{
-A character vector for \code{clean_source}, or a list of character vectors , for \code{clean_sources}.
+A character vector for \code{clean_source}, or a list of character vectors,
+for \code{clean_sources}.
 }
 \description{
 These function can be used to 'clean' one or more sources or perform search and

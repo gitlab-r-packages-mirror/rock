@@ -4,15 +4,6 @@
 #' containing the text of the relevant source *or* a path to a file that
 #' contains the source text; for `parse_sources_by_coderId`, a path to a
 #' directory that contains the sources to parse.
-#' @param coderId The regular expression designating the coder identifier.
-#' @param idForOmittedCoderIds The identifier to use for utterances that have
-#' not been marked by a coder identifier.
-#' @param codeRegexes,idRegexes,sectionRegexes These are named character vectors with one
-#' or more regular expressions. For `codeRegexes`, these specify how to extract the codes
-#' (that were used to code the sources). For `idRegexes`, these specify how to extract the
-#' different types of identifiers. For `sectionRegexes`, these specify how to extract the
-#' different types of sections. The `codeRegexes` and `idRegexes` must each contain one
-#' capturing group to capture the codes and identifiers, respectively.
 #' @inheritParams parse_source
 #' @rdname parsing_sources_by_coderId
 #' @examples ### Get path to example source
@@ -28,24 +19,25 @@
 #'
 #' @export
 parse_source_by_coderId <- function(input,
-                                    coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
-                                    idForOmittedCoderIds = "noCoderId",
-                                    codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-                                    idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                  stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]",
-                                                  coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"),
-                                    sectionRegexes = c(paragraphs = "---paragraph-break---",
-                                                       secondary = "---<[a-zA-Z0-9]?>---"),
-                                    uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
-                                    autoGenerateIds = c('stanzaId'),
-                                    persistentIds = c('caseId', 'coderId'),
-                                    noCodes = "^uid:|^uid=|^dct:|^ci:",
-                                    delimiterRegEx = "^---$",
-                                    ignoreRegex = "^#",
                                     ignoreOddDelimiters=FALSE,
                                     postponeDeductiveTreeBuilding = TRUE,
                                     encoding="UTF-8",
                                     silent=TRUE) {
+
+  codeRegexes <- rock::opts$get(codeRegexes);
+  idRegexes <- rock::opts$get(idRegexes);
+  sectionRegexes <- rock::opts$get(sectionRegexes);
+  uidRegex <- rock::opts$get(uidRegex);
+  autoGenerateIds <- rock::opts$get(autoGenerateIds);
+  persistentIds <- rock::opts$get(persistentIds);
+  noCodes <- rock::opts$get(noCodes);
+  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  attributeContainers <- rock::opts$get(attributeContainers);
+  codesContainers <- rock::opts$get(codesContainers);
+  delimiterRegEx <- rock::opts$get(delimiterRegEx);
+  ignoreRegex <- rock::opts$get(ignoreRegex);
+  coderId <- rock::opts$get(coderId);
+  idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
 
   ### Read input, if it's a file
   if (file.exists(input)) {
@@ -100,14 +92,6 @@ parse_source_by_coderId <- function(input,
   for (i in seq_along(codersIdAtLines)) {
     parsedSubsources[[matchedCoderIds[i]]] <-
       rock::parse_source(text = subsources[[i]],
-                         codeRegexes=codeRegexes,
-                         idRegexes=idRegexes,
-                         sectionRegexes=sectionRegexes,
-                         autoGenerateIds=autoGenerateIds,
-                         persistentIds=persistentIds,
-                         noCodes=noCodes,
-                         delimiterRegEx=delimiterRegEx,
-                         ignoreRegex=ignoreRegex,
                          ignoreOddDelimiters=ignoreOddDelimiters,
                          postponeDeductiveTreeBuilding=TRUE,
                          silent=silent);

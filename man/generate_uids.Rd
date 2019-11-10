@@ -4,8 +4,7 @@
 \alias{generate_uids}
 \title{Generate utterance identifiers (UIDs)}
 \usage{
-generate_uids(x, origin = Sys.time(), prefix = "uid=",
-  delimiters = c("[[", "]]"))
+generate_uids(x, origin = Sys.time())
 }
 \arguments{
 \item{x}{The number of identifiers te generate.}
@@ -25,7 +24,7 @@ understand very well what you're doing!).}
 A vector of UIDs.
 }
 \description{
-Generate utterance identifiers (UIDs)
+This function generated utterance identifiers.
 }
 \examples{
 generate_uids(5);

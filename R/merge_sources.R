@@ -18,22 +18,15 @@
 #' @param primarySourcesIgnoreRegex A regular expression that specifies which
 #' files to ignore as primary files.
 #' @param primarySourcesPath The path containing the primary sources.
-#' @param coderId A regular expression specifying the coder identifier, specified
-#' similarly to the codeRegexes.
-#' @param idForOmittedCoderIds The identifier to use for utterances that do not
-#' have a coder id (i.e. utterance that occur in a source that does not specify
-#' a coder id, or above the line where a coder id is specified).
 #' @param recursive,primarySourcesRecursive Whether to read files from
 #' sub-directories (`TRUE`) or not.
 #' @param filenameRegex Only files matching this regular expression are read.
-#' @param overwrite Whether to overwrite existing files or not.
+#' @param preventOverwriting Whether to prevent overwriting existing files or not.
 #' @param inheritSilence If not silent, whether to let functions called
 #' by `merge_sources` inherit that setting.
 #'
 #' @return Invisibly, a list of the parsed, primary, and merged sources.
 #' @export
-#'
-#' @examples
 merge_sources <- function(input,
                           output,
                           outputPrefix = "",
@@ -41,29 +34,31 @@ merge_sources <- function(input,
                           primarySourcesRegex=".*",
                           primarySourcesIgnoreRegex=outputSuffix,
                           primarySourcesPath = input,
-                          coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
-                          idForOmittedCoderIds = "noCoderId",
-                          codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-                          idRegexes = c(caseId = "\\[\\[cid=([a-zA-Z0-9._-]+)\\]\\]",
-                                        stanzaId = "\\[\\[sid=([a-zA-Z0-9._-]+)\\]\\]",
-                                        coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]"),
-                          sectionRegexes = c(paragraphs = "---paragraph-break---",
-                                             secondary = "---<[a-zA-Z0-9]?>---"),
-                          uidRegex = "\\[\\[uid=([a-zA-Z0-9._-]+)\\]\\]",
-                          autoGenerateIds = c('stanzaId'),
-                          persistentIds = c('caseId', 'coderId'),
-                          noCodes = "^uid:|^uid=|^dct:|^ci:",
                           recursive = TRUE,
                           primarySourcesRecursive = recursive,
                           filenameRegex = ".*",
-                          delimiterRegEx = "^---$",
-                          ignoreRegex = "^#",
-                          overwrite = FALSE,
-                          ignoreOddDelimiters=FALSE,
                           postponeDeductiveTreeBuilding = TRUE,
-                          encoding="UTF-8",
-                          silent=TRUE,
+                          ignoreOddDelimiters=FALSE,
+                          preventOverwriting = rock::opts$get(preventOverwriting),
+                          encoding=rock::opts$get(encoding),
+                          silent=rock::opts$get(silent),
                           inheritSilence = FALSE) {
+
+  codeRegexes <- rock::opts$get(codeRegexes);
+  idRegexes <- rock::opts$get(idRegexes);
+  sectionRegexes <- rock::opts$get(sectionRegexes);
+  uidRegex <- rock::opts$get(uidRegex);
+  autoGenerateIds <- rock::opts$get(autoGenerateIds);
+  persistentIds <- rock::opts$get(persistentIds);
+  utteranceMarker <- rock::opts$get(utteranceMarker);
+  noCodes <- rock::opts$get(noCodes);
+  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  attributeContainers <- rock::opts$get(attributeContainers);
+  codesContainers <- rock::opts$get(codesContainers);
+  delimiterRegEx <- rock::opts$get(delimiterRegEx);
+  ignoreRegex <- rock::opts$get(ignoreRegex);
+  coderId <- rock::opts$get(coderId);
+  idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
 
   if (!dir.exists(primarySourcesPath)) {
     stop("Directory specified to read primary sources from (",
@@ -81,7 +76,7 @@ merge_sources <- function(input,
                    'output',
                    'outputPrefix',
                    'outputSuffix',
-                   'overwrite',
+                   'preventOverwriting',
                    'inheritSilence'))];
 
   ### Set 'silent' as function of both imperative for this function and the called functions
@@ -241,10 +236,10 @@ merge_sources <- function(input,
            "' to directory '", newFileDir, "'.\n");
     }
 
-    if (file.exists(newFullname) && (!overwrite)) {
+    if (file.exists(newFullname) && (preventOverwriting)) {
       if (!silent) {
         message("Output file '", newFilename, "' already exists and ",
-                "`overwrite` is set to FALSE - not writing output file!");
+                "`preventOverwriting` is set to TRUE - not writing output file!");
       }
     } else {
       con <- file(description=newFullname,

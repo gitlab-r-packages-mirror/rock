@@ -26,6 +26,9 @@ files matching this regular expression are processed.}
 \item{ignoreRegex}{Regular expression indicating which files to ignore.}
 
 \item{recursive}{Whether to search all subdirectories (\code{TRUE}) as well or not.}
+
+\item{full.names}{Whether to store source names as filenames only or whether
+to include paths.}
 }
 \value{
 Invisibly, an R character vector of

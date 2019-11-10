@@ -25,11 +25,10 @@
 prepend_ids_to_source <- function(input,
                                   output = NULL,
                                   origin=Sys.time(),
-                                  prefix="uid=",
-                                  delimiters = c("[[", "]]"),
-                                  preventOverwriting=TRUE,
-                                  encoding="UTF-8",
-                                  silent=FALSE) {
+                                  preventOverwriting=rock::opts$get(preventOverwriting),
+                                  encoding=rock::opts$get(encoding),
+                                  silent=rock::opts$get(silent)) {
+
   if (file.exists(input)) {
     res <- readLines(input,
                      encoding=encoding);
@@ -44,9 +43,7 @@ prepend_ids_to_source <- function(input,
 
   uids <-
     generate_uids(length(res),
-                  origin=origin,
-                  prefix=prefix,
-                  delimiters = delimiters);
+                  origin=origin);
 
   res <- paste0(uids, " ", res);
 

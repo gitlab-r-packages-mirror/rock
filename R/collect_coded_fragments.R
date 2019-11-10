@@ -18,13 +18,19 @@
 #' If no heading is used, the code prefix will be `headingLevel` hashes,
 #' instead of `headingLevel+1` hashes.
 #' @param headingLevel The number of hashes to insert before the headings.
+#' @param add_html_tags Whether to add HTML tags to the result.
 #' @param rawResult Whether to return the raw result, a list of the
 #' fragments, or one character value in markdown format.
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
 #' invisibly.
+#' @param template The template to load; either the name of one
+#' of the ROCK templates (currently, only 'default' is available), or
+#' the path and filename of a CSS file.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
-#' when constructing the fragments (the raw versions contain all codes).
+#' when constructing the fragments (the raw versions contain all codes). Note that
+#' this should be set to `FALSE` to have `add_html_tags` be of the most use.
+#' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #'
 #' @return Either a list of character vectors, or a single character value.
@@ -53,15 +59,17 @@ collect_coded_fragments <- function(x,
                                     context = 0,
                                     heading = NULL,
                                     headingLevel = 2,
-                                    fragmentDelimiter = rock::opts$get(fragmentDelimiter),
-                                    utteranceGlue = "\n\n",
-                                    sourceFormat = "\n\n**Source: `%s`**\n\n",
-                                    add_html_tags = TRUE,
-                                    rawResult = FALSE,
+                                    add_html_tags = FALSE,
                                     cleanUtterances = TRUE,
-                                    template = "default",
                                     output = NULL,
-                                    silent=TRUE) {
+                                    template = "default",
+                                    rawResult = FALSE,
+                                    preventOverwriting = rock::opts$get(preventOverwriting),
+                                    silent=rock::opts$get(silent)) {
+
+  fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
+  utteranceGlue <- rock::opts$get(utteranceGlue);
+  sourceFormatting <- rock::opts$get(sourceFormatting);
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
@@ -108,8 +116,8 @@ collect_coded_fragments <- function(x,
                                              collapse=utteranceGlue);
                              }
                              ### Add the sources, if necessary
-                             if (!identical(sourceFormat, FALSE)) {
-                               res <- paste0(sprintf(sourceFormat, dat[center, 'originalSource']),
+                             if (!identical(sourceFormatting, FALSE)) {
+                               res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
                                              res);
                              }
                              ### Return result
@@ -180,11 +188,23 @@ collect_coded_fragments <- function(x,
     return(res);
   } else {
     if (dir.exists(dirname(output))) {
-      writeLines(res,
-                 con = con <- file(output,
-                                   "w",
-                                   encoding="UTF-8"));
-      close(con);
+      if (file.exists(output) | preventOverwriting) {
+        writeLines(res,
+                   con = con <- file(output,
+                                     "w",
+                                     encoding="UTF-8"));
+        close(con);
+        if (!silent) {
+          cat0("Wrote output file '", output,
+               "' to disk.");
+        }
+      } else {
+        if (!silent) {
+          cat0("Specified output file '", output,
+               "' exists, and `preventOverwriting` is set to `TRUE`; ",
+               "did not write the file!");
+        }
+      }
       return(invisible(res));
     } else {
       stop("You passed '", output,

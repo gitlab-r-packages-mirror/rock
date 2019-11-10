@@ -5,17 +5,22 @@
 \title{Export parsed sources to HTML}
 \usage{
 export_to_html(input, output = NULL, template = "default",
-  preventOverwriting = TRUE, encoding = "UTF-8", silent = TRUE)
+  preventOverwriting = rock::opts$get(preventOverwriting),
+  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
 }
 \arguments{
 \item{input}{An object of class \code{rockParsedSource} (as resulting from a call
-to \code{\link[rock:parse_source]{rock::parse_source()}}) or of class \code{rockParsedSources} (as resulting from a call
-to \code{\link[rock:parse_sources]{rock::parse_sources()}}).}
+to \code{parse_source}) or of class \code{rockParsedSources} (as resulting from a call
+to \code{parse_sources}.}
 
 \item{output}{Either NULL to not write any files, or, if \code{input} is a single
 \code{rockParsedSource}, the filename to write to, and if \code{input} is a \code{rockParsedSources}
 object, the path to write to. This path will be created with a warning
 if it does not exist.}
+
+\item{template}{The template to load; either the name of one
+of the ROCK templates (currently, only 'default' is available), or
+the path and filename of a CSS file.}
 
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
@@ -40,7 +45,8 @@ parsedExamples <- rock::parse_sources(examplePath);
 ### Export results to a temporary directory
 tmpDir <- tempdir(check = TRUE);
 prettySources <-
-  export_to_html(input = parsedExamples);
+  export_to_html(input = parsedExamples,
+                 output = tmpDir);
 
 ### Show first one
 print(prettySources[[1]]);

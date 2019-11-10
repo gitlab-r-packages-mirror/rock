@@ -1,3 +1,11 @@
+#' Create HTML fragment with CSS styling
+#'
+#' @param template The template to load; either the name of one
+#' of the ROCK templates (currently, only 'default' is available), or
+#' the path and filename of a CSS file.
+#'
+#' @return A character vector with the HTML fragment.
+#'
 #' @export
 css <- function(template = "default") {
 

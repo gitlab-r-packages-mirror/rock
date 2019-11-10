@@ -3,12 +3,15 @@
 #' These function can be used to convert one or more parsed sources to HTML.
 #'
 #' @param input An object of class `rockParsedSource` (as resulting from a call
-#' to [rock::parse_source()]) or of class `rockParsedSources` (as resulting from a call
-#' to [rock::parse_sources()]).
+#' to `parse_source`) or of class `rockParsedSources` (as resulting from a call
+#' to `parse_sources`.
 #' @param output Either NULL to not write any files, or, if `input` is a single
 #' `rockParsedSource`, the filename to write to, and if `input` is a `rockParsedSources`
 #' object, the path to write to. This path will be created with a warning
 #' if it does not exist.
+#' @param template The template to load; either the name of one
+#' of the ROCK templates (currently, only 'default' is available), or
+#' the path and filename of a CSS file.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param encoding The encoding to use when writing the exported source(s).
 #' @param silent Whether to suppress messages.
@@ -26,7 +29,8 @@
 #' ### Export results to a temporary directory
 #' tmpDir <- tempdir(check = TRUE);
 #' prettySources <-
-#'   export_to_html(input = parsedExamples);
+#'   export_to_html(input = parsedExamples,
+#'                  output = tmpDir);
 #'
 #' ### Show first one
 #' print(prettySources[[1]]);
@@ -35,44 +39,15 @@
 export_to_html <- function(input,
                            output = NULL,
                            template = "default",
-                           preventOverwriting = TRUE,
-                           encoding = "UTF-8",
-                           silent=TRUE) {
-
-  ### Load stylesheets
-  bootstrapCSS <-
-    paste0(readLines(system.file("css", "bootstrap.min.css", package="rock")),
-           collapse="\n");
-  basicCSS <-
-    paste0(readLines(system.file("css", "basic.css", package="rock")),
-           collapse="\n");
-
-  if (file.exists(template)) {
-    templateCSS <-
-      paste0(readLines(template),
-             collapse="\n");
-  } else if (file.exists(system.file("css", paste0(template, ".css"), package="rock"))) {
-    templateCSS <-
-      paste0(readLines(system.file("css", "default.css", package="rock")),
-             collapse="\n");
-  } else {
-    templateCSS <-
-      paste0(readLines(system.file("css", "default.css", package="rock")),
-             collapse="\n");
-  }
-
-  ### Merge stylesheets
-  fullCSS <-
-    paste0("\n<style\n>",
-           bootstrapCSS,
-           "\n\n",
-           basicCSS,
-           "\n\n",
-           templateCSS,
-           "\n</style>\n");
+                           preventOverwriting = rock::opts$get(preventOverwriting),
+                           encoding = rock::opts$get(encoding),
+                           silent=rock::opts$get(silent)) {
 
   htmlPre <-
     "\n<html><head>\n";
+
+  fullCSS <-
+    rock::css(template = "default");
 
   htmlMid <-
     "\n</head><body>\n";
@@ -89,12 +64,7 @@ export_to_html <- function(input,
   if ("rockParsedSource" %in% class(input)) {
 
     res <-
-      add_html_tags(x = input$rawSourceDf$utterances_raw,
-                    codeRegexes = input$arguments$codeRegexes,
-                    idRegexes = input$arguments$idRegexes,
-                    sectionRegexes = input$arguments$sectionRegexes,
-                    uidRegex = input$arguments$uidRegex,
-                    inductiveCodingHierarchyMarker = input$arguments$inductiveCodingHierarchyMarker);
+      add_html_tags(x = input$rawSourceDf$utterances_raw);
     res <- paste0(utterancePre, res, utterancePost);
     res <- paste0(htmlPre,
                   fullCSS,

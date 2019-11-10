@@ -2,12 +2,13 @@
 #' @export
 prepend_ids_to_sources <- function(input,
                                    output = NULL,
-                                   preventOverwriting = TRUE,
-                                   encoding="UTF-8",
                                    origin=Sys.time(),
-                                   prefix="uid=",
-                                   delimiters = c("[[", "]]"),
-                                   silent=FALSE) {
+                                   preventOverwriting=rock::opts$get(preventOverwriting),
+                                   encoding=rock::opts$get(encoding),
+                                   silent=rock::opts$get(silent)) {
+
+  uidPrefix <- rock::opts$get(uidPrefix);
+  utteranceMarker <- rock::opts$get(utteranceMarker);
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
@@ -43,14 +44,11 @@ prepend_ids_to_sources <- function(input,
                                                basename(filename)),
                             preventOverwriting = preventOverwriting,
                             origin=origin,
-                            prefix=prefix,
-                            delimiters = delimiters,
-                            encoding = encoding,
-                            silent=TRUE);
+                            silent=silent);
     ### Setting origin to a few seconds in the future to make sure all
     ### uids are unique
     regexToMatch <-
-      paste0("^\\[\\[", prefix, "([^]]*)\\]\\].*$");
+      paste0("^\\[\\[", uidPrefix, "([^]]*)\\]\\].*$");
     last_uid <-
       gsub(regexToMatch, "\\1", utils::tail(tmp, 1));
     origin <-

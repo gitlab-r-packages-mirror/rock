@@ -3,6 +3,9 @@
 #' @param filenameRegex A regular expression to match against located files; only
 #' files matching this regular expression are processed.
 #' @param ignoreRegex Regular expression indicating which files to ignore.
+#' @param full.names Whether to store source names as filenames only or whether
+#' to include paths.
+#'
 #' @export
 load_sources <- function(input,
                          encoding="UTF-8",
