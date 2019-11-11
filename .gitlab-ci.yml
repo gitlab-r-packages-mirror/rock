@@ -27,6 +27,7 @@ devtools-check:
     - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
     - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("knitr", "rmarkdown", "covr", "testthat", "rENA"))'
+    - R -e 'install.packages(c("tinytex"))'
   script:
     - R -e 'devtools::install_gitlab("r-packages/yum")'
     - R -e 'devtools::check()'
