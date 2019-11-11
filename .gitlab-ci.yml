@@ -4,6 +4,11 @@ variables:
   _R_CHECK_FORCE_SUGGESTS_: "true"
   APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git libgsl0-dev"
 
+before_script:
+  - apt-get update
+  - apt-get install -y --no-install-recommends ${APT_PKGS}
+  - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
+
 pages:
   stage: build
   image: alpine:latest
@@ -19,10 +24,6 @@ pages:
   - master
 
 devtools-check:
-  before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends ${APT_PKGS}
-    - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   stage: test
   image: rocker/tidyverse
   script:
