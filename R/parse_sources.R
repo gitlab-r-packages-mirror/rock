@@ -412,15 +412,26 @@ parse_sources <- function(path,
     cat("\n\n");
   }
 
-
-
-
-
-
-
-
-
-
+  if (is.na(res$fullyMergedCodeTrees)) {
+  } else {
+    ###------------------------------------------------------------------------
+    ### This needs to be fixed to properly work with multiple parallel coding
+    ### systems
+    ###------------------------------------------------------------------------
+    if (is.na(res$deductiveCodeTrees)) {
+      if (!is.na(res$inductiveCodeTrees)) {
+        res$convenience$codingPaths <- c();
+        for (i in names(res$inductiveCodeTrees)) {
+          res$convenience$codingPaths <-
+            c(res$convenience$codingPaths,
+              gsub("/", ">", res$inductiveCodeTrees[[i]]$root$Get("pathString")));
+        }
+      }
+    } else {
+      res$convenience$codingPaths <-
+          gsub("/", ">", res$deductiveCodeTrees$root$Get("pathString"));
+    }
+  }
 
   # ### Get the codes
   # deductiveCodeLists <- list();
