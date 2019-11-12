@@ -580,6 +580,10 @@ parse_source <- function(text,
     sort(unique(unlist(get_leaf_codes(res$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
+  res$convenience$codingPaths <-
+    stats::setNames(res$convenience$codings,
+                    res$convenience$codingLeaves);
+
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used
     res$countedCodings <-

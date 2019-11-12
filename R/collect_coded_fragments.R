@@ -84,6 +84,9 @@ collect_coded_fragments <- function(x,
                        value=TRUE);
   dat <- x$mergedSourceDf;
 
+  matchedCodesPaths <-
+    x$convenience$codingPaths[matchedCodes];
+
   if (!silent) {
     cat0("The regular expression passed in argument `codes` ('",
               codes, "') matches the following codings: ",
@@ -173,8 +176,12 @@ collect_coded_fragments <- function(x,
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
-    res <- paste0(codePrefix, matchedCodes, fragmentDelimiter,
-                  res, fragmentDelimiter);
+    res <- paste0(codePrefix,
+                  matchedCodes,
+                  " (", matchedCodesPaths, ")",
+                  fragmentDelimiter,
+                  res,
+                  fragmentDelimiter);
     ### Collapse into one character value
     res <- paste0(res, collapse="\n");
     ### Add title heading

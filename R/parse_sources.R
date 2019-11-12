@@ -80,6 +80,10 @@ parse_sources <- function(path,
   res$convenience$codingLeaves <-
     sort(unique(unlist(res$convenience$rawCodingLeaves)));
 
+  res$convenience$codingPaths <-
+    stats::setNames(res$convenience$codings,
+                    res$convenience$codingLeaves);
+
   # res$convenience$metadata <-
   #   dplyr::bind_rows(
   #     lapply(res$parsedSource,
