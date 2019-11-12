@@ -109,11 +109,9 @@ collect_coded_fragments <- function(x,
                              indices <- indices - max(0, (max(indices) - nrow(dat)));
                              ### Get clean or raw utterances
                              if (cleanUtterances) {
-                               res <- paste0(dat[indices, 'utterances_clean'],
-                                             collapse=utteranceGlue);
+                               res <- dat[indices, 'utterances_clean'];
                              } else {
-                               res <- paste0(dat[indices, 'utterances_raw'],
-                                             collapse=utteranceGlue);
+                               res <- dat[indices, 'utterances_raw'];
                              }
                              ### Add the sources, if necessary
                              if (!identical(sourceFormatting, FALSE)) {
@@ -125,6 +123,8 @@ collect_coded_fragments <- function(x,
                              if (add_html_tags) {
                                res <- paste0(rock::add_html_tags(res));
                              }
+                             res <- paste0(res,
+                                           collapse=utteranceGlue);
 
                              ### Return result
                              return(res);
