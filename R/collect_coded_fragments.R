@@ -70,6 +70,7 @@ collect_coded_fragments <- function(x,
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
+  codeHeadingFormatting <- rock::opts$get(codeHeadingFormatting);
 
   if (!("rockParsedSource" %in% class(x)) &&
       !("rockParsedSources" %in% class(x))) {
@@ -101,22 +102,28 @@ collect_coded_fragments <- function(x,
                            function(center) {
                              indices <- seq(center - context,
                                             center + context);
-                             ### Shift forwards or backwards to make sure early or late
-                             ### fragments don't exceed valid utterance (line) numbers
 
-                             ###-------------------------------------------------------
-                             ### Fix this to work within sources, not for _all_ utterances
-                             ###-------------------------------------------------------
+                             ### Store indices corresponding source of this utterance
+                             sourceIndices <-
+                               which(dat[, 'originalSource'] == dat[center, 'originalSource']);
 
-                             indices <- indices - min(0, (min(indices) - 1));
-                             indices <- indices - max(0, (max(indices) - nrow(dat)));
+                             ### If this source is shorter than the number of lines requested,
+                             ### simply send the complete source
+                             if (length(sourceIndices) <= (1 + 2*context)) {
+                               indices <- sourceIndices;
+                             } else {
+                               ### Shift forwards or backwards to make sure early or late
+                               ### fragments don't exceed valid utterance (line) numbers
+                               indices <- indices - min(0, (min(indices) - min(sourceIndices)));
+                               indices <- indices - max(0, (max(indices) - max(sourceIndices)));
+                             }
+
                              ### Get clean or raw utterances
                              if (cleanUtterances) {
                                res <- dat[indices, 'utterances_clean'];
                              } else {
                                res <- dat[indices, 'utterances_raw'];
                              }
-
 
                              ### Add html tags, if requested
                              if (add_html_tags) {
@@ -181,8 +188,7 @@ collect_coded_fragments <- function(x,
     res <- unlist(res);
     ### Add titles
     res <- paste0(codePrefix,
-                  matchedCodes,
-                  " (", matchedCodesPaths, ")",
+                  sprintf(codeHeadingFormatting, matchedCodes, matchedCodesPaths),
                   fragmentDelimiter,
                   res,
                   fragmentDelimiter);

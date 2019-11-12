@@ -16,5 +16,8 @@
 }
 
 .utterance {
+  margin-top: 0.5px;
+  padding-top: -0.5px;
+  border-top: 0.5px dotted black;
   border-bottom: 0.5px dotted black;
 }

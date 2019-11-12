@@ -193,6 +193,7 @@ opts$defaults <-
        ### Used for collecting sources
        utteranceGlue = "\n\n",
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
+       codeHeadingFormatting = "%s *(path: %s)*",
 
        ### Used for generating html
        codeClass = "code",
