@@ -68,7 +68,7 @@ collect_coded_fragments <- function(x,
                                     silent=rock::opts$get(silent)) {
 
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
-  utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue);
+  utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
 
   if (!("rockParsedSource" %in% class(x)) &&
