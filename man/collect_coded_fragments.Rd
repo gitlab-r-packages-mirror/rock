@@ -5,7 +5,7 @@
 \title{Create an overview of coded fragments}
 \usage{
 collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
-  headingLevel = 2, add_html_tags = FALSE, cleanUtterances = TRUE,
+  headingLevel = 2, add_html_tags = TRUE, cleanUtterances = FALSE,
   output = NULL, template = "default", rawResult = FALSE,
   preventOverwriting = rock::opts$get(preventOverwriting),
   silent = rock::opts$get(silent))
@@ -58,6 +58,13 @@ Either a list of character vectors, or a single character value.
 Collect all coded utterances and optionally add some context
 (utterances before and utterances after) to create ann overview
 of all coded fragments per code.
+}
+\details{
+By default, the output is optimized for inclusion in an R Markdown
+document. To optimize output for the R console or a plain text
+file, without any HTML codes, set \code{add_html_tags} to FALSE, and
+potentially set \code{cleanUtterances} to only return the utterances,
+without the codes.
 }
 \examples{
 ### Get path to example source

@@ -4,6 +4,12 @@
 #' (utterances before and utterances after) to create ann overview
 #' of all coded fragments per code.
 #'
+#' By default, the output is optimized for inclusion in an R Markdown
+#' document. To optimize output for the R console or a plain text
+#' file, without any HTML codes, set `add_html_tags` to FALSE, and
+#' potentially set `cleanUtterances` to only return the utterances,
+#' without the codes.
+#'
 #' @param x The parsed source(s) as provided by `rock::parse_source`
 #' or `rock::parse_sources`.
 #' @param codes The regular expression that matches the codes to include
@@ -59,8 +65,8 @@ collect_coded_fragments <- function(x,
                                     context = 0,
                                     heading = NULL,
                                     headingLevel = 2,
-                                    add_html_tags = FALSE,
-                                    cleanUtterances = TRUE,
+                                    add_html_tags = TRUE,
+                                    cleanUtterances = FALSE,
                                     output = NULL,
                                     template = "default",
                                     rawResult = FALSE,
