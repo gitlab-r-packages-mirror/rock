@@ -116,18 +116,22 @@ collect_coded_fragments <- function(x,
                              } else {
                                res <- dat[indices, 'utterances_raw'];
                              }
-                             ### Add the sources, if necessary
-                             if (!identical(sourceFormatting, FALSE)) {
-                               res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
-                                             res);
-                             }
+
 
                              ### Add html tags, if requested
                              if (add_html_tags) {
                                res <- paste0(rock::add_html_tags(res));
                              }
+
+                             ### Collapse all utterances into one character value
                              res <- paste0(res,
                                            collapse=utteranceGlue);
+
+                             ### Add the sources, if necessary
+                             if (!identical(sourceFormatting, FALSE)) {
+                               res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
+                                             res);
+                             }
 
                              ### Return result
                              return(res);
