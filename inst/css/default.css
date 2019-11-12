@@ -16,8 +16,10 @@
 }
 
 .utterance {
-  margin-top: 0.5px;
-  padding-top: -0.5px;
-  border-top: 0.5px dotted black;
-  border-bottom: 0.5px dotted black;
+  border-top: 1px dotted black;
+  border-bottom: 1px dotted black;
+}
+
+.utterance + .utterance {
+  margin-top: -1px;
 }
