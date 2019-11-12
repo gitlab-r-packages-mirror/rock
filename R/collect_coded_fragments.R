@@ -68,7 +68,7 @@ collect_coded_fragments <- function(x,
                                     silent=rock::opts$get(silent)) {
 
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
-  utteranceGlue <- rock::opts$get(utteranceGlue);
+  utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue);
   sourceFormatting <- rock::opts$get(sourceFormatting);
 
   if (!("rockParsedSource" %in% class(x)) &&
@@ -120,6 +120,12 @@ collect_coded_fragments <- function(x,
                                res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
                                              res);
                              }
+
+                             ### Add html tags, if requested
+                             if (add_html_tags) {
+                               res <- paste0(rock::add_html_tags(res));
+                             }
+
                              ### Return result
                              return(res);
                            }));
@@ -178,10 +184,11 @@ collect_coded_fragments <- function(x,
     }
   }
 
+  ### Add CSS for html tags, if requested
   if (add_html_tags) {
     res <- paste0(rock::css(template=template),
                   "\n\n",
-                  rock::add_html_tags(res));
+                  res);
   }
 
   if (is.null(output)) {
