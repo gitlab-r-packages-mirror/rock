@@ -412,7 +412,12 @@ parse_sources <- function(path,
     cat("\n\n");
   }
 
-  if (is.na(res$fullyMergedCodeTrees)) {
+  if (!is.na(res$fullyMergedCodeTrees)) {
+    res$convenience$codingPaths <- c();
+    for (i in names(res$inductiveCodeTrees)) {
+      res$convenience$codingPaths <-
+        gsub("/", ">", res$fullyMergedCodeTrees[[i]]$Get("pathString"));
+    }
   } else {
     ###------------------------------------------------------------------------
     ### This needs to be fixed to properly work with multiple parallel coding
