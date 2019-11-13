@@ -1,23 +1,30 @@
-#' Export parsed sources to HTML
+#' Export parsed sources to HTML or Markdown
 #'
-#' These function can be used to convert one or more parsed sources to HTML.
+#' These function can be used to convert one or more parsed sources to HTML,
+#' or to convert all sources to tabbed sections in Markdown.
 #'
 #' @param input An object of class `rockParsedSource` (as resulting from a call
 #' to `parse_source`) or of class `rockParsedSources` (as resulting from a call
 #' to `parse_sources`.
-#' @param output Either NULL to not write any files, or, if `input` is a single
-#' `rockParsedSource`, the filename to write to, and if `input` is a `rockParsedSources`
-#' object, the path to write to. This path will be created with a warning
-#' if it does not exist.
+#' @param heading,headingLevel For
+#' @param output For `export_to_html`, either NULL to not write any files,
+#' or, if `input` is a single `rockParsedSource`, the filename to write to,
+#' and if `input` is a `rockParsedSources` object, the path to write to.
+#' This path will be created with a warning if it does not exist.
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
-#' @param preventOverwriting Whether to prevent overwriting of output files.
-#' @param encoding The encoding to use when writing the exported source(s).
+#' @param fragment Whether to include the CSS and HTML tags (`FALSE`) or just
+#' return the fragment(s) with the source(s) (`TRUE`).
+#' @param preventOverwriting For `export_to_html`, whether to prevent overwriting
+#' of output files.
+#' @param encoding For `export_to_html`, the encoding to use when writing
+#' the exported source(s).
 #' @param silent Whether to suppress messages.
 #'
-#' @return A list of character vectors.
-#' @rdname export_to_html
+#' @return A character vector or a list of character vectors.
+#' @aliases export_to_html export_to_markdown
+#' @rdname exporting_sources
 #'
 #' @examples ### Get path to example source
 #' examplePath <-
@@ -39,6 +46,7 @@
 export_to_html <- function(input,
                            output = NULL,
                            template = "default",
+                           fragment = FALSE,
                            preventOverwriting = rock::opts$get(preventOverwriting),
                            encoding = rock::opts$get(encoding),
                            silent=rock::opts$get(silent)) {
@@ -47,7 +55,7 @@ export_to_html <- function(input,
     "\n<html><head>\n";
 
   fullCSS <-
-    rock::css(template = "default");
+    rock::css(template = template);
 
   htmlMid <-
     "\n</head><body>\n";
@@ -66,12 +74,19 @@ export_to_html <- function(input,
     res <-
       add_html_tags(x = input$rawSourceDf$utterances_raw);
     res <- paste0(utterancePre, res, utterancePost);
-    res <- paste0(htmlPre,
-                  fullCSS,
-                  htmlMid,
-                  paste0(res,
-                         collapse="\n"),
-                  htmlPost);
+
+    if (fragment) {
+      res <-
+        paste0(res,
+               collapse="\n");
+    } else {
+      res <- paste0(htmlPre,
+                    fullCSS,
+                    htmlMid,
+                    paste0(res,
+                           collapse="\n"),
+                    htmlPost);
+    }
     if (is.null(output)) {
       return(res);
     } else if (!dir.exists(dirname(output))) {
@@ -105,23 +120,34 @@ export_to_html <- function(input,
     }
   } else if  ("rockParsedSources" %in% class(input)) {
     filenames <- names(input$parsedSources);
-    if (!is.null(output) && !dir.exists(output)) {
-      dir.create(output,
-                 recursive = TRUE);
+    if (!is.null(output)) {
+      if (!dir.exists(output)) {
+        dir.create(output,
+                   recursive = TRUE);
+      }
+      newFilenames <-
+        file.path(output,
+                  paste0(basename(filenames), ".html"));
     }
 
     res <-
-      lapply(filenames,
+      lapply(seq_along(filenames),
              function(x) {
+               if (is.null(output)) {
+                 outputFile <- NULL;
+               } else {
+                 outputFile <- newFilenames[x];
+               }
                res <-
                  export_to_html(input=input$parsedSources[[x]],
-                                output=file.path(output,
-                                                 paste0(basename(x), ".html")),
+                                output=outputFile,
                                 template = template,
                                 preventOverwriting = preventOverwriting,
                                 encoding = encoding,
                                 silent=silent);
              });
+    names(res) <-
+      basename(filenames);
   } else {
     stop("As argument 'input', only provide an object with parsed sources, ",
          "such as results from a call to `rock::parse_source()` or ",
