@@ -105,7 +105,7 @@ export_to_html <- function(input,
     }
   } else if  ("rockParsedSources" %in% class(input)) {
     filenames <- names(input$parsedSources);
-    if (!dir.exists(output)) {
+    if (!is.null(output) && !dir.exists(output)) {
       dir.create(output,
                  recursive = TRUE);
     }
