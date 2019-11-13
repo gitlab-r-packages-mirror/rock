@@ -1,7 +1,7 @@
 #' @rdname exporting_sources
 #' @export
 export_to_markdown <- function(input,
-                               heading = "sources",
+                               heading = "Sources",
                                headingLevel = 2,
                                template = "default",
                                silent=rock::opts$get(silent)) {
@@ -25,8 +25,8 @@ export_to_markdown <- function(input,
                 " ", heading, " {.tabset}\n\n",
                 repStr("#", headingLevel+1),
                 " Overview\n\n",
-                "This is an overview of all ", length(htmlSources), " full ",
-                "sources in this project.\n\n",
+                "This is an overview of all ", length(htmlSources),
+                " sources in this project.\n\n",
                 "In HTML output, these are presented in a tabbed interface; ",
                 "by selecting one of the tabs above, you can see the sources'",
                 "contents. In PDF output, all sources are printed below.\n\n",
