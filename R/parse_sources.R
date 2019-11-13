@@ -412,18 +412,19 @@ parse_sources <- function(path,
     cat("\n\n");
   }
 
-  if (!is.na(res$fullyMergedCodeTrees)) {
+  if ("Node" %in% class(res$fullyMergedCodeTrees)) {
     res$convenience$codingPaths <- c();
-    for (i in names(res$inductiveCodeTrees)) {
-      res$convenience$codingPaths <-
-        gsub("/", ">", res$fullyMergedCodeTrees[[i]]$Get("pathString"));
-    }
+    res$convenience$codingPaths <-
+      gsub("/", ">", res$fullyMergedCodeTrees$Get("pathString"));
   } else {
     ###------------------------------------------------------------------------
     ### This needs to be fixed to properly work with multiple parallel coding
     ### systems
     ###------------------------------------------------------------------------
-    if (is.na(res$deductiveCodeTrees)) {
+    if ("Node" %in% class (res$deductiveCodeTrees)) {
+      res$convenience$codingPaths <-
+        gsub("/", ">", res$deductiveCodeTrees$Get("pathString"));
+    } else {
       if (!is.na(res$inductiveCodeTrees)) {
         res$convenience$codingPaths <- c();
         for (i in names(res$inductiveCodeTrees)) {
@@ -432,9 +433,6 @@ parse_sources <- function(path,
               gsub("/", ">", res$inductiveCodeTrees[[i]]$root$Get("pathString")));
         }
       }
-    } else {
-      res$convenience$codingPaths <-
-          gsub("/", ">", res$deductiveCodeTrees$root$Get("pathString"));
     }
   }
 

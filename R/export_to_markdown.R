@@ -15,7 +15,6 @@ export_to_markdown <- function(input,
   htmlSources <-
     export_to_html(input,
                    template=template,
-                   encoding=encoding,
                    fragment = TRUE);
 
   res <- paste0("\n\n",

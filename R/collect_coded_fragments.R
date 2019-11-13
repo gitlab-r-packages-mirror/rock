@@ -86,6 +86,12 @@ collect_coded_fragments <- function(x,
                     "or 'rockParsedSources'."));
   }
 
+  if ("rockParsedSource" %in% class(x)) {
+    singleSource <- TRUE;
+  } else {
+    singleSource <- FALSE;
+  }
+
   matchedCodes <- grep(codes,
                        x$convenience$codingLeaves,
                        value=TRUE);
@@ -110,8 +116,12 @@ collect_coded_fragments <- function(x,
                                             center + context);
 
                              ### Store indices corresponding source of this utterance
-                             sourceIndices <-
-                               which(dat[, 'originalSource'] == dat[center, 'originalSource']);
+                             if (singleSource) {
+                               sourceIndices <- c(1, nrow(dat));
+                             } else {
+                               sourceIndices <-
+                                 which(dat[, 'originalSource'] == dat[center, 'originalSource']);
+                             }
 
                              ### If this source is shorter than the number of lines requested,
                              ### simply send the complete source
@@ -141,7 +151,7 @@ collect_coded_fragments <- function(x,
                                            collapse=utteranceGlue);
 
                              ### Add the sources, if necessary
-                             if (!identical(sourceFormatting, FALSE)) {
+                             if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
                                res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
                                              res);
                              }

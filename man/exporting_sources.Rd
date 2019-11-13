@@ -10,7 +10,7 @@ export_to_html(input, output = NULL, template = "default",
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
 
-export_to_markdown(input, heading = "sources", headingLevel = 2,
+export_to_markdown(input, heading = "Sources", headingLevel = 2,
   template = "default", silent = rock::opts$get(silent))
 }
 \arguments{
