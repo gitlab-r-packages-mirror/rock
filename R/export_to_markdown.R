@@ -19,6 +19,8 @@ export_to_markdown <- function(input,
                    fragment = TRUE);
 
   res <- paste0("\n\n",
+                rock::css(template = template),
+                "\n\n",
                 repStr("#", headingLevel),
                 " ", heading, " {.tabset}\n\n",
                 repStr("#", headingLevel+1),
