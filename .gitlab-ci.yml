@@ -38,6 +38,7 @@ devtools-check:
 
 coverage:
   stage: deploy
+  allow_failure: true
   tags:
     - docker
   image: rocker/tidyverse
