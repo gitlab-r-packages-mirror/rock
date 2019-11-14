@@ -74,9 +74,9 @@ implements Epistemic Network Analysis (ENA), means to process notes
 from Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
-See the [introductory vignette](https://r-packages.gitlab.io/rock/articles/introduction_to_rock.html) for an introduction.
+There is a FLOSS interface for the ROCK, iROCK, available at https://sci-ops.gitlab.io/irock/ (the accompanying git repository is available at https://gitlab.com/sci-ops/irock).
 
-There is a FLOSS interface for the ROCK, iROCK, available at https://r-packages.gitlab.io/rock/iROCK/
+We are in the process of writing a textbook to support working with the ROCK standard, this `rock` R package, and the iROCK interface. This book is available at https://rockbook.org.
 
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->
