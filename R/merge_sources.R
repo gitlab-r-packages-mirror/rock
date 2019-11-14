@@ -44,6 +44,27 @@ merge_sources <- function(input,
                           silent=rock::opts$get(silent),
                           inheritSilence = FALSE) {
 
+  if (!dir.exists(primarySourcesPath)) {
+    stop("Directory specified to read primary sources from (",
+         primarySourcesPath, ") does not exist!");
+  }
+
+  ### Store all arguments and delete the ones specific to this function
+  # args <- as.list(environment());
+  # args <-
+  #   args[setdiff(names(args),
+  #                c('primarySourcesRegex',
+  #                  'primarySourcesIgnoreRegex',
+  #                  'primarySourcesPath',
+  #                  'primarySourcesRecursive',
+  #                  'output',
+  #                  'outputPrefix',
+  #                  'outputSuffix',
+  #                  'preventOverwriting',
+  #                  'inheritSilence'))];
+  # ### Set 'silent' as function of both imperative for this function and the called functions
+  # args$silent <- ifelse(inheritSilence, silent, TRUE);
+
   codeRegexes <- rock::opts$get(codeRegexes);
   idRegexes <- rock::opts$get(idRegexes);
   sectionRegexes <- rock::opts$get(sectionRegexes);
@@ -60,28 +81,6 @@ merge_sources <- function(input,
   coderId <- rock::opts$get(coderId);
   idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
 
-  if (!dir.exists(primarySourcesPath)) {
-    stop("Directory specified to read primary sources from (",
-         primarySourcesPath, ") does not exist!");
-  }
-
-  ### Store all arguments and delete the ones specific to this function
-  args <- as.list(environment());
-  args <-
-    args[setdiff(names(args),
-                 c('primarySourcesRegex',
-                   'primarySourcesIgnoreRegex',
-                   'primarySourcesPath',
-                   'primarySourcesRecursive',
-                   'output',
-                   'outputPrefix',
-                   'outputSuffix',
-                   'preventOverwriting',
-                   'inheritSilence'))];
-
-  ### Set 'silent' as function of both imperative for this function and the called functions
-  args$silent <- ifelse(inheritSilence, silent, TRUE);
-
   if (!silent) {
     cat0("\n\nStarting to extract all codings from all sources in directory '",
          input, "' that match regular expression '", filenameRegex, "'.");
@@ -90,7 +89,13 @@ merge_sources <- function(input,
   ### Then pass arguments along to extract_codings_by_coderId and store result
   parsedSources <-
     do.call(extract_codings_by_coderId,
-            args);
+            list(input=input,
+                 recursive = recursive,
+                 filenameRegex = filenameRegex,
+                 ignoreOddDelimiters=ignoreOddDelimiters,
+                 postponeDeductiveTreeBuilding = postponeDeductiveTreeBuilding,
+                 encoding=encoding,
+                 silent=ifelse(inheritSilence, silent, TRUE)));
 
   allCodedUtterances <-
     names(parsedSources$utterances);

@@ -35,7 +35,6 @@ parse_sources_by_coderId <- function(input,
   coderId <- rock::opts$get(coderId);
   idForOmittedCoderIds <- rock::opts$get(idForOmittedCoderIds);
 
-
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
   }

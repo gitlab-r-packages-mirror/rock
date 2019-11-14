@@ -44,7 +44,13 @@ extract_codings_by_coderId <- function(input,
   ### First parse all sources by coderId
   parsedSources <-
     do.call(parse_sources_by_coderId,
-            as.list(environment()));
+            list(input=input,
+                 recursive = recursive,
+                 filenameRegex = filenameRegex,
+                 ignoreOddDelimiters=ignoreOddDelimiters,
+                 postponeDeductiveTreeBuilding = postponeDeductiveTreeBuilding,
+                 encoding=encoding,
+                 silent=silent));
 
   sectionMatchCols <- paste0(names(sectionRegexes), "_match");
   idNames <- names(idRegexes);
