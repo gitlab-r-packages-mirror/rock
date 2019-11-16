@@ -15,6 +15,11 @@
 #' @param codes The regular expression that matches the codes to include
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
+#' @param attributes To only select coded utterances matching one or more
+#' values for one or more attributes, pass a list where every element's
+#' name is a valid (i.e. occurring) attribute name, and every element is a
+#' character value with a regular expression specifying all values for that
+#' attribute to select.
 #' @param heading Optionally, a title to include in the output. The title
 #' will be prefixed with `headingLevel` hashes (`#`), and the codes with
 #' `headingLevel+1` hashes. If `NULL` (the default), a heading will be
@@ -63,6 +68,7 @@
 collect_coded_fragments <- function(x,
                                     codes = ".*",
                                     context = 0,
+                                    attributes = NULL,
                                     heading = NULL,
                                     headingLevel = 2,
                                     add_html_tags = TRUE,
@@ -106,11 +112,27 @@ collect_coded_fragments <- function(x,
               vecTxtQ(matchedCodes), ".\n\n");
   }
 
+  ### Select utterances matching the specified attributes
+  selectedUtterances <- rep(TRUE, nrow(dat));
+  if (!is.null(attributes)) {
+    if ((!is.list(attributes)) || (!all(names(attributes) %in% x$convenience$attributesVars))) {
+      stop("As `attributes` argument, you must pass a list where every element's ",
+           "name is a valis attribute, and every element is a character value ",
+           "with a regular expression specifying all values you want to select in that attribute.");
+    } else {
+      ### Cycle through specified attributes and values; set to FALSE where there's no match
+      for (attributeName in names(attributes)) {
+        selectedUtterances <-
+          selectedUtterances & grepl(attributes[attributeName], dat[, attributeName]);
+      }
+    }
+  }
+
   ### Get line numbers of the fragments to extract,
   ### get fragments, store them
   res <- lapply(matchedCodes,
                 function(i) {
-                  return(lapply(which(dat[, i] == 1),
+                  return(lapply(which(selectedUtterances & (dat[, i] == 1)),
                            function(center) {
                              indices <- seq(center - context,
                                             center + context);
@@ -141,23 +163,27 @@ collect_coded_fragments <- function(x,
                                res <- dat[indices, 'utterances_raw'];
                              }
 
-                             ### Add html tags, if requested
-                             if (add_html_tags) {
-                               res <- paste0(rock::add_html_tags(res));
+                             if (rawResult) {
+                               return(res);
+                             } else {
+                               ### Add html tags, if requested
+                               if (add_html_tags) {
+                                 res <- paste0(rock::add_html_tags(res));
+                               }
+
+                               ### Collapse all utterances into one character value
+                               res <- paste0(res,
+                                             collapse=utteranceGlue);
+
+                               ### Add the sources, if necessary
+                               if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
+                                 res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
+                                               res);
+                               }
+
+                               ### Return result
+                               return(res);
                              }
-
-                             ### Collapse all utterances into one character value
-                             res <- paste0(res,
-                                           collapse=utteranceGlue);
-
-                             ### Add the sources, if necessary
-                             if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
-                               res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
-                                             res);
-                             }
-
-                             ### Return result
-                             return(res);
                            }));
                 });
 

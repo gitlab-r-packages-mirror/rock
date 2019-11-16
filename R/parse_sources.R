@@ -80,33 +80,33 @@ parse_sources <- function(path,
   res$convenience$codingLeaves <-
     sort(unique(unlist(res$convenience$rawCodingLeaves)));
 
-  # res$convenience$metadata <-
+  # res$convenience$attributes <-
   #   dplyr::bind_rows(
   #     lapply(res$parsedSource,
   #            function(x) {
-  #              if (is.data.frame(x$metadataDf)) {
-  #                return(x$metadataDf);
+  #              if (is.data.frame(x$attributesDf)) {
+  #                return(x$attributesDf);
   #              } else {
   #                return(NULL);
   #              }
   #            })
   #   );
 
-  res$convenience$metadata <-
+  res$convenience$attributes <-
     dplyr::bind_rows(purrr::map(res$parsedSource,
-                                'metadataDf'));
+                                'attributesDf'));
 
-  res$convenience$metadataVars <-
+  res$convenience$attributesVars <-
     sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
                                            'convenience'),
                                 function(x) {
-                                  return(x$metadataVars);
+                                  return(x$attributesVars);
                                 })))));
 
          # codings = purrr::map(res$parsedSources,
          #                      'codings'),
-         # metadata = purrr::map(res$parsedSources,
-         #                       'metadata'));
+         # attributes = purrr::map(res$parsedSources,
+         #                       'attributes'));
 
   ### Get a list of all names of codes (usually just 'codes', but
   ### in theory, people could use multiple types of code)
@@ -244,22 +244,22 @@ parse_sources <- function(path,
   #   yum::load_yaml_list(yamlLineSets);
   #
   # if (!silent) {
-  #   print(glue::glue("\n\nLoaded {length(rawSpecs)} raw metadata specifications.\n"));
+  #   print(glue::glue("\n\nLoaded {length(rawSpecs)} raw attributes specifications.\n"));
   # }
   #
-  # ### Get the metadata
-  # metadataList <- list();
-  # for (currentMetadataContainer in metadataContainers) {
-  #   metadataList <-
-  #     c(metadataList,
+  # ### Get the attributes
+  # attributesList <- list();
+  # for (currentattributesContainer in attributesContainers) {
+  #   attributesList <-
+  #     c(attributesList,
   #       unlist(purrr::map(rawSpecs,
-  #                         currentMetadataContainer),
+  #                         currentattributesContainer),
   #              recursive=FALSE));
   # }
   #
   # ### Add type and convert to data frame
-  # metadataDfs <-
-  #   lapply(metadataList,
+  # attributesDfs <-
+  #   lapply(attributesList,
   #          function(x) {
   #            x$type <-
   #              names(idRegexes)[names(idRegexes) %in% names(x)];
@@ -268,57 +268,57 @@ parse_sources <- function(path,
   #          });
   #
   # ### Bind together into one dataframe
-  # res$metadata <-
-  #   metadataDf <-
-  #   dplyr::bind_rows(metadataDfs);
+  # res$attributes <-
+  #   attributesDf <-
+  #   dplyr::bind_rows(attributesDfs);
 
   if (!silent) {
-    cat0("Creating metadata dataframe and merging with source dataframe.\n");
+    cat0("Creating attributes dataframe and merging with source dataframe.\n");
   }
 
-  metadataDf <-
-    res$metadataDf <-
+  attributesDf <-
+    res$attributesDf <-
     dplyr::bind_rows(purrr::map(res$parsedSources,
-                                'metadataDf'));
+                                'attributesDf'));
 
-  ### Add metadata to the utterances
+  ### Add attributes to the utterances
   for (i in seq_along(idRegexes)) {
-    ### Check whether metadata was provided for this identifier
-    if (names(idRegexes)[i] %in% names(metadataDf)) {
+    ### Check whether attributes was provided for this identifier
+    if (names(idRegexes)[i] %in% names(attributesDf)) {
       if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, metadata was provided: proceeding to join to sources dataframe.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, attributes was provided: proceeding to join to sources dataframe.\n"));
       }
       ### Convert to character to avoid errors and delete
       ### empty columns from merged source dataframe
       usedIdRegexes <-
-        names(idRegexes)[names(idRegexes) %in% names(metadataDf)];
+        names(idRegexes)[names(idRegexes) %in% names(attributesDf)];
       for (j in usedIdRegexes) {
-        metadataDf[, j] <-
-          as.character(metadataDf[, j]);
+        attributesDf[, j] <-
+          as.character(attributesDf[, j]);
       }
       for (j in intersect(names(res$mergedSourceDf),
-                          names(metadataDf))) {
+                          names(attributesDf))) {
         if (all(is.na(res$mergedSourceDf[, j]))) {
           res$mergedSourceDf[, j] <- NULL;
         }
       }
 
-      # metadataDf[, names(idRegexes)[i]] <-
-      #   as.character(metadataDf[, names(idRegexes)[i]]);
-      ### Join metadata based on identifier
+      # attributesDf[, names(idRegexes)[i]] <-
+      #   as.character(attributesDf[, names(idRegexes)[i]]);
+      ### Join attributes based on identifier
       res$mergedSourceDf <-
         dplyr::left_join(res$mergedSourceDf,
-                         metadataDf[, setdiff(names(metadataDf), 'type')],
+                         attributesDf[, setdiff(names(attributesDf), 'type')],
                          by=names(idRegexes)[i]);
     } else {
       if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no metadata was provided.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
       }
     }
   }
 
   if (!silent) {
-    cat0("Finished merging metadata with source dataframe. Starting to collect deductive code trees.\n");
+    cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
   }
 
   deductiveCodeLists <-

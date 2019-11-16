@@ -4,9 +4,10 @@
 \alias{collect_coded_fragments}
 \title{Create an overview of coded fragments}
 \usage{
-collect_coded_fragments(x, codes = ".*", context = 0, heading = NULL,
-  headingLevel = 2, add_html_tags = TRUE, cleanUtterances = FALSE,
-  output = NULL, template = "default", rawResult = FALSE,
+collect_coded_fragments(x, codes = ".*", context = 0,
+  attributes = NULL, heading = NULL, headingLevel = 2,
+  add_html_tags = TRUE, cleanUtterances = FALSE, output = NULL,
+  template = "default", rawResult = FALSE,
   preventOverwriting = rock::opts$get(preventOverwriting),
   silent = rock::opts$get(silent))
 }
@@ -18,6 +19,12 @@ or \code{rock::parse_sources}.}
 
 \item{context}{How many utterances before and after the target
 utterances to include in the fragments.}
+
+\item{attributes}{To only select coded utterances matching one or more
+values for one or more attributes, pass a list where every element's
+name is a valid (i.e. occurring) attribute name, and every element is a
+character value with a regular expression specifying all values for that
+attribute to select.}
 
 \item{heading}{Optionally, a title to include in the output. The title
 will be prefixed with \code{headingLevel} hashes (\code{#}), and the codes with

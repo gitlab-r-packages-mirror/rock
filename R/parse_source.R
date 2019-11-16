@@ -142,17 +142,17 @@ parse_source <- function(text,
                                delimiterRegEx=delimiterRegEx,
                                ignoreOddDelimiters=ignoreOddDelimiters);
 
-  ### Process metadata and deductive code trees
+  ### Process attributes and deductive code trees
   if (!is.null(res$yamlFragments)) {
     if (!silent) {
-      cat0("Encountered YAML fragments. Parsing them for metadata.\n");
+      cat0("Encountered YAML fragments. Parsing them for attributes.\n");
     }
-    res$metadata <-
+    res$attributes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(attributeContainers, collapse="|"));
     if (!silent) {
-      cat0("Read ", length(unlist(res$metadata)),
-                " metadata specifications. Continuing with deductive code trees.\n");
+      cat0("Read ", length(unlist(res$attributes)),
+                " attributes specifications. Continuing with deductive code trees.\n");
     }
     res$rawDeductiveCodes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
@@ -185,28 +185,28 @@ parse_source <- function(text,
     res$deductiveCodeTrees <- NA;
   }
 
-  if (length(res$metadata) > 0) {
+  if (length(res$attributes) > 0) {
 
-    ### Simplify YAML metadata and convert into a data frame
-    res$metadataDf <-
+    ### Simplify YAML attributes and convert into a data frame
+    res$attributesDf <-
       do.call(rbind,
-              lapply(res$metadata,
+              lapply(res$attributes,
                      as.data.frame,
                      stringsAsFactors=FALSE));
 
-    ### Store metadata variables for convenient use later on
+    ### Store attributes variables for convenient use later on
     res$convenience <-
-      list(metadataVars =
-             setdiff(names(res$metadataDf),
+      list(attributesVars =
+             setdiff(names(res$attributesDf),
                      c(names(idRegexes),
                        names(attributeContainers))));
 
   } else {
 
-    res$metadataDf <- data.frame();
+    res$attributesDf <- data.frame();
 
     res$convenience <-
-      list(metadataVars = NULL);
+      list(attributesVars = NULL);
 
   }
 
@@ -548,13 +548,13 @@ parse_source <- function(text,
   res$inductiveCodeTrees <- purrr::map(res$codeProcessing, "inductiveCodeTrees");
   res$inductiveDiagrammeRs <- purrr::map(res$codeProcessing, "inductiveDiagrammeR");
 
-  ### Merge metadata with source dataframe
-  if (length(res$metadata) > 0) {
+  ### Merge attributes with source dataframe
+  if (length(res$attributes) > 0) {
 
-    ### Merge metadata with source data
+    ### Merge attributes with source data
     res$mergedSourceDf <-
       merge(res$sourceDf,
-            res$metadataDf);
+            res$attributesDf);
 
   } else {
 
@@ -726,7 +726,7 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "The parsed source contained {length(x$arguments$x)} lines. ",
                    "After removing lines that matched '{x$arguments$ignoreRegex}', ",
                    "the regular expression specifying which lines to ignore, and did not ",
-                   "make up the {length(x$yamlFragments)} YAML fragments with metadata or ",
+                   "make up the {length(x$yamlFragments)} YAML fragments with attributes or ",
                    "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.",
                    " {totalSectionMatches} of these matched one of the section regular ",
                    "expressions ({vecTxtQ(x$arguments$sectionRegexes)}), and after ",

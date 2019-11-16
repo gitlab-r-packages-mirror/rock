@@ -166,7 +166,7 @@ opts$defaults <-
        autoGenerateIds = c('stanzaId'),
        persistentIds = c('caseId', 'coderId'),
        noCodes = "^uid:|^uid=|^dct:|^ci:",
-       attributeContainers = c("rock_attributes"),
+       attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
