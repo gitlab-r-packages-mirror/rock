@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to the Reproducible Open Coding Kit (ROCK) • rock</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the Reproducible Open Coding Kit (ROCK)">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -67,13 +68,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to the Reproducible Open Coding Kit (ROCK)</h1>
                         <h4 class="author">Gjalt-Jorn Ygram Peters &amp; Szilvia Zörgő</h4>
             
-            <h4 class="date">2019-11-07</h4>
+            <h4 class="date">2019-11-17</h4>
       
       
       <div class="hidden name"><code>introduction_to_rock.Rmd</code></div>
@@ -102,7 +104,7 @@
 <div id="codes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#codes" class="anchor"></a>Codes</h3>
-<p>Codes are by default any string of characters (specifically, lower or uppercase letters, digits, periods, underscores, larger than signs, and dashes) in between two pairs of square brackets (<code>[[</code> and <code>]]</code>). This is described by the regular expression <code>\[\[([a-zA-Z0-9._&gt;-]+)\]\]</code>; note that the escaping backslashes must be escaped themselves by prepending a second backslash when specifying this regular expression in R. Codes are designated per utterance, or in other words, per line. As many codes can be specified per line as one wishes. For example, see these two lines (utterances):</p>
+<p>Codes are by default any string of characters (specifically, lower or uppercase letters, digits, periods, underscores, larger than signs, and dashes) in between two pairs of square brackets (<code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> and <code>]]</code>). This is described by the regular expression <code>\[\[([a-zA-Z0-9._&gt;-]+)\]\]</code>; note that the escaping backslashes must be escaped themselves by prepending a second backslash when specifying this regular expression in R. Codes are designated per utterance, or in other words, per line. As many codes can be specified per line as one wishes. For example, see these two lines (utterances):</p>
 <pre><code>So what went right [[reflection-positive]]
 What went wrong [[reflection-negative]]</code></pre>
 <p>The first line is coded with <code>reflection-positive</code>, and the second line with code <code>reflection-negative</code>.</p>
@@ -110,7 +112,7 @@ What went wrong [[reflection-negative]]</code></pre>
 <div id="structuring-inductive-codes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#structuring-inductive-codes" class="anchor"></a>Structuring inductive codes</h3>
-<p>When engaging in inductive coding (i.e. when not working with a prespecified code structure, but instead developing the code structure as one goes along; see the section below re: deductive coding), it can be desirable to structure the codes hierarchically. For example, perhaps a researchers wants to specify a parent code such as <code>reflection</code> with two child codes such as <code>positive</code> and <code>negative</code>. This helps one to identify patterns in the data, and makes it possible to easily extract all utterances coded as any type of reflection. By default, the marker that can be used to structure inductive codes is the greater than sign (specified by the regular expression <code>&gt;</code>). For example, see the same fragment but coded in two levels:</p>
+<p>When engaging in inductive coding (i.e. when not working with a prespecified code structure, but instead developing the code structure as one goes along; see the section below re: deductive coding), it can be desirable to structure the codes hierarchically. For example, perhaps a researchers wants to specify a parent code such as <code>reflection</code> with two child codes such as <code>positive</code> and <code>negative</code>. This helps one to identify patterns in the data, and makes it possible to easily extract all utterances coded as any type of reflection. By default, the marker that can be used to structure inductive codes is the greater than sign (specified by the regular expression <code><a href="https://rdrr.io/r/base/Comparison.html">&gt;</a></code>). For example, see the same fragment but coded in two levels:</p>
 <pre><code>So what went right [[reflection&gt;positive]]
 What went wrong [[reflection&gt;negative]]</code></pre>
 <p>When this source is parsed by <code>rock</code>, it will recognize these deductive codes and their structure, and it will generate the corresponding hierarchical coding structure, as illustrated in the more extensive example below.</p>
@@ -259,7 +261,7 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 <p>Sometimes, sources are a bit messy.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> In such cases, it can be efficient to preprocess them and perform some search and replace actions. This can be done for one or multiple source files using <code>clean_source</code> (for one file) and <code>clean_sources</code> (for multiple files; it basically just calls <code>clean_transcript</code> for multiple files).</p>
 <p>For example, a researcher will often want every sentence, as transcribed, to be on its own line (as lines correspond to utterances). In fact, this is the basic function of the <code>clean_source</code> function: by default, if used without other arguments, they try to (more or less smartly) split a transcript such that each transcribed sentence (as marked by a period (<code>.</code>), a question mark (<code>?</code>), an exclamation mark (<code>!</code>), or an ellipsis (<code>…</code>)) ends up on its own line. Before doing this, <code>clean_source</code> replaces all occurrences of exactly consecutive periods (<code>..</code>) with one period, all occurrences of four or more consecutive periods with three periods, and all occurrences of three or more newlines (<code>\n</code>) with two newlines.</p>
 <p>But this function can also be used to perform additonal (or other) replacements. For example, imagine that a transcriber used a dash at the beginning of a line, followed by a space, to indicate when a person starts talking. To easily group all utterances by the same person together, it would be convenient if this was expressed in the source file in a way that fits with ROCK’s conventions. There are four ways to achieve this.</p>
-<p>First, that sequence of characters (actually a newline character (<code>\n</code>) followed by a dash (<code>-</code>) followed by a whitespace character (<code>\s</code>)) can be converted into section break ‘<code>---turn-of-talk---</code>’ like this:</p>
+<p>First, that sequence of characters (actually a newline character (<code>\n</code>) followed by a dash (<code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>) followed by a whitespace character (<code>\s</code>)) can be converted into section break ‘<code>---turn-of-talk---</code>’ like this:</p>
 <pre><code>rock::clean_source("
 - Something said by one speaker
 - Something said by another speaker
@@ -385,6 +387,7 @@ We must crush him completely,   So like John before him, this Jesus must die.   
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -406,17 +409,20 @@ We must crush him completely,   So like John before him, this Jesus must die.   
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Gjalt-Jorn Ygram Peters.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

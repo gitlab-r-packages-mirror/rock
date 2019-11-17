@@ -122,7 +122,6 @@ testthat::test_that("Sources are exported to html properly", {
 
 });
 
-
 ###-----------------------------------------------------------------------------
 
 testthat::test_that("Coded fragments are collected properly", {
@@ -140,4 +139,32 @@ testthat::test_that("Coded fragments are collected properly", {
                               fixed=TRUE));
 
 });
+
+###-----------------------------------------------------------------------------
+
+testthat::test_that("the example in export_codes_to_txt.Rd runs properly", {
+
+  testthat::expect_true({
+    ### Get path to example source
+    examplePath <-
+      system.file("extdata", package="rock");
+
+    ### Parse all example sources in that directory
+    parsedExamples <- rock::parse_sources(examplePath);
+
+    ### Show results of exporting the codes
+    export_codes_to_txt(parsedExamples);
+
+    ### Only show select a narrow set of codes
+    export_codes_to_txt(parsedExamples,
+                        leavesOnly=TRUE,
+                        includePath=FALSE,
+                        onlyChildrenOf = "parentCode2",
+                        regex="5|6");
+
+    TRUE;
+  });
+});
+
+###-----------------------------------------------------------------------------
 
