@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collapse the occurrences in utterances into groups — collapse_occurrences • rock</title>
+<title>Extract the codings by each coder using the coderId — extract_codings_by_coderId • rock</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,8 @@
 
 
 
-<meta property="og:title" content="Collapse the occurrences in utterances into groups — collapse_occurrences" />
-<meta property="og:description" content="This function collapses all occurrences into groups
-sharing the same identifier, by default the stanzaId
-identifier ([[sid=..]])." />
+<meta property="og:title" content="Extract the codings by each coder using the coderId — extract_codings_by_coderId" />
+<meta property="og:description" content="Extract the codings by each coder using the coderId" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,89 +112,65 @@ identifier ([[sid=..]])." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collapse the occurrences in utterances into groups</h1>
+    <h1>Extract the codings by each coder using the coderId</h1>
     
-    <div class="hidden name"><code>collapse_occurrences.Rd</code></div>
+    <div class="hidden name"><code>extract_codings_by_coderId.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function collapses all occurrences into groups
-sharing the same identifier, by default the <code>stanzaId</code>
-identifier (<code>[[sid=..]]</code>).</p>
+    <p>Extract the codings by each coder using the coderId</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedSource</span>, <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>"stanzaId"</span>,
-  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_codings_by_coderId</span>(<span class='no'>input</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>parsedSource</th>
-      <td><p>The parsed sources as provided by <code><a href='parsing_sources.html'>parse_source()</a></code>.</p></td>
+      <th>input</th>
+      <td><p>The directory with the sources.</p></td>
     </tr>
     <tr>
-      <th>collapseBy</th>
-      <td><p>The column in the <code>sourceDf</code> (in the <code>parsedSource</code> object)
-to collapse by (i.e. the column specifying the groups to collapse).</p></td>
+      <th>recursive</th>
+      <td><p>Whether to also process subdirectories.</p></td>
     </tr>
     <tr>
-      <th>columns</th>
-      <td><p>The columns to collapse; if unspecified (i.e. <code>NULL</code>), all
-codes stored in the <code>code</code> object in the <code>codings</code> object in the
-<code>parsedSource</code> object are taken (i.e. all used codes in the <code>parsedSource</code>
-object).</p></td>
+      <th>filenameRegex</th>
+      <td><p>Only files matching this regular expression will be processed.</p></td>
     </tr>
     <tr>
-      <th>logical</th>
-      <td><p>Whether to return the counts of the occurrences (<code>FALSE</code>) or
-simply whether any code occurreded in the group at all (<code>TRUE</code>).</p></td>
+      <th>postponeDeductiveTreeBuilding</th>
+      <td><p>Whether to build deductive code trees, or only
+store YAML fragments.</p></td>
+    </tr>
+    <tr>
+      <th>ignoreOddDelimiters</th>
+      <td><p>Whether to throw an error when encountering an odd number of
+YAML delimiters.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>The encoding of the files to read.</p></td>
+    </tr>
+    <tr>
+      <th>silent</th>
+      <td><p>Whether to be chatty or silent.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with one row for each value of of <code>collapseBy</code> and columns
-for <code>collapseBy</code> and each of the <code>columns</code>, with in the cells the counts (if
-<code>logical</code> is <code>FALSE</code>) or <code>TRUE</code> or <code>FALSE</code> (if <code>logical</code> is <code>TRUE</code>).</p>
+    <p>An object with the read sources.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
-
-<span class='co'>### Parse example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rock/man/parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
-
-<span class='co'>### Collapse logically, using a code (either occurring or not):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rock/man/collapse_occurrences.html'>collapse_occurrences</a></span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>);
-
-<span class='co'>### Show result: only two rows left after collapsing,</span>
-<span class='co'>### because 'childCode1' is either 0 or 1:</span>
-<span class='no'>collapsedExample</span>;</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
-#&gt; 1          0          0          0          1          1          1
-#&gt; 2          1          2          1          0          0          0
-#&gt;   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4
-#&gt; 1               1               3               1               1
-#&gt; 2               0               0               0               0
-#&gt;   grandchildCode5 grandchildCode6 grandchildCode7 someOtherCode
-#&gt; 1               1               1               1             1
-#&gt; 2               0               0               0             0</div><div class='input'>
-<span class='co'>### Collapse using weights (i.e. count codes in each segment):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rock/man/collapse_occurrences.html'>collapse_occurrences</a></span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>,
-                             <span class='kw'>logical</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
