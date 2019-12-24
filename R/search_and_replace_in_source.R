@@ -72,8 +72,8 @@ search_and_replace_in_source <- function(input,
         message("File '",
                 output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
                 "write the 'post-search-replace-source' to disk.");
-        attr(res, "output") <- "existed";
       }
+      attr(res, "output") <- "existed";
     } else {
       con <- file(description=output,
                   open="w",
