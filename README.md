@@ -38,12 +38,13 @@ implements Epistemic Network Analysis (ENA), means to process notes from
 Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
-See the [introductory
-vignette](https://r-packages.gitlab.io/rock/articles/introduction_to_rock.html)
-for an introduction.
-
 There is a FLOSS interface for the ROCK, iROCK, available at
-<https://r-packages.gitlab.io/rock/iROCK/>
+<https://sci-ops.gitlab.io/irock/> (the accompanying git repository is
+available at <https://gitlab.com/sci-ops/irock>).
+
+We are in the process of writing a textbook to support working with the
+ROCK standard, this `rock` R package, and the iROCK interface. This book
+is available at <https://rockbook.org>.
 
 <!--------------------------------------------->
 
@@ -69,6 +70,13 @@ remotes::install_gitlab('r-packages/rock');
 
 (assuming you have `remotes` installed; otherwise, install that first
 using the `install.packages` function)
+
+If you really want to install the most cutting edge version, install the
+‘dev’ branch of this repository:
+
+``` r
+remotes::install_gitlab('r-packages/rock@dev');
+```
 
 <!--------------------------------------------->
 

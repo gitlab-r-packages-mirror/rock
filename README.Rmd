@@ -102,6 +102,14 @@ remotes::install_gitlab('r-packages/", packagename, "');
 
 (assuming you have `remotes` installed; otherwise, install that first using the `install.packages` function)
 
+If you really want to install the most cutting edge version, install the 'dev' branch of this repository:
+
+```{r echo=FALSE, comment="", results="asis"}
+cat(paste0("``` r
+remotes::install_gitlab('r-packages/", packagename, "@dev');
+```"));
+```
+
 <!--------------------------------------------->
 <!-- Start of a custom bit for every package -->
 <!--------------------------------------------->

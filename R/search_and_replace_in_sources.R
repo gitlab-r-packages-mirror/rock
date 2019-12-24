@@ -52,6 +52,7 @@ search_and_replace_in_sources <- function(input,
             list.dirs(input,
                       full.names=TRUE));
 
+  skippedFiles <- character();
   res <- character();
   for (filename in rawSourceFiles) {
     if (((nchar(filenamePrefix) > 0) &&
@@ -60,6 +61,9 @@ search_and_replace_in_sources <- function(input,
         ((nchar(filenameSuffix) > 0) &&
           grepl(filenameSuffix,
                 basename(filename)))) {
+      skippedFiles <-
+        c(skippedFiles,
+          filename);
       if (!silent) {
         message("File '", basename(filename), "' already contains ",
                 "the prefix ('", filenamePrefix, "') or suffix ('",
@@ -80,24 +84,34 @@ search_and_replace_in_sources <- function(input,
         newFileDir <-
           output;
       }
-      search_and_replace_in_source(input = filename,
-                                   output = file.path(newFileDir,
-                                                      newFilename),
-                                   replacements=replacements,
-                                   preventOverwriting=preventOverwriting,
-                                   encoding=encoding,
-                                   silent=TRUE);
+      single_search_replace_result <-
+        search_and_replace_in_source(input = filename,
+                                     output = file.path(newFileDir,
+                                                        newFilename),
+                                     replacements=replacements,
+                                     preventOverwriting=preventOverwriting,
+                                     encoding=encoding,
+                                     silent=TRUE);
+      if (attr(single_search_replace_result,
+               "output") == "existed") {
+        skippedFiles <-
+          c(skippedFiles,
+            filename);
+      }
       res <-
         c(res,
           newFilename);
     }
   }
   if (!silent) {
-    message("I just wrote ", length(rawSourceFiles), " 'post-search-replace-sources' to path '",
+    message("Out of ", length(rawSourceFiles), " I just wrote ",
+            length(rawSourceFiles) - length(skippedFiles),
+            " 'post-search-replace-sources' to path '",
             output,
             "' ",
             ifelse(preventOverwriting,
-                   "(unless the files already existed)",
+                   paste0("(skipping ", length(skippedFiles),
+                          " files that already existed)"),
                    "(overwriting any files that may already have existed)"),
             ". Note that these files may all be overwritten if this ",
             "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
