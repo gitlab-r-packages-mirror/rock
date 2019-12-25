@@ -151,55 +151,54 @@ extract_codings_by_coderId <- function(input,
 
   res$utterances <- list();
 
-  for (i in names(res$codingsByCoder)) {
-
+  for (currentSource in names(res$codingsByCoder)) {
 
     if (!silent) {
-      cat0("\nProcessing source '", i, "'.\n");
+      cat0("\nProcessing source '", currentSource, "'.\n");
     }
 
-    for (j in names(res$codingsByCoder[[i]])) {
+    for (currentCoderId in names(res$codingsByCoder[[currentSource]])) {
 
       if (!silent) {
-        cat0("\nProcessing codings by coder with identifier '", j, "'.\n");
+        cat0("\nProcessing codings by coder with identifier '", currentCoderId, "'.\n");
       }
 
       utterancesInSource <-
-        names(res$codingsByCoder[[i]][[j]]);
+        names(res$codingsByCoder[[currentSource]][[currentCoderId]]);
       codedUtterances <-
-        which(unlist(lapply(res$codingsByCoder[[i]][[j]],
+        which(unlist(lapply(res$codingsByCoder[[currentSource]][[currentCoderId]],
                             length)) > 0);
-      for (k in utterancesInSource[codedUtterances]) {
+      for (currentUID in utterancesInSource[codedUtterances]) {
         ### Loop through all coded utterances by this coder in this source
 
         ### Get original codings from original source
         originalSourceLine <-
-          parsedSources[[i]]$parsedSubsources[[j]]$rawSourceDf[
-            parsedSources[[i]]$parsedSubsources[[j]]$rawSourceDf$uids == k,
+          parsedSources[[currentSource]]$parsedSubsources[[currentCoderId]]$rawSourceDf[
+            parsedSources[[currentSource]]$parsedSubsources[[currentCoderId]]$rawSourceDf$uids == currentUID,
             'utterances_raw'];
         rawCodings <-
           regmatches(originalSourceLine,
                      gregexpr(paste0(codeRegexes, collapse="|"),
                               originalSourceLine));
         codingInfo <-
-          stats::setNames(rawCodings, #list(res$codingsByCoder[[i]][[j]][[k]]),
-                          i);
+          stats::setNames(rawCodings, #list(res$codingsByCoder[[currentSource]][[currentCoderId]][[currentUID]]),
+                          currentSource);
 
-        if (k %in% res$utterances) {
+        if (currentUID %in% names(res$utterances)) {
           ### If this uid already contains information, append the new info
-          if (j %in% names(res$utterances[[k]])) {
-            res$utterances[[k]][[j]] <-
-              c(res$utterances[[k]][[j]],
+          if (currentCoderId %in% names(res$utterances[[currentUID]])) {
+            res$utterances[[currentUID]][[currentCoderId]] <-
+              c(res$utterances[[currentUID]][[currentCoderId]],
                 codingInfo);
           } else {
-            res$utterances[[k]][[j]] <-
+            res$utterances[[currentUID]][[currentCoderId]] <-
               codingInfo;
           }
         } else {
           ### No coding information about this utterance has been added yet
-          res$utterances[[k]] <-
+          res$utterances[[currentUID]] <-
             stats::setNames(list(codingInfo),
-                            j);
+                            currentCoderId);
         }
       }
     }
