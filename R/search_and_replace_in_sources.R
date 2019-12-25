@@ -104,7 +104,7 @@ search_and_replace_in_sources <- function(input,
     }
   }
   if (!silent) {
-    message("Out of ", length(rawSourceFiles), " I just wrote ",
+    message("Out of ", length(rawSourceFiles), " provided sources, I just wrote ",
             length(rawSourceFiles) - length(skippedFiles),
             " 'post-search-replace-sources' to path '",
             output,

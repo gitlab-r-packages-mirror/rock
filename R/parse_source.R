@@ -575,7 +575,7 @@ parse_source <- function(text,
   }
 
   ### Add codings and leaves only to the convenience list
-  res$convenience$codings <- sort(unique(unlist(res$codings)));
+  res$convenience$codings <- sort(unique(unlist(res$rawCodings)));
   res$convenience$codingLeaves <-
     sort(unique(unlist(get_leaf_codes(res$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
