@@ -112,6 +112,10 @@ merge_sources <- function(input,
          primarySourcesPath, "'.\n\n");
   }
 
+  ### Processing section breaks
+  sectionBreaksByUID <-
+    sectionBreaksByCoder_to_sectionBreaksByUID(parsedSources$sectionBreaksByCoder);
+
   ### Read primary sources
   primarySources <-
     load_sources(input = primarySourcesPath,
@@ -177,10 +181,11 @@ merge_sources <- function(input,
 
       currentUID <- primarySourceUids[[i]][j];
 
-      if (getOption('rock.debug', FALSE)) {
+      if (rock::opts$get(debug)) {
         cat0("\n     - Processing UID '", currentUID, "'.");
       }
 
+      ### Process coded utterances
       if (currentUID %in% allCodedUtterances) {
         nrOfMergedUtteranceCodings <-
           nrOfMergedUtteranceCodings + 1;
@@ -188,7 +193,7 @@ merge_sources <- function(input,
         codings <-
           unname(unlist(parsedSources$utterances[[currentUID]]));
 
-        if (getOption('rock.debug', FALSE)) {
+        if (rock::opts$get(debug)) {
           cat0("\n       - Found codings: ", vecTxtQ(codings), " in utterance:\n",
                "         '", mergedSources[[i]][j], "'");
         }
@@ -199,7 +204,7 @@ merge_sources <- function(input,
                         x = mergedSources[[i]][j],
                         fixed=TRUE));
 
-        if (getOption('rock.debug', FALSE)) {
+        if (rock::opts$get(debug)) {
           cat0("\n       - Already applied codings: ", vecTxtQ(codings[alreadyAppliedCodings]), ".");
         }
 
@@ -209,15 +214,24 @@ merge_sources <- function(input,
                  paste0(codings[!alreadyAppliedCodings],
                         collapse = " "));
 
-        if (getOption('rock.debug', FALSE)) {
+        if (rock::opts$get(debug)) {
           cat0("\n       - Added codings: ", vecTxtQ(codings[!alreadyAppliedCodings]), ".");
         }
 
       }
+
     }
+
     if (!silent) {
       cat0("\n   - ", nrOfMergedUtteranceCodings, " utterances merged.");
     }
+
+
+
+    ### Process section breaks
+    # sectionBreaksByUID
+
+
 
     newFilename <-
       paste0(outputPrefix,
@@ -259,6 +273,7 @@ merge_sources <- function(input,
 
   res <- list(parsedSources = parsedSources,
               primarySources = primarySources,
+              sectionBreaksByUID = sectionBreaksByUID,
               mergedSources = mergedSources);
 
   return(invisible(res));
