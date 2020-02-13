@@ -163,7 +163,8 @@ merge_sources <- function(input,
            sum(uidRegexMatches), " match the uidRegex (i.e. contain an utterance identifier).");
     }
 
-    ### Extract the UIDs and store in a vector, where every element corresponds to a line in the source.
+    ### Extract the UIDs and store in a vector, where every element
+    ### corresponds to a line in the source.
     primarySourceUids[[i]] <-
       ifelse(uidRegexMatches,
              gsub(paste0(".*", uidRegex, ".*"),
@@ -226,12 +227,87 @@ merge_sources <- function(input,
       cat0("\n   - ", nrOfMergedUtteranceCodings, " utterances merged.");
     }
 
+    if (any(primarySourceUids[[i]] %in% names(sectionBreaksByUID$matches_pre))) {
 
+      if (rock::opts$get(debug)) {
+        cat0("\n   - At least one utterance matches the list of utterances before which to insert a section break.");
+      }
 
-    ### Process section breaks
-    # sectionBreaksByUID
+      ### Get indices (and so, line numbers) of the lines after which to
+      ### insert section breaks. Reverse the order because we have to start
+      ### at the end with inserting the section breaks - otherwise the line
+      ### numbers shift.
+      preSectionBreakUIDindices <-
+        rev(which(primarySourceUids[[i]] %in% names(sectionBreaksByUID$matches_pre)));
 
+      for (currentPreSectionBreakUIDindex in preSectionBreakUIDindices) {
 
+        currentUID <- primarySourceUids[[i]][currentPreSectionBreakUIDindex];
+        currentSectionBreak <- sectionBreaksByUID$matches_pre[currentUID];
+
+        if (rock::opts$get(debug)) {
+          cat0("\n     - Processing UID '", currentUID, "'. ");
+        }
+
+        if (grepl(paste0(rock::opts$get(sectionRegexes), collapse="|"),
+                  mergedSources[[i]][currentPreSectionBreakUIDindex+1])) {
+
+          ### There's already a section break on that line
+          if (rock::opts$get(debug)) {
+            cat0("The next line already contains a section break; ");
+          }
+
+          ### Check whether the section break we're checking for is already on that line.
+          if (grepl(mergedSources[[i]][currentPreSectionBreakUIDindex+1],
+                    currentSectionBreak,
+                    fixed=TRUE)) {
+            if (rock::opts$get(debug)) {
+              cat0("and it's the one we were about to add ('", currentSectionBreak,
+                   "'), so not doing anything.");
+            }
+          } else {
+            ### It isn't - we can just append this one
+            mergedSources[[i]][currentPreSectionBreakUIDindex+1] <-
+              paste(mergedSources[[i]][currentPreSectionBreakUIDindex+1],
+                    currentSectionBreak);
+            # stop("Just added '", currentSectionBreak, "' to line '",
+            #      mergedSources[[i]][currentPreSectionBreakUIDindex+1], "'.")
+            if (rock::opts$get(debug)) {
+              cat0("but it's a different one from the one we were about to add ('",
+                   currentSectionBreak,
+                   "'), so we append it to that line.");
+            }
+          }
+
+        } else {
+
+          if (rock::opts$get(debug)) {
+            cat0("The next line does not already contain a section break; shifting ",
+                 "all subsequent lines one position and inserting a line ",
+                 "containing only section break '", currentSectionBreak, "'.");
+          }
+
+          ### We have to shift all subsequent lines and then insert this one
+          lastLineIndex <- length(primarySourceUids[[i]]);
+
+          linesOfLastPartOfSource_preShift <- (currentPreSectionBreakUIDindex+1):lastLineIndex;
+          linesOfLastPartOfSource_postShift <- linesOfLastPartOfSource_preShift + 1;
+
+          #### Shift
+          mergedSources[[i]][linesOfLastPartOfSource_postShift] <-
+            mergedSources[[i]][linesOfLastPartOfSource_preShift];
+
+          ### Insert line containing only the section break
+          mergedSources[[i]][currentPreSectionBreakUIDindex+1] <-
+            sectionBreaksByUID$matches_pre[currentUID];
+
+        }
+      }
+    } else {
+      if (rock::opts$get(debug)) {
+        cat0("\n   - None of the utterances matches the list of utterances before which to insert a section break.");
+      }
+    }
 
     newFilename <-
       paste0(outputPrefix,
