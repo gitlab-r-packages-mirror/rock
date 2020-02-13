@@ -254,7 +254,9 @@ merge_sources <- function(input,
 
           ### There's already a section break on that line
           if (rock::opts$get(debug)) {
-            cat0("The next line already contains a section break; ");
+            cat0("The next line ('",
+                 trimws(mergedSources[[i]][currentPreSectionBreakUIDindex+1]),
+                 "') already contains a section break; ");
           }
 
           ### Check whether the section break we're checking for is already on that line.
