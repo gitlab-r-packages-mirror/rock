@@ -258,8 +258,8 @@ merge_sources <- function(input,
           }
 
           ### Check whether the section break we're checking for is already on that line.
-          if (grepl(mergedSources[[i]][currentPreSectionBreakUIDindex+1],
-                    currentSectionBreak,
+          if (grepl(currentSectionBreak,
+                    mergedSources[[i]][currentPreSectionBreakUIDindex+1],
                     fixed=TRUE)) {
             if (rock::opts$get(debug)) {
               cat0("and it's the one we were about to add ('", currentSectionBreak,
