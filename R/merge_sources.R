@@ -227,10 +227,15 @@ merge_sources <- function(input,
       cat0("\n   - ", nrOfMergedUtteranceCodings, " utterances merged.");
     }
 
+    if (!silent) {
+      cat0("\n   - Starting to merge section breaks - starting with checking ",
+           length(sectionBreaksByUID$matches_pre), " section breaks to insert after a UID.");
+    }
+
     if (any(primarySourceUids[[i]] %in% names(sectionBreaksByUID$matches_pre))) {
 
       if (rock::opts$get(debug)) {
-        cat0("\n   - At least one utterance matches the list of utterances before which to insert a section break.");
+        cat0("\n   - At least one utterance matches the list of utterances after which to insert a section break.");
       }
 
       ### Get indices (and so, line numbers) of the lines after which to
@@ -243,10 +248,19 @@ merge_sources <- function(input,
       for (currentPreSectionBreakUIDindex in preSectionBreakUIDindices) {
 
         currentUID <- primarySourceUids[[i]][currentPreSectionBreakUIDindex];
-        currentSectionBreak <- sectionBreaksByUID$matches_pre[currentUID];
+        currentSectionBreak <-
+          sectionBreaksByUID$matches_pre[names(sectionBreaksByUID$matches_pre) == currentUID];
 
-        if (rock::opts$get(debug)) {
-          cat0("\n     - Processing UID '", currentUID, "'. ");
+        if (length(currentSectionBreak) > 1) {
+          if (rock::opts$get(debug)) {
+            cat0("\n     - Processing UID '", currentUID, "', which matches multiple section breaks: ",
+                 vecTxtQ(currentSectionBreak), ". ");
+          }
+        } else {
+          if (rock::opts$get(debug)) {
+            cat0("\n     - Processing UID '", currentUID, "' and section break '",
+                 currentSectionBreak, "'. ");
+          }
         }
 
         if (grepl(paste0(rock::opts$get(sectionRegexes), collapse="|"),
@@ -260,9 +274,11 @@ merge_sources <- function(input,
           }
 
           ### Check whether the section break we're checking for is already on that line.
-          if (grepl(currentSectionBreak,
-                    mergedSources[[i]][currentPreSectionBreakUIDindex+1],
-                    fixed=TRUE)) {
+          sectionBreaksAlreadyThere <-
+            multigrepl(currentSectionBreak,
+                       mergedSources[[i]][currentPreSectionBreakUIDindex+1],
+                       fixed=TRUE);
+          if (all(sectionBreaksAlreadyThere)) {
             if (rock::opts$get(debug)) {
               cat0("and it's the one we were about to add ('", currentSectionBreak,
                    "'), so not doing anything.");
@@ -271,12 +287,12 @@ merge_sources <- function(input,
             ### It isn't - we can just append this one
             mergedSources[[i]][currentPreSectionBreakUIDindex+1] <-
               paste(mergedSources[[i]][currentPreSectionBreakUIDindex+1],
-                    currentSectionBreak);
+                    currentSectionBreak[!sectionBreaksAlreadyThere]);
             # stop("Just added '", currentSectionBreak, "' to line '",
             #      mergedSources[[i]][currentPreSectionBreakUIDindex+1], "'.")
             if (rock::opts$get(debug)) {
               cat0("but it's a different one from the one we were about to add ('",
-                   currentSectionBreak,
+                   currentSectionBreak[!sectionBreaksAlreadyThere],
                    "'), so we append it to that line.");
             }
           }
