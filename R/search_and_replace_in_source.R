@@ -58,6 +58,7 @@ search_and_replace_in_source <- function(input,
   }
 
   if (is.null(output)) {
+    attr(res, "output") <- "returned";
     return(res);
   } else {
     if (!dir.exists(dirname(output))) {
@@ -72,6 +73,7 @@ search_and_replace_in_source <- function(input,
                 output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
                 "write the 'post-search-replace-source' to disk.");
       }
+      attr(res, "output") <- "existed";
     } else {
       con <- file(description=output,
                   open="w",
@@ -79,6 +81,7 @@ search_and_replace_in_source <- function(input,
       writeLines(text=res,
                  con=con);
       close(con);
+      attr(res, "output") <- "written";
     }
     if (!silent) {
       message("I just wrote a 'post-search-replace-source' to file '",

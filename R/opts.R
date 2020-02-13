@@ -115,6 +115,7 @@ opts$set <- function(...) {
     do.call(options,
             dots);
   } else {
+    option <- dotNames;
     stop("Option '", option, "' is not a valid (i.e. existing) option for the rock!");
   }
 }
@@ -205,6 +206,9 @@ opts$defaults <-
        ### Used throughout for working with files
        encoding = "UTF-8",
        preventOverwriting = TRUE,
+
+       ### Used throughout for debugging,
+       debug = FALSE,
 
        ### Used throughout for suppressing messages
        silent = TRUE);
