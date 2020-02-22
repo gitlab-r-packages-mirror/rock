@@ -5,13 +5,23 @@
 \alias{export_to_markdown}
 \title{Export parsed sources to HTML or Markdown}
 \usage{
-export_to_html(input, output = NULL, template = "default",
+export_to_html(
+  input,
+  output = NULL,
+  template = "default",
   fragment = FALSE,
   preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 
-export_to_markdown(input, heading = "Sources", headingLevel = 2,
-  template = "default", silent = rock::opts$get(silent))
+export_to_markdown(
+  input,
+  heading = "Sources",
+  headingLevel = 2,
+  template = "default",
+  silent = rock::opts$get(silent)
+)
 }
 \arguments{
 \item{input}{An object of class \code{rockParsedSource} (as resulting from a call

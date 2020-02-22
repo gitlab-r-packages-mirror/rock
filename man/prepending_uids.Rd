@@ -7,13 +7,23 @@
 \alias{prepend_ids_to_sources}
 \title{Prepending unique utterance identifiers}
 \usage{
-prepend_ids_to_source(input, output = NULL, origin = Sys.time(),
+prepend_ids_to_source(
+  input,
+  output = NULL,
+  origin = Sys.time(),
   preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 
-prepend_ids_to_sources(input, output = NULL, origin = Sys.time(),
+prepend_ids_to_sources(
+  input,
+  output = NULL,
+  origin = Sys.time(),
   preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 }
 \arguments{
 \item{input}{The filename or contents of the source
@@ -43,5 +53,5 @@ utterance (line) in a source. Note that you'll probably want
 to clean the sources using \code{\link[=clean_sources]{clean_sources()}} first.
 }
 \examples{
-prepend_ids_to_source(input = "brief\\nexample\\nsource");
+prepend_ids_to_source(input = "brief\nexample\nsource");
 }

@@ -7,9 +7,15 @@
 \usage{
 load_source(input, encoding = "UTF-8", silent = FALSE)
 
-load_sources(input, encoding = "UTF-8", filenameRegex = ".*",
-  ignoreRegex = NULL, recursive = TRUE, full.names = FALSE,
-  silent = FALSE)
+load_sources(
+  input,
+  encoding = "UTF-8",
+  filenameRegex = ".*",
+  ignoreRegex = NULL,
+  recursive = TRUE,
+  full.names = FALSE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{input}{The filename or contents of the source

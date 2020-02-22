@@ -4,12 +4,19 @@
 \alias{export_codes_to_txt}
 \title{Export codes to a plain text file}
 \usage{
-export_codes_to_txt(input, output = NULL,
-  codeTree = "fullyMergedCodeTrees", codingScheme = "codes",
-  regex = ".*", onlyChildrenOf = NULL, leavesOnly = TRUE,
+export_codes_to_txt(
+  input,
+  output = NULL,
+  codeTree = "fullyMergedCodeTrees",
+  codingScheme = "codes",
+  regex = ".*",
+  onlyChildrenOf = NULL,
+  leavesOnly = TRUE,
   includePath = TRUE,
   preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 }
 \arguments{
 \item{input}{An object of class \code{rockParsedSource} (as resulting from a call
@@ -40,7 +47,7 @@ passed as \code{onlyChildrenOf}, only the codes within \code{parent} are selecte
 children) or all codes in the code tree.}
 
 \item{includePath}{Whether to only return the code itself (e.g. \code{code}) or also
-include the path to the root (e.g. \code{code1>code2>code}).}
+include the path to the root (e.g. \verb{code1>code2>code}).}
 
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 

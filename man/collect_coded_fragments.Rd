@@ -4,12 +4,21 @@
 \alias{collect_coded_fragments}
 \title{Create an overview of coded fragments}
 \usage{
-collect_coded_fragments(x, codes = ".*", context = 0,
-  attributes = NULL, heading = NULL, headingLevel = 2,
-  add_html_tags = TRUE, cleanUtterances = FALSE, output = NULL,
-  template = "default", rawResult = FALSE,
+collect_coded_fragments(
+  x,
+  codes = ".*",
+  context = 0,
+  attributes = NULL,
+  heading = NULL,
+  headingLevel = 2,
+  add_html_tags = TRUE,
+  cleanUtterances = FALSE,
+  output = NULL,
+  template = "default",
+  rawResult = FALSE,
   preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent))
+  silent = rock::opts$get(silent)
+)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}
@@ -27,7 +36,7 @@ character value with a regular expression specifying all values for that
 attribute to select.}
 
 \item{heading}{Optionally, a title to include in the output. The title
-will be prefixed with \code{headingLevel} hashes (\code{#}), and the codes with
+will be prefixed with \code{headingLevel} hashes (\verb{#}), and the codes with
 \code{headingLevel+1} hashes. If \code{NULL} (the default), a heading will be
 generated that includes the collected codes if those are five or less.
 If a character value is specified, that will be used. To omit a heading,

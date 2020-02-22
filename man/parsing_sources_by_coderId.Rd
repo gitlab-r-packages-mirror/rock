@@ -6,13 +6,23 @@
 \alias{parse_sources_by_coderId}
 \title{Parsing sources separately for each coder}
 \usage{
-parse_source_by_coderId(input, ignoreOddDelimiters = FALSE,
-  postponeDeductiveTreeBuilding = TRUE, encoding = "UTF-8",
-  silent = TRUE)
+parse_source_by_coderId(
+  input,
+  ignoreOddDelimiters = FALSE,
+  postponeDeductiveTreeBuilding = TRUE,
+  encoding = "UTF-8",
+  silent = TRUE
+)
 
-parse_sources_by_coderId(input, recursive = TRUE, filenameRegex = ".*",
-  ignoreOddDelimiters = FALSE, postponeDeductiveTreeBuilding = TRUE,
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+parse_sources_by_coderId(
+  input,
+  recursive = TRUE,
+  filenameRegex = ".*",
+  ignoreOddDelimiters = FALSE,
+  postponeDeductiveTreeBuilding = TRUE,
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 }
 \arguments{
 \item{input}{For \code{parse_source_by_coderId}, either a character vector

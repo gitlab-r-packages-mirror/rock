@@ -5,8 +5,13 @@
 \alias{code_sources}
 \title{Add one or more codes to one or more sources}
 \usage{
-code_source(input, codes, indices = NULL, codeDelimiters = c("[[",
-  "]]"), silent = TRUE)
+code_source(
+  input,
+  codes,
+  indices = NULL,
+  codeDelimiters = c("[[", "]]"),
+  silent = TRUE
+)
 
 code_sources(input, codes, silent = FALSE)
 }

@@ -2,13 +2,13 @@
 #' @param recursive Whether to search all subdirectories (`TRUE`) as well or not.
 #' @param filenameRegex A regular expression to match against located files; only
 #' files matching this regular expression are processed.
-#' @param filenamePrefix,filenameSuffix The prefix and suffix to add to the
+#' @param outputPrefix,outputSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk.
 #' @export
 clean_sources <- function(input,
                           output,
-                          filenamePrefix = "",
-                          filenameSuffix = "",
+                          outputPrefix = "",
+                          outputSuffix = "_cleaned",
                           recursive=TRUE,
                           filenameRegex=".*",
                           replacementsPre = rock::opts$get(replacementsPre),
@@ -61,9 +61,9 @@ clean_sources <- function(input,
 
   if (any(grepl("\\.rock$",
                 rawSourceFiles))) {
-    if ((nchar(filenamePrefix) == 0) && (nchar(filenameSuffix) == 0)) {
+    if ((nchar(outputPrefix) == 0) && (nchar(outputSuffix) == 0)) {
       stop("At least one of the input files already has the .rock extension! ",
-           "Therefore, you have to provide at least one of `filenamePrefix` and `filenameSuffix` ",
+           "Therefore, you have to provide at least one of `outputPrefix` and `outputSuffix` ",
            "to allow saving the files to new names!");
     }
   }
@@ -71,11 +71,11 @@ clean_sources <- function(input,
   res <- character();
   for (filename in rawSourceFiles) {
     newFilename <-
-      paste0(filenamePrefix,
+      paste0(outputPrefix,
              sub("^(.*)\\.[a-zA-Z0-9]+$",
                  "\\1",
                  basename(filename)),
-             filenameSuffix,
+             outputSuffix,
              ".rock");
     if (tolower(output) == "same") {
       newFileDir <-

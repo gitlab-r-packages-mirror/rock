@@ -4,7 +4,6 @@
 #' containing the text of the relevant source *or* a path to a file that
 #' contains the source text; for `parse_sources_by_coderId`, a path to a
 #' directory that contains the sources to parse.
-#' @inheritParams parse_source
 #' @rdname parsing_sources_by_coderId
 #' @examples ### Get path to example source
 #' examplePath <-
