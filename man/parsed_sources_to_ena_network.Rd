@@ -4,10 +4,13 @@
 \alias{parsed_sources_to_ena_network}
 \title{Create an ENA network out of one or more parsed sources}
 \usage{
-parsed_sources_to_ena_network(x, unitCols,
+parsed_sources_to_ena_network(
+  x,
+  unitCols,
   conversationCols = "originalSource",
   codes = x$convenience$codingLeaves,
-  metadata = x$convenience$metadataVars)
+  metadata = x$convenience$metadataVars
+)
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source} or \code{rock::parse_sources}.}

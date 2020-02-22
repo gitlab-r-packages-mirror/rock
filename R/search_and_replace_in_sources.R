@@ -3,8 +3,8 @@
 search_and_replace_in_sources <- function(input,
                                           output,
                                           replacements = NULL,
-                                          filenamePrefix = "",
-                                          filenameSuffix = "_postReplacing",
+                                          outputPrefix = "",
+                                          outputSuffix = "_postReplacing",
                                           preventOverwriting = rock::opts$get(preventOverwriting),
                                           recursive=TRUE,
                                           filenameRegex=".*",
@@ -33,11 +33,11 @@ search_and_replace_in_sources <- function(input,
       dir.create(output,
                  recursive = TRUE);
     }
-  }
-
-  if ((nchar(filenamePrefix) == 0) && (nchar(filenameSuffix) == 0)) {
-    stop("You have to provide at least one of `filenamePrefix` and `filenameSuffix` ",
-         "to allow saving the files to new names!");
+  } else {
+    if ((nchar(outputPrefix) == 0) && (nchar(outputSuffix) == 0)) {
+      stop("You have to provide at least one of `outputPrefix` and `outputSuffix` ",
+           "to allow saving the files to new names!");
+    }
   }
 
   rawSourceFiles <-
@@ -55,27 +55,27 @@ search_and_replace_in_sources <- function(input,
   skippedFiles <- character();
   res <- character();
   for (filename in rawSourceFiles) {
-    if (((nchar(filenamePrefix) > 0) &&
-          grepl(filenamePrefix,
+    if (((nchar(outputPrefix) > 0) &&
+          grepl(outputPrefix,
                 basename(filename))) ||
-        ((nchar(filenameSuffix) > 0) &&
-          grepl(filenameSuffix,
+        ((nchar(outputSuffix) > 0) &&
+          grepl(outputSuffix,
                 basename(filename)))) {
       skippedFiles <-
         c(skippedFiles,
           filename);
       if (!silent) {
         message("File '", basename(filename), "' already contains ",
-                "the prefix ('", filenamePrefix, "') or suffix ('",
-                filenameSuffix, "') string; skipping this file!");
+                "the prefix ('", outputPrefix, "') or suffix ('",
+                outputSuffix, "') string; skipping this file!");
       }
     } else {
       newFilename <-
-        paste0(filenamePrefix,
+        paste0(outputPrefix,
                sub("^(.*)\\.[a-zA-Z0-9]+$",
                    "\\1",
                    basename(filename)),
-               filenameSuffix,
+               outputSuffix,
                ".rock");
       if (tolower(output) == "same") {
         newFileDir <-

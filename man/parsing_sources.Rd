@@ -9,15 +9,26 @@
 \alias{plot.rockParsedSources}
 \title{Parsing sources}
 \usage{
-parse_source(text, file, ignoreOddDelimiters = FALSE,
+parse_source(
+  text,
+  file,
+  ignoreOddDelimiters = FALSE,
   postponeDeductiveTreeBuilding = FALSE,
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 
 \method{print}{rockParsedSource}(x, prefix = "### ", ...)
 
-parse_sources(path, extension = "rock|dct", regex = NULL,
-  recursive = TRUE, ignoreOddDelimiters = FALSE,
-  encoding = rock::opts$get(encoding), silent = rock::opts$get(silent))
+parse_sources(
+  path,
+  extension = "rock|dct",
+  regex = NULL,
+  recursive = TRUE,
+  ignoreOddDelimiters = FALSE,
+  encoding = rock::opts$get(encoding),
+  silent = rock::opts$get(silent)
+)
 
 \method{print}{rockParsedSources}(x, prefix = "### ", ...)
 
@@ -32,7 +43,7 @@ does not point to an existing file, an error is produced (useful if calling
 from other functions). A \code{text} should be a character vector where every
 element is a line of the original source (like provided by \code{\link[base:readLines]{base::readLines()}});
 although if a character vector of one element \emph{and} including at least one
-newline character (\code{\\n}) is provided as \code{text}, it is split at the newline
+newline character (\verb{\\\\n}) is provided as \code{text}, it is split at the newline
 characters using \code{\link[base:strsplit]{base::strsplit()}}. Basically, this behavior means that the
 first argument can be either a character vector or the path to a file; and if
 you're specifying a file and you want to be certain that an error is thrown if

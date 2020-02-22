@@ -61,9 +61,9 @@ clean_sources <- function(input,
 
   if (any(grepl("\\.rock$",
                 rawSourceFiles))) {
-    if ((nchar(filenamePrefix) == 0) && (nchar(filenameSuffix) == 0)) {
+    if ((nchar(outputPrefix) == 0) && (nchar(outputSuffix) == 0)) {
       stop("At least one of the input files already has the .rock extension! ",
-           "Therefore, you have to provide at least one of `filenamePrefix` and `filenameSuffix` ",
+           "Therefore, you have to provide at least one of `outputPrefix` and `outputSuffix` ",
            "to allow saving the files to new names!");
     }
   }

@@ -36,7 +36,7 @@
 
 
 <meta property="og:title" content="Cleaning &amp; editing sources — clean_source" />
-<meta property="og:description" content="These function can be used to 'clean' one or more sources or perform search and
+<meta property="og:description" content="These functions can be used to 'clean' one or more sources or perform search and
 replace taks. Cleaning consists of two operations: splitting the source at
 utterance markers, and conducting search and replaces using regular expressions." />
 <meta name="twitter:card" content="summary" />
@@ -120,38 +120,64 @@ utterance markers, and conducting search and replaces using regular expressions.
     </div>
 
     <div class="ref-description">
-    <p>These function can be used to 'clean' one or more sources or perform search and
+    <p>These functions can be used to 'clean' one or more sources or perform search and
 replace taks. Cleaning consists of two operations: splitting the source at
 utterance markers, and conducting search and replaces using regular expressions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>clean_source</span>(<span class='no'>input</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>clean_source</span>(
+  <span class='no'>input</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>replacementsPre</span>),
   <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>replacementsPost</span>),
-  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>utteranceSplits</span>),
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)
 
-<span class='fu'>clean_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>, <span class='kw'>filenamePrefix</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>filenameSuffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+<span class='fu'>clean_sources</span>(
+  <span class='no'>input</span>,
+  <span class='no'>output</span>,
+  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_cleaned"</span>,
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
   <span class='kw'>replacementsPre</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>replacementsPre</span>),
   <span class='kw'>replacementsPost</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>replacementsPost</span>),
-  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extraReplacementsPre</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extraReplacementsPost</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>removeNewlines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>utteranceSplits</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>utteranceSplits</span>),
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)
 
-<span class='fu'>search_and_replace_in_source</span>(<span class='no'>input</span>, <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>search_and_replace_in_source</span>(
+  <span class='no'>input</span>,
+  <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
-<span class='fu'>search_and_replace_in_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>, <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filenamePrefix</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>filenameSuffix</span> <span class='kw'>=</span> <span class='st'>"_postReplacing"</span>,
+<span class='fu'>search_and_replace_in_sources</span>(
+  <span class='no'>input</span>,
+  <span class='no'>output</span>,
+  <span class='kw'>replacements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>filenamePrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>filenameSuffix</span> <span class='kw'>=</span> <span class='st'>"_postReplacing"</span>,
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,7 +240,7 @@ insert breaks between utterances in the source(s). Such breakes are specified us
       <td><p>Whether to suppress the warning about not editing the cleaned source.</p></td>
     </tr>
     <tr>
-      <th>filenamePrefix, filenameSuffix</th>
+      <th>outputPrefix, outputSuffix</th>
       <td><p>The prefix and suffix to add to the
 filenames when writing the processed files to disk.</p></td>
     </tr>

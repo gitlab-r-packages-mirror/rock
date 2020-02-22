@@ -123,15 +123,24 @@ identifiers (UIDs) to match them." />
 identifiers (UIDs) to match them.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>merge_sources</span>(<span class='no'>input</span>, <span class='no'>output</span>, <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_merged"</span>, <span class='kw'>primarySourcesRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>primarySourcesIgnoreRegex</span> <span class='kw'>=</span> <span class='no'>outputSuffix</span>, <span class='kw'>primarySourcesPath</span> <span class='kw'>=</span> <span class='no'>input</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>primarySourcesRecursive</span> <span class='kw'>=</span> <span class='no'>recursive</span>,
-  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>merge_sources</span>(
+  <span class='no'>input</span>,
+  <span class='no'>output</span>,
+  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_merged"</span>,
+  <span class='kw'>primarySourcesRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>primarySourcesIgnoreRegex</span> <span class='kw'>=</span> <span class='no'>outputSuffix</span>,
+  <span class='kw'>primarySourcesPath</span> <span class='kw'>=</span> <span class='no'>input</span>,
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>primarySourcesRecursive</span> <span class='kw'>=</span> <span class='no'>recursive</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>),
-  <span class='kw'>inheritSilence</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>),
+  <span class='kw'>inheritSilence</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

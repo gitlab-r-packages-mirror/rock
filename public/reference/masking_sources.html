@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parsing sources separately for each coder — parse_source_by_coderId • rock</title>
+<title>Masking sources — mask_source • rock</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Parsing sources separately for each coder — parse_source_by_coderId" />
-<meta property="og:description" content="Parsing sources separately for each coder" />
+<meta property="og:title" content="Masking sources — mask_source" />
+<meta property="og:description" content="These functions can be used to mask a set of utterances or one or more sources." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,31 +112,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parsing sources separately for each coder</h1>
+    <h1>Masking sources</h1>
     
-    <div class="hidden name"><code>parsing_sources_by_coderId.Rd</code></div>
+    <div class="hidden name"><code>masking_sources.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parsing sources separately for each coder</p>
+    <p>These functions can be used to mask a set of utterances or one or more sources.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_source_by_coderId</span>(
+    <pre class="usage"><span class='fu'>mask_source</span>(
   <span class='no'>input</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
+  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
 )
 
-<span class='fu'>parse_sources_by_coderId</span>(
+<span class='fu'>mask_sources</span>(
   <span class='no'>input</span>,
+  <span class='no'>output</span>,
+  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_masked"</span>,
+  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
+  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
   <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
   <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)
+
+<span class='fu'>mask_utterances</span>(
+  <span class='no'>input</span>,
+  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
+  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -144,30 +162,54 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>For <code>parse_source_by_coderId</code>, either a character vector
-containing the text of the relevant source <em>or</em> a path to a file that
-contains the source text; for <code>parse_sources_by_coderId</code>, a path to a
-directory that contains the sources to parse.</p></td>
+      <td><p>For <code>mask_utterance</code>, a character vector where each element is one
+utterance; for <code>mask_source</code>, either a character vector containing the text of the
+relevant source <em>or</em> a path to a file that contains the source text; for <code>mask_sources</code>,
+a path to a directory that contains the sources to mask.</p></td>
     </tr>
     <tr>
-      <th>ignoreOddDelimiters</th>
-      <td><p>If an odd number of YAML delimiters is encountered, whether this
-should result in an error (<code>FALSE</code>) or just be silently ignored (<code>TRUE</code>).</p></td>
+      <th>output</th>
+      <td><p>For <code>mask_source</code>, if not <code>NULL</code>, this is the name (and path) of the
+file in which to save the processed source (if it <em>is</em> <code>NULL</code>, the result will be
+returned visibly). For <code>mask_sources</code>, <code>output</code> is mandatory and is the path to the
+directory where to store the processed sources. This path will be created with a
+warning if it does not exist. An exception is if "<code>same</code>" is specified - in that
+case, every file will be written to the same directory it was read from.</p></td>
     </tr>
     <tr>
-      <th>postponeDeductiveTreeBuilding</th>
-      <td><p>Whether to imediately try to build the deductive
-tree(s) based on the information in this file (<code>FALSE</code>) or whether to skip that. Skipping
-this is useful if the full tree information is distributed over multiple files (in which case
-you should probably call <code>parse_sources</code> instead of <code>parse_source</code>).</p></td>
+      <th>proportionToMask</th>
+      <td><p>The proportion of utterances to mask, from 0 (none) to
+1 (all).</p></td>
+    </tr>
+    <tr>
+      <th>preventOverwriting</th>
+      <td><p>Whether to prevent overwriting of output files.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>The encoding of the file to read (in <code>file</code>).</p></td>
+      <td><p>The encoding of the source(s).</p></td>
+    </tr>
+    <tr>
+      <th>maskRegex</th>
+      <td><p>A regular expresssion (regex) specifying the characters to
+mask (i.e. replace with the masking character).</p></td>
+    </tr>
+    <tr>
+      <th>maskChar</th>
+      <td><p>The character to replace the character to mask with.</p></td>
+    </tr>
+    <tr>
+      <th>perl</th>
+      <td><p>Whether the regular expression is a perl regex or not.</p></td>
     </tr>
     <tr>
       <th>silent</th>
-      <td><p>Whether to provide (<code>FALSE</code>) or suppress (<code>TRUE</code>) more detailed progress updates.</p></td>
+      <td><p>Whether to suppress the warning about not editing the cleaned source.</p></td>
+    </tr>
+    <tr>
+      <th>outputPrefix, outputSuffix</th>
+      <td><p>The prefix and suffix to add to the
+filenames when writing the processed files to disk.</p></td>
     </tr>
     <tr>
       <th>recursive</th>
@@ -180,24 +222,17 @@ files matching this regular expression are processed.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+    <p>A character vector for <code>mask_utterance</code> and <code>mask_source</code>, or a list of
+character vectors, for <code>mask_sources</code>.</p>
 
-<span class='co'>### Get a path to one example file</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
-
-<span class='co'>### Parse single example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rock/man/parsing_sources_by_coderId.html'>parse_source_by_coderId</a></span>(<span class='no'>exampleFile</span>);</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

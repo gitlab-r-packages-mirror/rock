@@ -125,12 +125,21 @@ of all coded fragments per code." />
 of all coded fragments per code.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(<span class='no'>x</span>, <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>attributes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>heading</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>add_html_tags</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>, <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>attributes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>heading</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>add_html_tags</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))</pre>
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -317,7 +326,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### childCode2 *(path: childCode2)*
+#&gt; ### childCode2 *(path: childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -327,7 +336,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### childCode3 *(path: childCode3)*
+#&gt; ### childCode3 *(path: childCode5&gt;grandchildCode7)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -337,7 +346,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### childCode4 *(path: childCode4)*
+#&gt; ### childCode4 *(path: grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -347,7 +356,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### childCode5 *(path: childCode5)*
+#&gt; ### childCode5 *(path: parentCode1&gt;childCode1)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -357,7 +366,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode1 *(path: grandchildCode1)*
+#&gt; ### grandchildCode1 *(path: parentCode1&gt;childCode1&gt;grandchildCode1)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -367,7 +376,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode2 *(path: grandchildCode2)*
+#&gt; ### grandchildCode2 *(path: parentCode1&gt;childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -387,7 +396,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode3 *(path: grandchildCode3)*
+#&gt; ### grandchildCode3 *(path: parentCode1&gt;childCode1&gt;grandchildCode3)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -397,7 +406,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode4 *(path: grandchildCode4)*
+#&gt; ### grandchildCode4 *(path: parentCode1&gt;childCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -407,7 +416,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode5 *(path: grandchildCode5)*
+#&gt; ### grandchildCode5 *(path: parentCode1&gt;childCode3)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -417,7 +426,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode6 *(path: grandchildCode6)*
+#&gt; ### grandchildCode6 *(path: parentCode2&gt;childCode4)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -427,7 +436,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode7 *(path: grandchildCode7)*
+#&gt; ### grandchildCode7 *(path: parentCode2&gt;childCode4&gt;grandchildCode4)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -437,7 +446,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### someOtherCode *(path: someOtherCode)*
+#&gt; ### someOtherCode *(path: parentCode2&gt;childCode4&gt;grandchildCode5)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -517,7 +526,7 @@ without the codes.</p>
 #&gt; 
 #&gt; ## Collected coded fragments for codes 'childCode2' &amp; 'grandchildCode2' with 0 lines of context
 #&gt; 
-#&gt; ### childCode2 *(path: childCode2)*
+#&gt; ### childCode2 *(path: childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -527,7 +536,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; ### grandchildCode2 *(path: grandchildCode2)*
+#&gt; ### grandchildCode2 *(path: parentCode1&gt;childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 

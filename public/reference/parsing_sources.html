@@ -123,16 +123,27 @@ contained identifiers, sections, and codes." />
 contained identifiers, sections, and codes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_source</span>(<span class='no'>text</span>, <span class='no'>file</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>parse_source</span>(
+  <span class='no'>text</span>,
+  <span class='no'>file</span>,
+  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)
 
 <span class='co'># S3 method for rockParsedSource</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
 
-<span class='fu'>parse_sources</span>(<span class='no'>path</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>"rock|dct"</span>, <span class='kw'>regex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>))
+<span class='fu'>parse_sources</span>(
+  <span class='no'>path</span>,
+  <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>"rock|dct"</span>,
+  <span class='kw'>regex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
+)
 
 <span class='co'># S3 method for rockParsedSources</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
@@ -153,7 +164,7 @@ does not point to an existing file, an error is produced (useful if calling
 from other functions). A <code>text</code> should be a character vector where every
 element is a line of the original source (like provided by <code><a href='https://rdrr.io/r/base/readLines.html'>base::readLines()</a></code>);
 although if a character vector of one element <em>and</em> including at least one
-newline character (<code>\n</code>) is provided as <code>text</code>, it is split at the newline
+newline character (<code>\\n</code>) is provided as <code>text</code>, it is split at the newline
 characters using <code><a href='https://rdrr.io/r/base/strsplit.html'>base::strsplit()</a></code>. Basically, this behavior means that the
 first argument can be either a character vector or the path to a file; and if
 you're specifying a file and you want to be certain that an error is thrown if
@@ -248,7 +259,7 @@ or not (<code>FALSE</code>).</p></td>
 #&gt; 16  °--someOtherCode          </div><div class='input'>
 <span class='co'>### If you want `rock` to be chatty, use:</span>
 <span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rock/man/parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>,
-                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; Read the contents of file 'C:/Users/micro/AppData/Local/Temp/RtmpwxL8qx/temp_libpath597c3b0818b1/rock/extdata/example-1.rock' (111 lines read).
+                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; Read the contents of file 'C:/Users/micro/AppData/Local/Temp/RtmpScBgNq/temp_libpath549464895a68/rock/extdata/example-1.rock' (111 lines read).
 #&gt; Encountered YAML fragments. Parsing them for attributes.
 #&gt; Read 0 attributes specifications. Continuing with deductive code trees.
 #&gt; Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').

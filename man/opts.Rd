@@ -28,7 +28,7 @@ The following arguments can be passed:
 
 \describe{
 \item{...}{For \code{rock::opts$set}, the dots can be used to specify the options
-to set, in the format \code{option = value}, for example, \code{utteranceMarker = "\n"}. For
+to set, in the format \code{option = value}, for example, \code{utteranceMarker = "\\n"}. For
 \code{rock::opts$reset}, a list of options to be reset can be passed.}
 \item{option}{For \code{rock::opts$set}, the name of the option to set.}
 \item{default}{For \code{rock::opts$get}, the default value to return if the
@@ -70,7 +70,7 @@ list of codes.}
 hierarchical relationships between codes. The code at the left hand side of this marker will
 be considered the parent code of the code on the right hand side. More than two levels
 can be specified in one code (for example, if the \code{inductiveCodingHierarchyMarker} is '>',
-the code \code{grandparent>child>grandchild} would indicate codes at three levels.}
+the code \verb{grandparent>child>grandchild} would indicate codes at three levels.}
 
 \item{attributeContainers}{The name of YAML fragments containing case attributes (e.g.
 metadata, demographic variables, quantitative data about cases, etc).}
@@ -85,7 +85,7 @@ processing. This can be used to enable adding comments to sources, which are the
 during analysis.}
 
 \item{utteranceMarker}{How to specify breaks between utterances in the source(s). The
-ROCK convention is to use a newline (\code{\\n}).}
+ROCK convention is to use a newline (\verb{\\\\n}).}
 
 \item{coderId}{A regular expression specifying the coder identifier, specified
 similarly to the codeRegexes.}
@@ -102,7 +102,7 @@ a coder id, or above the line where a coder id is specified).}
 rock::opts$get(utteranceMarker);
 
 ### Set it to a custom version, so that every line starts with a pipe
-rock::opts$set(utteranceMarker = "\\n|");
+rock::opts$set(utteranceMarker = "\n|");
 
 ### Check that it worked
 rock::opts$get(utteranceMarker);
