@@ -1,6 +1,6 @@
 #' Cleaning & editing sources
 #'
-#' These function can be used to 'clean' one or more sources or perform search and
+#' These functions can be used to 'clean' one or more sources or perform search and
 #' replace taks. Cleaning consists of two operations: splitting the source at
 #' utterance markers, and conducting search and replaces using regular expressions.
 #'
