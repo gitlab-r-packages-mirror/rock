@@ -1,4 +1,6 @@
 #' @rdname prepending_uids
+#' @param outputPrefix,outputSuffix The prefix and suffix to add to the
+#' filenames when writing the processed files to disk.
 #' @export
 prepend_ids_to_sources <- function(input,
                                    output = NULL,

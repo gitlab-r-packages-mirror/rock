@@ -19,6 +19,8 @@ prepend_ids_to_source(
 prepend_ids_to_sources(
   input,
   output = NULL,
+  outputPrefix = "",
+  outputSuffix = "_withUIDs",
   origin = Sys.time(),
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
@@ -42,6 +44,9 @@ or prevent that from happening (\code{TRUE}).}
 \item{encoding}{The encoding of the file(s).}
 
 \item{silent}{Whether to be chatty or quiet.}
+
+\item{outputPrefix, outputSuffix}{The prefix and suffix to add to the
+filenames when writing the processed files to disk.}
 }
 \value{
 The source with prepended uids, either invisible (if \code{output}
