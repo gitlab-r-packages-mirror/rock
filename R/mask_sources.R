@@ -33,7 +33,12 @@ mask_sources <- function(input,
          "') does not exist!");
   }
 
-  if (!(tolower(output) == "same")) {
+  if (tolower(output) == "same") {
+    if (isTRUE(nchar(outputPrefix) == 0) && isTRUE(nchar(outputSuffix) == 0)) {
+      stop("If writing the output to the same directory, you must specify ",
+           "an outputPrefix and/or an outputSuffix!");
+    }
+  } else {
     if (!dir.exists(output)) {
       warning("Directory provided to write to ('",
               output,

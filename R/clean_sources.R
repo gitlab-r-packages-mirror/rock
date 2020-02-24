@@ -37,7 +37,12 @@ clean_sources <- function(input,
          "') does not exist!");
   }
 
-  if (!(tolower(output) == "same")) {
+  if (tolower(output) == "same") {
+    if (isTRUE(nchar(outputPrefix) == 0) && isTRUE(nchar(outputSuffix) == 0)) {
+      stop("If writing the output to the same directory, you must specify ",
+           "an outputPrefix and/or an outputSuffix!");
+    }
+  } else {
     if (!dir.exists(output)) {
       warning("Directory provided to write to ('",
               output,
@@ -61,7 +66,7 @@ clean_sources <- function(input,
 
   if (any(grepl("\\.rock$",
                 rawSourceFiles))) {
-    if ((nchar(outputPrefix) == 0) && (nchar(outputSuffix) == 0)) {
+    if (isTRUE(nchar(outputPrefix) == 0) && isTRUE(nchar(outputSuffix) == 0)) {
       stop("At least one of the input files already has the .rock extension! ",
            "Therefore, you have to provide at least one of `outputPrefix` and `outputSuffix` ",
            "to allow saving the files to new names!");
@@ -84,6 +89,7 @@ clean_sources <- function(input,
       newFileDir <-
         output;
     }
+
     clean_source(input = filename,
                  output = file.path(newFileDir,
                                     newFilename),
