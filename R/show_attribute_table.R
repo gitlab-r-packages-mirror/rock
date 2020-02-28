@@ -8,13 +8,16 @@
 #' and one or more filenames in existing directories.
 #' @param tableOutputCSS The CSS to use for the HTML table.
 #'
-#' @return `x`, invisibly.
+#' @return `x`, invisibly, unless being knitted into R Markdown,
+#' in which case a [knitr::asis_output()]-wrapped character vector is returned.
 #' @export
 show_attribute_table <- function(x,
                                  output = rock::opts$get(tableOutput),
                                  tableOutputCSS = ufs::opts$get(tableOutputCSS)) {
   if (isTRUE(getOption('knitr.in.progress'))) {
-    print(knitr::kable(x$attributesDf));
+    return(knitr::asis_output(paste0(c("\n",
+                              knitr::kable(x$attributesDf),
+                              "\n"), collapse="\n")));
   } else {
     ufs::exportToHTML(x$attributesDf,
                       output = output,

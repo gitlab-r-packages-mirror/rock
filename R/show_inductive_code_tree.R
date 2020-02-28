@@ -14,7 +14,8 @@
 #' respectively, [data.tree::SetNodeStyle()], [data.tree::SetEdgeStyle()],
 #' and [data.tree::SetGraphStyle()].
 #'
-#' @return `x`, invisibly.
+#' @return `x`, invisibly, unless being knitted into R Markdown,
+#' in which case a [knitr::asis_output()]-wrapped character vector is returned.
 #' @export
 show_inductive_code_tree <- function(x,
                                      codes = ".*",
@@ -36,14 +37,22 @@ show_inductive_code_tree <- function(x,
 
   trees <- names(x$inductiveCodeTrees);
 
+  res <- c();
+
   for (i in trees) {
     if (grep("both|text", output)) {
-      cat0("\n\n",
-           repStr("#", headingLevel),
-           " Inductive code tree for ",
-           i,
-           "\n\n");
-      print(x$inductiveCodeTrees[[i]]);
+      if (isTRUE(getOption('knitr.in.progress'))) {
+        res <- c(res,
+                 "\n\n",
+                 repStr("#", headingLevel),
+                 " Inductive code tree for ",
+                 i,
+                 "\n\n<pre>",
+                 paste0(capture.output(print(x$inductiveCodeTrees[[i]])), collapse="\n"),
+                 "</pre>");
+      } else {
+        print(x$inductiveCodeTrees[[i]]);
+      }
     }
     if (grep("both|plot", output)) {
       do.call(data.tree::SetNodeStyle,
@@ -57,6 +66,12 @@ show_inductive_code_tree <- function(x,
                 graphStyle));
       print(plot(x$inductiveCodeTrees[[i]]));
     }
+  }
+
+  if (isTRUE(getOption('knitr.in.progress'))) {
+    return(knitr::asis_output(c("\n\n",
+                                res,
+                                "\n\n")));
   }
 
   return(invisible(x));
