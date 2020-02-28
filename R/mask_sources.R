@@ -34,7 +34,8 @@ mask_sources <- function(input,
   }
 
   if (tolower(output) == "same") {
-    if (isTRUE(nchar(outputPrefix) == 0) && isTRUE(nchar(outputSuffix) == 0)) {
+    if ((is.null(outputPrefix) || (nchar(outputPrefix) == 0)) &&
+        (is.null(outputSuffix) || (nchar(outputSuffix) == 0))) {
       stop("If writing the output to the same directory, you must specify ",
            "an outputPrefix and/or an outputSuffix!");
     }

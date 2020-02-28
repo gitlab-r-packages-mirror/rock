@@ -20,6 +20,7 @@
 #'   \item{option}{For `rock::opts$set`, the name of the option to set.}
 #'   \item{default}{For `rock::opts$get`, the default value to return if the
 #'   option has not been manually specified.}
+#'
 #' }
 #'
 #' The following options can be set:
@@ -67,6 +68,12 @@
 #'
 #'   \item{delimiterRegEx}{The regular expression that is used to extract the YAML fragments.}
 #'
+#'   \item{codeDelimiters}{A character vector of two elements
+#' specifying the opening and closing delimiters of codes (conform
+#' the default ROCK convention, two square brackets). The square
+#' brackets will be escaped; other characters will not, but will
+#' be used as-is.}
+#'
 #'   \item{ignoreRegex}{The regular expression that is used to delete lines before any other
 #'   processing. This can be used to enable adding comments to sources, which are then ignored
 #'   during analysis.}
@@ -81,7 +88,6 @@
 #'   have a coder id (i.e. utterance that occur in a source that does not specify
 #'   a coder id, or above the line where a coder id is specified).}
 #'
-#'   \item{Two}{Second item}
 #' }
 #'
 #' @aliases opts set get reset
