@@ -253,7 +253,13 @@ collect_coded_fragments <- function(x,
   }
 
   if (is.null(output)) {
-    return(res);
+    if (isTRUE(getOption('knitr.in.progress'))) {
+      return(knitr::asis_output(c("\n\n",
+                                  res,
+                                  "\n\n")));
+    } else {
+      return(res);
+    }
   } else {
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
