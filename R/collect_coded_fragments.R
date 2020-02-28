@@ -76,6 +76,7 @@ collect_coded_fragments <- function(x,
                                     output = NULL,
                                     template = "default",
                                     rawResult = FALSE,
+                                    includeBootstrap = rock::opts$get("includeBootstrap"),
                                     preventOverwriting = rock::opts$get(preventOverwriting),
                                     silent=rock::opts$get(silent)) {
 
@@ -245,7 +246,8 @@ collect_coded_fragments <- function(x,
 
   ### Add CSS for html tags, if requested
   if (add_html_tags) {
-    res <- paste0(rock::css(template=template),
+    res <- paste0(rock::css(template=template,
+                            includeBootstrap = includeBootstrap),
                   "\n\n",
                   res);
   }

@@ -213,6 +213,9 @@ opts$defaults <-
        encoding = "UTF-8",
        preventOverwriting = TRUE,
 
+       ### Whether to include bootstrap CSS when collecting fragments
+       includeBootstrap = FALSE,
+
        ### Whether to show table output in the console or viewer,
        ### if shown interactively
        tableOutput = c("viewer", "console"),

@@ -8,7 +8,7 @@
 #'
 #' @export
 css <- function(template = "default",
-                includeBootstrap = FALSE) {
+                includeBootstrap = rock::opts$get("includeBootstrap")) {
 
   ### Load stylesheets
   bootstrapCSS <-
