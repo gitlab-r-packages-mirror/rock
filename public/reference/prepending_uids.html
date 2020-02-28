@@ -137,6 +137,8 @@ to clean the sources using <code><a href='cleaning_sources.html'>clean_sources()
 <span class='fu'>prepend_ids_to_sources</span>(
   <span class='no'>input</span>,
   <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_withUIDs"</span>,
   <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
   <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
   <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
@@ -175,6 +177,11 @@ or prevent that from happening (<code>TRUE</code>).</p></td>
       <th>silent</th>
       <td><p>Whether to be chatty or quiet.</p></td>
     </tr>
+    <tr>
+      <th>outputPrefix, outputSuffix</th>
+      <td><p>The prefix and suffix to add to the
+filenames when writing the processed files to disk.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -183,8 +190,8 @@ or prevent that from happening (<code>TRUE</code>).</p></td>
 if specified) or visibly (if not).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>prepend_ids_to_source</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='st'>"brief\nexample\nsource"</span>);</div><div class='output co'>#&gt; [1] "[[uid=771tbbj4]] brief"   "[[uid=771tbbj5]] example"
-#&gt; [3] "[[uid=771tbbj6]] source" </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>prepend_ids_to_source</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='st'>"brief\nexample\nsource"</span>);</div><div class='output co'>#&gt; [1] "[[uid=773ydx0c]] brief"   "[[uid=773ydx0d]] example"
+#&gt; [3] "[[uid=773ydx0f]] source" </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

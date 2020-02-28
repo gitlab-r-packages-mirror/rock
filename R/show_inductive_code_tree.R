@@ -1,3 +1,21 @@
+#' Show the inductive code tree(s)
+#'
+#' This function shows one or more inductive code trees.
+#'
+#' @param x A `rockParsedSources` object (the result of a call to
+#' `rock::parse_sources`).
+#' @param codes A regular expression: only code trees from codes coded
+#' with a coding pattern with this name will be shown.
+#' @param output Whether to show the code tree in the console (`text`),
+#' as a plot (`plot`), or both (`both`).
+#' @param headingLevel The level of the heading to insert when showing the
+#' code tree as text.
+#' @param nodeStyle,edgeStyle,graphStyle Arguments to pass on to,
+#' respectively, [data.tree::SetNodeStyle()], [data.tree::SetEdgeStyle()],
+#' and [data.tree::SetGraphStyle()].
+#'
+#' @return `x`, invisibly.
+#' @export
 show_inductive_code_tree <- function(x,
                                      codes = ".*",
                                      output = "both",

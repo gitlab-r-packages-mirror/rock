@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate utterance identifiers (UIDs) — generate_uids • rock</title>
+<title>Show the inductive code tree(s) — show_inductive_code_tree • rock</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Generate utterance identifiers (UIDs) — generate_uids" />
-<meta property="og:description" content="This function generated utterance identifiers." />
+<meta property="og:title" content="Show the inductive code tree(s) — show_inductive_code_tree" />
+<meta property="og:description" content="This function shows one or more inductive code trees." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,53 +112,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate utterance identifiers (UIDs)</h1>
+    <h1>Show the inductive code tree(s)</h1>
     
-    <div class="hidden name"><code>generate_uids.Rd</code></div>
+    <div class="hidden name"><code>show_inductive_code_tree.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function generated utterance identifiers.</p>
+    <p>This function shows one or more inductive code trees.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generate_uids</span>(<span class='no'>x</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())</pre>
+    <pre class="usage"><span class='fu'>show_inductive_code_tree</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"both"</span>,
+  <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>nodeStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"box"</span>, <span class='kw'>fontname</span> <span class='kw'>=</span> <span class='st'>"Arial"</span>),
+  <span class='kw'>edgeStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>arrowhead</span> <span class='kw'>=</span> <span class='st'>"none"</span>),
+  <span class='kw'>graphStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>rankdir</span> <span class='kw'>=</span> <span class='st'>"LR"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The number of identifiers te generate.</p></td>
+      <td><p>A <code>rockParsedSources</code> object (the result of a call to
+<code><a href='parsing_sources.html'>rock::parse_sources</a></code>).</p></td>
     </tr>
     <tr>
-      <th>origin</th>
-      <td><p>The origin to use when generating the actual
-identifiers. These identifiers are the present UNIX timestamp
-(i.e. the number of seconds elapsed since the UNIX epoch,
-the first of january 1970), accurate to two decimal places
-(i.e. to centiseconds), converted to the base 30 system using
-<code><a href='base30conversion.html'>numericToBase30()</a></code>. By default, the present time is used as
-origin, one one centisecond is added for every identifiers to
-generate. <code>origin</code> can be set to other values to work with
-different origins (of course, don't use this unless you
-understand very well what you're doing!).</p></td>
+      <th>codes</th>
+      <td><p>A regular expression: only code trees from codes coded
+with a coding pattern with this name will be shown.</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>Whether to show the code tree in the console (<code>text</code>),
+as a plot (<code>plot</code>), or both (<code>both</code>).</p></td>
+    </tr>
+    <tr>
+      <th>headingLevel</th>
+      <td><p>The level of the heading to insert when showing the
+code tree as text.</p></td>
+    </tr>
+    <tr>
+      <th>nodeStyle, edgeStyle, graphStyle</th>
+      <td><p>Arguments to pass on to,
+respectively, <code><a href='https://rdrr.io/pkg/data.tree/man/ToDiagrammeRGraph.html'>data.tree::SetNodeStyle()</a></code>, <code><a href='https://rdrr.io/pkg/data.tree/man/ToDiagrammeRGraph.html'>data.tree::SetEdgeStyle()</a></code>,
+and <code><a href='https://rdrr.io/pkg/data.tree/man/ToDiagrammeRGraph.html'>data.tree::SetGraphStyle()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of UIDs.</p>
+    <p><code>x</code>, invisibly.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span>(<span class='fl'>5</span>);</div><div class='output co'>#&gt; [1] "[[uid=773ydtqd]]" "[[uid=773ydtqf]]" "[[uid=773ydtqg]]" "[[uid=773ydtqh]]"
-#&gt; [5] "[[uid=773ydtqj]]"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
