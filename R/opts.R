@@ -213,6 +213,10 @@ opts$defaults <-
        encoding = "UTF-8",
        preventOverwriting = TRUE,
 
+       ### Whether to show table output in the console or viewer,
+       ### if shown interactively
+       tableOutput = c("viewer", "console"),
+
        ### Used throughout for debugging,
        debug = FALSE,
 
