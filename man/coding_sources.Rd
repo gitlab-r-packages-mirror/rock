@@ -9,11 +9,25 @@ code_source(
   input,
   codes,
   indices = NULL,
-  codeDelimiters = c("[[", "]]"),
-  silent = TRUE
+  output = NULL,
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 
-code_sources(input, codes, silent = FALSE)
+code_sources(
+  input,
+  codes,
+  output = NULL,
+  indices = NULL,
+  outputPrefix = "",
+  outputSuffix = "_coded",
+  recursive = TRUE,
+  filenameRegex = ".*",
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
+)
 }
 \arguments{
 \item{input}{The source, or list of sources, as
@@ -33,16 +47,12 @@ source. If specifying an utterance ID or code, make sure
 that the code delimiters are included (normally, two square
 brackets).}
 
-\item{indices}{A logical vector of the same length as \code{input}
+\item{indices}{If \code{input} is a source as loaded by
+\code{loading_sources}, \code{indices} can be used to pass a logical
+vector of the same length as \code{input}
 that indicates to which utterance the code in \code{codes} should be
 applied. Note that if \code{indices} is provided, only the first
 element of \code{codes} is used, and its name is ignored.}
-
-\item{codeDelimiters}{A character vector of two elements
-specifying the opening and closing delimiters of codes (conform
-the default ROCK convention, two square brackets). The square
-brackets will be escaped; other characters will not, but will
-be used as-is.}
 
 \item{silent}{Whether to be chatty or quiet.}
 }
