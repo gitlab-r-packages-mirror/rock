@@ -122,3 +122,5 @@ remotes::install_gitlab('r-packages/", packagename, "@dev');
 <!--  End of a custom bit for every package  -->
 <!--------------------------------------------->
 
+<!--  https://stackoverflow.com/questions/4822471/count-number-of-lines-in-a-git-repository    -->
+<!--  cloc $(git ls-files) -->
