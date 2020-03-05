@@ -7,7 +7,8 @@
 #' @return A character vector with the HTML fragment.
 #'
 #' @export
-css <- function(template = "default") {
+css <- function(template = "default",
+                includeBootstrap = rock::opts$get("includeBootstrap")) {
 
   ### Load stylesheets
   bootstrapCSS <-
@@ -34,7 +35,9 @@ css <- function(template = "default") {
   ### Merge stylesheets
   fullCSS <-
     paste0("\n<style\n>",
-           bootstrapCSS,
+           ifelse(includeBootstrap,
+                  bootstrapCSS,
+                  ""),
            "\n\n",
            basicCSS,
            "\n\n",

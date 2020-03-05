@@ -129,11 +129,25 @@ sources that were read with one of the
   <span class='no'>input</span>,
   <span class='no'>codes</span>,
   <span class='kw'>indices</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>codeDelimiters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"[["</span>, <span class='st'>"]]"</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"preventOverwriting"</span>),
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"encoding"</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"silent"</span>)
 )
 
-<span class='fu'>code_sources</span>(<span class='no'>input</span>, <span class='no'>codes</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>code_sources</span>(
+  <span class='no'>input</span>,
+  <span class='no'>codes</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>indices</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_coded"</span>,
+  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"preventOverwriting"</span>),
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"encoding"</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rock/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"silent"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,18 +175,12 @@ brackets).</p></td>
     </tr>
     <tr>
       <th>indices</th>
-      <td><p>A logical vector of the same length as <code>input</code>
+      <td><p>If <code>input</code> is a source as loaded by
+<code>loading_sources</code>, <code>indices</code> can be used to pass a logical
+vector of the same length as <code>input</code>
 that indicates to which utterance the code in <code>codes</code> should be
 applied. Note that if <code>indices</code> is provided, only the first
 element of <code>codes</code> is used, and its name is ignored.</p></td>
-    </tr>
-    <tr>
-      <th>codeDelimiters</th>
-      <td><p>A character vector of two elements
-specifying the opening and closing delimiters of codes (conform
-the default ROCK convention, two square brackets). The square
-brackets will be escaped; other characters will not, but will
-be used as-is.</p></td>
     </tr>
     <tr>
       <th>silent</th>
@@ -207,24 +215,20 @@ be used as-is.</p></td>
 
 <span class='co'>### Apply rules</span>
 <span class='no'>codedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>loadedExample</span>,
-                            <span class='no'>codeSpecs</span>);
-
+                            <span class='no'>codeSpecs</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
 <span class='co'>### Show line 71</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>codedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]]</div><div class='input'>
 <span class='co'>### Also add code "foo" to utterances with code 'ipsum'</span>
 <span class='no'>moreCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>codedExample</span>,
-                                <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"[[ipsum]]"</span> <span class='kw'>=</span> <span class='st'>"foo"</span>));
-
+                                <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"[[ipsum]]"</span> <span class='kw'>=</span> <span class='st'>"foo"</span>));</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
 <span class='co'>### Show line 71</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>moreCodedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]] [[foo]]</div><div class='input'>
 <span class='co'>### Use the 'indices' argument to add the code 'bar' to</span>
 <span class='co'>### line 71</span>
 <span class='no'>overCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>moreCodedExample</span>,
                                 <span class='st'>"bar"</span>,
-                                <span class='kw'>indices</span><span class='kw'>=</span><span class='fl'>71</span>);
-
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>overCodedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]] [[foo]]</div><div class='input'>
-</div></pre>
+                                <span class='kw'>indices</span><span class='kw'>=</span><span class='fl'>71</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>overCodedExample</span>[<span class='fl'>71</span>]);</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -70,12 +70,13 @@ collect_coded_fragments <- function(x,
                                     context = 0,
                                     attributes = NULL,
                                     heading = NULL,
-                                    headingLevel = 2,
+                                    headingLevel = 3,
                                     add_html_tags = TRUE,
                                     cleanUtterances = FALSE,
                                     output = NULL,
                                     template = "default",
                                     rawResult = FALSE,
+                                    includeBootstrap = rock::opts$get("includeBootstrap"),
                                     preventOverwriting = rock::opts$get(preventOverwriting),
                                     silent=rock::opts$get(silent)) {
 
@@ -245,13 +246,20 @@ collect_coded_fragments <- function(x,
 
   ### Add CSS for html tags, if requested
   if (add_html_tags) {
-    res <- paste0(rock::css(template=template),
+    res <- paste0(rock::css(template=template,
+                            includeBootstrap = includeBootstrap),
                   "\n\n",
                   res);
   }
 
   if (is.null(output)) {
-    return(res);
+    if (isTRUE(getOption('knitr.in.progress'))) {
+      return(knitr::asis_output(c("\n\n",
+                                  res,
+                                  "\n\n")));
+    } else {
+      return(res);
+    }
   } else {
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {

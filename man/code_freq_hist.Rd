@@ -4,10 +4,10 @@
 \alias{code_freq_hist}
 \title{Create a frequency histogram for codes}
 \usage{
-code_freq_hist(parsedSource, codes = ".*", sortByFreq = "decreasing")
+code_freq_hist(x, codes = ".*", sortByFreq = "decreasing")
 }
 \arguments{
-\item{parsedSource}{A parsed source object.}
+\item{x}{A parsed source(s) object.}
 
 \item{codes}{A regular expression to select codes to include.}
 
