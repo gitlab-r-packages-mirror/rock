@@ -10,12 +10,13 @@ collect_coded_fragments(
   context = 0,
   attributes = NULL,
   heading = NULL,
-  headingLevel = 2,
+  headingLevel = 3,
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
   output = NULL,
   template = "default",
   rawResult = FALSE,
+  includeBootstrap = rock::opts$get("includeBootstrap"),
   preventOverwriting = rock::opts$get(preventOverwriting),
   silent = rock::opts$get(silent)
 )

@@ -122,7 +122,7 @@ opts$set <- function(...) {
             dots);
   } else {
     option <- dotNames;
-    stop("Option '", option, "' is not a valid (i.e. existing) option for the rock!");
+    stop("Option(s) ", vecTxtQ(option), " is/are not a valid (i.e. existing) option for the rock!");
   }
 }
 
@@ -208,6 +208,9 @@ opts$defaults <-
        sectionClass = "sectionBreak",
        uidClass = "uid",
        utteranceClass = "utterance",
+
+       ### For justifications
+       justificationFile = "unspecified",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
