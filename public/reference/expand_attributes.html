@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • rock</title>
+<title>Expand categorical attribute variables to a series of dichotomous variables — expand_attributes • rock</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="Expand categorical attribute variables to a series of dichotomous variables — expand_attributes" />
+<meta property="og:description" content="Expand categorical attribute variables to a series of dichotomous variables" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">rock</a>
+        <a class="navbar-link" href="../index.html">rock</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -78,13 +79,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -94,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/introduction_to_rock.html">Introduction to the Reproducible Open Coding Kit (ROCK)</a>
+      <a href="../articles/introduction_to_rock.html">Introduction to the Reproducible Open Coding Kit (ROCK)</a>
     </li>
   </ul>
 </li>
@@ -117,26 +118,79 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>Expand categorical attribute variables to a series of dichotomous variables</h1>
+    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/expand_attributes.R'><code>R/expand_attributes.R</code></a></small>
+    <div class="hidden name"><code>expand_attributes.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Gjalt-Jorn Ygram Peters</strong>. Author, maintainer. <a href='https://orcid.org/0000-0002-0336-9589' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Szilvia Zorgo</strong>. Contributor. <a href='https://orcid.org/0000-0002-6916-2097' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-    </ul>
+    <div class="ref-description">
+    <p>Expand categorical attribute variables to a series of dichotomous variables</p>
+    </div>
+
+    <pre class="usage"><span class='fu'>expand_attributes</span>(
+  <span class='no'>data</span>,
+  <span class='no'>attributes</span>,
+  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>glue</span> <span class='kw'>=</span> <span class='st'>"__"</span>,
+  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>falseValue</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>trueValue</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>The data frame, normally the <code>$mergedSources</code> data frame that
+exists in the object returned by a call to <code><a href='parsing_sources.html'>parse_sources()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>attributes</th>
+      <td><p>The name of the attribute(s) to expand.</p></td>
+    </tr>
+    <tr>
+      <th>prefix, suffix</th>
+      <td><p>The prefix and suffix to add to the variables names
+that are returned.</p></td>
+    </tr>
+    <tr>
+      <th>glue</th>
+      <td><p>The glue to paste the first part ad the second part of the
+composite variable name together.</p></td>
+    </tr>
+    <tr>
+      <th>falseValue, trueValue</th>
+      <td><p>The values to set for rows that, respectively,
+do not match and do match an attribute value.</p></td>
+    </tr>
+    <tr>
+      <th>valueFirst</th>
+      <td><p>Whether to insert the attribute value first, or the
+attribute name, in the composite variable names.</p></td>
+    </tr>
+    <tr>
+      <th>append</th>
+      <td><p>Whether to append the columns to the supplied data
+frame or not.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data.frame</p>
 
   </div>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
+  </div>
 </div>
-
 
 
       <footer>

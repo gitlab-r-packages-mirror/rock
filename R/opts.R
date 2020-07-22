@@ -175,6 +175,7 @@ opts$defaults <-
        noCodes = "^uid:|^uid=|^dct:|^ci:",
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
+       sectionBreakContainers = c("section_breaks"),
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
 
