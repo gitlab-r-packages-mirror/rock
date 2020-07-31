@@ -92,7 +92,7 @@ expand_attributes <- function(data,
       res <-
         cbind(
           res,
-          subres
+          subRes
         );
     }
   }

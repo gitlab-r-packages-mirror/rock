@@ -32,6 +32,7 @@
 #' @param add_html_tags Whether to add HTML tags to the result.
 #' @param rawResult Whether to return the raw result, a list of the
 #' fragments, or one character value in markdown format.
+#' @param includeBootstrap Whether to include the default bootstrap CSS.
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
 #' invisibly.

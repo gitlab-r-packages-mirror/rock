@@ -12,8 +12,8 @@
 #' in which case a [knitr::asis_output()]-wrapped character vector is returned.
 #' @export
 show_attribute_table <- function(x,
-                                 output = rock::opts$get(tableOutput),
-                                 tableOutputCSS = ufs::opts$get(tableOutputCSS)) {
+                                 output = rock::opts$get("tableOutput"),
+                                 tableOutputCSS = ufs::opts$get("tableOutputCSS")) {
   if (isTRUE(getOption('knitr.in.progress'))) {
     return(knitr::asis_output(paste0(c("\n",
                               knitr::kable(x$attributesDf),

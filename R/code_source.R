@@ -25,6 +25,9 @@
 #' that indicates to which utterance the code in `codes` should be
 #' applied. Note that if `indices` is provided, only the first
 #' element of `codes` is used, and its name is ignored.
+#' @param output If specified, the coded source will be written here.
+#' @param preventOverwriting Whether to prevent overwriting existing files.
+#' @param encoding The encoding to use.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the coded source object.
