@@ -184,6 +184,39 @@ frame or not.</p></td>
 
     <p>A data.frame</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Get a path to one example file</span>
+<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+
+<span class='co'>### Parse single example source</span>
+<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+
+<span class='co'>### Create a categorical attribute column</span>
+<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>13</span>);
+
+<span class='co'>### Expand to four logical columns</span>
+<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>expand_attributes</span>(
+    <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>,
+    <span class='st'>"age_group"</span>,
+    <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+);
+
+<span class='co'>### Show result</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
+      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__.18</span>);</div><div class='output co'>#&gt; <span class='error'>Error in table(parsedExample$mergedSourceDf$age_group, parsedExample$mergedSourceDf$age_group__.18): all arguments must have the same length</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
+      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__18.30</span>);</div><div class='output co'>#&gt;        
+#&gt;          0  1
+#&gt;   &gt;60   13  0
+#&gt;   18    13  0
+#&gt;   18-30  0 13
+#&gt;   31-60 13  0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

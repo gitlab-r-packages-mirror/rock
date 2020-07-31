@@ -43,3 +43,33 @@ A data.frame
 \description{
 Expand categorical attribute variables to a series of dichotomous variables
 }
+\examples{
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+### Parse single example source
+parsedExample <- rock::parse_source(exampleFile);
+
+### Create a categorical attribute column
+parsedExample$mergedSourceDf$age_group <-
+  rep(c("18", "18-30", "31-60", ">60"), each=13);
+
+### Expand to four logical columns
+parsedExample$mergedSourceDf <-
+  rock::expand_attributes(
+    parsedExample$mergedSourceDf,
+    "age_group",
+    valueFirst = FALSE
+);
+
+### Show result
+table(parsedExample$mergedSourceDf$age_group,
+      parsedExample$mergedSourceDf$age_group__.18);
+table(parsedExample$mergedSourceDf$age_group,
+      parsedExample$mergedSourceDf$age_group__18.30);
+}
