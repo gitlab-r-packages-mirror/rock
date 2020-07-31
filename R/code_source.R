@@ -85,11 +85,11 @@ code_source <- function(input,
                         silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
-  if (file.exists(input)) {
+  if ((length(file) == 1) && (file.exists(input))) {
     input <- readLines(input,
                        encoding=encoding);
     input <- cleaned_source_to_utterance_vector(input);
-  } else if (class(input) == "character") {
+  } else if ("character" %in% class(input)) {
     input <- cleaned_source_to_utterance_vector(input);
   } else if (!("rock_source" %in% class(input))) {
     stop("With the `input` argument you must pass either the ",
@@ -97,7 +97,6 @@ code_source <- function(input,
          "containing the source, or a ROCK source ",
          "as loaded with load_source or load_sources.\n");
   }
-
 
   codeDelimiters <- rock::opts$get(codeDelimiters);
 
@@ -111,7 +110,7 @@ code_source <- function(input,
                 codes[1], "' (specifically, the utterances on lines ",
                 vecTxt(which(indices)), ").\n");
     }
-  } else if (!is.null(indices) && (is.numeric(indices)) && ((min(indices) > 1) && (max(indices) <= length(input)))) {
+  } else if (!is.null(indices) && (is.numeric(indices)) && ((min(indices) >= 1) && (max(indices) <= length(input)))) {
     ### The indices are already set as a (valid) numeric vector
     codeToAdd <- paste0(codeDelimiters[1],
                         codes[1],
@@ -197,53 +196,55 @@ code_source <- function(input,
         }
       }
 
-      ### Append code
-      input[indices] <-
-        paste(input[indices],
-              codeToAdd,
-              sep=" ");
-
-      if (!silent) {
-        cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
-      }
-    }
-
-    if (is.null(output)) {
-      class(input) <- c("rock_source", "character");
-      return(input);
-    } else {
-
-      if (!dir.exists(dirname(output))) {
-        stop("The directory specified where the output file '",
-             basename(output), "' is supposed to be written ('",
-             dirname(output),
-             "') does not exist.");
-      }
-      if (file.exists(output) && preventOverwriting) {
-        if (!silent) {
-          message("File '",
-                  output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
-                  "write the source with added codes to disk.");
-        }
-      } else {
-        con <- file(description=output,
-                    open="w",
-                    encoding=encoding);
-        writeLines(text=input,
-                   con=con);
-        close(con);
-      }
-      if (!silent) {
-        message("I just wrote a source with added codes to file '",
-                output,
-                "'.");
-      }
-
-      class(input) <- c("rock_source", "character");
-      return(invisible(input));
-
     }
 
   }
+
+  ### Append code
+  input[indices] <-
+    paste(input[indices],
+          codeToAdd,
+          sep=" ");
+
+  if (!silent) {
+    cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
+  }
+
+  if (is.null(output)) {
+    class(input) <- c("rock_source", "character");
+    return(input);
+  } else {
+
+    if (!dir.exists(dirname(output))) {
+      stop("The directory specified where the output file '",
+           basename(output), "' is supposed to be written ('",
+           dirname(output),
+           "') does not exist.");
+    }
+    if (file.exists(output) && preventOverwriting) {
+      if (!silent) {
+        message("File '",
+                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
+                "write the source with added codes to disk.");
+      }
+    } else {
+      con <- file(description=output,
+                  open="w",
+                  encoding=encoding);
+      writeLines(text=input,
+                 con=con);
+      close(con);
+    }
+    if (!silent) {
+      message("I just wrote a source with added codes to file '",
+              output,
+              "'.");
+    }
+
+    class(input) <- c("rock_source", "character");
+    return(invisible(input));
+
+  }
+
 
 }
