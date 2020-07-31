@@ -1,6 +1,6 @@
 #' Imported justifier functions
 #'
-#' See [justifier::asrt()], [justifier::srcs()], [justifier::jstf()], and
+#' See [justifier::asrt()], [justifier::srce()], [justifier::jstf()], and
 #' [justifier::dcsn()].
 #'
 #' @rdname imported_justifier_functions

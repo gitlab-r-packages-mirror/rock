@@ -85,7 +85,7 @@ code_source <- function(input,
                         silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
-  if ((length(file) == 1) && (file.exists(input))) {
+  if ((length(input) == 1) && (file.exists(input))) {
     input <- readLines(input,
                        encoding=encoding);
     input <- cleaned_source_to_utterance_vector(input);
