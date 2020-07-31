@@ -32,6 +32,7 @@ devtools-check:
     #- R -e 'tinytex::tlmgr_update(); tinytex::tlmgr_install("lmodern");'
   script:
     - R -e 'devtools::install_gitlab("r-packages/yum")'
+    - R -e 'devtools::install_gitlab("r-packages/justifier")'
     - R -e 'devtools::check()'
   tags:
     - docker

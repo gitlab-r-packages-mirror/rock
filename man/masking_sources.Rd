@@ -30,6 +30,7 @@ mask_sources(
   perl = TRUE,
   recursive = TRUE,
   filenameRegex = ".*",
+  filenameReplacement = c("_PRIVATE_", "_public_"),
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -79,6 +80,13 @@ filenames when writing the processed files to disk.}
 
 \item{filenameRegex}{A regular expression to match against located files; only
 files matching this regular expression are processed.}
+
+\item{filenameReplacement}{A character vector with two elements that represent,
+respectively, the \code{pattern} and \code{replacement} arguments of the \code{\link[=gsub]{gsub()}} function.
+In other words, the first argument specifies a regular expression to search for
+in every processed filename, and the second argument specifies a regular
+expression that replaces any matches with the first argument. Set to \code{NULL} to
+not perform any replacement on the output file name.}
 }
 \value{
 A character vector for \code{mask_utterance} and \code{mask_source}, or a list of
