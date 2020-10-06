@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collapse the occurrences in utterances into groups — collapse_occurrences • rock</title>
+<title>Expand categorical attribute variables to a series of dichotomous variables — expand_attributes • rock</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Collapse the occurrences in utterances into groups — collapse_occurrences" />
-<meta property="og:description" content="This function collapses all occurrences into groups
-sharing the same identifier, by default the stanzaId
-identifier ([[sid=..]])." />
+<meta property="og:title" content="Expand categorical attribute variables to a series of dichotomous variables — expand_attributes" />
+<meta property="og:description" content="Expand categorical attribute variables to a series of dichotomous variables" />
 
 
 
@@ -122,86 +120,103 @@ identifier ([[sid=..]])." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collapse the occurrences in utterances into groups</h1>
-    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/collapse_occurrences.R'><code>R/collapse_occurrences.R</code></a></small>
-    <div class="hidden name"><code>collapse_occurrences.Rd</code></div>
+    <h1>Expand categorical attribute variables to a series of dichotomous variables</h1>
+    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/expand_attributes.R'><code>R/expand_attributes.R</code></a></small>
+    <div class="hidden name"><code>expand_attributes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function collapses all occurrences into groups
-sharing the same identifier, by default the <code>stanzaId</code>
-identifier (<code>[[sid=..]]</code>).</p>
+    <p>Expand categorical attribute variables to a series of dichotomous variables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collapse_occurrences</span>(
-  <span class='no'>parsedSource</span>,
-  <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>"stanzaId"</span>,
-  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'>expand_attributes</span>(
+  <span class='no'>data</span>,
+  <span class='no'>attributes</span>,
+  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>glue</span> <span class='kw'>=</span> <span class='st'>"__"</span>,
+  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>falseValue</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>trueValue</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>parsedSource</th>
-      <td><p>The parsed sources as provided by <code><a href='parsing_sources.html'>parse_source()</a></code>.</p></td>
+      <th>data</th>
+      <td><p>The data frame, normally the <code>$mergedSources</code> data frame that
+exists in the object returned by a call to <code><a href='parsing_sources.html'>parse_sources()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>collapseBy</th>
-      <td><p>The column in the <code>sourceDf</code> (in the <code>parsedSource</code> object)
-to collapse by (i.e. the column specifying the groups to collapse).</p></td>
+      <th>attributes</th>
+      <td><p>The name of the attribute(s) to expand.</p></td>
     </tr>
     <tr>
-      <th>columns</th>
-      <td><p>The columns to collapse; if unspecified (i.e. <code>NULL</code>), all
-codes stored in the <code>code</code> object in the <code>codings</code> object in the
-<code>parsedSource</code> object are taken (i.e. all used codes in the <code>parsedSource</code>
-object).</p></td>
+      <th>prefix, suffix</th>
+      <td><p>The prefix and suffix to add to the variables names
+that are returned.</p></td>
     </tr>
     <tr>
-      <th>logical</th>
-      <td><p>Whether to return the counts of the occurrences (<code>FALSE</code>) or
-simply whether any code occurreded in the group at all (<code>TRUE</code>).</p></td>
+      <th>glue</th>
+      <td><p>The glue to paste the first part ad the second part of the
+composite variable name together.</p></td>
+    </tr>
+    <tr>
+      <th>falseValue, trueValue</th>
+      <td><p>The values to set for rows that, respectively,
+do not match and do match an attribute value.</p></td>
+    </tr>
+    <tr>
+      <th>valueFirst</th>
+      <td><p>Whether to insert the attribute value first, or the
+attribute name, in the composite variable names.</p></td>
+    </tr>
+    <tr>
+      <th>append</th>
+      <td><p>Whether to append the columns to the supplied data
+frame or not.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with one row for each value of of <code>collapseBy</code> and columns
-for <code>collapseBy</code> and each of the <code>columns</code>, with in the cells the counts (if
-<code>logical</code> is <code>FALSE</code>) or <code>TRUE</code> or <code>FALSE</code> (if <code>logical</code> is <code>TRUE</code>).</p>
+    <p>A data.frame</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Get a path to one example file</span>
 <span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
 
-<span class='co'>### Parse example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+<span class='co'>### Parse single example source</span>
+<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
 
-<span class='co'>### Collapse logically, using a code (either occurring or not):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>);
+<span class='co'>### Create a categorical attribute column</span>
+<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>13</span>);
 
-<span class='co'>### Show result: only two rows left after collapsing,</span>
-<span class='co'>### because 'childCode1' is either 0 or 1:</span>
-<span class='no'>collapsedExample</span>;</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
-#&gt; 1          0          0          0          1          1          1
-#&gt; 2          1          2          1          0          0          0
-#&gt;   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4
-#&gt; 1               1               3               1               1
-#&gt; 2               0               0               0               0
-#&gt;   grandchildCode5 grandchildCode6 grandchildCode7 someOtherCode
-#&gt; 1               1               1               1             1
-#&gt; 2               0               0               0             0</div><div class='input'>
-<span class='co'>### Collapse using weights (i.e. count codes in each segment):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>,
-                             <span class='kw'>logical</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div></pre>
+<span class='co'>### Expand to four logical columns</span>
+<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>expand_attributes</span>(
+    <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>,
+    <span class='st'>"age_group"</span>,
+    <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+);
+
+<span class='co'>### Show result</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
+      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__.18</span>);</div><div class='output co'>#&gt; <span class='error'>Error in table(parsedExample$mergedSourceDf$age_group, parsedExample$mergedSourceDf$age_group__.18): all arguments must have the same length</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
+      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__18.30</span>);</div><div class='output co'>#&gt;        
+#&gt;          0  1
+#&gt;   &gt;60   13  0
+#&gt;   18    13  0
+#&gt;   18-30  0 13
+#&gt;   31-60 13  0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -1,4 +1,5 @@
 testthat::context("general ROCK tests")
+require(rock);
 
 ###-----------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------
@@ -47,6 +48,7 @@ testthat::test_that("a code tree is printed correctly", {
                           "This source contained deductive coding trees.");
 
 });
+
 ###-----------------------------------------------------------------------------
 
 testthat::test_that("a single deductive code tree is read correctly", {
@@ -134,7 +136,7 @@ testthat::test_that("Coded fragments are collected properly", {
 
   testres <- collect_coded_fragments(testres);
 
-  testthat::expect_true(grepl('\n### Topic2 *(path: codes>Topic2)*\n\n-----\n\n\n\n**Source: `longer-test.rock`**\n\n<div class=\"utterance\">It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. <span class=\"code codes\">[[Topic2]]</span>',
+  testthat::expect_true(grepl('\n#### Topic2 *(path: codes>Topic2)*\n\n-----\n\n\n\n**Source: `longer-test.rock`**\n\n<div class=\"utterance\">It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. <span class=\"code codes\">[[Topic2]]</span>',
                               testres,
                               fixed=TRUE));
 

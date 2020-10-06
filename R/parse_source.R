@@ -85,6 +85,7 @@ parse_source <- function(text,
   inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
   attributeContainers <- rock::opts$get(attributeContainers);
   codesContainers <- rock::opts$get(codesContainers);
+  sectionBreakContainers <- rock::opts$get(sectionBreakContainers);
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreRegex <- rock::opts$get(ignoreRegex);
 
@@ -180,9 +181,19 @@ parse_source <- function(text,
     } else {
       deductiveCodeTrees <- NA;
     }
+    res$sectionBreakRegexes <-
+      yum::load_and_simplify(yamlFragments=res$yamlFragments,
+                             select=paste0(sectionBreakContainers, collapse="|"));
+    if (!silent) {
+      cat0("Read ", length(unlist(res$sectionBreakRegexes)),
+           " section break codes.\n");
+    }
+
   } else {
+    res$attributes <- NA;
     res$deductiveCodes <- NA;
     res$deductiveCodeTrees <- NA;
+    res$sectionBreakRegexes <- NA;
   }
 
   if (length(res$attributes) > 0) {

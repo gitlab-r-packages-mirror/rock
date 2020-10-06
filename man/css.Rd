@@ -4,7 +4,10 @@
 \alias{css}
 \title{Create HTML fragment with CSS styling}
 \usage{
-css(template = "default")
+css(
+  template = "default",
+  includeBootstrap = rock::opts$get("includeBootstrap")
+)
 }
 \arguments{
 \item{template}{The template to load; either the name of one

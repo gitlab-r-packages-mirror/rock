@@ -22,7 +22,8 @@ and one or more filenames in existing directories.}
 \item{tableOutputCSS}{The CSS to use for the HTML table.}
 }
 \value{
-\code{x}, invisibly.
+\code{x}, invisibly, unless being knitted into R Markdown,
+in which case a \code{\link[knitr:asis_output]{knitr::asis_output()}}-wrapped character vector is returned.
 }
 \description{
 Show a table with all attributes in the RStudio viewer and/or console

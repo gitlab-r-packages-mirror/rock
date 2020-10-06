@@ -32,7 +32,8 @@ respectively, \code{\link[data.tree:SetNodeStyle]{data.tree::SetNodeStyle()}}, \
 and \code{\link[data.tree:SetGraphStyle]{data.tree::SetGraphStyle()}}.}
 }
 \value{
-\code{x}, invisibly.
+\code{x}, invisibly, unless being knitted into R Markdown,
+in which case a \code{\link[knitr:asis_output]{knitr::asis_output()}}-wrapped character vector is returned.
 }
 \description{
 This function shows one or more inductive code trees.

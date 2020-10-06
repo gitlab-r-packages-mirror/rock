@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collapse the occurrences in utterances into groups — collapse_occurrences • rock</title>
+<title>Change a code into another code — recode_source • rock</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Collapse the occurrences in utterances into groups — collapse_occurrences" />
-<meta property="og:description" content="This function collapses all occurrences into groups
-sharing the same identifier, by default the stanzaId
-identifier ([[sid=..]])." />
+<meta property="og:title" content="Change a code into another code — recode_source" />
+<meta property="og:description" content="These functions change a code into another code, and make it easy to
+justify that decision." />
 
 
 
@@ -122,86 +121,63 @@ identifier ([[sid=..]])." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collapse the occurrences in utterances into groups</h1>
-    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/collapse_occurrences.R'><code>R/collapse_occurrences.R</code></a></small>
-    <div class="hidden name"><code>collapse_occurrences.Rd</code></div>
+    <h1>Change a code into another code</h1>
+    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/recode_source.R'><code>R/recode_source.R</code></a></small>
+    <div class="hidden name"><code>recoding_sources.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function collapses all occurrences into groups
-sharing the same identifier, by default the <code>stanzaId</code>
-identifier (<code>[[sid=..]]</code>).</p>
+    <p>These functions change a code into another code, and make it easy to
+justify that decision.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collapse_occurrences</span>(
-  <span class='no'>parsedSource</span>,
-  <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>"stanzaId"</span>,
-  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'>recode_source</span>(
+  <span class='no'>input</span>,
+  <span class='no'>codes</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>justification</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>justificationFile</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"justificationFile"</span>),
+  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"preventOverwriting"</span>),
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"encoding"</span>),
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"silent"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>parsedSource</th>
-      <td><p>The parsed sources as provided by <code><a href='parsing_sources.html'>parse_source()</a></code>.</p></td>
+      <th>input</th>
+      <td><p>A file with a source (for <code>recode_source</code>), or a directory
+with sources (for <code>recode_sources</code>), or an object with one source or
+multiple sources as produced by one of the <code>loading_sources</code> functions.</p></td>
     </tr>
     <tr>
-      <th>collapseBy</th>
-      <td><p>The column in the <code>sourceDf</code> (in the <code>parsedSource</code> object)
-to collapse by (i.e. the column specifying the groups to collapse).</p></td>
+      <th>codes</th>
+      <td><p>A named list of character vectors, where each character vector
+lists the codes to replace, and the name of that character vector is the
+code to replace them with.</p></td>
     </tr>
     <tr>
-      <th>columns</th>
-      <td><p>The columns to collapse; if unspecified (i.e. <code>NULL</code>), all
-codes stored in the <code>code</code> object in the <code>codings</code> object in the
-<code>parsedSource</code> object are taken (i.e. all used codes in the <code>parsedSource</code>
-object).</p></td>
-    </tr>
-    <tr>
-      <th>logical</th>
-      <td><p>Whether to return the counts of the occurrences (<code>FALSE</code>) or
-simply whether any code occurreded in the group at all (<code>TRUE</code>).</p></td>
+      <th>silent</th>
+      <td><p>Whether to be chatty or quiet.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with one row for each value of of <code>collapseBy</code> and columns
-for <code>collapseBy</code> and each of the <code>columns</code>, with in the cells the counts (if
-<code>logical</code> is <code>FALSE</code>) or <code>TRUE</code> or <code>FALSE</code> (if <code>logical</code> is <code>TRUE</code>).</p>
+    <p>Invisibly, the recoded source(s) or source(s) object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+
+<span class='co'>### Get a path to one example file</span>
 <span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
 
-<span class='co'>### Parse example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
-
-<span class='co'>### Collapse logically, using a code (either occurring or not):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>);
-
-<span class='co'>### Show result: only two rows left after collapsing,</span>
-<span class='co'>### because 'childCode1' is either 0 or 1:</span>
-<span class='no'>collapsedExample</span>;</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
-#&gt; 1          0          0          0          1          1          1
-#&gt; 2          1          2          1          0          0          0
-#&gt;   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4
-#&gt; 1               1               3               1               1
-#&gt; 2               0               0               0               0
-#&gt;   grandchildCode5 grandchildCode6 grandchildCode7 someOtherCode
-#&gt; 1               1               1               1             1
-#&gt; 2               0               0               0             0</div><div class='input'>
-<span class='co'>### Collapse using weights (i.e. count codes in each segment):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>,
-                             <span class='kw'>logical</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div></pre>
+<span class='co'>### Parse single example source</span>
+<span class='no'>loadedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='loading_sources.html'>load_source</a></span>(<span class='no'>exampleFile</span>);</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
