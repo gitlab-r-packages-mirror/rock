@@ -48,7 +48,13 @@ show_inductive_code_tree <- function(x,
                  " Inductive code tree for ",
                  i,
                  "\n\n<pre>",
-                 paste0(capture.output(print(x$inductiveCodeTrees[[i]])), collapse="\n"),
+                 paste0(
+                   utils::capture.output(
+                     print(
+                       x$inductiveCodeTrees[[i]])
+                     ),
+                   collapse="\n"
+                 ),
                  "</pre>");
       } else {
         print(x$inductiveCodeTrees[[i]]);

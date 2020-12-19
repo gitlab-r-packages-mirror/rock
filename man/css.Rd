@@ -13,6 +13,8 @@ css(
 \item{template}{The template to load; either the name of one
 of the ROCK templates (currently, only 'default' is available), or
 the path and filename of a CSS file.}
+
+\item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 }
 \value{
 A character vector with the HTML fragment.

@@ -28,8 +28,8 @@ as a plot (\code{plot}), or both (\code{both}).}
 code tree as text.}
 
 \item{nodeStyle, edgeStyle, graphStyle}{Arguments to pass on to,
-respectively, \code{\link[data.tree:SetNodeStyle]{data.tree::SetNodeStyle()}}, \code{\link[data.tree:SetEdgeStyle]{data.tree::SetEdgeStyle()}},
-and \code{\link[data.tree:SetGraphStyle]{data.tree::SetGraphStyle()}}.}
+respectively, \code{\link[data.tree:ToDiagrammeRGraph]{data.tree::SetNodeStyle()}}, \code{\link[data.tree:ToDiagrammeRGraph]{data.tree::SetEdgeStyle()}},
+and \code{\link[data.tree:ToDiagrammeRGraph]{data.tree::SetGraphStyle()}}.}
 }
 \value{
 \code{x}, invisibly, unless being knitted into R Markdown,

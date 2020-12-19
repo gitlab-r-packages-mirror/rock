@@ -12,16 +12,20 @@
 #' in which case a [knitr::asis_output()]-wrapped character vector is returned.
 #' @export
 show_attribute_table <- function(x,
-                                 output = rock::opts$get(tableOutput),
-                                 tableOutputCSS = ufs::opts$get(tableOutputCSS)) {
+                                 output = rock::opts$get("tableOutput"),
+                                 tableOutputCSS = rock::opts$get("tableOutputCSS")) {
   if (isTRUE(getOption('knitr.in.progress'))) {
+    if (!requireNamespace("knitr")) {
+      stop("If option `knitr.in.progress` is set to TRUE (and it is) you ",
+           "need to have the `knitr` package installed.");
+    }
     return(knitr::asis_output(paste0(c("\n",
                               knitr::kable(x$attributesDf),
                               "\n"), collapse="\n")));
   } else {
-    ufs::exportToHTML(x$attributesDf,
-                      output = output,
-                      tableOutputCSS = tableOutputCSS);
+    rock::exportToHTML(x$attributesDf,
+                       output = output,
+                       tableOutputCSS = tableOutputCSS);
   }
   return(invisible(x));
 }

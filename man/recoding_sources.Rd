@@ -24,6 +24,17 @@ multiple sources as produced by one of the \code{loading_sources} functions.}
 lists the codes to replace, and the name of that character vector is the
 code to replace them with.}
 
+\item{output}{If specified, the coded source will be written here.}
+
+\item{justification}{The justification for this action.}
+
+\item{justificationFile}{If specified, the justification is appended to
+this file.}
+
+\item{preventOverwriting}{Whether to prevent overwriting existing files.}
+
+\item{encoding}{The encoding to use.}
+
 \item{silent}{Whether to be chatty or quiet.}
 }
 \value{

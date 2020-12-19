@@ -54,7 +54,21 @@ that indicates to which utterance the code in \code{codes} should be
 applied. Note that if \code{indices} is provided, only the first
 element of \code{codes} is used, and its name is ignored.}
 
+\item{output}{If specified, the coded source will be written here.}
+
+\item{preventOverwriting}{Whether to prevent overwriting existing files.}
+
+\item{encoding}{The encoding to use.}
+
 \item{silent}{Whether to be chatty or quiet.}
+
+\item{outputPrefix, outputSuffix}{A prefix and/or suffix to prepend and/or
+append to the filenames to distinguish them from the input filenames.}
+
+\item{recursive}{Whether to also read files from all subdirectories
+of the \code{input} directory}
+
+\item{filenameRegex}{Only input files matching this patterns will be read.}
 }
 \value{
 Invisibly, the coded source object.
