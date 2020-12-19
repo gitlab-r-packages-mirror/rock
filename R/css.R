@@ -3,6 +3,7 @@
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
+#' @param includeBootstrap Whether to include the default bootstrap CSS.
 #'
 #' @return A character vector with the HTML fragment.
 #'

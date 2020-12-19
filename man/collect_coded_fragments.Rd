@@ -64,6 +64,8 @@ the path and filename of a CSS file.}
 \item{rawResult}{Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.}
 
+\item{includeBootstrap}{Whether to include the default bootstrap CSS.}
+
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
