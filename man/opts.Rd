@@ -93,6 +93,8 @@ be used as-is.}
 processing. This can be used to enable adding comments to sources, which are then ignored
 during analysis.}
 
+\item{includeBootstrap}{Whether to include the default bootstrap CSS.}
+
 \item{utteranceMarker}{How to specify breaks between utterances in the source(s). The
 ROCK convention is to use a newline (\verb{\\\\n}).}
 

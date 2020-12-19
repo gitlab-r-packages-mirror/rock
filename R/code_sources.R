@@ -1,6 +1,6 @@
 #' @rdname coding_sources
 #' @param outputPrefix,outputSuffix A prefix and/or suffix to prepend and/or
-#' @param append to the filenames to distinguish them from the input filenames.
+#' append to the filenames to distinguish them from the input filenames.
 #' @param recursive Whether to also read files from all subdirectories
 #' of the `input` directory
 #' @param filenameRegex Only input files matching this patterns will be read.

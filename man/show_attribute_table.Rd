@@ -6,8 +6,8 @@
 \usage{
 show_attribute_table(
   x,
-  output = rock::opts$get(tableOutput),
-  tableOutputCSS = ufs::opts$get(tableOutputCSS)
+  output = rock::opts$get("tableOutput"),
+  tableOutputCSS = rock::opts$get("tableOutputCSS")
 )
 }
 \arguments{

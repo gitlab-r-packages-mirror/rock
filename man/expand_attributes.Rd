@@ -7,6 +7,7 @@
 expand_attributes(
   data,
   attributes,
+  valueLabels = NULL,
   prefix = "",
   glue = "__",
   suffix = "",
@@ -21,6 +22,14 @@ expand_attributes(
 exists in the object returned by a call to \code{\link[=parse_sources]{parse_sources()}}.}
 
 \item{attributes}{The name of the attribute(s) to expand.}
+
+\item{valueLabels}{It's possible to use different names for the created
+variables than the values of the attributes. This can be set with the
+\code{valueLabels} argument. If only one attribute is specified, pass a named
+vector for \code{valueLabels}, and if multiple attributes are specified, pass
+a named list of named vectors, where the name of each vector corresponds to
+an attribute passed in \code{attributes}. The names of the vector elements
+must correspond to the values of the attributes (see the example).}
 
 \item{prefix, suffix}{The prefix and suffix to add to the variables names
 that are returned.}
@@ -57,19 +66,26 @@ parsedExample <- rock::parse_source(exampleFile);
 
 ### Create a categorical attribute column
 parsedExample$mergedSourceDf$age_group <-
-  rep(c("18", "18-30", "31-60", ">60"), each=13);
+  rep(c("<18", "18-30", "31-60", ">60"), each=13);
 
 ### Expand to four logical columns
 parsedExample$mergedSourceDf <-
   rock::expand_attributes(
     parsedExample$mergedSourceDf,
     "age_group",
+    valueLabels =
+      c(
+        "<18" = "youngest",
+        "18-30" = "youngish",
+        "31-60" = "oldish",
+        ">60" = "oldest"
+       ),
     valueFirst = FALSE
 );
 
 ### Show result
 table(parsedExample$mergedSourceDf$age_group,
-      parsedExample$mergedSourceDf$age_group__.18);
+      parsedExample$mergedSourceDf$age_group__youngest);
 table(parsedExample$mergedSourceDf$age_group,
-      parsedExample$mergedSourceDf$age_group__18.30);
+      parsedExample$mergedSourceDf$age_group__oldish);
 }
