@@ -17,21 +17,34 @@
 #' @return Invisibly, an R character vector of
 #' classes `rock_source` and `character`.
 #' @rdname loading_sources
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Parse single example source
+#' loadedSource <- rock::load_source(exampleFile);
 #' @export
 load_source <- function(input,
                         encoding="UTF-8",
                         silent=FALSE) {
+
+  if ("rock_source" %in% class(input)) {
+    ### All done
+    return(input);
+  }
+
   if (file.exists(input)) {
     res <- readLines(input,
                      encoding=encoding);
   } else {
     res <- input;
-    if ((length(res) == 1) && grepl('\n', res)) {
-      res <-
-        strsplit(res,
-                 "\n")[[1]];
-    }
   }
+
+  res <- cleaned_source_to_utterance_vector(res);
 
   class(res) <- c("rock_source", "character");
 

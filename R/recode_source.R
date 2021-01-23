@@ -41,7 +41,7 @@ recode_source <- function(input,
                           silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
-  if (file.exists(input)) {
+  if ((length(input) == 1) && (file.exists(input))) {
     input <- readLines(input,
                        encoding=encoding);
     input <- cleaned_source_to_utterance_vector(input);
@@ -54,10 +54,9 @@ recode_source <- function(input,
          "as loaded with load_source or load_sources.\n");
   }
 
-
   codeDelimiters <- rock::opts$get(codeDelimiters);
 
-  if (!is.null(indices) && (is.logical(indices) && (length(indices) == length(input)))) {
+  if (exists("indices") && !is.null(indices) && (is.logical(indices) && (length(indices) == length(input)))) {
     ### The indices are already set as a (valid) logical vector
     codeToAdd <- paste0(codeDelimiters[1],
                         codes[1],
@@ -67,7 +66,7 @@ recode_source <- function(input,
                 codes[1], "' (specifically, the utterances on lines ",
                 vecTxt(which(indices)), ").\n");
     }
-  } else if (!is.null(indices) && (is.numeric(indices)) && ((min(indices) > 1) && (max(indices) <= length(input)))) {
+  } else if (exists("indices") && !is.null(indices) && (is.numeric(indices)) && ((min(indices) > 1) && (max(indices) <= length(input)))) {
     ### The indices are already set as a (valid) numeric vector
     codeToAdd <- paste0(codeDelimiters[1],
                         codes[1],
@@ -141,15 +140,15 @@ recode_source <- function(input,
                ")!\n");
         }
       } else {
-        ### The name of this case is a a regular expression;
+        ### The name of this case is a regular expression;
         ### get indices matching it
         indices <- grep(names(codes)[i],
                         input,
                         perl=TRUE);
         if (!silent) {
           cat0("Looking for a text match with regular expression '",
-                    names(codes)[i], "'; found in utterances with line numbers ",
-                    vecTxt(indices), ".\n");
+               names(codes)[i], "'; found in utterances with line numbers ",
+               vecTxt(indices), ".\n");
         }
       }
 

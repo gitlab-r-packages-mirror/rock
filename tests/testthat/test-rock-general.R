@@ -170,3 +170,30 @@ testthat::test_that("the example in export_codes_to_txt.Rd runs properly", {
 
 ###-----------------------------------------------------------------------------
 
+testthat::test_that("recoding works", {
+
+  testthat::expect_true({
+    ### Get path to example source
+    examplePath <-
+      system.file("extdata", package="rock");
+
+    ### Get filename
+    exampleFile <-
+      file.path(examplePath, "example-1.rock");
+
+    ### Load a source
+    loadedExample <- rock::load_source(exampleFile);
+
+    ### Take a subset to keep the overview
+    subExample <- loadedExample[21:27];
+
+    rock::recode_source(
+      subExample,
+      c(childCode4 = "bla")
+    );
+
+    TRUE;
+  });
+});
+
+###-----------------------------------------------------------------------------

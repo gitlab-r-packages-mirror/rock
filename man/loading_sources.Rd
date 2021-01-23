@@ -49,3 +49,15 @@ and you'll probably want to add utterance identifiers
 to each utterance using one of the \code{\link[=prepending_uids]{prepending_uids()}}
 functions.
 }
+\examples{
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+### Parse single example source
+loadedSource <- rock::load_source(exampleFile);
+}

@@ -53,7 +53,7 @@ The source with prepended uids, either invisible (if \code{output}
 if specified) or visibly (if not).
 }
 \description{
-This function prepending unique utterance identifiers to each
+This function prepends unique utterance identifiers to each
 utterance (line) in a source. Note that you'll probably want
 to clean the sources using \code{\link[=clean_sources]{clean_sources()}} first.
 }

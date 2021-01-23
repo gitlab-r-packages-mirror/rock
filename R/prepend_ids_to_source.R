@@ -1,6 +1,6 @@
 #' Prepending unique utterance identifiers
 #'
-#' This function prepending unique utterance identifiers to each
+#' This function prepends unique utterance identifiers to each
 #' utterance (line) in a source. Note that you'll probably want
 #' to clean the sources using [clean_sources()] first.
 #'
