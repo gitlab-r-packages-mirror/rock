@@ -84,12 +84,13 @@ change_source <- function(input,
   }
 
   ### Process filter
-  filter <-
-    get_source_filter(
-      input,
-      filter
-    );
-
+  if (!("rock_filter" %in% class(filter))) {
+    filter <-
+      get_source_filter(
+        input,
+        filter
+      );
+  }
 
   ### Get the function to call
   if (is.function(func)) {

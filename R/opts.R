@@ -205,6 +205,10 @@ opts$defaults <-
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
        codeHeadingFormatting = "%s *(path: %s)*",
 
+       ### Regular expression describing the characters that can be used for
+       ### codes
+       validCodeCharacters = "[a-zA-Z0-9._>-]",
+
        ### Used for generating html
        codeClass = "code",
        idClass = "identifier",

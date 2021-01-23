@@ -9,10 +9,12 @@
 #' @param codes A character vector with codes to remove.
 #' @param output If specified, the coded source will be written here.
 #' @param childrenReplaceParents Whether children should be deleted (`FALSE`)
-#' or take their parent code's place (`TRUE`).
+#' or take their parent code's place (`TRUE`). This is ignored if
+#' `recursiveDeletion=TRUE`, in which case children are always deleted.
 #' @param recursiveDeletion Whether to also delete a code's parents (`TRUE`),
 #' if they have no other children, and keep doing this until the root is
-#' reached, or whether to leave parent codes alone (`FALSE`).
+#' reached, or whether to leave parent codes alone (`FALSE`). This takes
+#' precedence over `childrenReplaceParents`.
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
 #' this file. If not, it is saved to the [justifier::workspace()]. This can
@@ -42,7 +44,7 @@ uncode_source <- function(input,
                           filter = TRUE,
                           output = NULL,
                           childrenReplaceParents = TRUE,
-                          recursiveDeletion = TRUE,
+                          recursiveDeletion = FALSE,
                           decisionLabel = NULL,
                           justification = NULL,
                           justificationFile = rock::opts$get('justificationFile'),
@@ -54,6 +56,7 @@ uncode_source <- function(input,
     change_source(
       input = input,
       codes = codes,
+      filter = filter,
       func = changeSource_uncode,
       output = output,
       decisionLabel = decisionLabel,
@@ -71,12 +74,14 @@ uncode_source <- function(input,
 
 changeSource_uncode <- function(input,
                                 codes,
-                                filter = TRUE,
+                                filter,
                                 childrenReplaceParents = TRUE,
-                                recursiveDeletion = TRUE,
+                                recursiveDeletion = FALSE,
                                 silent = rock::opts$get('silent')) {
 
-  codeDelimiters <- rock::opts$get(codeDelimiters);
+  codeDelimiters <- rock::opts$get("codeDelimiters");
+  validCodeCharacters <- rock::opts$get("validCodeCharacters");
+  inductiveCodingHierarchyMarker <- rock::opts$get("inductiveCodingHierarchyMarker");
 
   if (length(codes) > 1) {
     ### Sequentially remove codes
@@ -97,56 +102,187 @@ changeSource_uncode <- function(input,
         );
     }
 
-    res <- input;
-
   } else {
     ### `codes` has length 1
 
-    regexToDelete <- codes;
+    ### Get clean code, removing any delimiters if they were added
+    cleanCode <- codes;
 
-    ### Add code delimiters if they're not yet added
-    if (!grepl(paste0("^", escapeRegexCharacterClass(codeDelimiters[1])),
-               regexToDelete)) {
-      regexToDelete <- paste0(escapeRegexCharacterClass(codeDelimiters[1]), regexToDelete);
-    }
-    if (!grepl(paste0(escapeRegexCharacterClass(codeDelimiters[2]), "$"),
-               regexToDelete)) {
-      regexToDelete <- paste0(regexToDelete, escapeRegexCharacterClass(codeDelimiters[2]));
-    }
-
-    ### Add optional leading space
-    regexToDelete <- paste0("\\s?", regexToDelete);
-
-    ### Get clean code text
     cleanCode <-
-      sub(
-        paste0(".*",
-               escapeRegexCharacterClass(codeDelimiters[1]),
-               "(.*)",
-               escapeRegexCharacterClass(codeDelimiters[2]),
-               ".*"),
-        "\\1",
-        regexToDelete
+      gsub(
+        escapeRegexCharacterClass(codeDelimiters[1]),
+        "",
+        cleanCode
+      );
+
+    cleanCode <-
+      gsub(
+        escapeRegexCharacterClass(codeDelimiters[2]),
+        "",
+        cleanCode
       );
 
     if (!silent) {
       cat0("Removing all occurrences of code '",
            cleanCode,
            "'.\n");
+      cat0("If this code has code descendency (i.e. a child code, grandchild ",
+           "code, etc), the direct child code will ");
+      if (childrenReplaceParents) {
+        cat0("replace the removed code.\n")
+      } else {
+        cat0("also be removed, as will all further descendents.\n");
+      }
+      cat0("If this code has code ancestry (i.e. a (partial) path to the ",
+           "code root is specified with a parent code, potential grandparent ",
+           "code, etc), the ancestry specified in that coding instance will ",
+           "be ");
+      if (recursiveDeletion) {
+        cat0("removed as well, as if the code had never been applied.\n")
+      } else {
+        cat0("retained, so the utterance will remain coded with the ",
+             "parent code (and any ancestry of that parent code will ",
+             "also be retained in that coding instance).\n");
+      }
     }
 
-    ### Replace regex with nothing, but only for the rows specified
-    ### in the filter
-    res <- input;
-    res[filter] <-
-      gsub(
-        regexToDelete,
-        "",
-        res[filter]
+    ### Select elements to check
+
+    filteredUtterances <- input[filter];
+
+    utterancesWithMatches <-
+      grep(
+        cleanCode,
+        filteredUtterances
       );
+
+    if (!silent) {
+      cat0("Out of the ", length(input), " utterances in the provided source, ",
+           sum(filter), " are selected by the filter, ",
+           length(utterancesWithMatches), " of which contain the code text.\n");
+    }
+
+    ### Create a regular expression to delete singular occurrences
+    regexToDeleteSingularOccurrence <-
+      paste0(
+        "\\s?", ### Optional leading space
+        escapeRegexCharacterClass(codeDelimiters[1]),
+        cleanCode,
+        escapeRegexCharacterClass(codeDelimiters[2])
+      );
+
+    ### Create a regular expression to delete 'leaf' occurrences
+    regexToDeleteLeafOccurrence <-
+      paste0(
+        "(\\s?", ### Optional leading space, start capturing expression 1
+        escapeRegexCharacterClass(codeDelimiters[1]),
+        validCodeCharacters,
+        "*)",    ### End capturing of ancestry
+        inductiveCodingHierarchyMarker,
+        cleanCode,
+        escapeRegexCharacterClass(codeDelimiters[2])
+      );
+
+    ### Create a regular expression to delete full occurrences regardless
+    ### of ancestry
+    regexToDeleteRecursively <-
+      paste0(
+        "\\s?", ### Optional leading space
+        escapeRegexCharacterClass(codeDelimiters[1]),
+        validCodeCharacters,
+        "*",
+        cleanCode,
+        validCodeCharacters,
+        "*",
+        escapeRegexCharacterClass(codeDelimiters[2])
+      );
+
+    regexToDeleteIfDescendentsExist <-
+      paste0(
+        "(\\s?", ### Optional leading space, start capturing expression 1
+        escapeRegexCharacterClass(codeDelimiters[1]),
+        validCodeCharacters,
+        "*)",    ### End capturing of ancestry
+        cleanCode,
+        inductiveCodingHierarchyMarker,
+        "(",     ### Start capturing of descendancy
+        validCodeCharacters,
+        "*",
+        escapeRegexCharacterClass(codeDelimiters[2]),
+        ")"      ### End capturing of descendancy
+      );
+
+    for (i in seq_along(utterancesWithMatches)) {
+
+      ### To keep it readable, store temporarily in new variable
+      currentUtterance <-
+        filteredUtterances[utterancesWithMatches[i]];
+
+      ### First simply replace occurrences without ancestry/descendancy
+      currentUtterance <-
+        gsub(
+          regexToDeleteSingularOccurrence,
+          "",
+          currentUtterance
+        );
+
+      ### If deleting recursively, we can delete all coding instances containing
+      ### the target code
+      if (recursiveDeletion) {
+        currentUtterance <-
+          gsub(
+            regexToDeleteRecursively,
+            "",
+            currentUtterance
+          );
+      } else {
+        ### Delete 'leaf' occurrences
+        currentUtterance <-
+          gsub(
+            regexToDeleteLeafOccurrence,
+            paste0("\\1", escapeRegexCharacterClass(codeDelimiters[2])),
+            currentUtterance
+          );
+
+        ### If not deleting recursively, what to do next depends on whether we
+        ### can delete all descendents, or whether we should shift the
+        ### descendents to the target code's position.
+
+        ### First check whether this utterance has children specified;
+        ### otherwise, we don't have to do anything. Either the code doesn't
+        ### occur any more in this utterance, or if it does, we shouldn't
+        ### do anything because `recursiveDeletion` if FALSE.
+        if (grepl(paste0(cleanCode, inductiveCodingHierarchyMarker),
+                  currentUtterance)) {
+          if (childrenReplaceParents) {
+            currentUtterance <-
+              gsub(
+                regexToDeleteIfDescendentsExist,
+                "\\1\\2",
+                currentUtterance
+              );
+          } else {
+            currentUtterance <-
+              gsub(
+                regexToDeleteIfDescendentsExist,
+                paste0("\\1", escapeRegexCharacterClass(codeDelimiters[2])),
+                currentUtterance
+              );
+          }
+        }
+      }
+
+      ### Replace in filteredUtterances
+      filteredUtterances[utterancesWithMatches[i]] <-
+        currentUtterance;
+
+    }
+
+    ### Replace processed rows in the input source
+    input[filter] <- filteredUtterances;
 
   }
 
-  return(res);
+  return(input);
 
 }

@@ -29,22 +29,15 @@ get_source_filter <- function(source,
                               perl = TRUE,
                               ...) {
 
-  ### Probably not needed; we search by regex anyway
-  codeDelimiters <- rock::opts$get(codeDelimiters);
+  ### Probably not needed; we search by regex anyway, but let's keep it
+  ### as a comment for convenience
+  # codeDelimiters <- rock::opts$get(codeDelimiters);
 
   if (is.logical(filter)) {
     if (length(filter) == 1) {
-      if (invert) {
-        return(!rep(filter, length(source)));
-      } else {
-        return(rep(filter, length(source)));
-      }
+      res <- rep(filter, length(source));
     } else if (length(filter) == length(source)) {
-      if (invert) {
-        return(!filter);
-      } else {
-        return(filter);
-      }
+      res <- filter;
     } else {
       stop("The vector you passed (", deparse(substitute(filter)),
            ") is a logical vector, but its length (", length(filter),
@@ -52,10 +45,9 @@ get_source_filter <- function(source,
            length(source), ").");
     }
   } else if (is.numeric(filter)) {
-    if ((min(filter) > 1) && (max(filter) <= length(source))) {
+    if ((min(filter) >= 1) && (max(filter) <= length(source))) {
       res <- rep(FALSE, length(source));
       res[filter] <- TRUE;
-      return(res);
     } else {
       stop("The vector you passed (", deparse(substitute(filter)),
            ") is a numeric vector, but it contains indices that are under 1 ",
@@ -64,23 +56,25 @@ get_source_filter <- function(source,
            ").");
     }
   } else if (is.character(filter)) {
-    filter <-
+    res <-
       multigrepl(
         patterns = filter,
-        filter = source,
+        x = source,
         returnMatchesForPatterns = FALSE,
         ignore.case = ignore.case,
         perl = perl,
         ...
       );
-    if (invert) {
-      return(!res);
-    } else {
-      return(res);
-    }
   } else {
     stop("As `filter`, pass a logical, numeric, or character vector. ",
          "You passed a vector of class(es) ", vecTxtQ(class(filter)), ".");
   }
+
+  if (invert) {
+    res <- !res;
+  }
+
+  class(res) <- c("rock_filter", "logical");
+  return(res);
 
 }

@@ -10,7 +10,7 @@ uncode_source(
   filter = TRUE,
   output = NULL,
   childrenReplaceParents = TRUE,
-  recursiveDeletion = TRUE,
+  recursiveDeletion = FALSE,
   decisionLabel = NULL,
   justification = NULL,
   justificationFile = rock::opts$get("justificationFile"),
@@ -29,11 +29,13 @@ multiple sources as produced by one of the \code{loading_sources} functions.}
 \item{output}{If specified, the coded source will be written here.}
 
 \item{childrenReplaceParents}{Whether children should be deleted (\code{FALSE})
-or take their parent code's place (\code{TRUE}).}
+or take their parent code's place (\code{TRUE}). This is ignored if
+\code{recursiveDeletion=TRUE}, in which case children are always deleted.}
 
 \item{recursiveDeletion}{Whether to also delete a code's parents (\code{TRUE}),
 if they have no other children, and keep doing this until the root is
-reached, or whether to leave parent codes alone (\code{FALSE}).}
+reached, or whether to leave parent codes alone (\code{FALSE}). This takes
+precedence over \code{childrenReplaceParents}.}
 
 \item{justification}{The justification for this action.}
 
