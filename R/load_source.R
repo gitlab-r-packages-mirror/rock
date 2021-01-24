@@ -29,19 +29,36 @@
 #' loadedSource <- rock::load_source(exampleFile);
 #' @export
 load_source <- function(input,
-                        encoding="UTF-8",
-                        silent=FALSE) {
+                        encoding = rock::opts$get('encoding'),
+                        silent = rock::opts$get('silent'),
+                        diligentWarnings = rock::opts$get('diligentWarnings')) {
 
   if ("rock_source" %in% class(input)) {
     ### All done
     return(input);
   }
 
-  if (file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input) && (!dir.exists(input))) {
+    if (!silent) {
+      cat0("Loading source from file '", input, "'.\n");
+    }
+
     res <- readLines(input,
                      encoding=encoding);
   } else {
     res <- input;
+    if ((length(input) == 1) && diligentWarnings) {
+      warning("As `input`, you specified a single-value character vector ",
+              "('", input,
+              "') that is not the path to an existing file - I therefore ",
+              "loaded it as a literal source. (Use argument ",
+              "`diligentWarnings` to deactive this warning.)");
+    } else if (!silent){
+      if (!silent) {
+        cat0("Loading source from the character vector with ",
+             length(input), " elements that was passed as input.\n");
+      }
+    }
   }
 
   res <- cleaned_source_to_utterance_vector(res);

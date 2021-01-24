@@ -244,4 +244,9 @@ opts$defaults <-
        debug = FALSE,
 
        ### Used throughout for suppressing messages
-       silent = TRUE);
+       silent = TRUE,
+
+       ### And warnings
+       diligentWarnings = TRUE
+
+    );

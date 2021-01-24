@@ -1,13 +1,17 @@
-#' Remove one or more codes from a source
+#' Remove one or more codes
 #'
 #' These functions remove one or more codes from a source, and make it easy to
 #' justify that decision.
 #'
-#' @param input A file with a source (for `uncode_source`), or a directory
-#' with sources (for `uncode_sources`), or an object with one source or
-#' multiple sources as produced by one of the `loading_sources` functions.
+#' @param input One of 1) a character string specifying the path to a file
+#' with a source; 2) an object with a loaded source as produced by a call
+#' to [load_source()]; 3) a character string specifying the path to a directory
+#' containing one or more sources; 4) or an object with a list of loaded
+#' sources as produced by a call to [load_sources()].
 #' @param codes A character vector with codes to remove.
-#' @param output If specified, the coded source will be written here.
+#' @param filter Optionally, a filter to apply to specify a subset of the
+#' source(s) to process (see [get_source_filter()]).
+#' @param output If specified, the recoded source(s) will be written here.
 #' @param childrenReplaceParents Whether children should be deleted (`FALSE`)
 #' or take their parent code's place (`TRUE`). This is ignored if
 #' `recursiveDeletion=TRUE`, in which case children are always deleted.
@@ -35,11 +39,27 @@
 #' exampleFile <-
 #'   file.path(examplePath, "example-1.rock");
 #'
-#' ### Parse single example source
+#' ### Load example source
 #' loadedExample <- rock::load_source(exampleFile);
 #'
+#' ### Delete two codes, moving children to the codes' parents
+#' recoded_source <-
+#'   rock::recode_delete(
+#'     loadedSource,
+#'     codes=c("childCode2", "childCode1"),
+#'     silent=FALSE
+#'   );
+#'
+#' ### Process an entire directory
+#' list_of_recoded_sources <-
+#'   rock::recode_delete(
+#'     examplePath,
+#'     codes=c("childCode2", "childCode1"),
+#'     silent=FALSE
+#'   );
+#'
 #' @export
-uncode_source <- function(input,
+recode_delete <- function(input,
                           codes,
                           filter = TRUE,
                           output = NULL,
@@ -53,7 +73,7 @@ uncode_source <- function(input,
                           silent = rock::opts$get('silent')) {
 
   return(
-    change_source(
+    generic_recoding(
       input = input,
       codes = codes,
       filter = filter,
@@ -85,10 +105,9 @@ changeSource_uncode <- function(input,
 
   if (length(codes) > 1) {
     ### Sequentially remove codes
-    if (!silent) {
-      cat0("Multiple codes to remove have been specified: starting ",
-           "sequential removal of ", length(codes), " codes.\n");
-    }
+    msg("Multiple codes to remove have been specified: starting ",
+        "sequential removal of ", length(codes), " codes.\n\n",
+        silent=silent);
 
     for (i in seq_along(codes)) {
       input <-
@@ -106,21 +125,7 @@ changeSource_uncode <- function(input,
     ### `codes` has length 1
 
     ### Get clean code, removing any delimiters if they were added
-    cleanCode <- codes;
-
-    cleanCode <-
-      gsub(
-        escapeRegexCharacterClass(codeDelimiters[1]),
-        "",
-        cleanCode
-      );
-
-    cleanCode <-
-      gsub(
-        escapeRegexCharacterClass(codeDelimiters[2]),
-        "",
-        cleanCode
-      );
+    cleanCode <- cleanCode(codes);
 
     if (!silent) {
       cat0("Removing all occurrences of code '",
@@ -272,6 +277,15 @@ changeSource_uncode <- function(input,
         }
       }
 
+      if (!silent) {
+        if (identical(currentUtterance, filteredUtterances[utterancesWithMatches[i]])) {
+          cat0("--UNCHANGED: ", currentUtterance, "\n");
+        } else {
+          cat0("--------PRE: ", currentUtterance, "\n",
+               "       POST: ", filteredUtterances[utterancesWithMatches[i]], "\n");
+        }
+      }
+
       ### Replace in filteredUtterances
       filteredUtterances[utterancesWithMatches[i]] <-
         currentUtterance;
@@ -279,7 +293,13 @@ changeSource_uncode <- function(input,
     }
 
     ### Replace processed rows in the input source
+    oldInput <- input;
     input[filter] <- filteredUtterances;
+    diffCount <- sum(input != oldInput);
+
+    if (!silent) {
+      cat0("Deleted ", diffCount, " occurrences of code '", codes, "'.\n\n");
+    }
 
   }
 

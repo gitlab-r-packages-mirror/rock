@@ -5,16 +5,21 @@
 \alias{load_sources}
 \title{Load a source from a file or a string}
 \usage{
-load_source(input, encoding = "UTF-8", silent = FALSE)
+load_source(
+  input,
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent"),
+  diligentWarnings = rock::opts$get("diligentWarnings")
+)
 
 load_sources(
   input,
-  encoding = "UTF-8",
   filenameRegex = ".*",
   ignoreRegex = NULL,
   recursive = TRUE,
   full.names = FALSE,
-  silent = FALSE
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
@@ -29,7 +34,8 @@ sources for \code{load_sources}.}
 \item{filenameRegex}{A regular expression to match against located files; only
 files matching this regular expression are processed.}
 
-\item{ignoreRegex}{Regular expression indicating which files to ignore.}
+\item{ignoreRegex}{Regular expression indicating which files to ignore. This
+is a perl-style regular expression (see \link[base:regex]{base::regex}).}
 
 \item{recursive}{Whether to search all subdirectories (\code{TRUE}) as well or not.}
 

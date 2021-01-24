@@ -1,19 +1,19 @@
-#' Move a codes to a different parent
+#' Move one or more codes to a different parent
 #'
-#' These functions move a code to a different parent in one or more sources.
+#' These functions move a code to a different parent (and therefore,
+#' ancestry) in one or more sources.
 #'
-#' @param input A file with a source (for `uncode_source`), or a directory
-#' with sources (for `uncode_sources`), or an object with one source or
-#' multiple sources as produced by one of the `loading_sources` functions.
-#' @param codes A character vector with codes to remove.
-#' @param output If specified, the coded source will be written here.
-#' @param childrenReplaceParents Whether children should be deleted (`FALSE`)
-#' or take their parent code's place (`TRUE`). This is ignored if
-#' `recursiveDeletion=TRUE`, in which case children are always deleted.
-#' @param recursiveDeletion Whether to also delete a code's parents (`TRUE`),
-#' if they have no other children, and keep doing this until the root is
-#' reached, or whether to leave parent codes alone (`FALSE`). This takes
-#' precedence over `childrenReplaceParents`.
+#' @param input One of 1) a character string specifying the path to a file
+#' with a source; 2) an object with a loaded source as produced by a call
+#' to [load_source()]; 3) a character string specifying the path to a directory
+#' containing one or more sources; 4) or an object with a list of loaded
+#' sources as produced by a call to [load_sources()].
+#' @param codes A character vector with codes to move.
+#' @param filter Optionally, a filter to apply to specify a subset of the
+#' source(s) to process (see [get_source_filter()]).
+#' @param output If specified, the recoded source(s) will be written here.
+#' @param newAncestry The new parent code, optionally including the partial
+#' or full ancestry (i.e. the path of parent codes all the way up to the root).
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
 #' this file. If not, it is saved to the [justifier::workspace()]. This can
@@ -25,23 +25,40 @@
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the changed source(s) or source(s) object.
-#' @rdname moving_codes
-#' @examples
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' ### Load example source
+#' loadedExample <- rock::load_source(exampleFile);
+#'
+#' ### Move two codes to a new parent, showing progress
+#' recoded_source <-
+#'   rock::recode_move(
+#'     loadedSource,
+#'     codes=c("childCode2", "childCode1"),
+#'     newAncestry = "parentCode2",
+#'     silent=FALSE
+#'   );
 #' @export
-move_code <- function(input,
-                      codes,
-                      newAncestry,
-                      filter = TRUE,
-                      output = NULL,
-                      decisionLabel = NULL,
-                      justification = NULL,
-                      justificationFile = rock::opts$get('justificationFile'),
-                      preventOverwriting = rock::opts$get('preventOverwriting'),
-                      encoding = rock::opts$get('encoding'),
-                      silent = rock::opts$get('silent')) {
+recode_move <- function(input,
+                        codes,
+                        newAncestry,
+                        filter = TRUE,
+                        output = NULL,
+                        decisionLabel = NULL,
+                        justification = NULL,
+                        justificationFile = rock::opts$get('justificationFile'),
+                        preventOverwriting = rock::opts$get('preventOverwriting'),
+                        encoding = rock::opts$get('encoding'),
+                        silent = rock::opts$get('silent')) {
 
   return(
-    change_source(
+    generic_recoding(
       input = input,
       codes = codes,
       filter = filter,
@@ -92,21 +109,7 @@ changeSource_newAncestry <- function(input,
     ### `codes` has length 1
 
     ### Get clean code, removing any delimiters if they were added
-    cleanCode <- codes;
-
-    cleanCode <-
-      gsub(
-        escapeRegexCharacterClass(codeDelimiters[1]),
-        "",
-        cleanCode
-      );
-
-    cleanCode <-
-      gsub(
-        escapeRegexCharacterClass(codeDelimiters[2]),
-        "",
-        cleanCode
-      );
+    cleanCode <- cleanCode(codes);
 
     ### Remove leading '>' if it's there
     newAncestry <- sub(paste0("^", inductiveCodingHierarchyMarker),
@@ -169,9 +172,7 @@ changeSource_newAncestry <- function(input,
 
     for (i in seq_along(utterancesWithMatches)) {
 
-      if (!silent) {
-        cat0("---- PRE: ", filteredUtterances[utterancesWithMatches[i]], "\n");
-      }
+      currentUtterance <- filteredUtterances[utterancesWithMatches[i]];
 
       ### First simply replace occurrences without ancestry/descendancy
       filteredUtterances[utterancesWithMatches[i]] <-
@@ -182,7 +183,12 @@ changeSource_newAncestry <- function(input,
         );
 
       if (!silent) {
-        cat0("    POST: ", filteredUtterances[utterancesWithMatches[i]], "\n");
+        if (identical(currentUtterance, filteredUtterances[utterancesWithMatches[i]])) {
+          cat0("--UNCHANGED: ", currentUtterance, "\n");
+        } else {
+          cat0("--------PRE: ", currentUtterance, "\n",
+               "       POST: ", filteredUtterances[utterancesWithMatches[i]], "\n");
+        }
       }
 
     }

@@ -55,11 +55,11 @@ search_and_replace_in_sources(
   replacements = NULL,
   outputPrefix = "",
   outputSuffix = "_postReplacing",
-  preventOverwriting = rock::opts$get(preventOverwriting),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
   recursive = TRUE,
   filenameRegex = ".*",
-  encoding = rock::opts$get(encoding),
-  silent = FALSE
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{

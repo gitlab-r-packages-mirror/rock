@@ -74,7 +74,7 @@ get_source_filter <- function(source,
     res <- !res;
   }
 
-  class(res) <- c("rock_filter", "logical");
+  class(res) <- c("rock_source_filter", "logical");
   return(res);
 
 }
