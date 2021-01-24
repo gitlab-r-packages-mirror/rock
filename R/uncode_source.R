@@ -98,7 +98,7 @@ changeSource_uncode <- function(input,
           filter = filter,
           childrenReplaceParents = childrenReplaceParents,
           recursiveDeletion = recursiveDeletion,
-          silent = rock::opts$get('silent')
+          silent = silent
         );
     }
 
