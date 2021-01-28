@@ -47,18 +47,19 @@ inspect_coded_sources <- function(path,
         fragments_args)
     );
 
-  if (length(parsedSources$inductiveCodeTrees) > 0) {
-    if ("Node" %in% class(parsedSources$inductiveCodeTrees)) {
-      inductiveTrees <-
-        do.call(
-          show_inductive_code_tree,
-          c(list(x = parsedSources),
-            inductive_tree_args)
-        );
-      # if (isTRUE(getOption('knitr.in.progress'))) {
-      #   print(inductiveTrees);
-      # }
-    }
+  if ((length(parsedSources$inductiveCodeTrees) > 0) &&
+      ("Node" %in% class(parsedSources$inductiveCodeTrees[[1]]))) {
+    inductiveTrees <-
+      do.call(
+        show_inductive_code_tree,
+        c(list(x = parsedSources),
+          inductive_tree_args)
+      );
+    # if (isTRUE(getOption('knitr.in.progress'))) {
+    #   print(inductiveTrees);
+    # }
+  } else {
+    inductiveTrees <- NA;
   }
 
   if ("Node" %in% class(parsedSources$deductiveCodeTrees)) {
