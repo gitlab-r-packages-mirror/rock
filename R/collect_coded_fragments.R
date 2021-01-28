@@ -36,6 +36,10 @@
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
 #' invisibly.
+#' @param outputInViewer If showing output, whether to show the output in
+#' the console (`outputInViewer='console'`) or in the viewer
+#' (`outputInViewer='viewer'`), e.g. the RStudio viewer. You'll usually want
+#' the latter when outputting HTML, and otherwise the former
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
@@ -75,6 +79,7 @@ collect_coded_fragments <- function(x,
                                     add_html_tags = TRUE,
                                     cleanUtterances = FALSE,
                                     output = NULL,
+                                    outputViewer = "viewer",
                                     template = "default",
                                     rawResult = FALSE,
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
@@ -92,6 +97,19 @@ collect_coded_fragments <- function(x,
                     "but I can only process objects obtained by parsing one or more sources (with ",
                     "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
                     "or 'rockParsedSources'."));
+  }
+
+  if (interactive() && ("viewer" %in% outputViewer)) {
+    if ((!requireNamespace("rstudioapi", quietly = TRUE)) &&
+        (rstudioapi::isAvailable())) {
+      viewer <- rstudioapi::viewer
+    }
+    else {
+      viewer <- getOption("viewer", utils::browseURL)
+    }
+    outputToViewer <- TRUE
+  } else {
+    outputToViewer <- FALSE
   }
 
   if ("rockParsedSource" %in% class(x)) {
@@ -245,12 +263,16 @@ collect_coded_fragments <- function(x,
     }
   }
 
-  ### Add CSS for html tags, if requested
+  ### Add CSS for html tags if requested
   if (add_html_tags) {
-    res <- paste0(rock::css(template=template,
-                            includeBootstrap = includeBootstrap),
-                  "\n\n",
-                  res);
+    res_without_css <- res;
+    res <-
+      paste0(rock::css(template=template,
+                       includeBootstrap = includeBootstrap),
+             "\n\n",
+             res);
+  } else {
+    res_without_css <- res;
   }
 
   if (is.null(output)) {
@@ -259,9 +281,38 @@ collect_coded_fragments <- function(x,
                                   res,
                                   "\n\n")));
     } else {
-      return(res);
+      if (outputToViewer) {
+        viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+        if (add_html_tags) {
+          viewerHTML <- htmltools::HTML(
+            rock::css(template=template,
+                      includeBootstrap = includeBootstrap),
+            viewerHTML
+          );
+        } else {
+          viewerHTML <- htmltools::HTML(viewerHTML);
+        }
+        htmltools::html_print(htmltools::HTML(viewerHTML),
+                              background = "white",
+                              viewer = viewer)
+      }
+      if ("console" %in% outputViewer) {
+        cat(res)
+      }
+      return(invisible(res));
     }
   } else {
+
+    if (outputToViewer) {
+      viewerHTML <- markdown::markdownToHTML(text=res);
+      htmltools::html_print(htmltools::HTML(viewerHTML),
+                            background = "white",
+                            viewer = viewer)
+    }
+    if ("console" %in% outputViewer) {
+      cat(res)
+    }
+
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
         writeLines(res,
