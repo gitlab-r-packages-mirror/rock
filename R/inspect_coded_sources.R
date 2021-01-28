@@ -79,7 +79,7 @@ inspect_coded_sources <- function(path,
         "\n\n",
         inductiveTrees,
         "\n\n",
-        deductiveTrees
+        deductiveTrees,
         "\n\n");
     return(
       knitr::asis_output(res)
