@@ -267,10 +267,15 @@ collect_coded_fragments <- function(x,
   if (add_html_tags) {
     res_without_css <- res;
     res <-
-      paste0(rock::css(template=template,
-                       includeBootstrap = includeBootstrap),
-             "\n\n",
-             res);
+      paste0(
+        rock::css(
+          template=template,
+          includeBootstrap = ifelse(is.character(includeBootstrap),
+                                    FALSE,
+                                    includeBootstrap),
+        "\n\n",
+        res
+      );
   } else {
     res_without_css <- res;
   }
@@ -286,7 +291,9 @@ collect_coded_fragments <- function(x,
         if (add_html_tags) {
           viewerHTML <- htmltools::HTML(
             rock::css(template=template,
-                      includeBootstrap = includeBootstrap),
+                      includeBootstrap = ifelse(is.character(includeBootstrap),
+                                                TRUE,
+                                                includeBootstrap)),
             viewerHTML
           );
         } else {
@@ -304,7 +311,18 @@ collect_coded_fragments <- function(x,
   } else {
 
     if (outputToViewer) {
-      viewerHTML <- markdown::markdownToHTML(text=res);
+      viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+      if (add_html_tags) {
+        viewerHTML <- htmltools::HTML(
+          rock::css(template=template,
+                    includeBootstrap = ifelse(is.character(includeBootstrap),
+                                              TRUE,
+                                              includeBootstrap)),
+          viewerHTML
+        );
+      } else {
+        viewerHTML <- htmltools::HTML(viewerHTML);
+      }
       htmltools::html_print(htmltools::HTML(viewerHTML),
                             background = "white",
                             viewer = viewer)

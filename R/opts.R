@@ -224,7 +224,7 @@ opts$defaults <-
        preventOverwriting = TRUE,
 
        ### Whether to include bootstrap CSS when collecting fragments
-       includeBootstrap = FALSE,
+       includeBootstrap = "smart",
 
        ### Whether to show table output in the console or viewer,
        ### if shown interactively
