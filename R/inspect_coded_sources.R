@@ -46,6 +46,11 @@ inspect_coded_sources <- function(path,
       c(list(x = parsedSources),
         fragments_args)
     );
+  if (isTRUE(getOption('knitr.in.progress'))) {
+    print(knitr::asis_output(c("\n\n",
+                               fragments,
+                               "\n\n")));
+  }
 
   if (length(parsedSources$inductiveCodeTrees) > 0) {
     if ("Node" %in% class(parsedSources$inductiveCodeTrees)) {
