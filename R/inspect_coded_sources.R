@@ -46,11 +46,6 @@ inspect_coded_sources <- function(path,
       c(list(x = parsedSources),
         fragments_args)
     );
-  if (isTRUE(getOption('knitr.in.progress'))) {
-    print(knitr::asis_output(c("\n\n",
-                               fragments,
-                               "\n\n")));
-  }
 
   if (length(parsedSources$inductiveCodeTrees) > 0) {
     if ("Node" %in% class(parsedSources$inductiveCodeTrees)) {
@@ -60,9 +55,9 @@ inspect_coded_sources <- function(path,
           c(list(x = parsedSources),
             inductive_tree_args)
         );
-      if (isTRUE(getOption('knitr.in.progress'))) {
-        print(inductiveTrees);
-      }
+      # if (isTRUE(getOption('knitr.in.progress'))) {
+      #   print(inductiveTrees);
+      # }
     }
   }
 
@@ -73,13 +68,24 @@ inspect_coded_sources <- function(path,
         c(list(x = parsedSources),
           deductive_tree_args)
       );
-    if (isTRUE(getOption('knitr.in.progress'))) {
-      print(deductiveTrees);
-    }
   } else {
     deductiveTrees <- NA;
   }
 
-  return(parsedSources);
+  if (isTRUE(getOption('knitr.in.progress'))) {
+    res <-
+      c("\n\n",
+        fragments,
+        "\n\n",
+        inductiveTrees,
+        "\n\n",
+        deductiveTrees
+        "\n\n");
+    return(
+      knitr::asis_output(res)
+    );
+  } else {
+    return(parsedSources);
+  }
 
 }
