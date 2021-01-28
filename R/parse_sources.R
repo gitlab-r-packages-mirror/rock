@@ -176,9 +176,35 @@ parse_sources <- function(path,
              }
            });
 
+  res$inductiveCodeTreeGraphs <-
+    lapply(
+      res$inductiveCodeTrees,
+      function(tree) {
+        tree$root$Set(name = 'codes',
+                      filterFun=function(x) x$isRoot);
+        res <- data.tree::ToDiagrammeRGraph(tree);
+        res <-
+          apply_graph_theme(res,
+                            c("layout", "dot", "graph"),
+                            c("rankdir", "LR", "graph"),
+                            c("outputorder", "nodesfirst", "graph"),
+                            c("fixedsize", "false", "node"),
+                            c("shape", "box", "node"),
+                            c("style", "rounded,filled", "node"),
+                            c("fontname", "Arial", "node"),
+                            c("color", "#000000", "node"),
+                            c("color", "#888888", "edge"),
+                            c("dir", "none", "edge"),
+                            c("fillcolor", "#FFFFFF", "node"));
+        return(res);
+      }
+    );
+
   if (!silent) {
     cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
   }
+
+  ###---------------------------------------------------------------------------
 
   ### Merge source dataframes
   res$sourceDf <-
@@ -320,6 +346,8 @@ parse_sources <- function(path,
   if (!silent) {
     cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
   }
+
+  ###---------------------------------------------------------------------------
 
   deductiveCodeLists <-
     do.call(c,

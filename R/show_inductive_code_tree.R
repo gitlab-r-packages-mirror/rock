@@ -35,43 +35,65 @@ show_inductive_code_tree <- function(x,
          "provided an object of class ", vecTxtQ(x), ".");
   }
 
-  trees <- names(x$inductiveCodeTrees);
+  trees <- names(x$inductiveCodeTreeGraphs);
 
   res <- c();
 
   for (i in trees) {
     if (grep("both|text", output)) {
       if (isTRUE(getOption('knitr.in.progress'))) {
-        res <- c(res,
-                 "\n\n",
-                 repStr("#", headingLevel),
-                 " Inductive code tree for ",
-                 i,
-                 "\n\n<pre>",
-                 paste0(
-                   utils::capture.output(
-                     print(
-                       x$inductiveCodeTrees[[i]])
-                     ),
-                   collapse="\n"
-                 ),
-                 "</pre>");
+        res1 <-
+          c("\n\n",
+            repStr("#", headingLevel),
+            " Inductive code tree for ",
+            i,
+            "\n\n");
+        res3 <-
+          c("<pre>",
+            paste0(
+              utils::capture.output(
+                print(
+                  x$inductiveCodeTrees[[i]])
+                ),
+              collapse="\n"
+            ),
+            "</pre>");
       } else {
+        res1 <- "";
+        res3 <- "";
         print(x$inductiveCodeTrees[[i]]);
       }
     }
     if (grep("both|plot", output)) {
-      do.call(data.tree::SetNodeStyle,
-              c(list(node = x$inductiveCodeTrees[[i]]),
-                nodeStyle));
-      do.call(data.tree::SetEdgeStyle,
-              c(list(node = x$inductiveCodeTrees[[i]]),
-                edgeStyle));
-      do.call(data.tree::SetGraphStyle,
-              c(list(root = x$inductiveCodeTrees[[i]]),
-                graphStyle));
-      print(plot(x$inductiveCodeTrees[[i]]));
+      if (isTRUE(getOption('knitr.in.progress'))) {
+        res2 <-
+          DiagrammeR::export_graph(x$inductiveCodeTreeGraphs[[i]]);
+      } else {
+        res2 <- "";
+        print(
+          DiagrammeR::render_graph(
+            x$inductiveCodeTreeGraphs[[i]]
+          )
+        );
+      }
+      # do.call(data.tree::SetNodeStyle,
+      #         c(list(node = x$inductiveCodeTrees[[i]]),
+      #           nodeStyle));
+      # do.call(data.tree::SetEdgeStyle,
+      #         c(list(node = x$inductiveCodeTrees[[i]]),
+      #           edgeStyle));
+      # do.call(data.tree::SetGraphStyle,
+      #         c(list(root = x$inductiveCodeTrees[[i]]),
+      #           graphStyle));
+      # print(plot(x$inductiveCodeTrees[[i]]));
     }
+
+    res <-
+      c(res,
+        res1,
+        res2,
+        res3);
+
   }
 
   if (isTRUE(getOption('knitr.in.progress'))) {
