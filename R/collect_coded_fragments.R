@@ -272,7 +272,8 @@ collect_coded_fragments <- function(x,
           template=template,
           includeBootstrap = ifelse(is.character(includeBootstrap),
                                     FALSE,
-                                    includeBootstrap),
+                                    includeBootstrap)
+        ),
         "\n\n",
         res
       );
