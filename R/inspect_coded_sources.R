@@ -55,6 +55,9 @@ inspect_coded_sources <- function(path,
           c(list(x = parsedSources),
             inductive_tree_args)
         );
+      if (isTRUE(getOption('knitr.in.progress'))) {
+        print(inductiveTrees);
+      }
     }
   }
 
@@ -65,6 +68,9 @@ inspect_coded_sources <- function(path,
         c(list(x = parsedSources),
           deductive_tree_args)
       );
+    if (isTRUE(getOption('knitr.in.progress'))) {
+      print(deductiveTrees);
+    }
   } else {
     deductiveTrees <- NA;
   }
