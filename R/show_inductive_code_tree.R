@@ -66,8 +66,12 @@ show_inductive_code_tree <- function(x,
     }
     if (grep("both|plot", output)) {
       if (isTRUE(getOption('knitr.in.progress'))) {
-        res2 <-
-          DiagrammeR::export_graph(x$inductiveCodeTreeGraphs[[i]]);
+        dot_code <- DiagrammeR::generate_dot(x$inductiveCodeTreeGraphs[[i]]);
+        graphSvg <- DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
+        graphSvg <- sub(".*\n<svg ", "<svg ", graphSvg);
+        graphSvg <- gsub("<svg width=\"[0-9]+pt\" height=\"[0-9]+pt\"\n viewBox=",
+                         "<svg viewBox=", graphSvg);
+        res2 <- graphSvg;
       } else {
         res2 <- "";
         print(
