@@ -14,6 +14,7 @@ collect_coded_fragments(
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
   output = NULL,
+  outputViewer = "viewer",
   template = "default",
   rawResult = FALSE,
   includeBootstrap = rock::opts$get("includeBootstrap"),
@@ -69,6 +70,11 @@ fragments, or one character value in markdown format.}
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
+
+\item{outputInViewer}{If showing output, whether to show the output in
+the console (\code{outputInViewer='console'}) or in the viewer
+(\code{outputInViewer='viewer'}), e.g. the RStudio viewer. You'll usually want
+the latter when outputting HTML, and otherwise the former}
 }
 \value{
 Either a list of character vectors, or a single character value.

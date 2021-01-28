@@ -77,13 +77,13 @@ exampleFile <-
   file.path(examplePath, "example-1.rock");
 
 ### Load example source
-loadedExample <- rock::load_source(exampleFile);
+loadedExampleSource <- rock::load_source(exampleFile);
 
 ### Split a code into two codes, showing progress (the backticks are
 ### used to be able to specify a name that starts with an underscore)
 recoded_source <-
   rock::recode_addChildCodes(
-    loadedSource,
+    loadedExampleSource,
     codes="childCode1",
     childCodes = list(
       `_and_` = " and ",
