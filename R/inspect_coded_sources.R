@@ -76,11 +76,11 @@ inspect_coded_sources <- function(path,
   if (isTRUE(getOption('knitr.in.progress'))) {
     res <-
       c("\n\n",
+        ifelse(is.na(inductiveTrees), "", inductiveTrees),
+        "\n\n",
+        ifelse(is.na(inductiveTrees), "", deductiveTrees),
+        "\n\n",
         fragments,
-        "\n\n",
-        inductiveTrees,
-        "\n\n",
-        deductiveTrees,
         "\n\n");
     return(
       knitr::asis_output(res)
