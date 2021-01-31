@@ -187,7 +187,7 @@ parse_sources <- function(path,
           apply_graph_theme(res,
                             c("layout", "dot", "graph"),
                             c("rankdir", "LR", "graph"),
-                            c("outputorder", "nodesfirst", "graph"),
+                            c("outputorder", "edgesfirst", "graph"),
                             c("fixedsize", "false", "node"),
                             c("shape", "box", "node"),
                             c("style", "rounded,filled", "node"),
@@ -195,6 +195,7 @@ parse_sources <- function(path,
                             c("color", "#000000", "node"),
                             c("color", "#888888", "edge"),
                             c("dir", "none", "edge"),
+                            c("headclip", "false", "edge"),
                             c("fillcolor", "#FFFFFF", "node"));
         return(res);
       }
