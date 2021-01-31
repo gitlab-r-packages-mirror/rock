@@ -59,7 +59,7 @@ inspect_coded_sources <- function(path,
     #   print(inductiveTrees);
     # }
   } else {
-    inductiveTrees <- NA;
+    inductiveTrees <- "";
   }
 
   if ("Node" %in% class(parsedSources$deductiveCodeTrees)) {
@@ -70,15 +70,15 @@ inspect_coded_sources <- function(path,
           deductive_tree_args)
       );
   } else {
-    deductiveTrees <- NA;
+    deductiveTrees <- "";
   }
 
   if (isTRUE(getOption('knitr.in.progress'))) {
     res <-
       c("\n\n",
-        ifelse(all(is.na(inductiveTrees)), "", inductiveTrees),
+        inductiveTrees,
         "\n\n",
-        ifelse(all(is.na(deductiveTrees)), "", deductiveTrees),
+        deductiveTrees,
         "\n\n",
         fragments,
         "\n\n");
