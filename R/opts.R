@@ -167,9 +167,13 @@ opts$defaults <-
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9._-]+)\\]\\]"),
        sectionRegexes = c(paragraphs = "---paragraph-break---",
-                          secondary = "---<[a-zA-Z0-9]?>---"),
+                          secondary = "---<[a-zA-Z0-9._>-]+>---"),
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
+
+       ### Regular expression describing the characters that can be used for
+       ### codes
+       validCodeCharacters = "[a-zA-Z0-9._>-]",
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
@@ -199,15 +203,12 @@ opts$defaults <-
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
        utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+       threadMarker = "~".
 
        ### Used for collecting sources
        utteranceGlue = "\n\n",
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
        codeHeadingFormatting = "%s *(path: %s)*",
-
-       ### Regular expression describing the characters that can be used for
-       ### codes
-       validCodeCharacters = "[a-zA-Z0-9._>-]",
 
        ### Used for generating html
        codeClass = "code",
