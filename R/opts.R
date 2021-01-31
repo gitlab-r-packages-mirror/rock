@@ -203,7 +203,7 @@ opts$defaults <-
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
        utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
-       threadMarker = "~",
+       nestingMarker = "~",
 
        ### Used for collecting sources
        utteranceGlue = "\n\n",
