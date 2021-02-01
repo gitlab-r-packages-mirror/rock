@@ -1,6 +1,6 @@
 #' @rdname masking_sources
 #'
-#' @example ### Mask text but not the codes
+#' @examples ### Mask text but not the codes
 #' rock::mask_utterances(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. [[expAttitude_expectation_73dnt5z1>earplugsFeelUnpleasant]]"
 #' )
