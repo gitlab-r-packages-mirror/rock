@@ -6,15 +6,17 @@
 #' This can then be proofread for transcription errors, and once ready, further
 #' processed.
 #'
-#' A single timestamp (rather than a time range) starts each line. By default,
-#' there is also a flag indicating lines where the transcription confidence is low
-#' — ie they need more attention.
+#' The output can be set-up to retain the time-stamps related to the recording.
+#' If keepTime is TRUE a single timestamp (rather than a time range) starts each line.
+#' By default, there is also a flag indicating lines where the transcription
+#' confidence is low — ie they need more attention when manually cleaning.
+#' confFlag sets the level at which lines are flagged.
 #'
 #' @param input For `clean_teams` a path to a file that contains
 #' the source transcription.
 #' @param output If not `NULL`,
 #' this is the name (and path) of the file in which to save the processed source (if it
-#' *is* `NULL`, the result will be returned visibly).
+#' *is* `NULL`, a new file will be created with `_clean` appended to the file name).
 #' @param keepTime If true, retains the timestamp for each section at the start of the line
 #' @param flagConfidence If true puts *** at the start of each line where the
 #' automated transcribing is uncertain. Threshold for this flag is set by `confFlag`
