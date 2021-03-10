@@ -187,7 +187,7 @@ testthat::test_that("recoding works", {
     ### Take a subset to keep the overview
     subExample <- loadedExample[21:27];
 
-    rock::recode_source(
+    rock::recode_rename(
       subExample,
       c(childCode4 = "bla")
     );
