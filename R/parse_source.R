@@ -599,7 +599,7 @@ parse_source <- function(text,
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used
     res$countedCodings <-
-      colSums(res$sourceDf[, res$convenience$codingLeaves]);
+      colSums(res$sourceDf[, res$convenience$codingLeaves, drop=FALSE]);
   } else {
     res$countedCodings <-
       NULL;
