@@ -196,7 +196,7 @@ parse_source <- function(text,
     res$sectionBreakRegexes <- NA;
   }
 
-  if (length(res$attributes) > 0) {
+  if ((length(res$attributes) > 0) && (!all(is.na(unlist(res$attributes))))) {
 
     ### Simplify YAML attributes and convert into a data frame
     res$attributesDf <-

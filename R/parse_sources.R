@@ -93,7 +93,7 @@ parse_sources <- function(path,
   #   );
 
   res$convenience$attributes <-
-    dplyr::bind_rows(purrr::map(res$parsedSource,
+    dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'attributesDf'));
 
   res$convenience$attributesVars <-
@@ -213,7 +213,6 @@ parse_sources <- function(path,
     dplyr::bind_rows(purrr::map(res$parsedSources,
                                 'sourceDf'));
 
-
   ### Merge merged source dataframes
   res$mergedSourceDf <-
     dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
@@ -306,15 +305,19 @@ parse_sources <- function(path,
 
   attributesDf <-
     res$attributesDf <-
-    dplyr::bind_rows(purrr::map(res$parsedSources,
-                                'attributesDf'));
+    # dplyr::bind_rows(purrr::map(res$parsedSources,
+    #                             'attributesDf'));
+    rbind_df_list(lapply(res$parsedSources,
+                         function(parsedSource) {
+                           return(parsedSource$attributesDf);
+                         }));
 
   ### Add attributes to the utterances
   for (i in seq_along(idRegexes)) {
     ### Check whether attributes was provided for this identifier
     if (names(idRegexes)[i] %in% names(attributesDf)) {
       if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, attributes was provided: proceeding to join to sources dataframe.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, attributes were provided: proceeding to join to sources dataframe.\n"));
       }
       ### Convert to character to avoid errors and delete
       ### empty columns from merged source dataframe
@@ -331,13 +334,26 @@ parse_sources <- function(path,
         }
       }
 
-      # attributesDf[, names(idRegexes)[i]] <-
-      #   as.character(attributesDf[, names(idRegexes)[i]]);
-      ### Join attributes based on identifier
-      res$mergedSourceDf <-
-        dplyr::left_join(res$mergedSourceDf,
-                         attributesDf[, setdiff(names(attributesDf), 'type')],
-                         by=names(idRegexes)[i]);
+      browser();
+
+      if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
+        warning("When processing identifier regex '", names(idRegexes)[i],
+                "', I failed to find it in the column names of the merged ",
+                "sources data frame.");
+      } else if (!(names(idRegexes)[i] %in% attributesDf[, setdiff(names(attributesDf), 'type')])) {
+        warning("When processing identifier regex '", names(idRegexes)[i],
+                "', I failed to find it in the column names of the merged ",
+                "attributes data frame.");
+      } else {
+        # attributesDf[, names(idRegexes)[i]] <-
+        #   as.character(attributesDf[, names(idRegexes)[i]]);
+        ### Join attributes based on identifier
+        res$mergedSourceDf <-
+          dplyr::left_join(res$mergedSourceDf,
+                           attributesDf[, setdiff(names(attributesDf), 'type')],
+                           by=names(idRegexes)[i]);
+      }
+
     } else {
       if (!silent) {
         print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
