@@ -307,10 +307,14 @@ parse_sources <- function(path,
     res$attributesDf <-
     # dplyr::bind_rows(purrr::map(res$parsedSources,
     #                             'attributesDf'));
-    rbind_df_list(lapply(res$parsedSources,
-                         function(parsedSource) {
-                           return(parsedSource$attributesDf);
-                         }));
+    rbind_df_list(
+      lapply(
+        res$parsedSources,
+        function(parsedSource) {
+          return(parsedSource$attributesDf);
+        }
+      )
+    );
 
   ### Add attributes to the utterances
   for (i in seq_along(idRegexes)) {
@@ -334,13 +338,11 @@ parse_sources <- function(path,
         }
       }
 
-      browser();
-
       if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
         warning("When processing identifier regex '", names(idRegexes)[i],
                 "', I failed to find it in the column names of the merged ",
                 "sources data frame.");
-      } else if (!(names(idRegexes)[i] %in% attributesDf[, setdiff(names(attributesDf), 'type')])) {
+      } else if (!(names(idRegexes)[i] %in% setdiff(names(attributesDf), 'type'))) {
         warning("When processing identifier regex '", names(idRegexes)[i],
                 "', I failed to find it in the column names of the merged ",
                 "attributes data frame.");

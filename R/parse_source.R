@@ -568,11 +568,11 @@ parse_source <- function(text,
       merge(res$sourceDf,
             res$attributesDf);
 
-  } else {
+  }
 
+  if (is.null(res$mergedSourceDf) || (nrow(res$mergedSourceDf) == 0)) {
     res$mergedSourceDf <-
       res$sourceDf;
-
   }
 
   ### Check for identifier column existence and convert to character
