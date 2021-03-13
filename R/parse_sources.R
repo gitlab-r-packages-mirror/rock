@@ -20,6 +20,7 @@ parse_sources <- function(path,
   codesContainers <- rock::opts$get(codesContainers);
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreRegex <- rock::opts$get(ignoreRegex);
+  codeTreeMarker <- rock::opts$get(codeTreeMarker);
 
   if (!dir.exists(path)) {
     stop("Directory '",
@@ -456,7 +457,15 @@ parse_sources <- function(path,
 
   } else {
     res$extendedDeductiveCodeTrees <- NA;
-    res$fullyMergedCodeTrees <- NA;
+
+    if (length(res$inductiveCodeTrees) == 1) {
+      res$fullyMergedCodeTrees <- res$inductiveCodeTrees[[1]];
+    } else {
+      warning("Multiple inductive code trees found; functionality to merge ",
+              "these currently not yet implemented. Setting ",
+              "`fullyMergedCodeTrees` to NA (missing).");
+      res$fullyMergedCodeTrees <- NA;
+    }
   }
   if (!silent) {
     cat("\n\n");
@@ -465,7 +474,9 @@ parse_sources <- function(path,
   if ("Node" %in% class(res$fullyMergedCodeTrees)) {
     res$convenience$codingPaths <- c();
     res$convenience$codingPaths <-
-      gsub("/", ">", res$fullyMergedCodeTrees$Get("pathString"));
+      gsub("/",
+           codeTreeMarker,
+           res$fullyMergedCodeTrees$Get("pathString"));
   } else {
     ###------------------------------------------------------------------------
     ### This needs to be fixed to properly work with multiple parallel coding
@@ -473,15 +484,29 @@ parse_sources <- function(path,
     ###------------------------------------------------------------------------
     if ("Node" %in% class (res$deductiveCodeTrees)) {
       res$convenience$codingPaths <-
-        gsub("/", ">", res$deductiveCodeTrees$Get("pathString"));
+        gsub("/",
+             codeTreeMarker,
+             res$deductiveCodeTrees$Get("pathString"));
+      ### Not needed, because the names are already the node names
+      # res$convenience$codingPaths <-
+      #   codePaths_to_namedVector(
+      #     res$convenience$codingPaths
+      #   );
     } else {
       if (!is.na(res$inductiveCodeTrees)) {
         res$convenience$codingPaths <- c();
         for (i in names(res$inductiveCodeTrees)) {
           res$convenience$codingPaths <-
             c(res$convenience$codingPaths,
-              gsub("/", ">", res$inductiveCodeTrees[[i]]$root$Get("pathString")));
+              gsub("/",
+                   codeTreeMarker,
+                   res$inductiveCodeTrees[[i]]$root$Get("pathString")));
         }
+        ### Not needed, because the names are already the node names
+        # res$convenience$codingPaths <-
+        #   codePaths_to_namedVector(
+        #     res$convenience$codingPaths
+        #   );
       }
     }
   }

@@ -162,18 +162,20 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(### Used throughout
-       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9._-]+)\\]\\]"),
+       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9_>]+)\\]\\]"),
+       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]"),
        sectionRegexes = c(paragraphs = "---paragraph-break---",
-                          secondary = "---<[a-zA-Z0-9._>-]+>---"),
-       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]",
+                          secondary = "---<[a-zA-Z0-9_]+>---"),
+       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
+       codeTreeMarker = ">",
 
        ### Regular expression describing the characters that can be used for
-       ### codes
-       validCodeCharacters = "[a-zA-Z0-9._>-]",
+       ### code identifiers (has to include `inductiveCodingHierarchyMarker`
+       ### and `codeTreeMarker`).
+       validCodeCharacters = "[a-zA-Z0-9_>]",
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
@@ -186,7 +188,7 @@ opts$defaults <-
        ignoreRegex = "^#",
 
        ### Used to merge sources
-       coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
+       coderId = "\\[\\[coderId=([a-zA-Z0-9_]+)\\]\\]",
        idForOmittedCoderIds = "noCoderId",
 
        ### Used for cleaning sources and adding UIDs
@@ -216,6 +218,13 @@ opts$defaults <-
        sectionClass = "sectionBreak",
        uidClass = "uid",
        utteranceClass = "utterance",
+
+       ### When displaying code identifiers, whether to by default show the
+       ### full path or just the code identifier itself
+       showFullCodePaths = TRUE,
+
+       ### When displaying code paths, whether to by default strip the root
+       stripRootsFromCodePaths = TRUE,
 
        ### For justifications
        justificationFile = "unspecified",

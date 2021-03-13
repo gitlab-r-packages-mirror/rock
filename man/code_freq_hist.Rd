@@ -4,7 +4,12 @@
 \alias{code_freq_hist}
 \title{Create a frequency histogram for codes}
 \usage{
-code_freq_hist(x, codes = ".*", sortByFreq = "decreasing")
+code_freq_hist(
+  x,
+  codes = ".*",
+  sortByFreq = "decreasing",
+  facetPerSource = FALSE
+)
 }
 \arguments{
 \item{x}{A parsed source(s) object.}
@@ -14,6 +19,11 @@ code_freq_hist(x, codes = ".*", sortByFreq = "decreasing")
 \item{sortByFreq}{Whether to sort by frequency decreasingly
 (\code{decreasing}, the default), increasingly (\code{increasing}),
 or alphabetically (\code{NULL}).}
+
+\item{labels}{Either \code{NULL}, to use the code identifiers as labels for each
+code; the single character value \code{"paths"}, to use the full paths from the
+root  A named character vector with the labels to use, where
+the}
 }
 \value{
 a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.

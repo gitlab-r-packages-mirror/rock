@@ -593,8 +593,7 @@ parse_source <- function(text,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
   res$convenience$codingPaths <-
-    stats::setNames(res$convenience$codings,
-                    res$convenience$codingLeaves);
+    codePaths_to_namedVector(res$convenience$codings);
 
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used
