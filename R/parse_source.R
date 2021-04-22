@@ -77,6 +77,7 @@ parse_source <- function(text,
 
   codeRegexes <- rock::opts$get(codeRegexes);
   idRegexes <- rock::opts$get(idRegexes);
+  codeValueRegexes <- rock::opts$get(codeValueRegexes);
   sectionRegexes <- rock::opts$get(sectionRegexes);
   uidRegex <- rock::opts$get(uidRegex);
   autoGenerateIds <- rock::opts$get(autoGenerateIds);
@@ -88,6 +89,7 @@ parse_source <- function(text,
   sectionBreakContainers <- rock::opts$get(sectionBreakContainers);
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreRegex <- rock::opts$get(ignoreRegex);
+  nestingMarker <- rock::opts$get(nestingMarker);
 
   if (missing(file)) {
     if (missing(text)) {
@@ -518,6 +520,70 @@ parse_source <- function(text,
   sourceDf$utterances_clean_with_uids <-
     trimws(x);
 
+  ###---------------------------------------------------------------------------
+  ### Process codeValues
+
+  if (!is.null(codeValueRegexes) && length(codeValueRegexes) > 0) {
+
+    for (codeValueRegex in names(codeValueRegexes)) {
+
+      ### Find matches (the full substrings that match this code in each line)
+      matches <-
+        regmatches(x,
+                   gregexpr(codeValueRegexes[codeValueRegex], x));
+
+      ### Retain only the 'parenthesized' expression (i.e. the part of
+      ### this code's regex between the parentheses, i.e., the actual code itself)
+      cleanedCodeValueNames <-
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\1");
+
+      cleanedValues <-
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\2");
+
+      namedCodeValues <-
+        mapply(
+          stats::setNames,
+          cleanedValues,
+          cleanedCodeValueNames
+        );
+
+      allCodeValueNames <-
+        sort(unlist(unique(cleanedCodeValueNames)));
+
+      if (any(allCodeValueNames %in% names(sourceDf))) {
+        stop("At least one of the codeValue names also occurs as regular code identifier!");
+      }
+
+      for (currentCodeValueName in allCodeValueNames) {
+        sourceDf[[currentCodeValueName]] <-
+          unlist(
+            lapply(
+              namedCodeValues,
+              function(vector,
+                       elementToReturn) {
+                if (elementToReturn %in% names(vector)) {
+                  return(vector[elementToReturn]);
+                } else {
+                  return(NA);
+                }
+              },
+              elementToReturn = currentCodeValueName
+            )
+          );
+
+      }
+
+
+    }
+  }
+
+  ### Trim spaces from front and back and store almost clean utterances
+  sourceDf$utterances_clean_with_uids <-
+    trimws(x);
+
+  ###---------------------------------------------------------------------------
+  ### Utterance identifiers
+
   ### Extract and store UIDs
   sourceDf$uids <-
     ifelse(grepl(uidRegex,
@@ -528,11 +594,67 @@ parse_source <- function(text,
                        sourceDf$utterances_clean_with_uids),
            "");
 
-  ### Store really clear utterances
+  ### Store even cleaner utterances
   sourceDf$utterances_clean <-
     trimws(gsub(uidRegex,
                 "",
                 sourceDf$utterances_clean_with_uids));
+
+  ###---------------------------------------------------------------------------
+  ### Check for occurrences of the nestingMarker, which have to appear
+  ### at the beginning of the utterances (except for spaces maybe)
+
+  ### Only retain 'leading' nestingMarkers
+  nestingCharacters <-
+    sub(
+      paste0(
+        "^\\s*([",
+        nestingMarker,
+        " \\s]+).*$"
+      ),
+      "\\1",
+      sourceDf$utterances_clean
+    );
+
+  ### From this 'leading' bit, strip all characters
+  ### that are not the nestingMarker
+  nestingCharacters <-
+    gsub(
+      paste0(
+        "[^",
+        nestingMarker,
+        "]"
+      ),
+      "",
+      nestingCharacters
+    );
+
+  ### Store nesting levels that will be used later
+  ### to store utterance identifiers
+  sourceDf$nestingLevel <-
+    nchar(nestingCharacters);
+
+  ### Store parent utterance identifiers
+  sourceDf$parent_uid <-
+    get_parent_uid(
+      sourceDf$uids,
+      sourceDf$nestingLevel
+    );
+
+  ### Strip nesting markers from the beginning of the utterances to clean
+  ### them even more
+  sourceDf$utterances_clean <-
+    sub(
+      paste0(
+        "^\\s*[",
+        nestingMarker,
+        " \\s]+(.*)$"
+      ),
+      "\\1",
+      sourceDf$utterances_clean
+    );
+
+  ###---------------------------------------------------------------------------
 
   if (nrow(sourceDf) > 0) {
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);

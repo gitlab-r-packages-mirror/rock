@@ -166,6 +166,7 @@ opts$defaults <-
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
        sectionRegexes = c(paragraphs = "---paragraph-break---",
                           secondary = "---<[a-zA-Z0-9_]+>---"),
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
