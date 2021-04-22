@@ -689,7 +689,7 @@ parse_source <- function(text,
   );
 
   data.tree::SetNodeStyle(
-    dat$utteranceTree,
+    utteranceTree,
     label = function(node) return(node$diagramLabel)
   );
 
