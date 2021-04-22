@@ -208,6 +208,12 @@ opts$defaults <-
        utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
        nestingMarker = "~",
 
+       ### Saniziting for DiagrammeR
+       diagrammerSanitizing = list(c("\\\"", "`"),
+                                   c("\\'", "`"),
+                                   c("\\\\", "/"),
+                                   c("[^a-zA-Z0-9;)(,._/`-]", " ")),
+
        ### Used for collecting sources
        utteranceGlue = "\n\n",
        sourceFormatting = "\n\n**Source: `%s`**\n\n",

@@ -90,6 +90,7 @@ parse_source <- function(text,
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreRegex <- rock::opts$get(ignoreRegex);
   nestingMarker <- rock::opts$get(nestingMarker);
+  diagrammerSanitizing <- rock::opts$get('diagrammerSanitizing');
 
   if (missing(file)) {
     if (missing(text)) {
@@ -655,6 +656,65 @@ parse_source <- function(text,
     );
 
   ###---------------------------------------------------------------------------
+  ### Create an utterance tree
+
+  networkDf <-
+    sourceDf[,
+             c("uids", "parent_uid",
+               setdiff(names(sourceDf), c("uids", "parent_uid")))
+    ];
+
+  utteranceTree <-
+    data.tree::FromDataFrameNetwork(
+      networkDf
+    );
+
+  ###---------------------------------------------------------------------------
+  ### Utterance diagram
+
+  utteranceTree$Do(
+    function(node) {
+      node$diagramLabel <- node$utterances_clean;
+      for (i in seq_along(diagrammerSanitizing)) {
+        node$diagramLabel <- gsub(
+          diagrammerSanitizing[[i]][1],
+          diagrammerSanitizing[[i]][2],
+          node$diagramLabel
+        );
+      }
+      node$diagramLabel <-
+        paste0(strwrap(node$diagramLabel, 40), collapse="\n");
+      return(node$diagramLabel);
+    }
+  );
+
+  data.tree::SetNodeStyle(
+    dat$utteranceTree,
+    label = function(node) return(node$diagramLabel)
+  );
+
+  utteranceDiagram <-
+    data.tree::ToDiagrammeRGraph(
+      utteranceTree
+    );
+
+  utteranceDiagram <-
+    apply_graph_theme(utteranceDiagram,
+                      c("layout", "dot", "graph"),
+                      c("rankdir", "LR", "graph"),
+                      c("outputorder", "edgesfirst", "graph"),
+                      c("fixedsize", "false", "node"),
+                      c("shape", "box", "node"),
+                      c("style", "rounded,filled", "node"),
+                      c("color", "#000000", "node"),
+                      c("width", "4", "node"),
+                      c("color", "#888888", "edge"),
+                      c("dir", "none", "edge"),
+                      c("headclip", "false", "edge"),
+                      c("tailclip", "false", "edge"),
+                      c("fillcolor", "#FFFFFF", "node"));
+
+  ###---------------------------------------------------------------------------
 
   if (nrow(sourceDf) > 0) {
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
@@ -675,12 +735,14 @@ parse_source <- function(text,
 
   ### Store results in the object to return
   res$sourceDf <- cleanSourceDf;
+  res$utteranceTree <- utteranceTree;
   res$rawSourceDf <- sourceDf;
   res$codings <- codeProcessing[[codeRegex]]$leafCodes;
   res$rawCodings <- codings;
   res$codeProcessing <- codeProcessing;
   res$inductiveCodeTrees <- purrr::map(res$codeProcessing, "inductiveCodeTrees");
   res$inductiveDiagrammeRs <- purrr::map(res$codeProcessing, "inductiveDiagrammeR");
+  res$utteranceDiagram <- utteranceDiagram;
 
   ### Merge attributes with source dataframe
   if (length(res$attributes) > 0) {
