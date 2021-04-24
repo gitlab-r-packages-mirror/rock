@@ -735,6 +735,7 @@ parse_source <- function(text,
 
   ### Store results in the object to return
   res$sourceDf <- cleanSourceDf;
+  res$mergedSourceDf <- res$sourceDf;
   res$utteranceTree <- utteranceTree;
   res$rawSourceDf <- sourceDf;
   res$codings <- codeProcessing[[codeRegex]]$leafCodes;
@@ -747,16 +748,76 @@ parse_source <- function(text,
   ### Merge attributes with source dataframe
   if (length(res$attributes) > 0) {
 
-    ### Merge attributes with source data
-    res$mergedSourceDf <-
-      merge(res$sourceDf,
-            res$attributesDf);
+    # ### Merge attributes with source data
+    # res$mergedSourceDf <-
+    #   merge(res$sourceDf,
+    #         res$attributesDf);
 
-  }
 
-  if (is.null(res$mergedSourceDf) || (nrow(res$mergedSourceDf) == 0)) {
-    res$mergedSourceDf <-
-      res$sourceDf;
+    ###---------------------------------------------------------------------------
+    ###
+    ### START --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
+
+    ### Add attributes to the utterances
+    for (i in seq_along(idRegexes)) {
+      ### Check whether attributes was provided for this identifier
+      if (names(idRegexes)[i] %in% names(res$attributesDf)) {
+        if (!silent) {
+          print(glue::glue("\n\nFor identifier class {names(idRegexes)[i]}, attributes were provided: proceeding to join to sources dataframe.\n"));
+        }
+        ### Convert to character to avoid errors and delete
+        ### empty columns from merged source dataframe
+        usedIdRegexes <-
+          names(idRegexes)[names(idRegexes) %in% names(res$attributesDf)];
+        for (j in usedIdRegexes) {
+          res$attributesDf[, j] <-
+            as.character(res$attributesDf[, j]);
+        }
+        for (j in intersect(names(res$mergedSourceDf),
+                            names(res$attributesDf))) {
+          if (all(is.na(res$mergedSourceDf[, j]))) {
+            res$mergedSourceDf[, j] <- NULL;
+          }
+        }
+
+        if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
+          warning("When processing identifier regex '", names(idRegexes)[i],
+                  "', I failed to find it in the column names of the merged ",
+                  "sources data frame.");
+        } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
+          warning("When processing identifier regex '", names(idRegexes)[i],
+                  "', I failed to find it in the column names of the merged ",
+                  "attributes data frame.");
+        } else {
+          # attributesDf[, names(idRegexes)[i]] <-
+          #   as.character(attributesDf[, names(idRegexes)[i]]);
+          ### Join attributes based on identifier
+          res$mergedSourceDf <-
+            dplyr::left_join(res$mergedSourceDf,
+                             res$attributesDf[, setdiff(names(res$attributesDf), 'type')],
+                             by=names(idRegexes)[i]);
+        }
+
+      } else {
+        if (!silent) {
+          print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
+        }
+      }
+    }
+
+    if (!silent) {
+      cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
+    }
+
+    ###---------------------------------------------------------------------------
+    ###
+    ### END --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
+
+
   }
 
   ### Check for identifier column existence and convert to character

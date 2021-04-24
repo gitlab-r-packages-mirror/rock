@@ -317,6 +317,12 @@ parse_sources <- function(path,
       )
     );
 
+  ###---------------------------------------------------------------------------
+  ###
+  ### START --- move this to a separate function for parse_source and parse_sources
+  ###
+  ###---------------------------------------------------------------------------
+
   ### Add attributes to the utterances
   for (i in seq_along(idRegexes)) {
     ### Check whether attributes was provided for this identifier
@@ -367,6 +373,12 @@ parse_sources <- function(path,
   if (!silent) {
     cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
   }
+
+  ###---------------------------------------------------------------------------
+  ###
+  ### END --- move this to a separate function for parse_source and parse_sources
+  ###
+  ###---------------------------------------------------------------------------
 
   ###---------------------------------------------------------------------------
 
