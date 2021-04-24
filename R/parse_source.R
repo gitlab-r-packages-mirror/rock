@@ -16,6 +16,9 @@
 #' first argument can be either a character vector or the path to a file; and if
 #' you're specifying a file and you want to be certain that an error is thrown if
 #' it doesn't exist, make sure to name it `file`.
+#' @param utteranceLabelRegexes Optionally, a list with two-element vectors
+#' to preprocess utterances before they are stored as labels (these 'utterance
+#' perl regular expression!
 #' @param path The path containing the files to read.
 #' @param extension The extension of the files to read; files with other extensions will
 #' be ignored. Multiple extensions can be separated by a pipe (`|`).
@@ -70,6 +73,7 @@
 #' @export
 parse_source <- function(text,
                          file,
+                         utteranceLabelRegexes = NULL,
                          ignoreOddDelimiters=FALSE,
                          postponeDeductiveTreeBuilding = FALSE,
                          encoding=rock::opts$get(encoding),
@@ -517,10 +521,6 @@ parse_source <- function(text,
     }
   }
 
-  ### Trim spaces from front and back and store almost clean utterances
-  sourceDf$utterances_clean_with_uids <-
-    trimws(x);
-
   ###---------------------------------------------------------------------------
   ### Process codeValues
 
@@ -574,6 +574,11 @@ parse_source <- function(text,
 
       }
 
+      ### Delete codes from utterances
+      x <-
+        gsub(codeValueRegexes[codeValueRegex],
+             "",
+             x);
 
     }
   }
@@ -655,6 +660,22 @@ parse_source <- function(text,
       sourceDf$utterances_clean
     );
 
+  ### Create 'label' version of utterances
+
+  sourceDf$utteranceLabel <- sourceDf$utterances_clean;
+
+  if (!is.null(utteranceLabelRegexes)) {
+    for (i in seq_along(utteranceLabelRegexes)) {
+      sourceDf$utteranceLabel <-
+        gsub(
+          utteranceLabelRegexes[[i]][1],
+          utteranceLabelRegexes[[i]][2],
+          sourceDf$utteranceLabel,
+          perl=TRUE
+        );
+    }
+  }
+
   ###---------------------------------------------------------------------------
   ### Create an utterance tree
 
@@ -674,7 +695,8 @@ parse_source <- function(text,
 
   utteranceTree$Do(
     function(node) {
-      node$diagramLabel <- node$utterances_clean;
+      node$diagramLabel <-
+        node$utteranceLabel;
       for (i in seq_along(diagrammerSanitizing)) {
         node$diagramLabel <- gsub(
           diagrammerSanitizing[[i]][1],
@@ -684,6 +706,7 @@ parse_source <- function(text,
       }
       node$diagramLabel <-
         paste0(strwrap(node$diagramLabel, 40), collapse="\n");
+
       return(node$diagramLabel);
     }
   );
