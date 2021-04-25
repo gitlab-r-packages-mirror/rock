@@ -685,6 +685,12 @@ parse_source <- function(text,
                setdiff(names(sourceDf), c("uids", "parent_uid")))
     ];
 
+  ### Remove lines without utterance identifier
+  networkDf <-
+    networkDf[
+      nchar(networkDf$uids) > 0,
+    ];
+
   utteranceTree <-
     data.tree::FromDataFrameNetwork(
       networkDf
