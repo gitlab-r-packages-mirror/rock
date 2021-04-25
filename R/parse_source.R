@@ -679,6 +679,7 @@ parse_source <- function(text,
   ###---------------------------------------------------------------------------
   ### Create an utterance tree
 
+  ### Restructure
   networkDf <-
     sourceDf[,
              c("uids", "parent_uid",
@@ -691,6 +692,7 @@ parse_source <- function(text,
       nchar(networkDf$uids) > 0,
     ];
 
+  ### Convert to tree
   utteranceTree <-
     data.tree::FromDataFrameNetwork(
       networkDf
