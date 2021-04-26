@@ -38,7 +38,7 @@ parsed_sources_to_ena_network <- function(x,
                                           unitCols,
                                           conversationCols = 'originalSource',
                                           codes = x$convenience$codingLeaves,
-                                          metadata = x$convenience$metadataVars) {
+                                          metadata = x$convenience$attributesVars) {
 
   if (!requireNamespace("rENA", quietly = TRUE)) {
     stop("To create ENA networks, the \"rENA\" package is required. ",
