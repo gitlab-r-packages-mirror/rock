@@ -693,57 +693,65 @@ parse_source <- function(text,
     ];
 
   ### Convert to tree
-  utteranceTree <-
-    data.tree::FromDataFrameNetwork(
-      networkDf
-    );
+  if (any(nchar(networkDf$parent_uid) > 0)) {
+    utteranceTree <-
+      data.tree::FromDataFrameNetwork(
+        networkDf
+      );
+  } else {
+    utteranceTree <- NA;
+  }
 
   ###---------------------------------------------------------------------------
   ### Utterance diagram
 
-  utteranceTree$Do(
-    function(node) {
-      node$diagramLabel <-
-        node$utteranceLabel;
-      for (i in seq_along(diagrammerSanitizing)) {
-        node$diagramLabel <- gsub(
-          diagrammerSanitizing[[i]][1],
-          diagrammerSanitizing[[i]][2],
-          node$diagramLabel
-        );
+  if (any(nchar(networkDf$parent_uid) > 0)) {
+    utteranceTree$Do(
+      function(node) {
+        node$diagramLabel <-
+          node$utteranceLabel;
+        for (i in seq_along(diagrammerSanitizing)) {
+          node$diagramLabel <- gsub(
+            diagrammerSanitizing[[i]][1],
+            diagrammerSanitizing[[i]][2],
+            node$diagramLabel
+          );
+        }
+        node$diagramLabel <-
+          paste0(strwrap(node$diagramLabel, 40), collapse="\n");
+
+        return(node$diagramLabel);
       }
-      node$diagramLabel <-
-        paste0(strwrap(node$diagramLabel, 40), collapse="\n");
-
-      return(node$diagramLabel);
-    }
-  );
-
-  data.tree::SetNodeStyle(
-    utteranceTree,
-    label = function(node) return(node$diagramLabel)
-  );
-
-  utteranceDiagram <-
-    data.tree::ToDiagrammeRGraph(
-      utteranceTree
     );
 
-  utteranceDiagram <-
-    apply_graph_theme(utteranceDiagram,
-                      c("layout", "dot", "graph"),
-                      c("rankdir", "LR", "graph"),
-                      c("outputorder", "edgesfirst", "graph"),
-                      c("fixedsize", "false", "node"),
-                      c("shape", "box", "node"),
-                      c("style", "rounded,filled", "node"),
-                      c("color", "#000000", "node"),
-                      c("width", "4", "node"),
-                      c("color", "#888888", "edge"),
-                      c("dir", "none", "edge"),
-                      c("headclip", "false", "edge"),
-                      c("tailclip", "false", "edge"),
-                      c("fillcolor", "#FFFFFF", "node"));
+    data.tree::SetNodeStyle(
+      utteranceTree,
+      label = function(node) return(node$diagramLabel)
+    );
+
+    utteranceDiagram <-
+      data.tree::ToDiagrammeRGraph(
+        utteranceTree
+      );
+
+    utteranceDiagram <-
+      apply_graph_theme(utteranceDiagram,
+                        c("layout", "dot", "graph"),
+                        c("rankdir", "LR", "graph"),
+                        c("outputorder", "edgesfirst", "graph"),
+                        c("fixedsize", "false", "node"),
+                        c("shape", "box", "node"),
+                        c("style", "rounded,filled", "node"),
+                        c("color", "#000000", "node"),
+                        c("width", "4", "node"),
+                        c("color", "#888888", "edge"),
+                        c("dir", "none", "edge"),
+                        c("headclip", "false", "edge"),
+                        c("tailclip", "false", "edge"),
+                        c("fillcolor", "#FFFFFF", "node"));
+  } else {
+    utteranceDiagram <- NA;
+  }
 
   ###---------------------------------------------------------------------------
 
