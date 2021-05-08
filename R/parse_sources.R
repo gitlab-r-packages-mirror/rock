@@ -345,12 +345,15 @@ parse_sources <- function(path,
         }
       }
 
+      browser();
+
       if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
         msg <-
           paste0("When processing identifier regex '", names(idRegexes)[i],
-                 "', I failed to find its shorthand ('", idRegexes[i],
-                 "')in the column names of the merged ",
-                 "sources data frame.")
+                 "', I failed to find its shorthand ('", names(idRegexes[i]),
+                 "') in the column names of the merged ",
+                 "sources data frame (",
+                 vecTxtQ(names(res$mergedSourceDf)), ").")
         warning(msg);
         if (!silent) {
           cat(msg);

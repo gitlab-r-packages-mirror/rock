@@ -36,10 +36,10 @@
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
 #' invisibly.
-#' @param outputInViewer If showing output, whether to show the output in
-#' the console (`outputInViewer='console'`) or in the viewer
-#' (`outputInViewer='viewer'`), e.g. the RStudio viewer. You'll usually want
-#' the latter when outputting HTML, and otherwise the former
+#' @param outputViewer If showing output, where to show the output: in
+#' the console (`outputViewer='console'`) or in the viewer
+#' (`outputViewer='viewer'`), e.g. the RStudio viewer. You'll usually want
+#' the latter when outputting HTML, and otherwise the former.
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.

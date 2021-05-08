@@ -11,6 +11,7 @@
 #' @param codes A character vector with codes to move.
 #' @param filter Optionally, a filter to apply to specify a subset of the
 #' source(s) to process (see [get_source_filter()]).
+#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param output If specified, the recoded source(s) will be written here.
 #' @param newAncestry The new parent code, optionally including the partial
 #' or full ancestry (i.e. the path of parent codes all the way up to the root).
@@ -39,7 +40,7 @@
 #' ### Move two codes to a new parent, showing progress
 #' recoded_source <-
 #'   rock::recode_move(
-#'     loadedSource,
+#'     loadedExample,
 #'     codes=c("childCode2", "childCode1"),
 #'     newAncestry = "parentCode2",
 #'     silent=FALSE

@@ -58,6 +58,11 @@ this should be set to \code{FALSE} to have \code{add_html_tags} be of the most u
 result will be written. If provided, the result will be returned
 invisibly.}
 
+\item{outputViewer}{If showing output, where to show the output: in
+the console (\code{outputViewer='console'}) or in the viewer
+(\code{outputViewer='viewer'}), e.g. the RStudio viewer. You'll usually want
+the latter when outputting HTML, and otherwise the former.}
+
 \item{template}{The template to load; either the name of one
 of the ROCK templates (currently, only 'default' is available), or
 the path and filename of a CSS file.}
@@ -70,11 +75,6 @@ fragments, or one character value in markdown format.}
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
-
-\item{outputInViewer}{If showing output, whether to show the output in
-the console (\code{outputInViewer='console'}) or in the viewer
-(\code{outputInViewer='viewer'}), e.g. the RStudio viewer. You'll usually want
-the latter when outputting HTML, and otherwise the former}
 }
 \value{
 Either a list of character vectors, or a single character value.

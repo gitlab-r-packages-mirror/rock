@@ -43,7 +43,12 @@ code filters' specified as the \code{childCodes} elements will remain unchanged.
 To create a catch-all ('else') category, pass \code{".*"} or \code{TRUE} as
 a filter (see the example).}
 
+\item{filter}{Optionally, a filter to apply to specify a subset of the
+source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}}).}
+
 \item{output}{If specified, the recoded source(s) will be written here.}
+
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
 
 \item{justification}{The justification for this action.}
 

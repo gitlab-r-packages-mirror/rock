@@ -98,7 +98,10 @@ These functions can be used to mask a set of utterances or one or more sources.
 \examples{
 ### Mask text but not the codes
 rock::mask_utterances(
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. [[expAttitude_expectation_73dnt5z1>earplugsFeelUnpleasant]]"
+  paste0(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+    "elit. [[expAttitude_expectation_73dnt5z1>earplugsFeelUnpleasant]]"
+  )
 )
 
 }

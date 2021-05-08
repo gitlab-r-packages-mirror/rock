@@ -31,6 +31,8 @@ sources for \code{load_sources}.}
 
 \item{silent}{Whether to be chatty or quiet.}
 
+\item{diligentWarnings}{Whether to display very diligent warnings.}
+
 \item{filenameRegex}{A regular expression to match against located files; only
 files matching this regular expression are processed.}
 

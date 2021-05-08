@@ -13,6 +13,9 @@
 #'     "codes>reason>child_feels")
 #' );
 codePaths_to_namedVector <- function(x) {
+  if (is.null(x)) {
+    return(x);
+  }
   codeTreeMarker <- rock::opts$get("codeTreeMarker");
   leafs <-
     gsub(

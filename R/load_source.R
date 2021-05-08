@@ -13,6 +13,7 @@
 #' sources for `load_sources`.
 #' @param encoding The encoding of the file(s).
 #' @param silent Whether to be chatty or quiet.
+#' @param diligentWarnings Whether to display very diligent warnings.
 #'
 #' @return Invisibly, an R character vector of
 #' classes `rock_source` and `character`.

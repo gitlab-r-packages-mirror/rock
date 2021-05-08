@@ -11,6 +11,7 @@
 #' @param codes A character vector with codes to remove.
 #' @param filter Optionally, a filter to apply to specify a subset of the
 #' source(s) to process (see [get_source_filter()]).
+#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param output If specified, the recoded source(s) will be written here.
 #' @param childrenReplaceParents Whether children should be deleted (`FALSE`)
 #' or take their parent code's place (`TRUE`). This is ignored if
@@ -45,7 +46,7 @@
 #' ### Delete two codes, moving children to the codes' parents
 #' recoded_source <-
 #'   rock::recode_delete(
-#'     loadedSource,
+#'     loadedExample,
 #'     codes=c("childCode2", "childCode1"),
 #'     silent=FALSE
 #'   );

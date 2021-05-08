@@ -47,7 +47,12 @@ line. Any utterances coded with the code to split up (i.e. specified in
 \code{codes}. To create a catch-all ('else') category, pass \code{".*"} or \code{TRUE} as
 a filter (see the example).}
 
+\item{filter}{Optionally, a filter to apply to specify a subset of the
+source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}}).}
+
 \item{output}{If specified, the recoded source(s) will be written here.}
+
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
 
 \item{justification}{The justification for this action.}
 
@@ -68,7 +73,7 @@ Invisibly, the changed source(s) or source(s) object.
 }
 \description{
 This function conditionally splits a code into multiple codes. Note that you
-may want to use \code{\link[=recode_addChildren]{recode_addChildren()}} instead to not lose the
+may want to use \code{\link[=recode_addChildCodes]{recode_addChildCodes()}} instead to not lose the
 original coding.
 }
 \examples{
@@ -87,7 +92,7 @@ loadedExample <- rock::load_source(exampleFile);
 ### used to be able to specify a name that starts with an underscore)
 recoded_source <-
   rock::recode_split(
-    loadedSource,
+    loadedExample,
     codes="childCode1",
     splitToCodes = list(
       `_and_` = " and ",

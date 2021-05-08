@@ -21,7 +21,6 @@
 #' @return A logical vector of the same length as the source.
 #' @export
 #'
-#' @examples
 get_source_filter <- function(source,
                               filter,
                               ignore.case = TRUE,

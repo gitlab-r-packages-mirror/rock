@@ -24,9 +24,6 @@ indices is odd.}
 error is thrown, whether to ignore the first (\code{TRUE}) or the last (\code{FALSE})
 delimiter.}
 }
-\value{
-
-}
 \description{
 Match the corresponding indices of (YAML) delimiters in a sequantial list
 }

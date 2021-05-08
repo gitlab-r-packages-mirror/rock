@@ -355,7 +355,7 @@ merge_sources <- function(input,
     newFullname <- file.path(newFileDir,
                              newFilename);
 
-    if (!tail(mergedSources[[i]], 1) == "") {
+    if (!utils::tail(mergedSources[[i]], 1) == "") {
       mergedSources[[i]] <-
         c(mergedSources[[i]], "");
     }

@@ -8,7 +8,10 @@ code_freq_hist(
   x,
   codes = ".*",
   sortByFreq = "decreasing",
-  facetPerSource = FALSE
+  forceRootStripping = FALSE,
+  trimSourceIdentifiers = 20,
+  ggplot2Theme = ggplot2::theme(legend.position = "bottom"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
@@ -20,10 +23,15 @@ code_freq_hist(
 (\code{decreasing}, the default), increasingly (\code{increasing}),
 or alphabetically (\code{NULL}).}
 
-\item{labels}{Either \code{NULL}, to use the code identifiers as labels for each
-code; the single character value \code{"paths"}, to use the full paths from the
-root  A named character vector with the labels to use, where
-the}
+\item{forceRootStripping}{Force the stripping of roots, even if they are
+different.}
+
+\item{trimSourceIdentifiers}{If not \code{NULL}, the number of character to trim
+the source identifiers to.}
+
+\item{ggplot2Theme}{Can be used to specify theme elements for the plot.}
+
+\item{silent}{Whether to be chatty or silent.}
 }
 \value{
 a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.

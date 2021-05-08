@@ -833,9 +833,16 @@ parse_source <- function(text,
         }
 
         if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
-          warning("When processing identifier regex '", names(idRegexes)[i],
-                  "', I failed to find it in the column names of the merged ",
-                  "sources data frame.");
+          msg <-
+            paste0("When processing identifier regex '", names(idRegexes)[i],
+                   "', I failed to find its shorthand ('", names(idRegexes[i]),
+                   "') in the column names of the merged ",
+                   "sources data frame (",
+                   vecTxtQ(names(res$mergedSourceDf)), ").")
+          warning(msg);
+          if (!silent) {
+            cat(msg);
+          }
         } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
           warning("When processing identifier regex '", names(idRegexes)[i],
                   "', I failed to find it in the column names of the merged ",

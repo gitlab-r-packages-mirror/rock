@@ -35,6 +35,8 @@ source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}})
 
 \item{output}{If specified, the recoded source(s) will be written here.}
 
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
+
 \item{justification}{The justification for this action.}
 
 \item{justificationFile}{If specified, the justification is appended to
@@ -71,7 +73,7 @@ loadedExample <- rock::load_source(exampleFile);
 ### Move two codes to a new parent, showing progress
 recoded_source <-
   rock::recode_move(
-    loadedSource,
+    loadedExample,
     codes=c("childCode2", "childCode1"),
     newAncestry = "parentCode2",
     silent=FALSE

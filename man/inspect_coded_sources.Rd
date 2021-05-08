@@ -7,8 +7,8 @@
 inspect_coded_sources(
   path,
   parse_args = list(extension = "rock|dct", regex = NULL, recursive = TRUE,
-    ignoreOddDelimiters = FALSE, encoding = rock::opts$get(encoding), silent =
-    rock::opts$get(silent)),
+    ignoreOddDelimiters = FALSE, encoding = rock::opts$get("encoding"), silent =
+    rock::opts$get("silent")),
   fragments_args = list(codes = ".*", context = 0),
   inductive_tree_args = list(codes = ".*", output = "both", headingLevel = 3),
   deductive_tree_args = list()

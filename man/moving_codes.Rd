@@ -28,7 +28,12 @@ sources as produced by a call to \code{\link[=load_sources]{load_sources()}}.}
 should be the new code, and the element's name should be the old code (so
 e.g. \code{codes = c(oldcode1 = 'newcode1', oldcode2 = 'newcode2')}).}
 
+\item{filter}{Optionally, a filter to apply to specify a subset of the
+source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}}).}
+
 \item{output}{If specified, the recoded source(s) will be written here.}
+
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
 
 \item{justification}{The justification for this action.}
 
@@ -65,7 +70,7 @@ loadedExample <- rock::load_source(exampleFile);
 ### Move two codes to a new parent, showing progress
 recoded_source <-
   rock::recode_rename(
-    loadedSource,
+    loadedExample,
     codes=c(childCode2 = "grownUpCode2",
             grandchildCode2 = "almostChildCode2"),
     silent=FALSE

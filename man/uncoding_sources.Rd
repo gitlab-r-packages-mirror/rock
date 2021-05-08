@@ -42,6 +42,8 @@ if they have no other children, and keep doing this until the root is
 reached, or whether to leave parent codes alone (\code{FALSE}). This takes
 precedence over \code{childrenReplaceParents}.}
 
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
+
 \item{justification}{The justification for this action.}
 
 \item{justificationFile}{If specified, the justification is appended to
@@ -78,7 +80,7 @@ loadedExample <- rock::load_source(exampleFile);
 ### Delete two codes, moving children to the codes' parents
 recoded_source <-
   rock::recode_delete(
-    loadedSource,
+    loadedExample,
     codes=c("childCode2", "childCode1"),
     silent=FALSE
   );

@@ -12,6 +12,7 @@
 parse_source(
   text,
   file,
+  utteranceLabelRegexes = NULL,
   ignoreOddDelimiters = FALSE,
   postponeDeductiveTreeBuilding = FALSE,
   encoding = rock::opts$get(encoding),
@@ -48,6 +49,10 @@ characters using \code{\link[base:strsplit]{base::strsplit()}}. Basically, this 
 first argument can be either a character vector or the path to a file; and if
 you're specifying a file and you want to be certain that an error is thrown if
 it doesn't exist, make sure to name it \code{file}.}
+
+\item{utteranceLabelRegexes}{Optionally, a list with two-element vectors
+to preprocess utterances before they are stored as labels (these 'utterance
+perl regular expression!}
 
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}

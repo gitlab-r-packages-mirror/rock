@@ -9,10 +9,12 @@
 #' to [rock::load_source()]; 3) a character string specifying the path to a
 #' directory containing one or more sources; 4) or an object with a list of
 #' loaded sources as produced by a call to [rock::load_sources()].
+#' @param codes The codes to process
 #' @param output If specified, the coded source will be written here.
 #' @param outputPrefix,outputSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk, in case multiple
 #' sources are passed as input.
+#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param func The function to apply.
 #' @param filter Optionally, a filter to apply to specify a subset of the
 #' source(s) to process (see [get_source_filter()]).

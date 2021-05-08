@@ -1,10 +1,6 @@
 #' Create a frequency histogram for codes
 #'
 #' @param x A parsed source(s) object.
-#' @param labels Either `NULL`, to use the code identifiers as labels for each
-#' code; the single character value `"paths"`, to use the full paths from the
-#' root  A named character vector with the labels to use, where
-#' the
 #' @param codes A regular expression to select codes to include.
 #' @param sortByFreq Whether to sort by frequency decreasingly
 #' (`decreasing`, the default), increasingly (`increasing`),
@@ -13,6 +9,7 @@
 #' different.
 #' @param trimSourceIdentifiers If not `NULL`, the number of character to trim
 #' the source identifiers to.
+#' @param ggplot2Theme Can be used to specify theme elements for the plot.
 #' @param silent Whether to be chatty or silent.
 #'
 #' @return a [ggplot2::ggplot()].

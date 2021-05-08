@@ -25,6 +25,9 @@
 #' code filters' specified as the `childCodes` elements will remain unchanged.
 #' To create a catch-all ('else') category, pass `".*"` or `TRUE` as
 #' a filter (see the example).
+#' @param filter Optionally, a filter to apply to specify a subset of the
+#' source(s) to process (see [get_source_filter()]).
+#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param output If specified, the recoded source(s) will be written here.
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to

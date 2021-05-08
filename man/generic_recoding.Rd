@@ -28,6 +28,8 @@ to \code{\link[=load_source]{load_source()}}; 3) a character string specifying t
 directory containing one or more sources; 4) or an object with a list of
 loaded sources as produced by a call to \code{\link[=load_sources]{load_sources()}}.}
 
+\item{codes}{The codes to process}
+
 \item{func}{The function to apply.}
 
 \item{filter}{Optionally, a filter to apply to specify a subset of the
@@ -38,6 +40,8 @@ source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}})
 \item{outputPrefix, outputSuffix}{The prefix and suffix to add to the
 filenames when writing the processed files to disk, in case multiple
 sources are passed as input.}
+
+\item{decisionLabel}{A description of the (recoding) decision that was taken.}
 
 \item{justification}{The justification for this action.}
 

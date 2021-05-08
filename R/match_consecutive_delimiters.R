@@ -9,10 +9,8 @@
 #' error is thrown, whether to ignore the first (`TRUE`) or the last (`FALSE`)
 #' delimiter.
 #'
-#' @return
 #' @export
 #'
-#' @examples
 match_consecutive_delimiters <- function(x,
                                          errorOnInvalidX = FALSE,
                                          errorOnOdd = FALSE,
@@ -29,9 +27,9 @@ match_consecutive_delimiters <- function(x,
     if (errorOnOdd) {
       stop("An uneven number of delimiters (", length(x), ") was passed!");
     } else if (onOddIgnoreFirst) {
-      x <- tail(x, -1);
+      x <- utils::tail(x, -1);
     } else {
-      x <- head(x, -1);
+      x <- utils::head(x, -1);
     }
   }
   xIndices <- seq_along(x);
