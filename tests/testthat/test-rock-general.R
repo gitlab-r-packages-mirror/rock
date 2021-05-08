@@ -197,3 +197,46 @@ testthat::test_that("recoding works", {
 });
 
 ###-----------------------------------------------------------------------------
+
+
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+
+testthat::test_that("merging two sources works properly", {
+
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  tmpDir <- tempdir(check=TRUE);
+
+  # devtools::load_all();
+  # rock::opts$set(debug = TRUE);
+
+  testres <- merge_sources(
+    input = examplePath,
+    output = tmpDir,
+    filenameRegex = "merging-test-1",
+    primarySourcesRegex = "merging-test-1-primary",
+    preventOverwriting = FALSE,
+    silent = FALSE
+  );
+
+  testResult <-
+    readLines(file.path(tmpDir, "merging-test-1-primary_merged.rock"));
+
+  testthat::expect_equal(
+    testResult[9],
+    "---<some_section_break>--- ---<[a-zA-Z0-9_]+>---"
+  );
+
+  testthat::expect_equal(
+    testResult[16],
+    "[[uid=7d8m7295]] Quisque non pretium mi. [[code2]] [[code3]] [[code2>code4]] [[code5]]"
+  );
+
+});
+
+
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------

@@ -417,8 +417,11 @@ parse_sources <- function(path,
     res$deductiveCodeTrees <-
       yum::build_tree(deductiveCodeLists);
 
-    res$deductiveCodeTrees$root$Set(name = 'codes',
-                                   filterFun=function(x) x$isRoot);
+    res$deductiveCodeTrees$root$Set(
+      name = 'codes',
+      filterFun=function(x) x$isRoot
+    );
+
     res$deductiveCodeTreeGraph <-
       data.tree::ToDiagrammeRGraph(res$deductiveCodeTrees);
 

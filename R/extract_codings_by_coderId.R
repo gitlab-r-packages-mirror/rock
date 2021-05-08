@@ -52,7 +52,6 @@ extract_codings_by_coderId <- function(input,
                  encoding=encoding,
                  silent=silent));
 
-  sectionMatchCols <- paste0(names(sectionRegexes), "_match");
   idNames <- names(idRegexes);
 
   res <- list(parsedSources = parsedSources,
@@ -103,9 +102,14 @@ extract_codings_by_coderId <- function(input,
 
         sectionMatches <- list();
 
-        for (j in sectionMatchCols) {
+        for (j in names(sectionRegexes)) {
+
           sectionMatches[[j]] <-
-            list(index = which(sourceDf[, j]));
+            list(index = which(sourceDf[, paste0(j, "_match")]));
+
+          sectionMatches[[j]]$content <-
+            sourceDf[sectionMatches[[j]]$index, paste0(j, "_content")];
+
           sectionMatches[[j]]$uid_pre <-
             unlist(lapply(sectionMatches[[j]]$index-1,
                           function(i) {
@@ -117,19 +121,26 @@ extract_codings_by_coderId <- function(input,
                                 'uids']);
                             }
                           }));
+
           sectionMatches[[j]]$uid_at <-
             sourceDf[sectionMatches[[j]]$index, "uids"];
+
           sectionMatches[[j]]$uid_post <-
             unlist(lapply(sectionMatches[[j]]$index+1,
                           function(i) {
                             if (i > nrow(sourceDf)) {
                               return(NA);
                             } else {
-                              return(sourceDf[
-                                ### Correct for index starting at i (i starts at next row)
-                                i-1 +
-                                  min(which(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)),
-                                'uids']);
+                              if (any(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)) {
+                                return(sourceDf[
+                                  ### Correct for index starting at i (i starts at next row)
+                                  i-1 +
+                                    min(which(nchar(sourceDf[i:nrow(sourceDf), 'uids']) > 0)),
+                                  'uids']
+                                );
+                              } else {
+                                return(NA);
+                              }
                             }
                           }));
         }

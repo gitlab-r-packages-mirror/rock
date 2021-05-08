@@ -245,6 +245,17 @@ parse_source <- function(text,
       ### Store whether each utterance matches
       sourceDf[, glue::glue("{sectionRegex}_match")] <-
         grepl(sectionRegexes[sectionRegex], x);
+      ### Store value of match
+      sourceDf[, glue::glue("{sectionRegex}_content")] <-
+        ifelse(
+          sourceDf[, glue::glue("{sectionRegex}_match")],
+          gsub(
+            paste0(".*(", sectionRegexes[sectionRegex], ").*"),
+            "\\1",
+            x
+          ),
+          ""
+        );
       ### Set incremental counter for each match
       if (glue::glue("{sectionRegex}_match") %in% names(sourceDf) &&
           (length(sourceDf[, glue::glue("{sectionRegex}_match")]) > 0)) {

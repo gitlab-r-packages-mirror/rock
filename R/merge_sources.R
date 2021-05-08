@@ -97,6 +97,10 @@ merge_sources <- function(input,
                  encoding=encoding,
                  silent=ifelse(inheritSilence, silent, TRUE)));
 
+  if (!silent) {
+    cat0("\n\nRead ", length(parsedSources$parsedSources), " sources.");
+  }
+
   allCodedUtterances <-
     names(parsedSources$utterances);
 
@@ -251,6 +255,13 @@ merge_sources <- function(input,
         currentSectionBreak <-
           sectionBreaksByUID$matches_pre[names(sectionBreaksByUID$matches_pre) == currentUID];
 
+        ###---------------------------------------------------------------------
+        ### At some point - try to find the appropriate content and add it in here.
+        ###---------------------------------------------------------------------
+
+        # currentContent <-
+
+
         if (length(currentSectionBreak) > 1) {
           if (rock::opts$get(debug)) {
             cat0("\n     - Processing UID '", currentUID, "', which matches multiple section breaks: ",
@@ -343,6 +354,11 @@ merge_sources <- function(input,
     }
     newFullname <- file.path(newFileDir,
                              newFilename);
+
+    if (!tail(mergedSources[[i]], 1) == "") {
+      mergedSources[[i]] <-
+        c(mergedSources[[i]], "");
+    }
 
     if (!silent) {
       cat0("\nStarting to write merged source '", newFilename,
