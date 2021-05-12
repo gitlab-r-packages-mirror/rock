@@ -345,8 +345,6 @@ parse_sources <- function(path,
         }
       }
 
-      browser();
-
       if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
         msg <-
           paste0("When processing identifier regex '", names(idRegexes)[i],
