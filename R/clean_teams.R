@@ -22,6 +22,8 @@
 #' automated transcribing is uncertain. Threshold for this flag is set by `confFlag`
 #' @param confFlag sets the threshold below which a line is marked as Teams having
 #' poor confidence in the transcription
+#' @param removeMultiSpace Teams has several spaces at teh end of each line. If
+#' TRUE, these are removed
 #'
 #' @examples exampleSource <-
 #' "WEBVTT
@@ -48,11 +50,13 @@
 #'
 #'
 #' @export
-clean_teams <- function(file,
+clean_teams <- function(input,
                         output = NULL,
                         keepTime = FALSE,
                         flagConfidence = TRUE,
                         confFlag = c(0.70),
+                        removeNewLines = FALSE,
+                        removeMultiSpace = TRUE,
                         preventOverwriting = rock::opts$get(preventOverwriting),
                         encoding = rock::opts$get(encoding),
                         silent = rock::opts$get(silent)
@@ -63,52 +67,55 @@ clean_teams <- function(file,
     res <- readLines(input,
                      encoding=encoding);
   } else {
-    stop("Please specify a file") #This else is mostly here for directories
+    res <- input;
   }
 
   # get duration of audio
-  duration <- regmatches(res, regexpr("(?<=NOTE duration:\")[^\"]*", res, perl = TRUE))
+  duration <- regmatches(res, regexpr("(?<=NOTE duration:\")[^\"]*", res, perl = TRUE));
 
   # get language
-  language <- regmatches(res, regexpr("(?<=language:).*", res, perl = TRUE))
+  language <- regmatches(res, regexpr("(?<=language:).*", res, perl = TRUE));
 
-  res.long <- c(paste(res), collapse = " ")
-  chunks <- strsplit(res.long, "NOTE Confidence: ")
+  res.long <- c(paste(res), collapse = " ");
+  chunks <- strsplit(res.long, "NOTE Confidence: ");
 
-  conf <- regmatches(res, regexpr("(?<=NOTE Confidence: )0.[0-9]*", res, perl = TRUE))
-  conf <- as.numeric(conf)
-  time <- regmatches(res, regexpr(".*(?= -->)", res, perl = TRUE))
+  conf <- regmatches(res, regexpr("(?<=NOTE Confidence: )0.[0-9]*", res, perl = TRUE));
+  conf <- as.numeric(conf);
+  time <- regmatches(res, regexpr(".*(?= -->)", res, perl = TRUE));
 
-  small <- res[1:50]
-  small <- res
-  small <- paste(small, collapse = " ")
-  small <- gsub("\"", "", small)
-  chunks <- strsplit(small, "NOTE ")[[1]]
+  small <- res[1:50];
+  small <- res;
+  small <- paste(small, collapse = " ");
+  small <- gsub("\"", "", small);
+  chunks <- strsplit(small, "NOTE ")[[1]];
 
   chunkText <- regmatches(chunks,
-                          regexpr("-> .*", chunks, perl = TRUE))
-  chunkText <- gsub("-> \\d*:\\d*:\\d*.\\d{1,3}", "", chunkText)
+                          regexpr("-> .*", chunks, perl = TRUE));
+  chunkText <- gsub("-> \\d*:\\d*:\\d*.\\d{1,3}", "", chunkText);
 
-  confFlagMark <- rep("", length(conf))
-  confFlagMark[which(conf < confFlag)] <- "***"
+  confFlagMark <- rep("", length(conf));
+  confFlagMark[which(conf < confFlag)] <- "***";
 
   if(keepTime == FALSE) {
-    time <- NULL
+    time <- NULL;
   }
 
   if(confFlag == FALSE) {
-    confFlagMark <- NULL
+    confFlagMark <- NULL;
   }
 
-  lines <- paste0(time, confFlagMark, chunkText)
+  lines <- paste0(time, confFlagMark, chunkText);
+
+  #removespace
+  lines <- gsub("\\s+", " ", lines)
 
   if(is.null(output)){
-    ext <- tools::file_ext(input)
-    input <- gsub(paste0("\\.", ext), "", input)
-    output <- paste0(dirname(input), "/", basename(input), "_clean.", ext)
+    ext <- tools::file_ext(input);
+    input <- gsub(paste0("\\.", ext), "", input);
+    output <- paste0(dirname(input), "/", basename(input), "_cleaned.", ext);
   }
   #consider preventing overwriting behaviour
 
-  writeLines(lines, output)
+  writeLines(lines, output);
 
 }
