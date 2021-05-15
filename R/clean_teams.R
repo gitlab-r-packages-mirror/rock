@@ -22,8 +22,32 @@
 #' automated transcribing is uncertain. Threshold for this flag is set by `confFlag`
 #' @param confFlag sets the threshold below which a line is marked as Teams having
 #' poor confidence in the transcription
-
-
+#'
+#' @examples exampleSource <-
+#' "WEBVTT
+#'
+#'  NOTE duration:\"01:14:13.5060000\"
+#'
+#'  NOTE language:en-us
+#'
+#'  NOTE Confidence: 0.864107251167297
+#'
+#'  1fbc54e1-43d1-4f2a-b639-ea8466e6f279
+#'  00:00:02.260 --> 00:00:06.412
+#'  Go back on WhatsApp. Yeah. So
+#'  my first question is just a
+#'
+#'  NOTE Confidence: 0.864107251167297
+#'
+#'  2c90cf04-4e4b-4857-8b40-273d37b1e878
+#'  00:00:06.412 --> 00:00:09.872
+#'  little bit. How did you come
+#'  to teach research methods?"
+#'
+#'  clean_teams("exampleSource")
+#'
+#'
+#' @export
 clean_teams <- function(file,
                         output = NULL,
                         keepTime = FALSE,
