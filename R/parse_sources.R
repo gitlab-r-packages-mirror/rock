@@ -193,34 +193,46 @@ parse_sources <- function(path,
              }
            });
 
-  res$inductiveCodeTreeGraphs <-
-    lapply(
-      res$inductiveCodeTrees,
-      function(tree) {
-        tree$root$Set(name = 'codes',
-                      filterFun=function(x) x$isRoot);
-        res <- data.tree::ToDiagrammeRGraph(tree);
-        res <-
-          apply_graph_theme(res,
-                            c("layout", "dot", "graph"),
-                            c("rankdir", "LR", "graph"),
-                            c("outputorder", "edgesfirst", "graph"),
-                            c("fixedsize", "false", "node"),
-                            c("shape", "box", "node"),
-                            c("style", "rounded,filled", "node"),
-                            c("fontname", "Arial", "node"),
-                            c("color", "#000000", "node"),
-                            c("color", "#888888", "edge"),
-                            c("dir", "none", "edge"),
-                            c("headclip", "false", "edge"),
-                            c("tailclip", "false", "edge"),
-                            c("fillcolor", "#FFFFFF", "node"));
-        return(res);
-      }
-    );
+  if (!(is.null(res$inductiveCodeTrees)) &&
+      !(is.na(res$inductiveCodeTrees)) &&
+      length(res$inductiveCodeTrees) > 0) {
 
-  if (!silent) {
-    cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
+    res$inductiveCodeTreeGraphs <-
+      lapply(
+        res$inductiveCodeTrees,
+        function(tree) {
+          tree$root$Set(name = 'codes',
+                        filterFun=function(x) x$isRoot);
+          res <- data.tree::ToDiagrammeRGraph(tree);
+          res <-
+            apply_graph_theme(res,
+                              c("layout", "dot", "graph"),
+                              c("rankdir", "LR", "graph"),
+                              c("outputorder", "edgesfirst", "graph"),
+                              c("fixedsize", "false", "node"),
+                              c("shape", "box", "node"),
+                              c("style", "rounded,filled", "node"),
+                              c("fontname", "Arial", "node"),
+                              c("color", "#000000", "node"),
+                              c("color", "#888888", "edge"),
+                              c("dir", "none", "edge"),
+                              c("headclip", "false", "edge"),
+                              c("tailclip", "false", "edge"),
+                              c("fillcolor", "#FFFFFF", "node"));
+          return(res);
+        }
+      );
+
+    if (!silent) {
+      cat0("Successfully built the inductive code trees. Merging source dataframes.\n");
+    }
+
+  } else {
+
+    if (!silent) {
+      cat0("No inductive code trees found/combined. Merging source dataframes.\n");
+    }
+
   }
 
   ###---------------------------------------------------------------------------
