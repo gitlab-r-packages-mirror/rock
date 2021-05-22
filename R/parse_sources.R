@@ -405,8 +405,8 @@ parse_sources <- function(path,
 
       if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
         msg <-
-          paste0("When processing identifier regex '", names(idRegexes)[i],
-                 "', I failed to find its shorthand ('", names(idRegexes[i]),
+          paste0("When processing identifier regex '", idRegexes[i],
+                 "', I failed to find its name ('", names(idRegexes[i]),
                  "') in the column names of the merged ",
                  "sources data frame (",
                  vecTxtQ(names(res$mergedSourceDf)), ").")
@@ -416,8 +416,9 @@ parse_sources <- function(path,
         }
       } else if (!(names(idRegexes)[i] %in% setdiff(names(attributesDf), 'type'))) {
         msg <-
-          paste0("When processing identifier regex '", names(idRegexes)[i],
-                 "', I failed to find it in the column names of the merged ",
+          paste0("When processing identifier regex '", idRegexes[i],
+                 "', I failed to find its name (", names(idRegexes[i]),
+                 ") in the column names of the merged ",
                  "attributes data frame.");
         warning(msg);
         if (!silent) {
@@ -435,7 +436,7 @@ parse_sources <- function(path,
 
     } else {
       if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
+        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes were provided.\n"));
       }
     }
   }
