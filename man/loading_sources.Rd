@@ -9,6 +9,7 @@ load_source(
   input,
   encoding = rock::opts$get("encoding"),
   silent = rock::opts$get("silent"),
+  rlWarn = rock::opts$get(rlWarn),
   diligentWarnings = rock::opts$get("diligentWarnings")
 )
 
@@ -30,6 +31,9 @@ sources for \code{load_sources}.}
 \item{encoding}{The encoding of the file(s).}
 
 \item{silent}{Whether to be chatty or quiet.}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{diligentWarnings}{Whether to display very diligent warnings.}
 

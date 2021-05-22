@@ -239,6 +239,7 @@ opts$defaults <-
        ### Used throughout for working with files
        encoding = "UTF-8",
        preventOverwriting = TRUE,
+       rlWarn = FALSE, ### Whether to let readLines emit a warning
 
        ### Whether to include bootstrap CSS when collecting fragments
        includeBootstrap = "smart",

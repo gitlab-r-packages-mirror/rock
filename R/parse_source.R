@@ -22,6 +22,8 @@
 #' @param path The path containing the files to read.
 #' @param extension The extension of the files to read; files with other extensions will
 #' be ignored. Multiple extensions can be separated by a pipe (`|`).
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param regex Instead of specifing an extension, it's also possible to specify a regular
 #' expression; only files matching this regular expression are read. If specified, `regex`
 #' takes precedece over `extension`,
@@ -76,6 +78,7 @@ parse_source <- function(text,
                          utteranceLabelRegexes = NULL,
                          ignoreOddDelimiters=FALSE,
                          postponeDeductiveTreeBuilding = FALSE,
+                         rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
                          silent=rock::opts$get(silent)) {
 
@@ -103,7 +106,7 @@ parse_source <- function(text,
       if ((length(text) == 1) && file.exists(text)) {
         x <- readLines(text,
                        encoding=encoding,
-                       warn=FALSE);
+                       warn=rlWarn);
         if (!silent) {
           cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
         }
@@ -123,7 +126,7 @@ parse_source <- function(text,
     if (file.exists(file)) {
       x <- readLines(file,
                      encoding=encoding,
-                     warn=FALSE);
+                     warn=rlWarn);
       if (!silent) {
         cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
       }

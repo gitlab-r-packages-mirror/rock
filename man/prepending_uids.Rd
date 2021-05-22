@@ -11,6 +11,7 @@ prepend_ids_to_source(
   input,
   output = NULL,
   origin = Sys.time(),
+  rlWarn = rock::opts$get(rlWarn),
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -37,6 +38,9 @@ sources for \code{prepend_ids_to_sources}.}
 resulting files for \code{prepend_ids_to_sources}}
 
 \item{origin}{The time to use for the first identifier.}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{preventOverwriting}{Whether to overwrite existing files (\code{FALSE})
 or prevent that from happening (\code{TRUE}).}

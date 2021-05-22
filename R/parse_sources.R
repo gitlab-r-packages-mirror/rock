@@ -94,15 +94,31 @@ parse_sources <- function(path,
   #   );
 
   res$convenience$attributes <-
-    dplyr::bind_rows(purrr::map(res$parsedSources,
-                                'attributesDf'));
+    rbind_df_list(
+      lapply(
+        res$parsedSources,
+        function(x) {
+          return(x$attributesDf);
+        }
+      )
+    );
+
+    # dplyr::bind_rows(purrr::map(res$parsedSources,
+    #                             'attributesDf'));
 
   res$convenience$attributesVars <-
-    sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
-                                           'convenience'),
-                                function(x) {
-                                  return(x$attributesVars);
-                                })))));
+    sort(unique(c(unlist(lapply(
+      res$parsedSource,
+      function(x) {
+        return(x$convenience$attributeVars);
+      }
+    )))));
+
+    # sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
+    #                                        'convenience'),
+    #                             function(x) {
+    #                               return(x$attributesVars);
+    #                             })))));
 
          # codings = purrr::map(res$parsedSources,
          #                      'codings'),
@@ -211,8 +227,16 @@ parse_sources <- function(path,
 
   ### Merge source dataframes
   res$sourceDf <-
-    dplyr::bind_rows(purrr::map(res$parsedSources,
-                                'sourceDf'));
+    rbind_df_list(
+      lapply(
+        res$parsedSources,
+        function(x) {
+          return(x$sourceDf);
+        }
+    );
+
+    # dplyr::bind_rows(purrr::map(res$parsedSources,
+    #                             'sourceDf'));
 
   ### Merge merged source dataframes
   res$mergedSourceDf <-

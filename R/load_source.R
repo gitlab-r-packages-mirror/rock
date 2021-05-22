@@ -13,6 +13,8 @@
 #' sources for `load_sources`.
 #' @param encoding The encoding of the file(s).
 #' @param silent Whether to be chatty or quiet.
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param diligentWarnings Whether to display very diligent warnings.
 #'
 #' @return Invisibly, an R character vector of
@@ -32,6 +34,7 @@
 load_source <- function(input,
                         encoding = rock::opts$get('encoding'),
                         silent = rock::opts$get('silent'),
+                        rlWarn = rock::opts$get(rlWarn),
                         diligentWarnings = rock::opts$get('diligentWarnings')) {
 
   if ("rock_source" %in% class(input)) {
@@ -45,7 +48,8 @@ load_source <- function(input,
     }
 
     res <- readLines(input,
-                     encoding=encoding);
+                     encoding=encoding,
+                     warn = rlWarn);
   } else {
     res <- input;
     if ((length(input) == 1) && diligentWarnings) {

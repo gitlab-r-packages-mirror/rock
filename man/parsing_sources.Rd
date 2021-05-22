@@ -15,6 +15,7 @@ parse_source(
   utteranceLabelRegexes = NULL,
   ignoreOddDelimiters = FALSE,
   postponeDeductiveTreeBuilding = FALSE,
+  rlWarn = rock::opts$get(rlWarn),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
@@ -61,6 +62,9 @@ should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE
 tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping
 this is useful if the full tree information is distributed over multiple files (in which case
 you should probably call \code{parse_sources} instead of \code{parse_source}).}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{encoding}{The encoding of the file to read (in \code{file}).}
 

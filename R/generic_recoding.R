@@ -236,28 +236,41 @@ generic_recoding <- function(input,
 
   if (!is.null(justification)) {
 
-    if (is.null(decisionLabel)) {
-      decisionLabel <-
-        paste0(
-          "Decided to apply `", funcName, "` to source `",
-          as.character(substitute(source)),
-          "` for codes [still have to add this bit]."
+    if (requireNamespace("justifier", quietly = TRUE)) {
+
+      if (is.null(decisionLabel)) {
+        decisionLabel <-
+          paste0(
+            "Decided to apply `", funcName, "` to source `",
+            as.character(substitute(source)),
+            "` for codes [still have to add this bit]."
+          );
+      }
+
+      decisionObject <-
+        justifier::log_decision(
+          label = decisionLabel,
+          justification = justification
         );
-    }
 
-    decisionObject <-
-      justifier::log_decision(
-        label = decisionLabel,
-        justification = justification
-      );
+      if (!is.null(justificationFile)) {
 
-    if (!is.null(justificationFile)) {
+        justifier::export_justification(
+          decisionObject,
+          file = justificationFile,
+          append = TRUE
+        );
 
-      justifier::export_justification(
-        decisionObject,
-        file = justificationFile,
-        append = TRUE
-      );
+      }
+
+    } else {
+
+      warning("You specified a justification, but the `justifier` package ",
+              "isn't installed. You can install the most recent version ",
+              "using thr `remotes` package with:\n\n",
+              "remotes::install_gitlab('r-packages/justifier');\n\n",
+              "You can also install the version on CRAN with:\n\n",
+              "install.packages('rock');\n");
 
     }
 

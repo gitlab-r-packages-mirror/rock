@@ -13,6 +13,8 @@
 #' @param origin The time to use for the first identifier.
 #' @param preventOverwriting Whether to overwrite existing files (`FALSE`)
 #' or prevent that from happening (`TRUE`).
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param encoding The encoding of the file(s).
 #' @param silent Whether to be chatty or quiet.
 #'
@@ -25,13 +27,15 @@
 prepend_ids_to_source <- function(input,
                                   output = NULL,
                                   origin=Sys.time(),
+                                  rlWarn = rock::opts$get(rlWarn),
                                   preventOverwriting=rock::opts$get(preventOverwriting),
                                   encoding=rock::opts$get(encoding),
                                   silent=rock::opts$get(silent)) {
 
   if (file.exists(input)) {
     res <- readLines(input,
-                     encoding=encoding);
+                     encoding=encoding,
+                     warn = rlWarn);
   } else {
     res <- input;
     if ((length(res) == 1) && grepl('\n', res)) {

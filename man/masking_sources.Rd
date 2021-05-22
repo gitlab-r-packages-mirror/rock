@@ -13,6 +13,7 @@ mask_source(
   proportionToMask = 1,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
+  rlWarn = rock::opts$get(rlWarn),
   maskRegex = "[[:alnum:]]",
   maskChar = "X",
   perl = TRUE,
@@ -63,6 +64,9 @@ case, every file will be written to the same directory it was read from.}
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{encoding}{The encoding of the source(s).}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{maskRegex}{A regular expresssion (regex) specifying the characters to
 mask (i.e. replace with the masking character).}
