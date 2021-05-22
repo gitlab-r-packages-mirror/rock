@@ -27,7 +27,7 @@ devtools-check:
     - apt-get install -y --no-install-recommends ${APT_PKGS}
     - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("knitr", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
-    - R -e 'install.packages(c("tinytex"))'
+    - R -e 'install.packages(c("tinytex", "DiagrammeRsvg"))'
     - apt-get install -y lmodern texlive-fonts-recommended
     #- R -e 'tinytex::tlmgr_update(); tinytex::tlmgr_install("lmodern");'
   script:
@@ -54,7 +54,7 @@ coverage:
     - install2.r covr
     - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("knitr", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
-    - R -e 'install.packages(c("tinytex"))'
+    - R -e 'install.packages(c("tinytex", "DiagrammeRsvg"))'
     - R -e 'devtools::install_gitlab("r-packages/yum")'
     - R -e 'devtools::install_gitlab("r-packages/justifier")'
     - R -e 'devtools::install()'
