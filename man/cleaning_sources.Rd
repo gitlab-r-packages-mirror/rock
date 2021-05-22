@@ -16,6 +16,7 @@ clean_source(
   extraReplacementsPre = NULL,
   extraReplacementsPost = NULL,
   removeNewlines = FALSE,
+  rlWarn = rock::opts$get(rlWarn),
   utteranceSplits = rock::opts$get(utteranceSplits),
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
@@ -46,6 +47,7 @@ search_and_replace_in_source(
   output = NULL,
   preventOverwriting = TRUE,
   encoding = "UTF-8",
+  rlWarn = rock::opts$get(rlWarn),
   silent = FALSE
 )
 
@@ -55,11 +57,11 @@ search_and_replace_in_sources(
   replacements = NULL,
   outputPrefix = "",
   outputSuffix = "_postReplacing",
-  preventOverwriting = rock::opts$get(preventOverwriting),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
   recursive = TRUE,
   filenameRegex = ".*",
-  encoding = rock::opts$get(encoding),
-  silent = FALSE
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
@@ -91,6 +93,9 @@ manually copypaste the list of defaults to retain it.}
 
 \item{removeNewlines}{Whether to remove all newline characters from the source before
 starting to clean them.}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{utteranceSplits}{This is a vector of regular expressions that specify where to
 insert breaks between utterances in the source(s). Such breakes are specified using

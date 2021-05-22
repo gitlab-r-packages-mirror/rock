@@ -16,9 +16,14 @@
 #' first argument can be either a character vector or the path to a file; and if
 #' you're specifying a file and you want to be certain that an error is thrown if
 #' it doesn't exist, make sure to name it `file`.
+#' @param utteranceLabelRegexes Optionally, a list with two-element vectors
+#' to preprocess utterances before they are stored as labels (these 'utterance
+#' perl regular expression!
 #' @param path The path containing the files to read.
 #' @param extension The extension of the files to read; files with other extensions will
 #' be ignored. Multiple extensions can be separated by a pipe (`|`).
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param regex Instead of specifing an extension, it's also possible to specify a regular
 #' expression; only files matching this regular expression are read. If specified, `regex`
 #' takes precedece over `extension`,
@@ -70,13 +75,16 @@
 #' @export
 parse_source <- function(text,
                          file,
+                         utteranceLabelRegexes = NULL,
                          ignoreOddDelimiters=FALSE,
                          postponeDeductiveTreeBuilding = FALSE,
+                         rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
                          silent=rock::opts$get(silent)) {
 
   codeRegexes <- rock::opts$get(codeRegexes);
   idRegexes <- rock::opts$get(idRegexes);
+  codeValueRegexes <- rock::opts$get(codeValueRegexes);
   sectionRegexes <- rock::opts$get(sectionRegexes);
   uidRegex <- rock::opts$get(uidRegex);
   autoGenerateIds <- rock::opts$get(autoGenerateIds);
@@ -88,6 +96,8 @@ parse_source <- function(text,
   sectionBreakContainers <- rock::opts$get(sectionBreakContainers);
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreRegex <- rock::opts$get(ignoreRegex);
+  nestingMarker <- rock::opts$get(nestingMarker);
+  diagrammerSanitizing <- rock::opts$get('diagrammerSanitizing');
 
   if (missing(file)) {
     if (missing(text)) {
@@ -96,7 +106,7 @@ parse_source <- function(text,
       if ((length(text) == 1) && file.exists(text)) {
         x <- readLines(text,
                        encoding=encoding,
-                       warn=FALSE);
+                       warn=rlWarn);
         if (!silent) {
           cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
         }
@@ -116,7 +126,7 @@ parse_source <- function(text,
     if (file.exists(file)) {
       x <- readLines(file,
                      encoding=encoding,
-                     warn=FALSE);
+                     warn=rlWarn);
       if (!silent) {
         cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
       }
@@ -196,7 +206,7 @@ parse_source <- function(text,
     res$sectionBreakRegexes <- NA;
   }
 
-  if (length(res$attributes) > 0) {
+  if ((length(res$attributes) > 0) && (!all(is.na(unlist(res$attributes))))) {
 
     ### Simplify YAML attributes and convert into a data frame
     res$attributesDf <-
@@ -238,6 +248,17 @@ parse_source <- function(text,
       ### Store whether each utterance matches
       sourceDf[, glue::glue("{sectionRegex}_match")] <-
         grepl(sectionRegexes[sectionRegex], x);
+      ### Store value of match
+      sourceDf[, glue::glue("{sectionRegex}_content")] <-
+        ifelse(
+          sourceDf[, glue::glue("{sectionRegex}_match")],
+          gsub(
+            paste0(".*(", sectionRegexes[sectionRegex], ").*"),
+            "\\1",
+            x
+          ),
+          ""
+        );
       ### Set incremental counter for each match
       if (glue::glue("{sectionRegex}_match") %in% names(sourceDf) &&
           (length(sourceDf[, glue::glue("{sectionRegex}_match")]) > 0)) {
@@ -514,9 +535,74 @@ parse_source <- function(text,
     }
   }
 
+  ###---------------------------------------------------------------------------
+  ### Process codeValues
+
+  if (!is.null(codeValueRegexes) && length(codeValueRegexes) > 0) {
+
+    for (codeValueRegex in names(codeValueRegexes)) {
+
+      ### Find matches (the full substrings that match this code in each line)
+      matches <-
+        regmatches(x,
+                   gregexpr(codeValueRegexes[codeValueRegex], x));
+
+      ### Retain only the 'parenthesized' expression (i.e. the part of
+      ### this code's regex between the parentheses, i.e., the actual code itself)
+      cleanedCodeValueNames <-
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\1");
+
+      cleanedValues <-
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\2");
+
+      namedCodeValues <-
+        mapply(
+          stats::setNames,
+          cleanedValues,
+          cleanedCodeValueNames
+        );
+
+      allCodeValueNames <-
+        sort(unlist(unique(cleanedCodeValueNames)));
+
+      if (any(allCodeValueNames %in% names(sourceDf))) {
+        stop("At least one of the codeValue names also occurs as regular code identifier!");
+      }
+
+      for (currentCodeValueName in allCodeValueNames) {
+        sourceDf[[currentCodeValueName]] <-
+          unlist(
+            lapply(
+              namedCodeValues,
+              function(vector,
+                       elementToReturn) {
+                if (elementToReturn %in% names(vector)) {
+                  return(vector[elementToReturn]);
+                } else {
+                  return(NA);
+                }
+              },
+              elementToReturn = currentCodeValueName
+            )
+          );
+
+      }
+
+      ### Delete codes from utterances
+      x <-
+        gsub(codeValueRegexes[codeValueRegex],
+             "",
+             x);
+
+    }
+  }
+
   ### Trim spaces from front and back and store almost clean utterances
   sourceDf$utterances_clean_with_uids <-
     trimws(x);
+
+  ###---------------------------------------------------------------------------
+  ### Utterance identifiers
 
   ### Extract and store UIDs
   sourceDf$uids <-
@@ -528,11 +614,160 @@ parse_source <- function(text,
                        sourceDf$utterances_clean_with_uids),
            "");
 
-  ### Store really clear utterances
+  ### Store even cleaner utterances
   sourceDf$utterances_clean <-
     trimws(gsub(uidRegex,
                 "",
                 sourceDf$utterances_clean_with_uids));
+
+  ###---------------------------------------------------------------------------
+  ### Check for occurrences of the nestingMarker, which have to appear
+  ### at the beginning of the utterances (except for spaces maybe)
+
+  ### Only retain 'leading' nestingMarkers
+  nestingCharacters <-
+    sub(
+      paste0(
+        "^\\s*([",
+        nestingMarker,
+        " \\s]+).*$"
+      ),
+      "\\1",
+      sourceDf$utterances_clean
+    );
+
+  ### From this 'leading' bit, strip all characters
+  ### that are not the nestingMarker
+  nestingCharacters <-
+    gsub(
+      paste0(
+        "[^",
+        nestingMarker,
+        "]"
+      ),
+      "",
+      nestingCharacters
+    );
+
+  ### Store nesting levels that will be used later
+  ### to store utterance identifiers
+  sourceDf$nestingLevel <-
+    nchar(nestingCharacters);
+
+  ### Store parent utterance identifiers
+  sourceDf$parent_uid <-
+    get_parent_uid(
+      sourceDf$uids,
+      sourceDf$nestingLevel
+    );
+
+  ### Strip nesting markers from the beginning of the utterances to clean
+  ### them even more
+  sourceDf$utterances_clean <-
+    sub(
+      paste0(
+        "^\\s*[",
+        nestingMarker,
+        " \\s]+(.*)$"
+      ),
+      "\\1",
+      sourceDf$utterances_clean
+    );
+
+  ### Create 'label' version of utterances
+
+  sourceDf$utteranceLabel <- sourceDf$utterances_clean;
+
+  if (!is.null(utteranceLabelRegexes)) {
+    for (i in seq_along(utteranceLabelRegexes)) {
+      sourceDf$utteranceLabel <-
+        gsub(
+          utteranceLabelRegexes[[i]][1],
+          utteranceLabelRegexes[[i]][2],
+          sourceDf$utteranceLabel,
+          perl=TRUE
+        );
+    }
+  }
+
+  ###---------------------------------------------------------------------------
+  ### Create an utterance tree
+
+  ### Restructure
+  networkDf <-
+    sourceDf[,
+             c("uids", "parent_uid",
+               setdiff(names(sourceDf), c("uids", "parent_uid")))
+    ];
+
+  ### Remove lines without utterance identifier
+  networkDf <-
+    networkDf[
+      nchar(networkDf$uids) > 0,
+    ];
+
+  ### Convert to tree
+  if (any(nchar(networkDf$parent_uid) > 0)) {
+    utteranceTree <-
+      data.tree::FromDataFrameNetwork(
+        networkDf
+      );
+  } else {
+    utteranceTree <- NA;
+  }
+
+  ###---------------------------------------------------------------------------
+  ### Utterance diagram
+
+  if (any(nchar(networkDf$parent_uid) > 0)) {
+    utteranceTree$Do(
+      function(node) {
+        node$diagramLabel <-
+          node$utteranceLabel;
+        for (i in seq_along(diagrammerSanitizing)) {
+          node$diagramLabel <- gsub(
+            diagrammerSanitizing[[i]][1],
+            diagrammerSanitizing[[i]][2],
+            node$diagramLabel
+          );
+        }
+        node$diagramLabel <-
+          paste0(strwrap(node$diagramLabel, 40), collapse="\n");
+
+        return(node$diagramLabel);
+      }
+    );
+
+    data.tree::SetNodeStyle(
+      utteranceTree,
+      label = function(node) return(node$diagramLabel)
+    );
+
+    utteranceDiagram <-
+      data.tree::ToDiagrammeRGraph(
+        utteranceTree
+      );
+
+    utteranceDiagram <-
+      apply_graph_theme(utteranceDiagram,
+                        c("layout", "dot", "graph"),
+                        c("rankdir", "LR", "graph"),
+                        c("outputorder", "edgesfirst", "graph"),
+                        c("fixedsize", "false", "node"),
+                        c("shape", "box", "node"),
+                        c("style", "rounded,filled", "node"),
+                        c("color", "#000000", "node"),
+                        c("width", "4", "node"),
+                        c("color", "#888888", "edge"),
+                        c("dir", "none", "edge"),
+                        c("headclip", "false", "edge"),
+                        c("tailclip", "false", "edge"),
+                        c("fillcolor", "#FFFFFF", "node"));
+  } else {
+    utteranceDiagram <- NA;
+  }
+
+  ###---------------------------------------------------------------------------
 
   if (nrow(sourceDf) > 0) {
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
@@ -553,25 +788,95 @@ parse_source <- function(text,
 
   ### Store results in the object to return
   res$sourceDf <- cleanSourceDf;
+  res$mergedSourceDf <- res$sourceDf;
+  res$utteranceTree <- utteranceTree;
   res$rawSourceDf <- sourceDf;
   res$codings <- codeProcessing[[codeRegex]]$leafCodes;
   res$rawCodings <- codings;
   res$codeProcessing <- codeProcessing;
   res$inductiveCodeTrees <- purrr::map(res$codeProcessing, "inductiveCodeTrees");
   res$inductiveDiagrammeRs <- purrr::map(res$codeProcessing, "inductiveDiagrammeR");
+  res$utteranceDiagram <- utteranceDiagram;
 
   ### Merge attributes with source dataframe
   if (length(res$attributes) > 0) {
 
-    ### Merge attributes with source data
-    res$mergedSourceDf <-
-      merge(res$sourceDf,
-            res$attributesDf);
+    # ### Merge attributes with source data
+    # res$mergedSourceDf <-
+    #   merge(res$sourceDf,
+    #         res$attributesDf);
 
-  } else {
 
-    res$mergedSourceDf <-
-      res$sourceDf;
+    ###---------------------------------------------------------------------------
+    ###
+    ### START --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
+
+    ### Add attributes to the utterances
+    for (i in seq_along(idRegexes)) {
+      ### Check whether attributes was provided for this identifier
+      if (names(idRegexes)[i] %in% names(res$attributesDf)) {
+        if (!silent) {
+          print(glue::glue("\n\nFor identifier class {names(idRegexes)[i]}, attributes were provided: proceeding to join to sources dataframe.\n"));
+        }
+        ### Convert to character to avoid errors and delete
+        ### empty columns from merged source dataframe
+        usedIdRegexes <-
+          names(idRegexes)[names(idRegexes) %in% names(res$attributesDf)];
+        for (j in usedIdRegexes) {
+          res$attributesDf[, j] <-
+            as.character(res$attributesDf[, j]);
+        }
+        for (j in intersect(names(res$mergedSourceDf),
+                            names(res$attributesDf))) {
+          if (all(is.na(res$mergedSourceDf[, j]))) {
+            res$mergedSourceDf[, j] <- NULL;
+          }
+        }
+
+        if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
+          msg <-
+            paste0("When processing identifier regex '", names(idRegexes)[i],
+                   "', I failed to find its shorthand ('", names(idRegexes[i]),
+                   "') in the column names of the merged ",
+                   "sources data frame (",
+                   vecTxtQ(names(res$mergedSourceDf)), ").")
+          warning(msg);
+          if (!silent) {
+            cat(msg);
+          }
+        } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
+          warning("When processing identifier regex '", names(idRegexes)[i],
+                  "', I failed to find it in the column names of the merged ",
+                  "attributes data frame.");
+        } else {
+          # attributesDf[, names(idRegexes)[i]] <-
+          #   as.character(attributesDf[, names(idRegexes)[i]]);
+          ### Join attributes based on identifier
+          res$mergedSourceDf <-
+            dplyr::left_join(res$mergedSourceDf,
+                             res$attributesDf[, setdiff(names(res$attributesDf), 'type')],
+                             by=names(idRegexes)[i]);
+        }
+
+      } else {
+        if (!silent) {
+          print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
+        }
+      }
+    }
+
+    if (!silent) {
+      cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
+    }
+
+    ###---------------------------------------------------------------------------
+    ###
+    ### END --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
+
 
   }
 
@@ -593,13 +898,12 @@ parse_source <- function(text,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
   res$convenience$codingPaths <-
-    stats::setNames(res$convenience$codings,
-                    res$convenience$codingLeaves);
+    codePaths_to_namedVector(res$convenience$codings);
 
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used
     res$countedCodings <-
-      colSums(res$sourceDf[, res$convenience$codingLeaves]);
+      colSums(res$sourceDf[, res$convenience$codingLeaves, drop=FALSE]);
   } else {
     res$countedCodings <-
       NULL;

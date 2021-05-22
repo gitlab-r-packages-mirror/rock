@@ -4,6 +4,8 @@
 #' as `perl` regular expressions; see \code{\link{regex}} for more information).
 #' Instead of regular expressions, simple words or phrases can also be entered of
 #' course (since those are valid regular expressions).
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #'
 #' @rdname cleaning_sources
 #'
@@ -30,11 +32,13 @@ search_and_replace_in_source <- function(input,
                                          output = NULL,
                                          preventOverwriting = TRUE,
                                          encoding = "UTF-8",
+                                         rlWarn = rock::opts$get(rlWarn),
                                          silent=FALSE) {
 
   if (file.exists(input)) {
     res <- readLines(input,
-                     encoding=encoding);
+                     encoding=encoding,
+                     warn = rlWarn);
   } else {
     res <- input;
   }

@@ -12,8 +12,10 @@
 parse_source(
   text,
   file,
+  utteranceLabelRegexes = NULL,
   ignoreOddDelimiters = FALSE,
   postponeDeductiveTreeBuilding = FALSE,
+  rlWarn = rock::opts$get(rlWarn),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
@@ -49,6 +51,10 @@ first argument can be either a character vector or the path to a file; and if
 you're specifying a file and you want to be certain that an error is thrown if
 it doesn't exist, make sure to name it \code{file}.}
 
+\item{utteranceLabelRegexes}{Optionally, a list with two-element vectors
+to preprocess utterances before they are stored as labels (these 'utterance
+perl regular expression!}
+
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
 
@@ -56,6 +62,9 @@ should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE
 tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping
 this is useful if the full tree information is distributed over multiple files (in which case
 you should probably call \code{parse_sources} instead of \code{parse_source}).}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{encoding}{The encoding of the file to read (in \code{file}).}
 

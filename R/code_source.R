@@ -28,6 +28,8 @@
 #' @param output If specified, the coded source will be written here.
 #' @param preventOverwriting Whether to prevent overwriting existing files.
 #' @param encoding The encoding to use.
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the coded source object.
@@ -81,13 +83,15 @@ code_source <- function(input,
                         indices = NULL,
                         output = NULL,
                         preventOverwriting = rock::opts$get('preventOverwriting'),
+                        rlWarn = rock::opts$get(rlWarn),
                         encoding = rock::opts$get('encoding'),
                         silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
   if ((length(input) == 1) && (file.exists(input))) {
     input <- readLines(input,
-                       encoding=encoding);
+                       encoding=encoding,
+                       warn = rlWarn);
     input <- cleaned_source_to_utterance_vector(input);
   } else if ("character" %in% class(input)) {
     input <- cleaned_source_to_utterance_vector(input);

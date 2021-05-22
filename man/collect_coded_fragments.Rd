@@ -14,6 +14,7 @@ collect_coded_fragments(
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
   output = NULL,
+  outputViewer = "viewer",
   template = "default",
   rawResult = FALSE,
   includeBootstrap = rock::opts$get("includeBootstrap"),
@@ -56,6 +57,11 @@ this should be set to \code{FALSE} to have \code{add_html_tags} be of the most u
 \item{output}{Here, a path and filename can be provided where the
 result will be written. If provided, the result will be returned
 invisibly.}
+
+\item{outputViewer}{If showing output, where to show the output: in
+the console (\code{outputViewer='console'}) or in the viewer
+(\code{outputViewer='viewer'}), e.g. the RStudio viewer. You'll usually want
+the latter when outputting HTML, and otherwise the former.}
 
 \item{template}{The template to load; either the name of one
 of the ROCK templates (currently, only 'default' is available), or

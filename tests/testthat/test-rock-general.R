@@ -170,3 +170,73 @@ testthat::test_that("the example in export_codes_to_txt.Rd runs properly", {
 
 ###-----------------------------------------------------------------------------
 
+testthat::test_that("recoding works", {
+
+  testthat::expect_true({
+    ### Get path to example source
+    examplePath <-
+      system.file("extdata", package="rock");
+
+    ### Get filename
+    exampleFile <-
+      file.path(examplePath, "example-1.rock");
+
+    ### Load a source
+    loadedExample <- rock::load_source(exampleFile);
+
+    ### Take a subset to keep the overview
+    subExample <- loadedExample[21:27];
+
+    rock::recode_rename(
+      subExample,
+      c(childCode4 = "bla")
+    );
+
+    TRUE;
+  });
+});
+
+###-----------------------------------------------------------------------------
+
+
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+
+testthat::test_that("merging two sources works properly", {
+
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  tmpDir <- tempdir(check=TRUE);
+
+  # devtools::load_all();
+  # rock::opts$set(debug = TRUE);
+
+  testres <- merge_sources(
+    input = examplePath,
+    output = tmpDir,
+    filenameRegex = "merging-test-1",
+    primarySourcesRegex = "merging-test-1-primary",
+    preventOverwriting = FALSE,
+    silent = FALSE
+  );
+
+  testResult <-
+    readLines(file.path(tmpDir, "merging-test-1-primary_merged.rock"));
+
+  testthat::expect_equal(
+    testResult[9],
+    "---<some_section_break>--- ---<[a-zA-Z0-9_]+>---"
+  );
+
+  testthat::expect_equal(
+    testResult[16],
+    "[[uid=7d8m7295]] Quisque non pretium mi. [[code2]] [[code3]] [[code2>code4]] [[code5]]"
+  );
+
+});
+
+
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------

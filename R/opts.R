@@ -162,14 +162,21 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(### Used throughout
-       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9._-]+)\\]\\]"),
+       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9_>]+)\\]\\]"),
+       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
        sectionRegexes = c(paragraphs = "---paragraph-break---",
-                          secondary = "---<[a-zA-Z0-9]?>---"),
-       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]",
+                          secondary = "---<[a-zA-Z0-9_]+>---"),
+       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
+       codeTreeMarker = ">",
+
+       ### Regular expression describing the characters that can be used for
+       ### code identifiers (has to include `inductiveCodingHierarchyMarker`
+       ### and `codeTreeMarker`).
+       validCodeCharacters = "[a-zA-Z0-9_>]",
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
@@ -182,7 +189,7 @@ opts$defaults <-
        ignoreRegex = "^#",
 
        ### Used to merge sources
-       coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
+       coderId = "\\[\\[coderId=([a-zA-Z0-9_]+)\\]\\]",
        idForOmittedCoderIds = "noCoderId",
 
        ### Used for cleaning sources and adding UIDs
@@ -199,6 +206,13 @@ opts$defaults <-
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
        utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+       nestingMarker = "~",
+
+       ### Saniziting for DiagrammeR
+       diagrammerSanitizing = list(c("\\\"", "`"),
+                                   c("\\'", "`"),
+                                   c("\\\\", "/"),
+                                   c("[^a-zA-Z0-9;)(,._/`-]", " ")),
 
        ### Used for collecting sources
        utteranceGlue = "\n\n",
@@ -212,15 +226,23 @@ opts$defaults <-
        uidClass = "uid",
        utteranceClass = "utterance",
 
+       ### When displaying code identifiers, whether to by default show the
+       ### full path or just the code identifier itself
+       showFullCodePaths = TRUE,
+
+       ### When displaying code paths, whether to by default strip the root
+       stripRootsFromCodePaths = TRUE,
+
        ### For justifications
        justificationFile = "unspecified",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
        preventOverwriting = TRUE,
+       rlWarn = FALSE, ### Whether to let readLines emit a warning
 
        ### Whether to include bootstrap CSS when collecting fragments
-       includeBootstrap = FALSE,
+       includeBootstrap = "smart",
 
        ### Whether to show table output in the console or viewer,
        ### if shown interactively
@@ -240,4 +262,9 @@ opts$defaults <-
        debug = FALSE,
 
        ### Used throughout for suppressing messages
-       silent = TRUE);
+       silent = TRUE,
+
+       ### And warnings
+       diligentWarnings = TRUE
+
+    );

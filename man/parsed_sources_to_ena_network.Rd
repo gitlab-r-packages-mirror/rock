@@ -9,7 +9,7 @@ parsed_sources_to_ena_network(
   unitCols,
   conversationCols = "originalSource",
   codes = x$convenience$codingLeaves,
-  metadata = x$convenience$metadataVars
+  metadata = x$convenience$attributesVars
 )
 }
 \arguments{

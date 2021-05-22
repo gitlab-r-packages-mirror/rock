@@ -13,6 +13,7 @@ mask_source(
   proportionToMask = 1,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
+  rlWarn = rock::opts$get(rlWarn),
   maskRegex = "[[:alnum:]]",
   maskChar = "X",
   perl = TRUE,
@@ -64,6 +65,9 @@ case, every file will be written to the same directory it was read from.}
 
 \item{encoding}{The encoding of the source(s).}
 
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
+
 \item{maskRegex}{A regular expresssion (regex) specifying the characters to
 mask (i.e. replace with the masking character).}
 
@@ -94,4 +98,14 @@ character vectors, for \code{mask_sources}.
 }
 \description{
 These functions can be used to mask a set of utterances or one or more sources.
+}
+\examples{
+### Mask text but not the codes
+rock::mask_utterances(
+  paste0(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+    "elit. [[expAttitude_expectation_73dnt5z1>earplugsFeelUnpleasant]]"
+  )
+)
+
 }
