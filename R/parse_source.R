@@ -837,19 +837,24 @@ parse_source <- function(text,
 
         if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
           msg <-
-            paste0("When processing identifier regex '", names(idRegexes)[i],
-                   "', I failed to find its shorthand ('", names(idRegexes[i]),
+            paste0("When processing identifier regex '", idRegexes[i],
+                   "', I failed to find its name ('", names(idRegexes[i]),
                    "') in the column names of the merged ",
                    "sources data frame (",
-                   vecTxtQ(names(res$mergedSourceDf)), ").")
+                   vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
+                   "the attributes data frame with the source data frame for ",
+                   "this class instance identifier.")
           warning(msg);
           if (!silent) {
             cat(msg);
           }
         } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
-          warning("When processing identifier regex '", names(idRegexes)[i],
-                  "', I failed to find it in the column names of the merged ",
-                  "attributes data frame.");
+          warning("When processing identifier regex '", idRegexes[i],
+                  "', I failed to find its name (", names(idRegexes)[i],
+                  ") in the column names of the merged ",
+                  "attributes data frame, so not merging ",
+                  "the attributes data frame with the source data frame for ",
+                  "this class instance identifier..");
         } else {
           # attributesDf[, names(idRegexes)[i]] <-
           #   as.character(attributesDf[, names(idRegexes)[i]]);

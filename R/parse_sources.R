@@ -409,7 +409,9 @@ parse_sources <- function(path,
                  "', I failed to find its name ('", names(idRegexes[i]),
                  "') in the column names of the merged ",
                  "sources data frame (",
-                 vecTxtQ(names(res$mergedSourceDf)), ").")
+                 vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
+                 "the attributes data frame with the source data frame for ",
+                 "this class instance identifier..")
         warning(msg);
         if (!silent) {
           cat(msg);
@@ -419,7 +421,9 @@ parse_sources <- function(path,
           paste0("When processing identifier regex '", idRegexes[i],
                  "', I failed to find its name (", names(idRegexes[i]),
                  ") in the column names of the merged ",
-                 "attributes data frame.");
+                 "attributes data frame, so not merging ",
+                 "the attributes data frame with the source data frame for ",
+                 "this class instance identifier..");
         warning(msg);
         if (!silent) {
           cat(msg);
