@@ -259,18 +259,33 @@ parse_sources <- function(path,
 
   ### Merge merged source dataframes
   res$mergedSourceDf <-
-    dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
-                                       function(x) {
-                                         if (is.data.frame(x$mergedSourceDf)) {
-                                           return(x);
-                                         } else {
-                                           x$mergedSourceDf <-
-                                             NULL;
-                                           return(x);
-                                         }
-                                       }),
-                                'mergedSourceDf'),
-                     .id="originalSource");
+    rbind_df_list(
+      lapply(
+        names(res$parsedSources),
+        function(i) {
+          if (is.data.frame(res$parsedSources[[i]]$mergedSourceDf)) {
+            res <- res$parsedSources[[i]]$mergedSourceDf;
+            res$originalSource = i;
+            return(res);
+          } else {
+            return(NULL);
+          }
+        }
+      )
+    );
+
+    # dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
+    #                                    function(x) {
+    #                                      if (is.data.frame(x$mergedSourceDf)) {
+    #                                        return(x);
+    #                                      } else {
+    #                                        x$mergedSourceDf <-
+    #                                          NULL;
+    #                                        return(x);
+    #                                      }
+    #                                    }),
+    #                             'mergedSourceDf'),
+    #                  .id="originalSource");
 
   res$mergedSourceDf[, res$convenience$codingLeaves] <-
     lapply(res$mergedSourceDf[, res$convenience$codingLeaves],
