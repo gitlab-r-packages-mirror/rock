@@ -233,6 +233,7 @@ parse_sources <- function(path,
         function(x) {
           return(x$sourceDf);
         }
+      )
     );
 
     # dplyr::bind_rows(purrr::map(res$parsedSources,
