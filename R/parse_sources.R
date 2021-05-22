@@ -47,6 +47,12 @@ parse_sources <- function(path,
                recursive=recursive,
                full.names=TRUE);
 
+  if (length(fileList) == 0) {
+    cat0("\nThere are no files matching regular expression '",
+         regex, "' in directory '", path, "', so I have nothing to do.\n");
+    return(invisible(NULL));
+  }
+
   res <- list(input=as.list(environment()));
 
   if (!silent) {
