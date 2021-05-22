@@ -193,9 +193,9 @@ parse_sources <- function(path,
              }
            });
 
-  if (!(is.null(res$inductiveCodeTrees)) &&
-      !(is.na(res$inductiveCodeTrees)) &&
-      length(res$inductiveCodeTrees) > 0) {
+  if ((!(is.null(res$inductiveCodeTrees))) &&
+      (length(res$inductiveCodeTrees) > 0) &&
+      (!(all(is.na(res$inductiveCodeTrees))))) {
 
     res$inductiveCodeTreeGraphs <-
       lapply(
