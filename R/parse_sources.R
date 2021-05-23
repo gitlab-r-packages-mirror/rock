@@ -5,6 +5,7 @@ parse_sources <- function(path,
                           regex=NULL,
                           recursive=TRUE,
                           ignoreOddDelimiters = FALSE,
+                          checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                           encoding=rock::opts$get(encoding),
                           silent=rock::opts$get(silent)) {
 
@@ -263,10 +264,11 @@ parse_sources <- function(path,
       lapply(
         names(res$parsedSources),
         function(i) {
-          if (is.data.frame(res$parsedSources[[i]]$mergedSourceDf)) {
-            res <- res$parsedSources[[i]]$mergedSourceDf;
-            res$originalSource = i;
-            return(res);
+          if (is.data.frame(res$parsedSources[[i]]$mergedSourceDf) &&
+              nrow(res$parsedSources[[i]]$mergedSourceDf) > 0) {
+            tmpRes <- res$parsedSources[[i]]$mergedSourceDf;
+            tmpRes$originalSource <- i;
+            return(tmpRes);
           } else {
             return(NULL);
           }
@@ -411,8 +413,10 @@ parse_sources <- function(path,
                  "sources data frame (",
                  vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
                  "the attributes data frame with the source data frame for ",
-                 "this class instance identifier..")
-        warning(msg);
+                 "this class instance identifier..");
+        if (checkClassInstanceIds) {
+          warning(msg);
+        }
         if (!silent) {
           cat(msg);
         }
@@ -424,7 +428,9 @@ parse_sources <- function(path,
                  "attributes data frame, so not merging ",
                  "the attributes data frame with the source data frame for ",
                  "this class instance identifier..");
-        warning(msg);
+        if (checkClassInstanceIds) {
+          warning(msg);
+        }
         if (!silent) {
           cat(msg);
         }

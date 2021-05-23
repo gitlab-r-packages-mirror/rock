@@ -192,6 +192,10 @@ opts$defaults <-
        coderId = "\\[\\[coderId=([a-zA-Z0-9_]+)\\]\\]",
        idForOmittedCoderIds = "noCoderId",
 
+       ### Whether to warn if a class instance identifier for specified
+       ### attributes isn't encountered.
+       checkClassInstanceIds = FALSE,
+
        ### Used for cleaning sources and adding UIDs
        codeDelimiters = c("[[", "]]"),
        uidPrefix = "uid=",

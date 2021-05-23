@@ -14,6 +14,7 @@ parse_source(
   file,
   utteranceLabelRegexes = NULL,
   ignoreOddDelimiters = FALSE,
+  checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   postponeDeductiveTreeBuilding = FALSE,
   rlWarn = rock::opts$get(rlWarn),
   encoding = rock::opts$get(encoding),
@@ -28,6 +29,7 @@ parse_sources(
   regex = NULL,
   recursive = TRUE,
   ignoreOddDelimiters = FALSE,
+  checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
@@ -57,6 +59,9 @@ perl regular expression!}
 
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
+
+\item{checkClassInstanceIds}{Whether to check for the occurrence of class
+instance identifiers specified in the attributes.}
 
 \item{postponeDeductiveTreeBuilding}{Whether to imediately try to build the deductive
 tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping

@@ -31,6 +31,8 @@
 #' or not (`FALSE`).
 #' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
+#' @param checkClassInstanceIds Whether to check for the occurrence of class
+#' instance identifiers specified in the attributes.
 #' @param encoding The encoding of the file to read (in `file`).
 #' @param postponeDeductiveTreeBuilding Whether to imediately try to build the deductive
 #' tree(s) based on the information in this file (`FALSE`) or whether to skip that. Skipping
@@ -77,6 +79,7 @@ parse_source <- function(text,
                          file,
                          utteranceLabelRegexes = NULL,
                          ignoreOddDelimiters=FALSE,
+                         checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                          postponeDeductiveTreeBuilding = FALSE,
                          rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
@@ -844,17 +847,26 @@ parse_source <- function(text,
                    vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
                    "the attributes data frame with the source data frame for ",
                    "this class instance identifier.")
-          warning(msg);
+          if (checkClassInstanceIds) {
+            warning(msg);
+          }
           if (!silent) {
             cat(msg);
           }
         } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
-          warning("When processing identifier regex '", idRegexes[i],
-                  "', I failed to find its name (", names(idRegexes)[i],
-                  ") in the column names of the merged ",
-                  "attributes data frame, so not merging ",
-                  "the attributes data frame with the source data frame for ",
-                  "this class instance identifier..");
+          msg <-
+            paste0("When processing identifier regex '", idRegexes[i],
+                   "', I failed to find its name (", names(idRegexes)[i],
+                   ") in the column names of the merged ",
+                   "attributes data frame, so not merging ",
+                   "the attributes data frame with the source data frame for ",
+                   "this class instance identifier..");
+          if (checkClassInstanceIds) {
+            warning(msg);
+          }
+          if (!silent) {
+            cat(msg);
+          }
         } else {
           # attributesDf[, names(idRegexes)[i]] <-
           #   as.character(attributesDf[, names(idRegexes)[i]]);
