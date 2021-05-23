@@ -429,13 +429,76 @@ parse_sources <- function(path,
           cat(msg);
         }
       } else {
-        # attributesDf[, names(idRegexes)[i]] <-
-        #   as.character(attributesDf[, names(idRegexes)[i]]);
-        ### Join attributes based on identifier
-        res$mergedSourceDf <-
-          dplyr::left_join(res$mergedSourceDf,
-                           attributesDf[, setdiff(names(attributesDf), 'type')],
-                           by=names(idRegexes)[i]);
+
+        attributesToLookFor <-
+          setdiff(
+            names(attributesDf),
+            names(idRegexes)[i]
+          );
+
+        alreadyPresentAttributeIndices <-
+          attributesToLookFor %in% names(res$mergedSourceDf);
+
+        alreadyPresentAttributes <-
+          attributesToLookFor[alreadyPresentAttributeIndices];
+
+        if (any(alreadyPresentAttributeIndices)) {
+
+          if (!silent) {
+            cat0("\n\nOne or more attribute columns already exist in the merged ",
+                 "source data frame. To be safe, proceeding to check whether ",
+                 "after merging again, the results are the same.");
+          }
+
+          testDf <-
+            dplyr::left_join(res$mergedSourceDf,
+                             attributesDf[, setdiff(names(attributesDf), 'type')],
+                             by=names(idRegexes)[i]);
+
+          for (i in alreadyPresentAttributes) {
+
+            if (i %in% names(testDf)) {
+
+              if (res$mergedSourceDf[, i] != testDf[, i]) {
+
+                cat("\nFound a difference in column ", i, ".");
+                stop("Found a difference in column ", i, ".");
+
+              }
+
+            } else {
+
+              if (!silent) {
+                cat0("\nColumn ", i, " does not exist in the newly merged ",
+                     "data frame.");
+              }
+
+            }
+
+          }
+
+          if (!silent) {
+            cat0("\nAll columns that existed in both data frames are ",
+                 "the same. Not performing the merge of the attribute ",
+                 "data frame and the source data frame.");
+          }
+
+          #res$mergedSourceDf <- testDf;
+
+        } else {
+
+          # attributesDf[, names(idRegexes)[i]] <-
+          #   as.character(attributesDf[, names(idRegexes)[i]]);
+          ### Join attributes based on identifier
+          res$mergedSourceDf <-
+            dplyr::left_join(
+              res$mergedSourceDf,
+              attributesDf[, setdiff(names(attributesDf), 'type')],
+              by=names(idRegexes)[i]
+            );
+
+        }
+
       }
 
     } else {
@@ -446,7 +509,7 @@ parse_sources <- function(path,
   }
 
   if (!silent) {
-    cat0("Finished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
+    cat0("\nFinished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
   }
 
   ###---------------------------------------------------------------------------
