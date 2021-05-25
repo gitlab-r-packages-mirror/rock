@@ -4,9 +4,9 @@
 \alias{parse_source}
 \alias{parsing_sources}
 \alias{parse_sources}
-\alias{print.rockParsedSource}
-\alias{print.rockParsedSources}
-\alias{plot.rockParsedSources}
+\alias{print.rock_parsedSource}
+\alias{print.rock_parsedSources}
+\alias{plot.rock_parsedSources}
 \title{Parsing sources}
 \usage{
 parse_source(
@@ -21,7 +21,7 @@ parse_source(
   silent = rock::opts$get(silent)
 )
 
-\method{print}{rockParsedSource}(x, prefix = "### ", ...)
+\method{print}{rock_parsedSource}(x, prefix = "### ", ...)
 
 parse_sources(
   path,
@@ -34,9 +34,9 @@ parse_sources(
   silent = rock::opts$get(silent)
 )
 
-\method{print}{rockParsedSources}(x, prefix = "### ", ...)
+\method{print}{rock_parsedSources}(x, prefix = "### ", ...)
 
-\method{plot}{rockParsedSources}(x, ...)
+\method{plot}{rock_parsedSources}(x, ...)
 }
 \arguments{
 \item{text, file}{As \code{text} or \code{file}, you can specify a \code{file} to read with

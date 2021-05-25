@@ -11,7 +11,7 @@ show_attribute_table(
 )
 }
 \arguments{
-\item{x}{A \code{rockParsedSources} object (the result of a call to
+\item{x}{A \code{rock_parsedSources} object (the result of a call to
 \code{rock::parse_sources}).}
 
 \item{output}{The output: a character vector with one or more

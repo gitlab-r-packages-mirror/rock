@@ -85,7 +85,7 @@ codingScheme_levine <-
     source = paste0("Levine, R., Fowler, F., Jr., & Brown, J. (2005).",
                     "Role of cognitive testing in the development of the ",
                     "CAHPS hospital survey. Health Research and Educational ",
-                    "Trust, 40, 2037–2056. ",
+                    "Trust, 40, 2037-2056. ",
                     "https://doi.org/10.1111/j.1475-6773.2005.00472.x"),
     codes = c("comprehension", "knowledge", "inapplicable",
               "construct", "subtle", "general"),

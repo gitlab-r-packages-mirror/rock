@@ -15,7 +15,7 @@ show_inductive_code_tree(
 )
 }
 \arguments{
-\item{x}{A \code{rockParsedSources} object (the result of a call to
+\item{x}{A \code{rock_parsedSources} object (the result of a call to
 \code{rock::parse_sources}).}
 
 \item{codes}{A regular expression: only code trees from codes coded
