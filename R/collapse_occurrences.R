@@ -48,7 +48,7 @@ collapse_occurrences <- function(parsedSource,
                                  columns = NULL,
                                  logical = FALSE) {
 
-  if (!("rockParsedSource" %in% class(parsedSource))) {
+  if (!("rock_parsedSource" %in% class(parsedSource))) {
     stop("As argument `parsedSource`, you must specify a parsed source, ",
          "as provided by the `rock::parse_source` function!");
   }

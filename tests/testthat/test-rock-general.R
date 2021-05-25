@@ -12,7 +12,7 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
   testres <- parse_source(file.path(examplePath,
                                     "lorum-ipsum.rock"));
 
-  testthat::expect_s3_class(testres, "rockParsedSource");
+  testthat::expect_s3_class(testres, "rock_parsedSource");
 
 });
 

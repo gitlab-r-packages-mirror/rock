@@ -44,7 +44,7 @@
 #' @param ... Any additional arguments are passed on to the default print method.
 #'
 #' @rdname parsing_sources
-#' @aliases parsing_sources parse_source parse_sources print.rockParsedSource
+#' @aliases parsing_sources parse_source parse_sources print.rock_parsedSource
 #'
 #' @examples ### Get path to example source
 #' examplePath <-
@@ -144,7 +144,7 @@ parse_source <- function(text,
   ### Store results in the object to return
   res <-
     structure(list(arguments = as.list(environment())),
-              class="rockParsedSource");
+              class="rock_parsedSource");
 
   ### First process YAML fragments and remove them
   res$yamlFragments <-
@@ -984,9 +984,9 @@ parse_source <- function(text,
 }
 
 #' @rdname parsing_sources
-#' @method print rockParsedSource
+#' @method print rock_parsedSource
 #' @export
-print.rockParsedSource <- function(x, prefix="### ",  ...) {
+print.rock_parsedSource <- function(x, prefix="### ",  ...) {
   totalSectionMatches <-
     sum(unlist(lapply(x$rawSourceDf[, grep('_match',
                                            names(x$rawSourceDf))],

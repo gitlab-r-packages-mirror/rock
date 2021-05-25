@@ -17,9 +17,9 @@
 #' or full ancestry (i.e. the path of parent codes all the way up to the root).
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
-#' this file. If not, it is saved to the [justifier::workspace()]. This can
+#' this file. If not, it is saved to the `justifier::workspace()`. This can
 #' then be saved or displayed at the end of the R Markdown file or R script
-#' using [justifier::save_workspace()].
+#' using `justifier::save_workspace()`.
 #' @param preventOverwriting Whether to prevent overwriting existing files
 #' when writing the files to `output`.
 #' @param encoding The encoding to use.

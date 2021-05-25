@@ -14,6 +14,6 @@
 #'   #parse_sources
 #'
 #'   return(structure(res,
-#'                    class="rockParsedSources"));
+#'                    class="rock_parsedSources"));
 #'
 #' }

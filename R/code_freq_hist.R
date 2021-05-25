@@ -22,10 +22,10 @@ code_freq_hist <- function(x,
                            ggplot2Theme = ggplot2::theme(legend.position = "bottom"),
                            silent = rock::opts$get("silent")) {
 
-  if (!(("rockParsedSources" %in% class(x)) |
-        ("rockParsedSource"  %in% class(x)))) {
-    stop("As `x`, you must pass either an `rockParsedSource` or ",
-         "an `rockParsedSources` object (i.e. either the result ",
+  if (!(("rock_parsedSources" %in% class(x)) |
+        ("rock_parsedSource"  %in% class(x)))) {
+    stop("As `x`, you must pass either an `rock_parsedSource` or ",
+         "an `rock_parsedSources` object (i.e. either the result ",
          "from a call to `rock::parseSource()` or the result from ",
          "a call to `rock::parseSources()`). However, you ",
          "provided an object of class ", vecTxtQ(x), ".");
@@ -33,7 +33,7 @@ code_freq_hist <- function(x,
 
   showFullCodePaths <- rock::opts$get("showFullCodePaths");
 
-  if ("rockParsedSource" %in% class(x)) {
+  if ("rock_parsedSource" %in% class(x)) {
 
     x$countedCodings <-
       x$countedCodings[grepl(codes,
@@ -121,7 +121,7 @@ code_freq_hist <- function(x,
 
   tmpDf$codeNr <- as.numeric(tmpDf$Code);
 
-  if ("rockParsedSource" %in% class(x)) {
+  if ("rock_parsedSource" %in% class(x)) {
     res <- ggplot2::ggplot(data=tmpDf,
                            mapping=ggplot2::aes_string(x='codeNr',
                                                        y='Frequency'));

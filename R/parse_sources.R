@@ -718,14 +718,14 @@ parse_sources <- function(path,
   # }
 
   return(structure(res,
-                   class="rockParsedSources"));
+                   class="rock_parsedSources"));
 
 }
 
 #' @rdname parsing_sources
-#' @method print rockParsedSources
+#' @method print rock_parsedSources
 #' @export
-print.rockParsedSources <- function(x, prefix="### ",  ...) {
+print.rock_parsedSources <- function(x, prefix="### ",  ...) {
   sourceFileNames <- names(x$parsedSources);
   print(glue::glue("Parsed {length(sourceFileNames)} sources, with filenames ",
                    "{vecTxtQ(sourceFileNames)}."));
@@ -734,9 +734,9 @@ print.rockParsedSources <- function(x, prefix="### ",  ...) {
 }
 
 #' @rdname parsing_sources
-#' @method plot rockParsedSources
+#' @method plot rock_parsedSources
 #' @export
-plot.rockParsedSources <- function(x, ...) {
+plot.rock_parsedSources <- function(x, ...) {
   if (!is.null(x$deductiveCodeTreeGraph)) {
     return(DiagrammeR::render_graph(x$deductiveCodeTreeGraph));
   } else {

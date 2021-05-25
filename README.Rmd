@@ -92,7 +92,7 @@ install.packages('", packagename, "');
 ```"));
 ```
 
-You can install the development version of ``r packagename`` from [GitLab](https://gitlab.com) with:
+You can install the development version of ``r packagename`` from [GitLab](https://about.gitlab.com/) with:
 
 ```{r echo=FALSE, comment="", results="asis"}
 cat(paste0("``` r

@@ -2,7 +2,7 @@
 #'
 #' This function shows one or more inductive code trees.
 #'
-#' @param x A `rockParsedSources` object (the result of a call to
+#' @param x A `rock_parsedSources` object (the result of a call to
 #' `rock::parse_sources`).
 #' @param codes A regular expression: only code trees from codes coded
 #' with a coding pattern with this name will be shown.
@@ -26,10 +26,10 @@ show_inductive_code_tree <- function(x,
                                      edgeStyle = list(arrowhead = "none"),
                                      graphStyle = list(rankdir = "LR")) {
 
-  if (!(("rockParsedSources" %in% class(x)) |
-        ("rockParsedSource"  %in% class(x)))) {
-    stop("As `x`, you must pass either an `rockParsedSource` or ",
-         "an `rockParsedSources` object (i.e. either the result ",
+  if (!(("rock_parsedSources" %in% class(x)) |
+        ("rock_parsedSource"  %in% class(x)))) {
+    stop("As `x`, you must pass either an `rock_parsedSource` or ",
+         "an `rock_parsedSources` object (i.e. either the result ",
          "from a call to `rock::parseSource()` or the result from ",
          "a call to `rock::parseSources()`). However, you ",
          "provided an object of class ", vecTxtQ(x), ".");
