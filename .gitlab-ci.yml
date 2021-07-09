@@ -2,7 +2,7 @@ variables:
   CODECOV_TOKEN: "8ff529cc-45e2-4835-8485-29df0961b10b"
   _R_CHECK_CRAN_INCOMING_: "false"
   _R_CHECK_FORCE_SUGGESTS_: "true"
-  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git libgsl0-dev"
+  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git libgsl0-dev libv8-dev"
 
 image: rocker/tidyverse
 
@@ -12,7 +12,8 @@ before_script:
   - apt-get install -y --no-install-recommends ${APT_PKGS}
   - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
   - R -e 'install.packages(c("knitr", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
-  - R -e 'install.packages(c("tinytex", "DiagrammeRsvg"))'
+  - R -e 'install.packages("tinytex");'
+  - R -e 'install.packages("DiagrammeRsvg")'
   - R -e 'devtools::install_gitlab("r-packages/yum")'
   - R -e 'devtools::install_gitlab("r-packages/justifier")'
   - apt-get install -y lmodern texlive-fonts-recommended
@@ -44,7 +45,8 @@ coverage:
     - install2.r covr
     - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
     - R -e 'install.packages(c("knitr", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
-    - R -e 'install.packages(c("tinytex", "DiagrammeRsvg"))'
+    - R -e 'install.packages("tinytex")'
+    - R -e 'install.packages("DiagrammeRsvg")'
     - R -e 'devtools::install_gitlab("r-packages/yum")'
     - R -e 'devtools::install_gitlab("r-packages/justifier")'
     - R -e 'devtools::install()'
