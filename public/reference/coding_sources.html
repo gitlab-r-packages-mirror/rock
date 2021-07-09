@@ -74,7 +74,7 @@ loading_sources functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ loading_sources functions." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@ loading_sources functions." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,29 +133,30 @@ sources that were read with one of the
 <code>loading_sources</code> functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>code_source</span>(
-  <span class='no'>input</span>,
-  <span class='no'>codes</span>,
-  <span class='kw'>indices</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"preventOverwriting"</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"encoding"</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"silent"</span>)
-)
+    <pre class="usage"><span class='fu'>code_source</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  <span class='va'>codes</span>,
+  indices <span class='op'>=</span> <span class='cn'>NULL</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"preventOverwriting"</span><span class='op'>)</span>,
+  rlWarn <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>rlWarn</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"encoding"</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>code_sources</span>(
-  <span class='no'>input</span>,
-  <span class='no'>codes</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indices</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_coded"</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"preventOverwriting"</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"encoding"</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"silent"</span>)
-)</pre>
+<span class='fu'>code_sources</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  <span class='va'>codes</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  indices <span class='op'>=</span> <span class='cn'>NULL</span>,
+  outputPrefix <span class='op'>=</span> <span class='st'>""</span>,
+  outputSuffix <span class='op'>=</span> <span class='st'>"_coded"</span>,
+  recursive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  filenameRegex <span class='op'>=</span> <span class='st'>".*"</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"preventOverwriting"</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"encoding"</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,8 +192,39 @@ applied. Note that if <code>indices</code> is provided, only the first
 element of <code>codes</code> is used, and its name is ignored.</p></td>
     </tr>
     <tr>
+      <th>output</th>
+      <td><p>If specified, the coded source will be written here.</p></td>
+    </tr>
+    <tr>
+      <th>preventOverwriting</th>
+      <td><p>Whether to prevent overwriting existing files.</p></td>
+    </tr>
+    <tr>
+      <th>rlWarn</th>
+      <td><p>Whether to let <code><a href='https://rdrr.io/r/base/readLines.html'>readLines()</a></code> warn, e.g. if files do not end
+with a newline character.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>The encoding to use.</p></td>
+    </tr>
+    <tr>
       <th>silent</th>
       <td><p>Whether to be chatty or quiet.</p></td>
+    </tr>
+    <tr>
+      <th>outputPrefix, outputSuffix</th>
+      <td><p>A prefix and/or suffix to prepend and/or
+append to the filenames to distinguish them from the input filenames.</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>Whether to also read files from all subdirectories
+of the <code>input</code> directory</p></td>
+    </tr>
+    <tr>
+      <th>filenameRegex</th>
+      <td><p>Only input files matching this patterns will be read.</p></td>
     </tr>
     </table>
 
@@ -202,41 +234,49 @@ element of <code>codes</code> is used, and its name is ignored.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Get a path to one example file</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse single example source</span>
-<span class='no'>loadedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='loading_sources.html'>load_source</a></span>(<span class='no'>exampleFile</span>);
+<span class='va'>loadedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
 
 <span class='co'>### Show line 71</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>loadedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>loadedExample</span><span class='op'>[</span><span class='fl'>71</span><span class='op'>]</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for</div><div class='input'>
 <span class='co'>### Specify the rules to code all utterances</span>
 <span class='co'>### containing "Ipsum" with the code 'ipsum' and</span>
 <span class='co'>### all utterances containing the code</span>
-<span class='no'>codeSpecs</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"(?i)ipsum"</span> <span class='kw'>=</span> <span class='st'>"ipsum"</span>,
-    <span class='st'>"BC|AD|\\d\\d\\d\\ds"</span> <span class='kw'>=</span> <span class='st'>"timeRef"</span>);
+<span class='va'>codeSpecs</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"(?i)ipsum"</span> <span class='op'>=</span> <span class='st'>"ipsum"</span>,
+    <span class='st'>"BC|AD|\\d\\d\\d\\ds"</span> <span class='op'>=</span> <span class='st'>"timeRef"</span><span class='op'>)</span>;
 
 <span class='co'>### Apply rules</span>
-<span class='no'>codedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>loadedExample</span>,
-                            <span class='no'>codeSpecs</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
+<span class='va'>codedExample</span> <span class='op'>&lt;-</span> <span class='fu'>code_source</span><span class='op'>(</span><span class='va'>loadedExample</span>,
+                            <span class='va'>codeSpecs</span><span class='op'>)</span>;
+
 <span class='co'>### Show line 71</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>codedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]]</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>codedExample</span><span class='op'>[</span><span class='fl'>71</span><span class='op'>]</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[timeRef]]</div><div class='input'>
 <span class='co'>### Also add code "foo" to utterances with code 'ipsum'</span>
-<span class='no'>moreCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>codedExample</span>,
-                                <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"[[ipsum]]"</span> <span class='kw'>=</span> <span class='st'>"foo"</span>));</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
+<span class='va'>moreCodedExample</span> <span class='op'>&lt;-</span> <span class='fu'>code_source</span><span class='op'>(</span><span class='va'>codedExample</span>,
+                                <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"[[ipsum]]"</span> <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span><span class='op'>)</span>;
+
 <span class='co'>### Show line 71</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>moreCodedExample</span>[<span class='fl'>71</span>]);</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[ipsum]] [[timeRef]] [[foo]]</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>moreCodedExample</span><span class='op'>[</span><span class='fl'>71</span><span class='op'>]</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[timeRef]]</div><div class='input'>
 <span class='co'>### Use the 'indices' argument to add the code 'bar' to</span>
 <span class='co'>### line 71</span>
-<span class='no'>overCodedExample</span> <span class='kw'>&lt;-</span> <span class='fu'>code_source</span>(<span class='no'>moreCodedExample</span>,
+<span class='va'>overCodedExample</span> <span class='op'>&lt;-</span> <span class='fu'>code_source</span><span class='op'>(</span><span class='va'>moreCodedExample</span>,
                                 <span class='st'>"bar"</span>,
-                                <span class='kw'>indices</span><span class='kw'>=</span><span class='fl'>71</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='no'>overCodedExample</span>[<span class='fl'>71</span>]);</div></pre>
+                                indices<span class='op'>=</span><span class='fl'>71</span><span class='op'>)</span>;
+
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>overCodedExample</span><span class='op'>[</span><span class='fl'>71</span><span class='op'>]</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for [[timeRef]] [[bar]]</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -252,7 +292,7 @@ element of <code>codes</code> is used, and its name is ignored.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

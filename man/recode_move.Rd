@@ -40,9 +40,9 @@ source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}})
 \item{justification}{The justification for this action.}
 
 \item{justificationFile}{If specified, the justification is appended to
-this file. If not, it is saved to the \code{\link[justifier:workspace]{justifier::workspace()}}. This can
+this file. If not, it is saved to the \code{justifier::workspace()}. This can
 then be saved or displayed at the end of the R Markdown file or R script
-using \code{\link[justifier:save_workspace]{justifier::save_workspace()}}.}
+using \code{justifier::save_workspace()}.}
 
 \item{preventOverwriting}{Whether to prevent overwriting existing files
 when writing the files to \code{output}.}

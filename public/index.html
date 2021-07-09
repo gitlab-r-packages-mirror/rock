@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -69,7 +69,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -108,12 +108,15 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of <code>rock</code> from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'rock'</span>);</pre></div>
-<p>You can install the development version of <code>rock</code> from <a href="https://gitlab.com">GitLab</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_gitlab.html">install_gitlab</a></span>(<span class="st">'r-packages/rock'</span>);</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'rock'</span><span class="op">)</span>;</code></pre></div>
+<p>You can install the development version of <code>rock</code> from <a href="https://about.gitlab.com/">GitLab</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_gitlab.html">install_gitlab</a></span><span class="op">(</span><span class="st">'r-packages/rock'</span><span class="op">)</span>;</code></pre></div>
 <p>(assuming you have <code>remotes</code> installed; otherwise, install that first using the <code>install.packages</code> function)</p>
 <p>If you really want to install the most cutting edge version, install the ‘dev’ branch of this repository:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_gitlab.html">install_gitlab</a></span>(<span class="st">'r-packages/rock@dev'</span>);</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_gitlab.html">install_gitlab</a></span><span class="op">(</span><span class="st">'r-packages/rock@dev'</span><span class="op">)</span>;</code></pre></div>
 <!--------------------------------------------->
 <!-- Start of a custom bit for every package -->
 <!--------------------------------------------->
@@ -122,6 +125,8 @@
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->
 <!--------------------------------------------->
+<!--  https://stackoverflow.com/questions/4822471/count-number-of-lines-in-a-git-repository    -->
+<!--  cloc $(git ls-files) -->
 </div>
 </div>
 
@@ -135,7 +140,7 @@
 </li>
 <li>Browse source code at <br><a href="https://gitlab.com/r-packages/rock/">https://​gitlab.com/​r-packages/​rock/​</a>
 </li>
-<li>Report a bug at <br><a href="https://gitlab.com/r-packages/rock/issues">https://​gitlab.com/​r-packages/​rock/​issues</a>
+<li>Report a bug at <br><a href="https://gitlab.com/r-packages/rock/-/issues">https://​gitlab.com/​r-packages/​rock/​-/​issues</a>
 </li>
 </ul>
 </div>
@@ -157,7 +162,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://gitlab.com/r-packages/rock/commits/master"><img src="https://gitlab.com/r-packages/rock/badges/master/pipeline.svg" alt="Pipeline status"></a></li>
+<li><a href="https://gitlab.com/r-packages/rock/-/commits/prod"><img src="https://gitlab.com/r-packages/rock/badges/prod/pipeline.svg" alt="Pipeline status"></a></li>
 <li><a href="https://codecov.io/gl/r-packages/rock?branch=master"><img src="https://codecov.io/gl/r-packages/rock/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://cran.r-project.org/package=rock"><img src="https://www.r-pkg.org/badges/version/rock?color=brightgreen" alt="Version on CRAN"></a></li>
 <li><a href="https://cran.r-project.org/package=rock"><img src="https://cranlogs.r-pkg.org/badges/last-month/rock?color=brightgreen" alt="Version on CRAN"></a></li>
@@ -173,7 +178,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

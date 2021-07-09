@@ -73,7 +73,7 @@ or to convert all sources to tabbed sections in Markdown." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ or to convert all sources to tabbed sections in Markdown." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +104,7 @@ or to convert all sources to tabbed sections in Markdown." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -131,38 +131,38 @@ or to convert all sources to tabbed sections in Markdown." />
 or to convert all sources to tabbed sections in Markdown.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>export_to_html</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
-  <span class='kw'>fragment</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)
+    <pre class="usage"><span class='fu'>export_to_html</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  template <span class='op'>=</span> <span class='st'>"default"</span>,
+  fragment <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>export_to_markdown</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>heading</span> <span class='kw'>=</span> <span class='st'>"Sources"</span>,
-  <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)</pre>
+<span class='fu'>export_to_markdown</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  heading <span class='op'>=</span> <span class='st'>"Sources"</span>,
+  headingLevel <span class='op'>=</span> <span class='fl'>2</span>,
+  template <span class='op'>=</span> <span class='st'>"default"</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>An object of class <code>rockParsedSource</code> (as resulting from a call
-to <code>parse_source</code>) or of class <code>rockParsedSources</code> (as resulting from a call
+      <td><p>An object of class <code>rock_parsedSource</code> (as resulting from a call
+to <code>parse_source</code>) or of class <code>rock_parsedSources</code> (as resulting from a call
 to <code>parse_sources</code>.</p></td>
     </tr>
     <tr>
       <th>output</th>
       <td><p>For <code>export_to_html</code>, either NULL to not write any files,
-or, if <code>input</code> is a single <code>rockParsedSource</code>, the filename to write to,
-and if <code>input</code> is a <code>rockParsedSources</code> object, the path to write to.
+or, if <code>input</code> is a single <code>rock_parsedSource</code>, the filename to write to,
+and if <code>input</code> is a <code>rock_parsedSources</code> object, the path to write to.
 This path will be created with a warning if it does not exist.</p></td>
     </tr>
     <tr>
@@ -202,20 +202,21 @@ the exported source(s).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse all example sources in that directory</span>
-<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_sources</a></span>(<span class='no'>examplePath</span>);
+<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
 
 <span class='co'>### Export results to a temporary directory</span>
-<span class='no'>tmpDir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(<span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>);
-<span class='no'>prettySources</span> <span class='kw'>&lt;-</span>
-  <span class='fu'>export_to_html</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>parsedExamples</span>,
-                 <span class='kw'>output</span> <span class='kw'>=</span> <span class='no'>tmpDir</span>);
+<span class='va'>tmpDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span>check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>;
+<span class='va'>prettySources</span> <span class='op'>&lt;-</span>
+  <span class='fu'>export_to_html</span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>parsedExamples</span>,
+                 output <span class='op'>=</span> <span class='va'>tmpDir</span><span class='op'>)</span>;
 
 <span class='co'>### Show first one</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>prettySources</span><span class='kw'>[[</span><span class='fl'>1</span>]]);</div><div class='output co'>#&gt; [1] "\n&lt;html&gt;&lt;head&gt;\n\n&lt;style\n&gt;\n\n.code {\n  border-radius: .25em;\n  box-sizing: border-box;\n  margin-left: 10px;\n  padding: 2px;\n}\n\n.identifier {\n  border-radius: .25em;\n  box-sizing: border-box;\n  margin-left: 10px;\n  padding: 2px;\n}\n\n.sectionBreak {\n  border-radius: .25em;\n  box-sizing: border-box;\n  display: block;\n}\n\n.uid {\n  border-radius: 0;\n  box-sizing: border-box;\n}\n\n.utterance {\n  display: block;\n}\n\n.code {\n  background-color: #f4d142;\n}\n\n.identifier {\n  background-color: #aaaaff;\n}\n\n.sectionBreak {\n  background-color: #eeeeff;\n}\n\n.uid {\n  background-color: #eeeeee;\n  color: #bbbbbb;\n}\n\n.utterance {\n  border-top: 1px dotted black;\n  border-bottom: 1px dotted black;\n}\n\n.utterance + .utterance {\n  margin-top: -1px;\n}\n&lt;/style&gt;\n\n&lt;/head&gt;&lt;body&gt;\n&lt;div class='utterance'&gt;&lt;div class=\"utterance\"&gt;&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class='utterance'&gt;&lt;div class=\"utterance\"&gt;&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;/body&gt;&lt;/html&gt;\n"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>prettySources</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "\n&lt;html&gt;&lt;head&gt;\n\n&lt;style\n&gt;NA\n\n.code {\n  border-radius: .25em;\n  box-sizing: border-box;\n  margin-left: 10px;\n  padding: 2px;\n}\n\n.identifier {\n  border-radius: .25em;\n  box-sizing: border-box;\n  margin-left: 10px;\n  padding: 2px;\n}\n\n.sectionBreak {\n  border-radius: .25em;\n  box-sizing: border-box;\n  display: block;\n}\n\n.uid {\n  border-radius: 0;\n  box-sizing: border-box;\n}\n\n.utterance {\n  display: block;\n}\n\n.code {\n  background-color: #f4d142;\n}\n\n.identifier {\n  background-color: #aaaaff;\n}\n\n.sectionBreak {\n  background-color: #eeeeff;\n}\n\n.uid {\n  background-color: #eeeeee;\n  color: #bbbbbb;\n}\n\n.utterance {\n  border-top: 1px dotted black;\n  border-bottom: 1px dotted black;\n}\n\n.utterance + .utterance {\n  margin-top: -1px;\n}\n&lt;/style&gt;\n\n&lt;/head&gt;&lt;body&gt;\n&lt;div class='utterance'&gt;&lt;div class=\"utterance\"&gt;&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class='utterance'&gt;&lt;div class=\"utterance\"&gt;&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;/body&gt;&lt;/html&gt;\n"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -232,7 +233,7 @@ the exported source(s).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -4,9 +4,9 @@
 \alias{parse_source}
 \alias{parsing_sources}
 \alias{parse_sources}
-\alias{print.rockParsedSource}
-\alias{print.rockParsedSources}
-\alias{plot.rockParsedSources}
+\alias{print.rock_parsedSource}
+\alias{print.rock_parsedSources}
+\alias{plot.rock_parsedSources}
 \title{Parsing sources}
 \usage{
 parse_source(
@@ -14,13 +14,14 @@ parse_source(
   file,
   utteranceLabelRegexes = NULL,
   ignoreOddDelimiters = FALSE,
+  checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   postponeDeductiveTreeBuilding = FALSE,
   rlWarn = rock::opts$get(rlWarn),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
 
-\method{print}{rockParsedSource}(x, prefix = "### ", ...)
+\method{print}{rock_parsedSource}(x, prefix = "### ", ...)
 
 parse_sources(
   path,
@@ -28,13 +29,15 @@ parse_sources(
   regex = NULL,
   recursive = TRUE,
   ignoreOddDelimiters = FALSE,
+  checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
+  mergeInductiveTrees = FALSE,
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
 
-\method{print}{rockParsedSources}(x, prefix = "### ", ...)
+\method{print}{rock_parsedSources}(x, prefix = "### ", ...)
 
-\method{plot}{rockParsedSources}(x, ...)
+\method{plot}{rock_parsedSources}(x, ...)
 }
 \arguments{
 \item{text, file}{As \code{text} or \code{file}, you can specify a \code{file} to read with
@@ -57,6 +60,9 @@ perl regular expression!}
 
 \item{ignoreOddDelimiters}{If an odd number of YAML delimiters is encountered, whether this
 should result in an error (\code{FALSE}) or just be silently ignored (\code{TRUE}).}
+
+\item{checkClassInstanceIds}{Whether to check for the occurrence of class
+instance identifiers specified in the attributes.}
 
 \item{postponeDeductiveTreeBuilding}{Whether to imediately try to build the deductive
 tree(s) based on the information in this file (\code{FALSE}) or whether to skip that. Skipping
@@ -87,6 +93,9 @@ takes precedece over \code{extension},}
 
 \item{recursive}{Whether to also process subdirectories (\code{TRUE})
 or not (\code{FALSE}).}
+
+\item{mergeInductiveTrees}{Merge multiple inductive code trees into one; this
+functionality is currently not yet implemented.}
 }
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the

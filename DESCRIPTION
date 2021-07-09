@@ -20,7 +20,7 @@ Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
   implements Epistemic Network Analysis ('ENA'), means to process notes
   from Cognitive Interviews ('CIs'), and means to work with decentralized
   construct taxonomies ('DCTs').
-BugReports: https://gitlab.com/r-packages/rock/issues
+BugReports: https://gitlab.com/r-packages/rock/-/issues
 URL: https://r-packages.gitlab.io/rock
 License: GPL-3
 Encoding: UTF-8

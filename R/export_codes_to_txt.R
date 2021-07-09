@@ -3,8 +3,8 @@
 #' These function can be used to convert one or more parsed sources to HTML,
 #' or to convert all sources to tabbed sections in Markdown.
 #'
-#' @param input An object of class `rockParsedSource` (as resulting from a call
-#' to `parse_source`) or of class `rockParsedSources` (as resulting from a call
+#' @param input An object of class `rock_parsedSource` (as resulting from a call
+#' to `parse_source`) or of class `rock_parsedSources` (as resulting from a call
 #' to `parse_sources`.
 #' @param codeTree Codes from which code tree to export the codes. Valid options
 #' are `fullyMergedCodeTrees`, `extendedDeductiveCodeTrees`, `deductiveCodeTrees`,
@@ -72,7 +72,7 @@ export_codes_to_txt<- function(input,
          "`inductiveCodeTrees`.");
   }
 
-  if (any(c("rockParsedSource", "rockParsedSources") %in% class(input))) {
+  if (any(c("rock_parsedSource", "rock_parsedSources") %in% class(input))) {
 
     if (codeTree == "inductiveCodeTrees") {
       codeTree <- input[[codeTree]][[codingScheme]];
