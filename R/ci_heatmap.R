@@ -11,6 +11,11 @@
 #' one of the cognitive interviewig coding schemes provided with the `rock`
 #' package, or as a coding scheme resulting from a call
 #' to [rock::create_codingScheme()].
+#' @param itemlab,codelab,freqlab Labels to use for the item and code axes
+#' and for the frequency color legend.
+#' @param plotTitle The title to use for the plot
+#' @param fillScale Convenient way to specify the fill scale (the colours)
+#' @param theme Convenient way to specify the [ggplot2::ggplot()] theme.
 #'
 #' @return The heatmap
 #' @export

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,17 +129,18 @@
     <p>Expand categorical attribute variables to a series of dichotomous variables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expand_attributes</span>(
-  <span class='no'>data</span>,
-  <span class='no'>attributes</span>,
-  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>glue</span> <span class='kw'>=</span> <span class='st'>"__"</span>,
-  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>falseValue</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>trueValue</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>expand_attributes</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>attributes</span>,
+  valueLabels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  prefix <span class='op'>=</span> <span class='st'>""</span>,
+  glue <span class='op'>=</span> <span class='st'>"__"</span>,
+  suffix <span class='op'>=</span> <span class='st'>""</span>,
+  falseValue <span class='op'>=</span> <span class='fl'>0</span>,
+  trueValue <span class='op'>=</span> <span class='fl'>1</span>,
+  valueFirst <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  append <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,11 +148,21 @@
     <tr>
       <th>data</th>
       <td><p>The data frame, normally the <code>$mergedSources</code> data frame that
-exists in the object returned by a call to <code><a href='parsing_sources.html'>parse_sources()</a></code>.</p></td>
+exists in the object returned by a call to <code><a href='parse_source.html'>parse_sources()</a></code>.</p></td>
     </tr>
     <tr>
       <th>attributes</th>
       <td><p>The name of the attribute(s) to expand.</p></td>
+    </tr>
+    <tr>
+      <th>valueLabels</th>
+      <td><p>It's possible to use different names for the created
+variables than the values of the attributes. This can be set with the
+<code>valueLabels</code> argument. If only one attribute is specified, pass a named
+vector for <code>valueLabels</code>, and if multiple attributes are specified, pass
+a named list of named vectors, where the name of each vector corresponds to
+an attribute passed in <code>attributes</code>. The names of the vector elements
+must correspond to the values of the attributes (see the example).</p></td>
     </tr>
     <tr>
       <th>prefix, suffix</th>
@@ -186,37 +197,51 @@ frame or not.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Get a path to one example file</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse single example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
 
 <span class='co'>### Create a categorical attribute column</span>
-<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>13</span>);
+<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>13</span><span class='op'>)</span>;
 
 <span class='co'>### Expand to four logical columns</span>
-<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>expand_attributes</span>(
-    <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>,
+<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>expand_attributes</span><span class='op'>(</span>
+    <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span>,
     <span class='st'>"age_group"</span>,
-    <span class='kw'>valueFirst</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-);
+    valueLabels <span class='op'>=</span>
+      <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+        <span class='st'>"&lt;18"</span> <span class='op'>=</span> <span class='st'>"youngest"</span>,
+        <span class='st'>"18-30"</span> <span class='op'>=</span> <span class='st'>"youngish"</span>,
+        <span class='st'>"31-60"</span> <span class='op'>=</span> <span class='st'>"oldish"</span>,
+        <span class='st'>"&gt;60"</span> <span class='op'>=</span> <span class='st'>"oldest"</span>
+       <span class='op'>)</span>,
+    valueFirst <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>;
 
 <span class='co'>### Show result</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
-      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__.18</span>);</div><div class='output co'>#&gt; <span class='error'>Error in table(parsedExample$mergedSourceDf$age_group, parsedExample$mergedSourceDf$age_group__.18): all arguments must have the same length</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group</span>,
-      <span class='no'>parsedExample</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>age_group__18.30</span>);</div><div class='output co'>#&gt;        
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,
+      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__youngest</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt;        
 #&gt;          0  1
+#&gt;   &lt;18    0 13
 #&gt;   &gt;60   13  0
-#&gt;   18    13  0
-#&gt;   18-30  0 13
-#&gt;   31-60 13  0</div></pre>
+#&gt;   18-30 13  0
+#&gt;   31-60 13  0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,
+      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__oldish</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt;        
+#&gt;          0  1
+#&gt;   &lt;18   13  0
+#&gt;   &gt;60   13  0
+#&gt;   18-30 13  0
+#&gt;   31-60  0 13</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -232,7 +257,7 @@ frame or not.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -91,7 +91,7 @@ codingScheme_levine <-
               "construct", "subtle", "general"),
     codingInstructions =
       c(
-        comprehension = "Items with unclear of ambigous terms, failed to understand the questions consistently.",
+        comprehension = "Items with unclear or ambigous terms, failed to understand the questions consistently.",
         knowledge = "Items for which respondents lacked information to answer a question.",
         inapplicable = "Items measuring construct that are inapplicable for many respondents (e.g. made assumptions).",
         construct = "Items failed to measure the intended construct.",

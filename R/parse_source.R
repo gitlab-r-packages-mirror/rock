@@ -38,6 +38,8 @@
 #' tree(s) based on the information in this file (`FALSE`) or whether to skip that. Skipping
 #' this is useful if the full tree information is distributed over multiple files (in which case
 #' you should probably call `parse_sources` instead of `parse_source`).
+#' @param mergeInductiveTrees Merge multiple inductive code trees into one; this
+#' functionality is currently not yet implemented.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
 #' @param prefix The prefix to use before the 'headings' of the printed result.
@@ -910,8 +912,9 @@ parse_source <- function(text,
 
   ### Add codings and leaves only to the convenience list
   res$convenience$codings <- sort(unique(unlist(res$rawCodings)));
+  res$codings <- res$convenience$codings;
   res$convenience$codingLeaves <-
-    sort(unique(unlist(get_leaf_codes(res$codings,
+    sort(unique(unlist(get_leaf_codes(res$convenience$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
   res$convenience$codingPaths <-
@@ -993,7 +996,7 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
                       as.numeric)));
 
   appliedCodes <-
-    sort(unique(unlist(x$codings)));
+    sort(unique(unlist(x$convenience$codingLeaves)));
 
   totalCodingMatches <-
     sum(unlist(x$sourceDf[, appliedCodes]));
@@ -1062,13 +1065,13 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
                    "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.",
                    " {totalSectionMatches} of these matched one of the section regular ",
                    "expressions ({vecTxtQ(x$arguments$sectionRegexes)}), and after ",
-                   " removing these lines and all lines that were empty after removing ",
-                   " characters that matched one or more identifier ",
-                   "({vecTxtQ(x$arguments$idRegexes)}) and coding ",
-                   "({vecTxtQ(x$arguments$codeRegexes)}) regular expressions, ",
+                   "removing these lines and all lines that were empty after removing ",
+                   "characters that matched one or more class instance identifier(s) ",
+                   "({vecTxtQ(x$arguments$idRegexes)}) and coding regular expressions",
+                   "regular expressions, ({vecTxtQ(x$arguments$codeRegexes)}), ",
                    "{nrow(x$sourceDf)} utterances remained.",
                    "\n\n",
-                   "{prefix}Identifiers\n\n",
+                   "{prefix}Class instance identifiers\n\n",
                    identifierInfo,
                    "\n\n",
                    "{prefix}Utterances and coding\n\n",
@@ -1084,7 +1087,9 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
     #for (i in names(x$inductiveCodeTrees)) {
     for (i in names(x$inductiveDiagrammeRs)) {
       #print(graphics::plot(x$inductiveCodeTrees[[i]]));
-      print(DiagrammeR::render_graph(x$inductiveDiagrammeRs[[i]]));
+      if (!is.null(x$inductiveDiagrammeRs[[i]])) {
+        print(DiagrammeR::render_graph(x$inductiveDiagrammeRs[[i]]));
+      }
     }
   }
   if (length(x$deductiveCodeTrees) > 0) {

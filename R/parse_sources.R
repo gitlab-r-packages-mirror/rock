@@ -6,6 +6,7 @@ parse_sources <- function(path,
                           recursive=TRUE,
                           ignoreOddDelimiters = FALSE,
                           checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
+                          mergeInductiveTrees = FALSE,
                           encoding=rock::opts$get(encoding),
                           silent=rock::opts$get(silent)) {
 
@@ -86,7 +87,16 @@ parse_sources <- function(path,
   res$convenience$codings <-
     sort(unique(unlist(res$convenience$rawCodings)));
   res$convenience$codingLeaves <-
-    sort(unique(unlist(res$convenience$rawCodingLeaves)));
+    sort(
+      unique(
+        unlist(
+          get_leaf_codes(
+            res$convenience$rawCodingLeaves,
+            inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker
+          )
+        )
+      )
+    );
 
   # res$convenience$attributes <-
   #   dplyr::bind_rows(
@@ -620,9 +630,11 @@ parse_sources <- function(path,
     if (length(res$inductiveCodeTrees) == 1) {
       res$fullyMergedCodeTrees <- res$inductiveCodeTrees[[1]];
     } else {
-      warning("Multiple inductive code trees found; functionality to merge ",
-              "these currently not yet implemented. Setting ",
-              "`fullyMergedCodeTrees` to NA (missing).");
+      if (mergeInductiveTrees) {
+        warning("Multiple inductive code trees found; functionality to merge ",
+                "these currently not yet implemented. Setting ",
+                "`fullyMergedCodeTrees` to NA (missing).");
+      }
       res$fullyMergedCodeTrees <- NA;
     }
   }
@@ -652,7 +664,7 @@ parse_sources <- function(path,
       #     res$convenience$codingPaths
       #   );
     } else {
-      if (!is.na(res$inductiveCodeTrees)) {
+      if (any(!is.na(res$inductiveCodeTrees))) {
         res$convenience$codingPaths <- c();
         for (i in names(res$inductiveCodeTrees)) {
           res$convenience$codingPaths <-

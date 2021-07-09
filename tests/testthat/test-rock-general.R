@@ -229,6 +229,9 @@ testthat::test_that("merging two sources works properly", {
     "---<some_section_break>--- ---<[a-zA-Z0-9_]+>---"
   );
 
+  ### readLines(file.path(examplePath, "merging-test-1-primary.rock"))[15]
+  ### readLines(file.path(examplePath, "merging-test-1-secondary.rock"))[14]
+
   testthat::expect_equal(
     testResult[16],
     "[[uid=7d8m7295]] Quisque non pretium mi. [[code2]] [[code3]] [[code2>code4]] [[code5]]"

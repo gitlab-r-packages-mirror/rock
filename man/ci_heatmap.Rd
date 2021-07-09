@@ -26,6 +26,15 @@ call to \code{\link[=parse_source]{parse_source()}} or \code{\link[=parse_source
 one of the cognitive interviewig coding schemes provided with the \code{rock}
 package, or as a coding scheme resulting from a call
 to \code{\link[=create_codingScheme]{create_codingScheme()}}.}
+
+\item{itemlab, codelab, freqlab}{Labels to use for the item and code axes
+and for the frequency color legend.}
+
+\item{plotTitle}{The title to use for the plot}
+
+\item{fillScale}{Convenient way to specify the fill scale (the colours)}
+
+\item{theme}{Convenient way to specify the \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} theme.}
 }
 \value{
 The heatmap

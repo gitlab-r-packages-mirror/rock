@@ -75,7 +75,7 @@ all options to their default values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ all options to their default values." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,7 +106,7 @@ all options to their default values." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,7 +135,7 @@ options used by the rock package. Use <code>rock::opts$set</code> to set options
 all options to their default values.</p>
     </div>
 
-    <pre class="usage"><span class='no'>opts</span></pre>
+    <pre class="usage"><span class='va'>opts</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -149,7 +149,7 @@ therefore means the processed sources and codes are not compatible and cannot be
 processed by other software that implements the ROCK. Still, in some cases this
 degree of customization might be desirable.</p>
 <p>The following arguments can be passed:</p>
-<dl'>
+<dl>
 <dt>...</dt><dd><p>For <code>rock::opts$set</code>, the dots can be used to specify the options
 to set, in the format <code>option = value</code>, for example, <code>utteranceMarker = "\n"</code>. For
 <code>rock::opts$reset</code>, a list of options to be reset can be passed.</p></dd>
@@ -161,7 +161,7 @@ option has not been manually specified.</p></dd>
 </dl>
 
 <p>The following options can be set:</p>
-<dl'>
+<dl>
 <dt>codeRegexes</dt><dd><p>A named character vector with one or more regular
 expressions that specify how to extract the codes (that were used to code the
 sources). These regular expressions <em>must</em> each contain one capturing group
@@ -214,6 +214,8 @@ be used as-is.</p></dd>
 processing. This can be used to enable adding comments to sources, which are then ignored
 during analysis.</p></dd>
 
+<dt>includeBootstrap</dt><dd><p>Whether to include the default bootstrap CSS.</p></dd>
+
 <dt>utteranceMarker</dt><dd><p>How to specify breaks between utterances in the source(s). The
 ROCK convention is to use a newline (<code>\\n</code>).</p></dd>
 
@@ -230,17 +232,20 @@ a coder id, or above the line where a coder id is specified).</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get the default utteranceMarker</span>
-<span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'>opts</span>$<span class='fu'>get</span>(<span class='no'>utteranceMarker</span>);</div><div class='output co'>#&gt; [1] "\n"</div><div class='input'>
+<span class='fu'>rock</span><span class='fu'>::</span><span class='va'>opts</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>utteranceMarker</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "\n"</div><div class='input'>
 <span class='co'>### Set it to a custom version, so that every line starts with a pipe</span>
-<span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'>opts</span>$<span class='fu'>set</span>(<span class='kw'>utteranceMarker</span> <span class='kw'>=</span> <span class='st'>"\n|"</span>);
+<span class='fu'>rock</span><span class='fu'>::</span><span class='va'>opts</span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>utteranceMarker <span class='op'>=</span> <span class='st'>"\n|"</span><span class='op'>)</span>;
 
 <span class='co'>### Check that it worked</span>
-<span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'>opts</span>$<span class='fu'>get</span>(<span class='no'>utteranceMarker</span>);</div><div class='output co'>#&gt; [1] "\n|"</div><div class='input'>
+<span class='fu'>rock</span><span class='fu'>::</span><span class='va'>opts</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>utteranceMarker</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "\n|"</div><div class='input'>
 <span class='co'>### Reset this option to its default value</span>
-<span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'>opts</span>$<span class='fu'>reset</span>(<span class='no'>utteranceMarker</span>);
+<span class='fu'>rock</span><span class='fu'>::</span><span class='va'>opts</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='va'>utteranceMarker</span><span class='op'>)</span>;
 
 <span class='co'>### Check that the reset worked, too</span>
-<span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'>opts</span>$<span class='fu'>get</span>(<span class='no'>utteranceMarker</span>);</div><div class='output co'>#&gt; [1] "\n"</div><div class='input'>
+<span class='fu'>rock</span><span class='fu'>::</span><span class='va'>opts</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>utteranceMarker</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "\n"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -257,7 +262,7 @@ a coder id, or above the line where a coder id is specified).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -30,6 +30,7 @@ parse_sources(
   recursive = TRUE,
   ignoreOddDelimiters = FALSE,
   checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
+  mergeInductiveTrees = FALSE,
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
@@ -92,6 +93,9 @@ takes precedece over \code{extension},}
 
 \item{recursive}{Whether to also process subdirectories (\code{TRUE})
 or not (\code{FALSE}).}
+
+\item{mergeInductiveTrees}{Merge multiple inductive code trees into one; this
+functionality is currently not yet implemented.}
 }
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the

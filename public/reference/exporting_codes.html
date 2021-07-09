@@ -73,7 +73,7 @@ or to convert all sources to tabbed sections in Markdown." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ or to convert all sources to tabbed sections in Markdown." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +104,7 @@ or to convert all sources to tabbed sections in Markdown." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -131,27 +131,27 @@ or to convert all sources to tabbed sections in Markdown." />
 or to convert all sources to tabbed sections in Markdown.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>export_codes_to_txt</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>codeTree</span> <span class='kw'>=</span> <span class='st'>"fullyMergedCodeTrees"</span>,
-  <span class='kw'>codingScheme</span> <span class='kw'>=</span> <span class='st'>"codes"</span>,
-  <span class='kw'>regex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>onlyChildrenOf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>leavesOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>includePath</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>export_codes_to_txt</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  codeTree <span class='op'>=</span> <span class='st'>"fullyMergedCodeTrees"</span>,
+  codingScheme <span class='op'>=</span> <span class='st'>"codes"</span>,
+  regex <span class='op'>=</span> <span class='st'>".*"</span>,
+  onlyChildrenOf <span class='op'>=</span> <span class='cn'>NULL</span>,
+  leavesOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  includePath <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>An object of class <code>rockParsedSource</code> (as resulting from a call
-to <code>parse_source</code>) or of class <code>rockParsedSources</code> (as resulting from a call
+      <td><p>An object of class <code>rock_parsedSource</code> (as resulting from a call
+to <code>parse_source</code>) or of class <code>rock_parsedSources</code> (as resulting from a call
 to <code>parse_sources</code>.</p></td>
     </tr>
     <tr>
@@ -214,14 +214,15 @@ include the path to the root (e.g. <code>code1&gt;code2&gt;code</code>).</p></td
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse all example sources in that directory</span>
-<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_sources</a></span>(<span class='no'>examplePath</span>);
+<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
 
 <span class='co'>### Show results of exporting the codes</span>
-<span class='fu'>export_codes_to_txt</span>(<span class='no'>parsedExamples</span>);</div><div class='output co'>#&gt;  [1] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_instrumental_xl678lqgp"
+<span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt;  [1] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_instrumental_xl678lqgp"
 #&gt;  [2] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_experiential_xl678lqgn"
 #&gt;  [3] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedBehavioralControl_71w8sfdk"              
 #&gt;  [4] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedNorm_71w98kk2"                           
@@ -259,18 +260,26 @@ include the path to the root (e.g. <code>code1&gt;code2&gt;code</code>).</p></td
 #&gt; [36] "tables"                                                                                 
 #&gt; [37] "Topic1"                                                                                 
 #&gt; [38] "Topic2"                                                                                 
-#&gt; [39] "bla&gt;subbla&gt;bla2"                                                                        
-#&gt; [40] "bla&gt;subbla&gt;bla3"                                                                        
-#&gt; [41] "bla&gt;subbla2"                                                                            
-#&gt; [42] "flups"                                                                                  
-#&gt; [43] "property&gt;hairy"                                                                         
-#&gt; [44] "relationships&gt;love"                                                                     </div><div class='input'>
+#&gt; [39] "code1"                                                                                  
+#&gt; [40] "code2&gt;code4"                                                                            
+#&gt; [41] "code3"                                                                                  
+#&gt; [42] "code5"                                                                                  
+#&gt; [43] "bla&gt;subbla&gt;bla2"                                                                        
+#&gt; [44] "bla&gt;subbla&gt;bla3"                                                                        
+#&gt; [45] "bla&gt;subbla2"                                                                            
+#&gt; [46] "flups"                                                                                  
+#&gt; [47] "property&gt;hairy"                                                                         
+#&gt; [48] "relationships&gt;love"                                                                     
+#&gt; [49] "content_adequacy"                                                                       
+#&gt; [50] "retrieval"                                                                              
+#&gt; [51] "understanding"                                                                          </div><div class='input'>
 <span class='co'>### Only show select a narrow set of codes</span>
-<span class='fu'>export_codes_to_txt</span>(<span class='no'>parsedExamples</span>,
-                    <span class='kw'>leavesOnly</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                    <span class='kw'>includePath</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-                    <span class='kw'>onlyChildrenOf</span> <span class='kw'>=</span> <span class='st'>"parentCode2"</span>,
-                    <span class='kw'>regex</span><span class='kw'>=</span><span class='st'>"5|6"</span>);</div><div class='output co'>#&gt; [1] "grandchildCode5" "grandchildCode6"</div><div class='input'>
+<span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span>,
+                    leavesOnly<span class='op'>=</span><span class='cn'>TRUE</span>,
+                    includePath<span class='op'>=</span><span class='cn'>FALSE</span>,
+                    onlyChildrenOf <span class='op'>=</span> <span class='st'>"parentCode2"</span>,
+                    regex<span class='op'>=</span><span class='st'>"5|6"</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "grandchildCode5" "grandchildCode6"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -287,7 +296,7 @@ include the path to the root (e.g. <code>code1&gt;code2&gt;code</code>).</p></td
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Generate utterance identifiers (UIDs) — generate_uids" />
-<meta property="og:description" content="This function generated utterance identifiers." />
+<meta property="og:description" content="This function generates utterance identifiers." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -126,10 +126,10 @@
     </div>
 
     <div class="ref-description">
-    <p>This function generated utterance identifiers.</p>
+    <p>This function generates utterance identifiers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generate_uids</span>(<span class='no'>x</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())</pre>
+    <pre class="usage"><span class='fu'>generate_uids</span><span class='op'>(</span><span class='va'>x</span>, origin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,7 @@ identifiers. These identifiers are the present UNIX timestamp
 (i.e. the number of seconds elapsed since the UNIX epoch,
 the first of january 1970), accurate to two decimal places
 (i.e. to centiseconds), converted to the base 30 system using
-<code><a href='base30conversion.html'>numericToBase30()</a></code>. By default, the present time is used as
+<code><a href='base30toNumeric.html'>numericToBase30()</a></code>. By default, the present time is used as
 origin, one one centisecond is added for every identifiers to
 generate. <code>origin</code> can be set to other values to work with
 different origins (of course, don't use this unless you
@@ -158,8 +158,9 @@ understand very well what you're doing!).</p></td>
     <p>A vector of UIDs.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span>(<span class='fl'>5</span>);</div><div class='output co'>#&gt; [1] "[[uid=78ys5ml4]]" "[[uid=78ys5ml5]]" "[[uid=78ys5ml6]]" "[[uid=78ys5ml7]]"
-#&gt; [5] "[[uid=78ys5ml8]]"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>generate_uids</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "[[uid=7f0s6xnj]]" "[[uid=7f0s6xnk]]" "[[uid=7f0s6xnl]]" "[[uid=7f0s6xnm]]"
+#&gt; [5] "[[uid=7f0s6xnn]]"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -175,7 +176,7 @@ understand very well what you're doing!).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
