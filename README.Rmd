@@ -19,9 +19,9 @@ packagename <- 'rock';
 packageSubtitle <- "Reproducible Open Coding Kit";
 
 gitLab_ci_badge <-
-  paste0("https://gitlab.com/r-packages/", packagename, "/badges/master/pipeline.svg");
+  paste0("https://gitlab.com/r-packages/", packagename, "/badges/prod/pipeline.svg");
 gitLab_ci_url <-
-  paste0("https://gitlab.com/r-packages/", packagename, "/commits/master");
+  paste0("https://gitlab.com/r-packages/", packagename, "/-/commits/prod");
 
 codecov_badge <-
   paste0("https://codecov.io/gl/r-packages/", packagename, "/branch/master/graph/badge.svg");
