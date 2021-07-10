@@ -5,7 +5,7 @@
 [![Pipeline
 status](https://gitlab.com/r-packages/rock/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/rock/-/commits/prod)
 [![Coverage
-status](https://codecov.io/gl/r-packages/rock/branch/master/graph/badge.svg)](https://codecov.io/gl/r-packages/rock?branch=master)
+status](https://codecov.io/gl/r-packages/rock/branch/prod/graph/badge.svg)](https://codecov.io/gl/r-packages/rock?branch=prod)
 [![Version on
 CRAN](https://www.r-pkg.org/badges/version/rock?color=brightgreen)](https://cran.r-project.org/package=rock)
 [![Version on
@@ -36,12 +36,15 @@ Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
 There is a FLOSS interface for the ROCK, iROCK, available at
-<https://sci-ops.gitlab.io/irock/> (the accompanying git repository is
-available at <https://gitlab.com/sci-ops/irock>).
+<https://i.rock.science> (the accompanying git repository is available
+at <https://gitlab.com/sci-ops/irock>).
 
 We are in the process of writing a textbook to support working with the
 ROCK standard, this `rock` R package, and the iROCK interface. This book
 is available at <https://rockbook.org>.
+
+Materials for a brief workshop are available through
+<https://rock.science/workshop-2-hour>
 
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->

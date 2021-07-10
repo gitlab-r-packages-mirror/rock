@@ -24,9 +24,9 @@ gitLab_ci_url <-
   paste0("https://gitlab.com/r-packages/", packagename, "/-/commits/prod");
 
 codecov_badge <-
-  paste0("https://codecov.io/gl/r-packages/", packagename, "/branch/master/graph/badge.svg");
+  paste0("https://codecov.io/gl/r-packages/", packagename, "/branch/prod/graph/badge.svg");
 codecov_url <-
-  paste0("https://codecov.io/gl/r-packages/", packagename, "?branch=master");
+  paste0("https://codecov.io/gl/r-packages/", packagename, "?branch=prod");
 
 dependency_badge <-
   paste0("https://tinyverse.netlify.com/badge/", packagename);
@@ -74,9 +74,11 @@ implements Epistemic Network Analysis (ENA), means to process notes
 from Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
-There is a FLOSS interface for the ROCK, iROCK, available at https://sci-ops.gitlab.io/irock/ (the accompanying git repository is available at https://gitlab.com/sci-ops/irock).
+There is a FLOSS interface for the ROCK, iROCK, available at https://i.rock.science (the accompanying git repository is available at https://gitlab.com/sci-ops/irock).
 
 We are in the process of writing a textbook to support working with the ROCK standard, this `rock` R package, and the iROCK interface. This book is available at https://rockbook.org.
+
+Materials for a brief workshop are available through https://rock.science/workshop-2-hour
 
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->
