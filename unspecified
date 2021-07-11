@@ -1,16 +1,19 @@
 ---
 decision:
-  id: hovj_D7f0sf7yw
-  label: dus
+  id: hjal_D7f1f8c2w
+  label: Decided to apply `changeSource_splitCode` to source `source` for codes childCode1,
+    with filter TRUE.
   description: ''
   type: ''
-  justification:
-    id: iwdx_J7f0sf7yw
-    label: seemed like a good idea
-    description: ''
-    type: ''
-    assertion: ~
-  date: '2021-07-09'
+  justification: bla
+  date: '2021-07-11'
+  tag:
+  - rock
+  - recoding
+  - changeSource_splitCode
+  rock_codes: childCode1
+  autoLabel: Decided to apply `changeSource_splitCode` to source `source` for codes
+    childCode1, with filter TRUE.
   
 ---
 
