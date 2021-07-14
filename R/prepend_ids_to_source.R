@@ -32,7 +32,7 @@ prepend_ids_to_source <- function(input,
                                   encoding=rock::opts$get(encoding),
                                   silent=rock::opts$get(silent)) {
 
-  if (file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input)) {
     res <- readLines(input,
                      encoding=encoding,
                      warn = rlWarn);

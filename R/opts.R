@@ -187,6 +187,7 @@ opts$defaults <-
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),
+       delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
 
@@ -240,7 +241,7 @@ opts$defaults <-
        stripRootsFromCodePaths = TRUE,
 
        ### For justifications
-       justificationFile = "unspecified",
+       justificationFile = "default_justifier_log.jmd",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
