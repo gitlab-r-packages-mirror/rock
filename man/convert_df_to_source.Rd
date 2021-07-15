@@ -13,13 +13,14 @@ convert_df_to_source(
   cols_to_attributes = NULL,
   ciid_labels = NULL,
   ciid_separator = "=",
-  numberPrecision = 0,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
 )
 }
 \arguments{
+\item{data}{The data frame}
+
 \item{output}{The name (and path) of the file in which to save the processed
 source (if it \emph{is} \code{NULL}, the result will be returned visibly).}
 
