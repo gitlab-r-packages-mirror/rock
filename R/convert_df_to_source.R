@@ -198,11 +198,12 @@ convert_df_to_source <- function(data,
               "', exists, and `preventOverwriting` is set to TRUE, ",
               "so not writing the source to disk!");
     } else {
-      writeLines(
-        source,
-        output,
-        encoding = encoding
-      );
+      con <- file(description=output,
+                  open="w",
+                  encoding=encoding);
+      writeLines(text=source,
+                 con=con);
+      close(con);
     }
     return(invisible(source));
   }
