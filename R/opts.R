@@ -190,6 +190,7 @@ opts$defaults <-
        delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
+       ignoreOddDelimiters = FALSE,
 
        ### Used to merge sources
        coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
