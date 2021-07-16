@@ -74,7 +74,7 @@ to clean the sources using clean_sources() first." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -204,9 +204,43 @@ filenames when writing the processed files to disk.</p></td>
 if specified) or visibly (if not).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>prepend_ids_to_source</span><span class='op'>(</span>input <span class='op'>=</span> <span class='st'>"brief\nexample\nsource"</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; [1] "[[uid=7f109mzy]] brief"   "[[uid=7f109mzz]] example"
-#&gt; [3] "[[uid=7f109n00]] source" </div></pre>
+    <pre class="examples"><div class='input'><span class='co'>### Simple example</span>
+<span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>prepend_ids_to_source</span><span class='op'>(</span>
+  <span class='st'>"brief\nexample\nsource"</span>
+<span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "[[uid=7f385t04]] brief"   "[[uid=7f385t05]] example"
+#&gt; [3] "[[uid=7f385t06]] source" </div><div class='input'>
+<span class='co'>### Example including fake YAML fragments</span>
+<span class='va'>longerExampleText</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"---"</span>,
+    <span class='st'>"First YAML fragment"</span>,
+    <span class='st'>"---"</span>,
+    <span class='st'>"So this is an utterance (i.e. outside of YAML)"</span>,
+    <span class='st'>"This, too."</span>,
+    <span class='st'>"---"</span>,
+    <span class='st'>"Second fragment"</span>,
+    <span class='st'>"---"</span>,
+    <span class='st'>"Another real utterance outside of YAML"</span>,
+    <span class='st'>"Another one outside"</span>,
+    <span class='st'>"Last 'real utterance'"</span>
+  <span class='op'>)</span>;
+
+<span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>prepend_ids_to_source</span><span class='op'>(</span>
+  <span class='va'>longerExampleText</span>
+<span class='op'>)</span>;
+</div><div class='output co'>#&gt;  [1] "[[uid=7f385t04]] ---"                                           
+#&gt;  [2] "[[uid=7f385t05]] First YAML fragment"                           
+#&gt;  [3] "[[uid=7f385t06]] ---"                                           
+#&gt;  [4] "[[uid=7f385t07]] So this is an utterance (i.e. outside of YAML)"
+#&gt;  [5] "[[uid=7f385t08]] This, too."                                    
+#&gt;  [6] "[[uid=7f385t09]] ---"                                           
+#&gt;  [7] "[[uid=7f385t0b]] Second fragment"                               
+#&gt;  [8] "[[uid=7f385t0c]] ---"                                           
+#&gt;  [9] "[[uid=7f385t0d]] Another real utterance outside of YAML"        
+#&gt; [10] "[[uid=7f385t0f]] Another one outside"                           
+#&gt; [11] "[[uid=7f385t0g]] Last 'real utterance'"                         </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
