@@ -73,7 +73,7 @@ justify that decision." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ justify that decision.</p>
   recursiveDeletion <span class='op'>=</span> <span class='cn'>FALSE</span>,
   decisionLabel <span class='op'>=</span> <span class='cn'>NULL</span>,
   justification <span class='op'>=</span> <span class='cn'>NULL</span>,
-  justificationFile <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"justificationFile"</span><span class='op'>)</span>,
+  justificationFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"preventOverwriting"</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"encoding"</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>
@@ -276,21 +276,23 @@ when writing the files to <code>output</code>.</p></td>
   <span class='op'>)</span>;
 </div><div class='output co'>#&gt; The path to a directory was passed; loading all sources.
 #&gt; 
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/attitude.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/attributes.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/behavior.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/ci_example_1.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/example-1.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/intention.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/longer-test.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/lorum-ipsum.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/lorum-ipsum2.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/merging-test-1-primary.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/merging-test-1-secondary.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/perceived_behavioral_control.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/perceived_norm.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/RtmpcV0Xur/temp_libpath298c2d052a63/rock/extdata/second-test-file.rock'.
-#&gt; I just loaded 14 sources.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/attitude.dct'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/attributes.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/behavior.dct'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/ci_example_1.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/example-1.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/intention.dct'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/longer-test.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/lorum-ipsum.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/lorum-ipsum2.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/merging-test-1-primary.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/merging-test-1-secondary.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/perceived_behavioral_control.dct'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/perceived_norm.dct'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/second-test-file.rock'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/spreadsheet-import-test.csv'.
+#&gt; Loading source from file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/spreadsheet-import-test.xlsx'.
+#&gt; I just loaded 16 sources.
 #&gt; 
 #&gt; A list of loaded sources was passed; processing them sequentially.
 #&gt; 
@@ -519,6 +521,36 @@ when writing the files to <code>output</code>.</p></td>
 #&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
 #&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
 #&gt; Out of the 47 utterances in the provided source, 47 are selected by the filter, 0 of which contain the code text.
+#&gt; Deleted 0 occurrences of code 'childCode1'.
+#&gt; 
+#&gt; Processing source 'spreadsheet-import-test.csv'.
+#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
+#&gt; 
+#&gt; Removing all occurrences of code 'childCode2'.
+#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
+#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
+#&gt; Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.
+#&gt; Deleted 0 occurrences of code 'childCode2'.
+#&gt; 
+#&gt; Removing all occurrences of code 'childCode1'.
+#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
+#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
+#&gt; Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.
+#&gt; Deleted 0 occurrences of code 'childCode1'.
+#&gt; 
+#&gt; Processing source 'spreadsheet-import-test.xlsx'.
+#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
+#&gt; 
+#&gt; Removing all occurrences of code 'childCode2'.
+#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
+#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
+#&gt; Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.
+#&gt; Deleted 0 occurrences of code 'childCode2'.
+#&gt; 
+#&gt; Removing all occurrences of code 'childCode1'.
+#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
+#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
+#&gt; Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.
 #&gt; Deleted 0 occurrences of code 'childCode1'.
 #&gt; </div><div class='input'>
 </div></pre>

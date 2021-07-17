@@ -72,7 +72,7 @@ recode_addChildCodes <- function(input,
                                  output = NULL,
                                  decisionLabel = NULL,
                                  justification = NULL,
-                                 justificationFile = rock::opts$get('justificationFile'),
+                                 justificationFile = NULL,
                                  preventOverwriting = rock::opts$get('preventOverwriting'),
                                  encoding = rock::opts$get('encoding'),
                                  silent = rock::opts$get('silent')) {

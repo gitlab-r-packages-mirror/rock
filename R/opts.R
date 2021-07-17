@@ -187,8 +187,10 @@ opts$defaults <-
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),
+       delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
+       ignoreOddDelimiters = FALSE,
 
        ### Used to merge sources
        coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
@@ -240,7 +242,7 @@ opts$defaults <-
        stripRootsFromCodePaths = TRUE,
 
        ### For justifications
-       justificationFile = "unspecified",
+       justificationFile = "default_justifier_log.jmd",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
