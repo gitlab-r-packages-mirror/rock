@@ -1,10 +1,11 @@
-#' Convert 'rectangular' or spreadsheet-format data to a source
+#' Convert 'rectangular' or spreadsheet-format data to one or more sources
 #'
 #' These functions first import data from a 'data format', such as spreadsheets
 #' in `.xlsx` format, comma-separated values files (`.csv`), or SPSS data
 #' files (`.sav`). You can also just use R data frames (imported however you
 #' want). These functions then use the columns you specified to convert these
-#' data to a `rock` source file, optionally including class instance
+#' data to one (`convert_*_to_source`) or more (`convert_*_to_sources`) `rock`
+#' source file(s), optionally including class instance
 #' identifiers (such as case identifiers to identify participants, or location
 #' identifiers, or moment identifiers, etc) and using those to link the
 #' utterances to attributes from columns you specified. You can also precode
@@ -15,9 +16,13 @@
 #' @param file The path to a file containing the data to convert.
 #' @param importArgs Optionally, a list with named elements representing
 #' arguments to pass when importing the file.
-#' @param output The name (and path) of the file in which to save the processed
-#' source (if it *is* `NULL`, the result will be returned visibly instead of
-#' invisibly).
+#' @param output For the `convert_*_to_source` functions, the name (and path)
+#' of the file in which to save the processed source (if it is `NULL`, the
+#' resulting character vector will be returned visibly instead of invisibly).
+#' Note that the ROCK convention is to use `.rock` as extension.
+#' For the `convert_*_to_sources` functions, the path to which to write the
+#' sources (if it is `NULL`, as a result a list of character vectors will be
+#' returned visibly instead of invisibly).
 #' @param omit_empty_rows Whether to omit rows where the values in the columns
 #' specified to convert to utterances are all empty (or contain only
 #' whitespace).
@@ -33,9 +38,37 @@
 #' instance identifier to attach the attribute to. If only one column is passed
 #' in `cols_to_ciids`, names can be omitted and a regular unnames character
 #' vector can be passed.
+#' @param oneFile Whether to store everything in one source, or create one
+#' source for each row of the data (if this is set to `FALSE`, make sure that
+#' `cols_to_sourceFilename` specifies one or more columns that together
+#' uniquely identify each row; also, in that case, `output` must be an existing
+#' directory on your PC).
+#' @param cols_to_sourceFilename The columns to use as unique part of the
+#' filesname of each source. These will be concatenated using
+#' `cols_in_sourceFilename_sep` as a separator. Note that the final string
+#' *must* be unique for each row in the dataset, otherwise the filenames for
+#' multiple rows will be the same and will be overwritten! By default, the
+#' columns specified with class instance identifiers are used.
+#' @param cols_in_sourceFilename_sep The separator to use when concatenating
+#' the `cols_to_sourceFilename`.
+#' @param sourceFilename_prefix,sourceFilename_suffix Strings that are
+#' prepended and appended to the `col_to_sourceFilename` to create the full
+#' filenames. Note that `.rock` will always be added to the end as extension.
+#' @param ciid_labels The labels for the class instance identifiers. Class
+#' instance identifiers have brief codes used in coding (e.g. 'cid' is the
+#' default for Case Identifiers, often used to identify participants) as well
+#' as more 'readable' labels that are used in the attributes (e.g. 'caseId' is
+#' the default class instance identifier for Case Identifiers). These can be
+#' specified here as a named vector, with each element being the label and
+#' the element's name the identifier.
+#' @param ciid_separator The separator for the class instance identifier - by
+#' default, either an equals sign (`=`) or a colon (`:`) are supported, but
+#' an equals sign is less ambiguous, as a colon is also used for different
+#' types of codes (e.g. codes for cognitive interviews start with `ci:`, and
+#' unique construct identifiers (UCIDs) from `psyverse` start with `dct:`.
+#' @param attributesFile Optionally, a file to write the attributes to if you
+#' don't want them to be written to the source file(s).
 #' @param preventOverwriting Whether to prevent overwriting of output files.
-#' @param removeNewlines Whether to remove all newline characters from the source before
-#' starting to clean them.
 #' @param encoding The encoding of the source(s).
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
@@ -81,15 +114,21 @@ convert_df_to_source <- function(data,
                                  cols_to_ciids = NULL,
                                  cols_to_codes = NULL,
                                  cols_to_attributes = NULL,
+                                 oneFile = TRUE,
+                                 cols_to_sourceFilename = cols_to_ciids,
+                                 cols_in_sourceFilename_sep = "=",
+                                 sourceFilename_prefix = "source_",
+                                 sourceFilename_suffix = "",
                                  ciid_labels = NULL,
                                  ciid_separator = "=",
+                                 attributesFile = NULL,
                                  preventOverwriting = rock::opts$get(preventOverwriting),
                                  encoding = rock::opts$get(encoding),
                                  silent = rock::opts$get(silent)) {
 
-  delimiterString <- rock::opts$get(delimiterString);
-  attributeContainer <- rock::opts$get(attributeContainers)[1];
-  codeDelimiters <- rock::opts$get(codeDelimiters);
+  delimiterString <- rock::opts$get('delimiterString');
+  attributeContainer <- rock::opts$get('attributeContainers')[1];
+  codeDelimiters <- rock::opts$get('codeDelimiters');
 
   if (!is.data.frame(data)) {
     stop("As `data`, you must pass a data frame!");
@@ -115,8 +154,9 @@ convert_df_to_source <- function(data,
       );
   }
 
-  source <- c();
-  attributes <- list();
+  sourceList <- list();
+  attributeList <- list();
+  attributesAsYamlList <- list();
 
   if (omit_empty_rows) {
     oldData <- data;
@@ -150,6 +190,8 @@ convert_df_to_source <- function(data,
     }
   }
 
+  ### Create a vector with any codes we want to add
+
   if (!is.null(cols_to_codes)) {
     codeVector <-
       apply(
@@ -176,13 +218,15 @@ convert_df_to_source <- function(data,
 
   for (i in 1:nrow(data)) {
 
-    source <- c(source, "");
+    sourceList[[i]] <- "";
 
     if (!is.null(cols_to_ciids)) {
 
+      ### Add the class instance identifiers
+
       for (j in seq_along(cols_to_ciids)) {
-        source <-
-          c(source,
+        sourceList[[i]] <-
+          c(sourceList[[i]],
             paste0(
               codeDelimiters[1],
               names(cols_to_ciids)[j],
@@ -193,79 +237,237 @@ convert_df_to_source <- function(data,
           );
       }
 
-      currentAttributes <-
-        stats::setNames(
-          c(list(as.character(data[i, cols_to_ciids[j]])),
-            as.list(as.character(data[i, cols_to_attributes]))
-          ),
-          nm = c(ciid_labels[names(cols_to_ciids)[j]],
-                 cols_to_attributes)
-        );
-
-      attributes <-
-        c(attributes,
-          list(currentAttributes)
-        );
+      ### Add the utterances and codes
 
       for (j in cols_to_utterances) {
-        source <-
-          c(source,
+        sourceList[[i]] <-
+          c(sourceList[[i]],
             "",
             paste0(data[i, j], codeVector[i])
           );
       }
 
+      ### Create an object with attributes
+
+      currentAttributes <-
+        stats::setNames(
+          c(list(as.character(data[i, cols_to_ciids])),
+            as.list(as.character(data[i, cols_to_attributes]))
+          ),
+          nm = c(ciid_labels[names(cols_to_ciids)],
+                 cols_to_attributes)
+        );
+
+      attributeList[[i]] <-
+        currentAttributes;
+
+      attributesAsYamlList[[i]] <-
+        attributeList_to_yaml(
+          currentAttributes,
+          delimiterString = delimiterString,
+          attributeContainer = attributeContainer
+        );
+
     }
 
+    ### Add empty line to the end
+    sourceList[[i]] <-
+      c(sourceList[[i]], "");
+
   }
 
-  if (length(attributes) > 0) {
-    attributes <-
-      list(attributes);
-    names(attributes) <-
-      attributeContainer;
-    source <-
-      c(source,
-        "",
-        "",
-        delimiterString,
-        unlist(
-          strsplit(
-            yaml::as.yaml(
-              attributes
-            ),
-            "\n",
-            fixed = TRUE
-          )
-        ),
-        delimiterString,
-        ""
+  if (length(attributeList) > 0) {
+
+    allAttributes_as_yaml <-
+      attributeList_to_yaml(
+        attributeList,
+        delimiterString = delimiterString,
+        attributeContainer = attributeContainer
       );
+
   }
 
-  if (is.null(output)) {
-    msg("Nothing specified as `output`, returning produced source visibly.\n",
-        silent=silent);
-    return(source);
-  } else {
-    if (preventOverwriting && (file.exists(output))) {
-      warning("The file you specified to save the output to, '",
-              output,
+  ### Check whether we should save the attributes to one separate file
+
+  if (!is.null(attributesFile)) {
+
+    if (file.exists(attributesFile) && preventOverwriting) {
+      warning("The file you specified to save the attributes to, '",
+              attributesFile,
               "', exists, and `preventOverwriting` is set to TRUE, ",
-              "so not writing the source to disk!");
+              "so not writing the attributes to disk! Pass ",
+              "`preventOverwriting=FALSE` to override this.\n\nNote that ",
+              "because you did pass a value for `attributesFile`, the ",
+              "attributes will not be stored in the source(s), so unless ",
+              "the attributes that were already stored in that file ",
+              "are correct, you may want to re-run this command and pass ",
+              "another filename, set `preventOverwriting` to `FALSE`, or ",
+              "pass `NULL` for `attributesFile`.");
     } else {
-      con <- file(description=output,
+      con <- file(description=attributesFile,
                   open="w",
                   encoding=encoding);
-      writeLines(text=source,
+      writeLines(text=allAttributes_as_yaml,
                  con=con);
       close(con);
-      msg("Wrote the produced source to the file specified as `output` (",
+    }
+
+  }
+
+  if (oneFile) {
+
+    allInOneSource <-
+      unlist(
+        sourceList
+      );
+
+    if ((length(attributeList) > 0) && is.null(attributesFile)) {
+
+      completeAllInOneSource <-
+        c(allInOneSource,
+          "",
+          "",
+          allAttributes_as_yaml);
+
+    } else {
+
+      completeAllInOneSource <- allInOneSource;
+
+    }
+
+    if (is.null(output)) {
+      msg("Nothing specified as `output`, returning produced source visibly.\n",
+          silent=silent);
+      return(completeAllInOneSource);
+    } else {
+      if (preventOverwriting && (file.exists(output))) {
+        warning("The file you specified to save the output to, '",
+                output,
+                "', exists, and `preventOverwriting` is set to TRUE, ",
+                "so not writing the source to disk! Pass ",
+                "`preventOverwriting=FALSE` to override this.");
+      } else {
+        con <- file(description=output,
+                    open="w",
+                    encoding=encoding);
+        writeLines(text=completeAllInOneSource,
+                   con=con);
+        close(con);
+        msg("Wrote the produced source to the file specified as `output` (",
+            output, ").\n",
+            silent=silent);
+      }
+      return(invisible(completeAllInOneSource));
+    }
+
+  } else {
+
+    if (!dir.exists(output)) {
+      stop("You indicated that you wanted to write the produced sources ",
+           "to directory '", output, "', but it doesn't seem to exist.");
+    }
+
+    res <- list();
+
+    filenames_to_write_to <-
+      file.path(
+        output,
+        paste0(
+          sourceFilename_prefix,
+          apply(
+            data[, cols_to_ciids],
+            1,
+            paste,
+            sep = cols_in_sourceFilename_sep
+          ),
+          sourceFilename_suffix,
+          ".rock"
+        )
+      );
+
+    for (i in seq_along(sourceList)) {
+
+      if (is.null(attributesFile)) {
+
+        res[[i]] <-
+          c(sourceList[[i]],
+            "",
+            attributesAsYamlList[[i]],
+            "");
+
+      } else {
+
+        res[[i]] <-
+          c(sourceList[[i]]);
+
+      }
+
+    }
+
+    if (is.null(output)) {
+      msg("Nothing specified as `output`, returning a list of the produced ",
+          "sources visibly.\n",
+          silent=silent);
+      return(res);
+    } else {
+
+      for (i in seq_along(sourceList)) {
+
+        if (preventOverwriting && (file.exists(filenames_to_write_to[i]))) {
+          warning("A file you specified to save the output to, '",
+                  filenames_to_write_to[i],
+                  "', exists, and `preventOverwriting` is set to TRUE, ",
+                  "so not writing the source to disk!");
+        } else {
+          con <- file(description=filenames_to_write_to[i],
+                      open="w",
+                      encoding=encoding);
+          writeLines(text=res[[i]],
+                     con=con);
+          close(con);
+        }
+
+      }
+
+      msg("Wrote ", length(res), " produced sources to files in the ",
+          "directory specified as `output` (",
           output, ").\n",
           silent=silent);
+
+
+      return(invisible(res));
     }
-    return(invisible(source));
+
   }
+
+}
+
+attributeList_to_yaml <- function(attributeList,
+                                  delimiterString,
+                                  attributeContainer) {
+
+  attributeList <-
+    list(attributeList);
+
+  names(attributeList) <-
+    attributeContainer;
+
+  attributes_as_yaml <-
+    c(delimiterString,
+      unlist(
+        strsplit(
+          yaml::as.yaml(
+            attributeList
+          ),
+          "\n",
+          fixed = TRUE
+        )
+      ),
+      delimiterString,
+      ""
+    );
+
+  return(attributes_as_yaml);
 
 }
 
@@ -316,13 +518,19 @@ convert_csv_to_source <- function(file,
                                   cols_to_ciids = NULL,
                                   cols_to_codes = NULL,
                                   cols_to_attributes = NULL,
+                                  oneFile = TRUE,
+                                  cols_to_sourceFilename = cols_to_ciids,
+                                  cols_in_sourceFilename_sep = "=",
+                                  sourceFilename_prefix = "source_",
+                                  sourceFilename_suffix = "",
                                   ciid_labels = NULL,
                                   ciid_separator = "=",
+                                  attributesFile = NULL,
                                   preventOverwriting = rock::opts$get(preventOverwriting),
                                   encoding = rock::opts$get(encoding),
                                   silent = rock::opts$get(silent)) {
 
-  importFunction <- read.csv;
+  importFunction <- utils::read.csv;
 
   return(
     import_and_convert_to_source(
@@ -335,8 +543,14 @@ convert_csv_to_source <- function(file,
       cols_to_ciids = cols_to_ciids,
       cols_to_codes = cols_to_codes,
       cols_to_attributes = cols_to_attributes,
+      oneFile = oneFile,
+      cols_to_sourceFilename = cols_to_sourceFilename,
+      cols_in_sourceFilename_sep = cols_in_sourceFilename_sep,
+      sourceFilename_prefix = sourceFilename_prefix,
+      sourceFilename_suffix = sourceFilename_suffix,
       ciid_labels = ciid_labels,
       ciid_separator = ciid_separator,
+      attributesFile = attributesFile,
       preventOverwriting = preventOverwriting,
       encoding = encoding,
       silent = silent
@@ -355,13 +569,19 @@ convert_csv2_to_source <- function(file,
                                    cols_to_ciids = NULL,
                                    cols_to_codes = NULL,
                                    cols_to_attributes = NULL,
+                                   oneFile = TRUE,
+                                   cols_to_sourceFilename = cols_to_ciids,
+                                   cols_in_sourceFilename_sep = "=",
+                                   sourceFilename_prefix = "source_",
+                                   sourceFilename_suffix = "",
                                    ciid_labels = NULL,
                                    ciid_separator = "=",
+                                   attributesFile = NULL,
                                    preventOverwriting = rock::opts$get(preventOverwriting),
                                    encoding = rock::opts$get(encoding),
                                    silent = rock::opts$get(silent)) {
 
-  importFunction <- read.csv2;
+  importFunction <- utils::read.csv2;
 
   return(
     import_and_convert_to_source(
@@ -374,8 +594,14 @@ convert_csv2_to_source <- function(file,
       cols_to_ciids = cols_to_ciids,
       cols_to_codes = cols_to_codes,
       cols_to_attributes = cols_to_attributes,
+      oneFile = oneFile,
+      cols_to_sourceFilename = cols_to_sourceFilename,
+      cols_in_sourceFilename_sep = cols_in_sourceFilename_sep,
+      sourceFilename_prefix = sourceFilename_prefix,
+      sourceFilename_suffix = sourceFilename_suffix,
       ciid_labels = ciid_labels,
       ciid_separator = ciid_separator,
+      attributesFile = attributesFile,
       preventOverwriting = preventOverwriting,
       encoding = encoding,
       silent = silent
@@ -395,8 +621,14 @@ convert_xlsx_to_source <- function(file,
                                    cols_to_ciids = NULL,
                                    cols_to_codes = NULL,
                                    cols_to_attributes = NULL,
+                                   oneFile = TRUE,
+                                   cols_to_sourceFilename = cols_to_ciids,
+                                   cols_in_sourceFilename_sep = "=",
+                                   sourceFilename_prefix = "source_",
+                                   sourceFilename_suffix = "",
                                    ciid_labels = NULL,
                                    ciid_separator = "=",
+                                   attributesFile = NULL,
                                    preventOverwriting = rock::opts$get(preventOverwriting),
                                    encoding = rock::opts$get(encoding),
                                    silent = rock::opts$get(silent)) {
@@ -422,8 +654,14 @@ convert_xlsx_to_source <- function(file,
       cols_to_ciids = cols_to_ciids,
       cols_to_codes = cols_to_codes,
       cols_to_attributes = cols_to_attributes,
+      oneFile = oneFile,
+      cols_to_sourceFilename = cols_to_sourceFilename,
+      cols_in_sourceFilename_sep = cols_in_sourceFilename_sep,
+      sourceFilename_prefix = sourceFilename_prefix,
+      sourceFilename_suffix = sourceFilename_suffix,
       ciid_labels = ciid_labels,
       ciid_separator = ciid_separator,
+      attributesFile = attributesFile,
       preventOverwriting = preventOverwriting,
       encoding = encoding,
       silent = silent
@@ -442,8 +680,14 @@ convert_sav_to_source <- function(file,
                                   cols_to_ciids = NULL,
                                   cols_to_codes = NULL,
                                   cols_to_attributes = NULL,
+                                  oneFile = TRUE,
+                                  cols_to_sourceFilename = cols_to_ciids,
+                                  cols_in_sourceFilename_sep = "=",
+                                  sourceFilename_prefix = "source_",
+                                  sourceFilename_suffix = "",
                                   ciid_labels = NULL,
                                   ciid_separator = "=",
+                                  attributesFile = NULL,
                                   preventOverwriting = rock::opts$get(preventOverwriting),
                                   encoding = rock::opts$get(encoding),
                                   silent = rock::opts$get(silent)) {
@@ -469,8 +713,14 @@ convert_sav_to_source <- function(file,
       cols_to_ciids = cols_to_ciids,
       cols_to_codes = cols_to_codes,
       cols_to_attributes = cols_to_attributes,
+      oneFile = oneFile,
+      cols_to_sourceFilename = cols_to_sourceFilename,
+      cols_in_sourceFilename_sep = cols_in_sourceFilename_sep,
+      sourceFilename_prefix = sourceFilename_prefix,
+      sourceFilename_suffix = sourceFilename_suffix,
       ciid_labels = ciid_labels,
       ciid_separator = ciid_separator,
+      attributesFile = attributesFile,
       preventOverwriting = preventOverwriting,
       encoding = encoding,
       silent = silent

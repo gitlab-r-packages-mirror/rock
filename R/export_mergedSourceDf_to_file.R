@@ -1,22 +1,21 @@
 #' Export a merged source data frame
 #'
-#' @param x The object with parsed sources
-#' @param file The file to export to
-#' @param exportFunc The function to use to export
+#' @param x The object with parsed sources.
+#' @param file The file to export to.
 #' @param exportArgs Optionally, arguments to pass to the function to use to
-#' export
+#' export.
 #' @param preventOverwriting Whether to prevent overwriting if the file already
-#' exists
-#' @param silent Whether to be silent or chatty
+#' exists.
+#' @param silent Whether to be silent or chatty.
 #'
 #' @return Silently, the object with parsed sources.
 #' @rdname export_mergedSourceDf_to_file
 #' @export
 export_mergedSourceDf_to_csv <- function(x,
                                          file,
-                                         exportArgs = list(fileEncoding = rock::opts$get(encoding)),
-                                         preventOverwriting = rock::opts$get(preventOverwriting),
-                                         silent = rock::opts$get(silent)) {
+                                         exportArgs = list(fileEncoding = rock::opts$get('encoding')),
+                                         preventOverwriting = rock::opts$get('preventOverwriting'),
+                                         silent = rock::opts$get('silent')) {
   return(
     export_mergedSourceDf_to_file(
       x = x,
@@ -24,7 +23,7 @@ export_mergedSourceDf_to_csv <- function(x,
       exportArgs = exportArgs,
       preventOverwriting = preventOverwriting,
       silent = silent,
-      exportFunc = write.csv
+      exportFunc = utils::write.csv
     )
   );
 }
@@ -33,9 +32,9 @@ export_mergedSourceDf_to_csv <- function(x,
 #' @export
 export_mergedSourceDf_to_csv2 <- function(x,
                                           file,
-                                          exportArgs = list(fileEncoding = rock::opts$get(encoding)),
-                                          preventOverwriting = rock::opts$get(preventOverwriting),
-                                          silent = rock::opts$get(silent)) {
+                                          exportArgs = list(fileEncoding = rock::opts$get('encoding')),
+                                          preventOverwriting = rock::opts$get('preventOverwriting'),
+                                          silent = rock::opts$get('silent')) {
   return(
     export_mergedSourceDf_to_file(
       x = x,
@@ -43,7 +42,7 @@ export_mergedSourceDf_to_csv2 <- function(x,
       exportArgs = exportArgs,
       preventOverwriting = preventOverwriting,
       silent = silent,
-      exportFunc = write.csv2
+      exportFunc = utils::write.csv2
     )
   );
 }
@@ -53,8 +52,8 @@ export_mergedSourceDf_to_csv2 <- function(x,
 export_mergedSourceDf_to_xlsx <- function(x,
                                           file,
                                           exportArgs = list(overwrite = !preventOverwriting),
-                                          preventOverwriting = rock::opts$get(preventOverwriting),
-                                          silent = rock::opts$get(silent)) {
+                                          preventOverwriting = rock::opts$get('preventOverwriting'),
+                                          silent = rock::opts$get('silent')) {
 
   if (requireNamespace("openxlsx", quietly = TRUE)) {
     return(
@@ -79,8 +78,8 @@ export_mergedSourceDf_to_xlsx <- function(x,
 export_mergedSourceDf_to_sav <- function(x,
                                          file,
                                          exportArgs = NULL,
-                                         preventOverwriting = rock::opts$get(preventOverwriting),
-                                         silent = rock::opts$get(silent)) {
+                                         preventOverwriting = rock::opts$get('preventOverwriting'),
+                                         silent = rock::opts$get('silent')) {
 
   if (requireNamespace("haven", quietly = TRUE)) {
     return(
@@ -104,8 +103,8 @@ export_mergedSourceDf_to_file <- function(x,
                                           file,
                                           exportFunc,
                                           exportArgs = NULL,
-                                          preventOverwriting = rock::opts$get(preventOverwriting),
-                                          silent = rock::opts$get(silent)) {
+                                          preventOverwriting = rock::opts$get('preventOverwriting'),
+                                          silent = rock::opts$get('silent')) {
 
   if (!(inherits(x, "rock_parsedSource") ||
         inherits(x, "rock_parsedSources"))) {

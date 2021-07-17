@@ -6,7 +6,7 @@
 \alias{convert_csv2_to_source}
 \alias{convert_xlsx_to_source}
 \alias{convert_sav_to_source}
-\title{Convert 'rectangular' or spreadsheet-format data to a source}
+\title{Convert 'rectangular' or spreadsheet-format data to one or more sources}
 \usage{
 convert_df_to_source(
   data,
@@ -16,6 +16,11 @@ convert_df_to_source(
   cols_to_ciids = NULL,
   cols_to_codes = NULL,
   cols_to_attributes = NULL,
+  oneFile = TRUE,
+  cols_to_sourceFilename = cols_to_ciids,
+  cols_in_sourceFilename_sep = "=",
+  sourceFilename_prefix = "source_",
+  sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
   preventOverwriting = rock::opts$get(preventOverwriting),
@@ -32,6 +37,11 @@ convert_csv_to_source(
   cols_to_ciids = NULL,
   cols_to_codes = NULL,
   cols_to_attributes = NULL,
+  oneFile = TRUE,
+  cols_to_sourceFilename = cols_to_ciids,
+  cols_in_sourceFilename_sep = "=",
+  sourceFilename_prefix = "source_",
+  sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
   preventOverwriting = rock::opts$get(preventOverwriting),
@@ -48,6 +58,11 @@ convert_csv2_to_source(
   cols_to_ciids = NULL,
   cols_to_codes = NULL,
   cols_to_attributes = NULL,
+  oneFile = TRUE,
+  cols_to_sourceFilename = cols_to_ciids,
+  cols_in_sourceFilename_sep = "=",
+  sourceFilename_prefix = "source_",
+  sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
   preventOverwriting = rock::opts$get(preventOverwriting),
@@ -64,6 +79,11 @@ convert_xlsx_to_source(
   cols_to_ciids = NULL,
   cols_to_codes = NULL,
   cols_to_attributes = NULL,
+  oneFile = TRUE,
+  cols_to_sourceFilename = cols_to_ciids,
+  cols_in_sourceFilename_sep = "=",
+  sourceFilename_prefix = "source_",
+  sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
   preventOverwriting = rock::opts$get(preventOverwriting),
@@ -80,6 +100,11 @@ convert_sav_to_source(
   cols_to_ciids = NULL,
   cols_to_codes = NULL,
   cols_to_attributes = NULL,
+  oneFile = TRUE,
+  cols_to_sourceFilename = cols_to_ciids,
+  cols_in_sourceFilename_sep = "=",
+  sourceFilename_prefix = "source_",
+  sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
   preventOverwriting = rock::opts$get(preventOverwriting),
@@ -90,9 +115,13 @@ convert_sav_to_source(
 \arguments{
 \item{data}{The data frame containing the data to convert.}
 
-\item{output}{The name (and path) of the file in which to save the processed
-source (if it \emph{is} \code{NULL}, the result will be returned visibly instead of
-invisibly).}
+\item{output}{For the \verb{convert_*_to_source} functions, the name (and path)
+of the file in which to save the processed source (if it is \code{NULL}, the
+resulting character vector will be returned visibly instead of invisibly).
+Note that the ROCK convention is to use \code{.rock} as extension.
+For the \verb{convert_*_to_sources} functions, the path to which to write the
+sources (if it is \code{NULL}, as a result a list of character vectors will be
+returned visibly instead of invisibly).}
 
 \item{omit_empty_rows}{Whether to omit rows where the values in the columns
 specified to convert to utterances are all empty (or contain only
@@ -114,6 +143,40 @@ instance identifier to attach the attribute to. If only one column is passed
 in \code{cols_to_ciids}, names can be omitted and a regular unnames character
 vector can be passed.}
 
+\item{oneFile}{Whether to store everything in one source, or create one
+source for each row of the data (if this is set to \code{FALSE}, make sure that
+\code{cols_to_sourceFilename} specifies one or more columns that together
+uniquely identify each row; also, in that case, \code{output} must be an existing
+directory on your PC).}
+
+\item{cols_to_sourceFilename}{The columns to use as unique part of the
+filesname of each source. These will be concatenated using
+\code{cols_in_sourceFilename_sep} as a separator. Note that the final string
+\emph{must} be unique for each row in the dataset, otherwise the filenames for
+multiple rows will be the same and will be overwritten! By default, the
+columns specified with class instance identifiers are used.}
+
+\item{cols_in_sourceFilename_sep}{The separator to use when concatenating
+the \code{cols_to_sourceFilename}.}
+
+\item{sourceFilename_prefix, sourceFilename_suffix}{Strings that are
+prepended and appended to the \code{col_to_sourceFilename} to create the full
+filenames. Note that \code{.rock} will always be added to the end as extension.}
+
+\item{ciid_labels}{The labels for the class instance identifiers. Class
+instance identifiers have brief codes used in coding (e.g. 'cid' is the
+default for Case Identifiers, often used to identify participants) as well
+as more 'readable' labels that are used in the attributes (e.g. 'caseId' is
+the default class instance identifier for Case Identifiers). These can be
+specified here as a named vector, with each element being the label and
+the element's name the identifier.}
+
+\item{ciid_separator}{The separator for the class instance identifier - by
+default, either an equals sign (\code{=}) or a colon (\code{:}) are supported, but
+an equals sign is less ambiguous, as a colon is also used for different
+types of codes (e.g. codes for cognitive interviews start with \verb{ci:}, and
+unique construct identifiers (UCIDs) from \code{psyverse} start with \verb{dct:}.}
+
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{encoding}{The encoding of the source(s).}
@@ -124,9 +187,6 @@ vector can be passed.}
 
 \item{importArgs}{Optionally, a list with named elements representing
 arguments to pass when importing the file.}
-
-\item{removeNewlines}{Whether to remove all newline characters from the source before
-starting to clean them.}
 }
 \value{
 A source as a character vector.
@@ -136,7 +196,8 @@ These functions first import data from a 'data format', such as spreadsheets
 in \code{.xlsx} format, comma-separated values files (\code{.csv}), or SPSS data
 files (\code{.sav}). You can also just use R data frames (imported however you
 want). These functions then use the columns you specified to convert these
-data to a \code{rock} source file, optionally including class instance
+data to one (\verb{convert_*_to_source}) or more (\verb{convert_*_to_sources}) \code{rock}
+source file(s), optionally including class instance
 identifiers (such as case identifiers to identify participants, or location
 identifiers, or moment identifiers, etc) and using those to link the
 utterances to attributes from columns you specified. You can also precode

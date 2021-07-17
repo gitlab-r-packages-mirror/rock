@@ -10,49 +10,47 @@
 export_mergedSourceDf_to_csv(
   x,
   file,
-  exportArgs = list(fileEncoding = rock::opts$get(encoding)),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent)
+  exportArgs = list(fileEncoding = rock::opts$get("encoding")),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent")
 )
 
 export_mergedSourceDf_to_csv2(
   x,
   file,
-  exportArgs = list(fileEncoding = rock::opts$get(encoding)),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent)
+  exportArgs = list(fileEncoding = rock::opts$get("encoding")),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent")
 )
 
 export_mergedSourceDf_to_xlsx(
   x,
   file,
   exportArgs = list(overwrite = !preventOverwriting),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent)
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent")
 )
 
 export_mergedSourceDf_to_sav(
   x,
   file,
   exportArgs = NULL,
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent)
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
-\item{x}{The object with parsed sources}
+\item{x}{The object with parsed sources.}
 
-\item{file}{The file to export to}
+\item{file}{The file to export to.}
 
 \item{exportArgs}{Optionally, arguments to pass to the function to use to
-export}
+export.}
 
 \item{preventOverwriting}{Whether to prevent overwriting if the file already
-exists}
+exists.}
 
-\item{silent}{Whether to be silent or chatty}
-
-\item{exportFunc}{The function to use to export}
+\item{silent}{Whether to be silent or chatty.}
 }
 \value{
 Silently, the object with parsed sources.
