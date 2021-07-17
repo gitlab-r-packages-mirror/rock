@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert 'rectangular' or spreadsheet-format data to a source — convert_df_to_source • rock</title>
+<title>Convert 'rectangular' or spreadsheet-format data to one or more sources — convert_df_to_source • rock</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,13 @@
 
 
 
-<meta property="og:title" content="Convert 'rectangular' or spreadsheet-format data to a source — convert_df_to_source" />
+<meta property="og:title" content="Convert 'rectangular' or spreadsheet-format data to one or more sources — convert_df_to_source" />
 <meta property="og:description" content="These functions first import data from a 'data format', such as spreadsheets
 in .xlsx format, comma-separated values files (.csv), or SPSS data
 files (.sav). You can also just use R data frames (imported however you
 want). These functions then use the columns you specified to convert these
-data to a rock source file, optionally including class instance
+data to one (oneFile=TRUE) or more (oneFile=FALSE) rock
+source file(s), optionally including class instance
 identifiers (such as case identifiers to identify participants, or location
 identifiers, or moment identifiers, etc) and using those to link the
 utterances to attributes from columns you specified. You can also precode
@@ -129,7 +130,7 @@ reason)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert 'rectangular' or spreadsheet-format data to a source</h1>
+    <h1>Convert 'rectangular' or spreadsheet-format data to one or more sources</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/convert_df_to_source.R'><code>R/convert_df_to_source.R</code></a></small>
     <div class="hidden name"><code>convert_to_source.Rd</code></div>
     </div>
@@ -139,7 +140,8 @@ reason)." />
 in <code>.xlsx</code> format, comma-separated values files (<code>.csv</code>), or SPSS data
 files (<code>.sav</code>). You can also just use R data frames (imported however you
 want). These functions then use the columns you specified to convert these
-data to a <code>rock</code> source file, optionally including class instance
+data to one (<code>oneFile=TRUE</code>) or more (<code>oneFile=FALSE</code>) <code>rock</code>
+source file(s), optionally including class instance
 identifiers (such as case identifiers to identify participants, or location
 identifiers, or moment identifiers, etc) and using those to link the
 utterances to attributes from columns you specified. You can also precode
@@ -155,8 +157,14 @@ reason).</p>
   cols_to_ciids <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_codes <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  oneFile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols_to_sourceFilename <span class='op'>=</span> <span class='va'>cols_to_ciids</span>,
+  cols_in_sourceFilename_sep <span class='op'>=</span> <span class='st'>"="</span>,
+  sourceFilename_prefix <span class='op'>=</span> <span class='st'>"source_"</span>,
+  sourceFilename_suffix <span class='op'>=</span> <span class='st'>""</span>,
   ciid_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   ciid_separator <span class='op'>=</span> <span class='st'>"="</span>,
+  attributesFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -171,8 +179,14 @@ reason).</p>
   cols_to_ciids <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_codes <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  oneFile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols_to_sourceFilename <span class='op'>=</span> <span class='va'>cols_to_ciids</span>,
+  cols_in_sourceFilename_sep <span class='op'>=</span> <span class='st'>"="</span>,
+  sourceFilename_prefix <span class='op'>=</span> <span class='st'>"source_"</span>,
+  sourceFilename_suffix <span class='op'>=</span> <span class='st'>""</span>,
   ciid_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   ciid_separator <span class='op'>=</span> <span class='st'>"="</span>,
+  attributesFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -187,8 +201,14 @@ reason).</p>
   cols_to_ciids <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_codes <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  oneFile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols_to_sourceFilename <span class='op'>=</span> <span class='va'>cols_to_ciids</span>,
+  cols_in_sourceFilename_sep <span class='op'>=</span> <span class='st'>"="</span>,
+  sourceFilename_prefix <span class='op'>=</span> <span class='st'>"source_"</span>,
+  sourceFilename_suffix <span class='op'>=</span> <span class='st'>""</span>,
   ciid_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   ciid_separator <span class='op'>=</span> <span class='st'>"="</span>,
+  attributesFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -203,8 +223,14 @@ reason).</p>
   cols_to_ciids <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_codes <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  oneFile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols_to_sourceFilename <span class='op'>=</span> <span class='va'>cols_to_ciids</span>,
+  cols_in_sourceFilename_sep <span class='op'>=</span> <span class='st'>"="</span>,
+  sourceFilename_prefix <span class='op'>=</span> <span class='st'>"source_"</span>,
+  sourceFilename_suffix <span class='op'>=</span> <span class='st'>""</span>,
   ciid_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   ciid_separator <span class='op'>=</span> <span class='st'>"="</span>,
+  attributesFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -219,8 +245,14 @@ reason).</p>
   cols_to_ciids <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_codes <span class='op'>=</span> <span class='cn'>NULL</span>,
   cols_to_attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  oneFile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols_to_sourceFilename <span class='op'>=</span> <span class='va'>cols_to_ciids</span>,
+  cols_in_sourceFilename_sep <span class='op'>=</span> <span class='st'>"="</span>,
+  sourceFilename_prefix <span class='op'>=</span> <span class='st'>"source_"</span>,
+  sourceFilename_suffix <span class='op'>=</span> <span class='st'>""</span>,
   ciid_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   ciid_separator <span class='op'>=</span> <span class='st'>"="</span>,
+  attributesFile <span class='op'>=</span> <span class='cn'>NULL</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -235,9 +267,13 @@ reason).</p>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>The name (and path) of the file in which to save the processed
-source (if it <em>is</em> <code>NULL</code>, the result will be returned visibly instead of
-invisibly).</p></td>
+      <td><p>If <code>oneFile=TRUE</code> (the default), the name (and path)
+of the file in which to save the processed source (if it is <code>NULL</code>, the
+resulting character vector will be returned visibly instead of invisibly).
+Note that the ROCK convention is to use <code>.rock</code> as extension.
+If <code>oneFile=FALSE</code>, the path to which to write the
+sources (if it is <code>NULL</code>, as a result a list of character vectors will be
+returned visibly instead of invisibly).</p></td>
     </tr>
     <tr>
       <th>omit_empty_rows</th>
@@ -270,6 +306,57 @@ in <code>cols_to_ciids</code>, names can be omitted and a regular unnames charac
 vector can be passed.</p></td>
     </tr>
     <tr>
+      <th>oneFile</th>
+      <td><p>Whether to store everything in one source, or create one
+source for each row of the data (if this is set to <code>FALSE</code>, make sure that
+<code>cols_to_sourceFilename</code> specifies one or more columns that together
+uniquely identify each row; also, in that case, <code>output</code> must be an existing
+directory on your PC).</p></td>
+    </tr>
+    <tr>
+      <th>cols_to_sourceFilename</th>
+      <td><p>The columns to use as unique part of the
+filesname of each source. These will be concatenated using
+<code>cols_in_sourceFilename_sep</code> as a separator. Note that the final string
+<em>must</em> be unique for each row in the dataset, otherwise the filenames for
+multiple rows will be the same and will be overwritten! By default, the
+columns specified with class instance identifiers are used.</p></td>
+    </tr>
+    <tr>
+      <th>cols_in_sourceFilename_sep</th>
+      <td><p>The separator to use when concatenating
+the <code>cols_to_sourceFilename</code>.</p></td>
+    </tr>
+    <tr>
+      <th>sourceFilename_prefix, sourceFilename_suffix</th>
+      <td><p>Strings that are
+prepended and appended to the <code>col_to_sourceFilename</code> to create the full
+filenames. Note that <code>.rock</code> will always be added to the end as extension.</p></td>
+    </tr>
+    <tr>
+      <th>ciid_labels</th>
+      <td><p>The labels for the class instance identifiers. Class
+instance identifiers have brief codes used in coding (e.g. 'cid' is the
+default for Case Identifiers, often used to identify participants) as well
+as more 'readable' labels that are used in the attributes (e.g. 'caseId' is
+the default class instance identifier for Case Identifiers). These can be
+specified here as a named vector, with each element being the label and
+the element's name the identifier.</p></td>
+    </tr>
+    <tr>
+      <th>ciid_separator</th>
+      <td><p>The separator for the class instance identifier - by
+default, either an equals sign (<code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code>) or a colon (<code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code>) are supported, but
+an equals sign is less ambiguous, as a colon is also used for different
+types of codes (e.g. codes for cognitive interviews start with <code>ci:</code>, and
+unique construct identifiers (UCIDs) from <code>psyverse</code> start with <code>dct:</code>.</p></td>
+    </tr>
+    <tr>
+      <th>attributesFile</th>
+      <td><p>Optionally, a file to write the attributes to if you
+don't want them to be written to the source file(s).</p></td>
+    </tr>
+    <tr>
       <th>preventOverwriting</th>
       <td><p>Whether to prevent overwriting of output files.</p></td>
     </tr>
@@ -289,11 +376,6 @@ vector can be passed.</p></td>
       <th>importArgs</th>
       <td><p>Optionally, a list with named elements representing
 arguments to pass when importing the file.</p></td>
-    </tr>
-    <tr>
-      <th>removeNewlines</th>
-      <td><p>Whether to remove all newline characters from the source before
-starting to clean them.</p></td>
     </tr>
     </table>
 

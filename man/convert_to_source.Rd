@@ -23,6 +23,7 @@ convert_df_to_source(
   sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
+  attributesFile = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -44,6 +45,7 @@ convert_csv_to_source(
   sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
+  attributesFile = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -65,6 +67,7 @@ convert_csv2_to_source(
   sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
+  attributesFile = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -86,6 +89,7 @@ convert_xlsx_to_source(
   sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
+  attributesFile = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -107,6 +111,7 @@ convert_sav_to_source(
   sourceFilename_suffix = "",
   ciid_labels = NULL,
   ciid_separator = "=",
+  attributesFile = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -115,11 +120,11 @@ convert_sav_to_source(
 \arguments{
 \item{data}{The data frame containing the data to convert.}
 
-\item{output}{For the \verb{convert_*_to_source} functions, the name (and path)
+\item{output}{If \code{oneFile=TRUE} (the default), the name (and path)
 of the file in which to save the processed source (if it is \code{NULL}, the
 resulting character vector will be returned visibly instead of invisibly).
 Note that the ROCK convention is to use \code{.rock} as extension.
-For the \verb{convert_*_to_sources} functions, the path to which to write the
+If \code{oneFile=FALSE}, the path to which to write the
 sources (if it is \code{NULL}, as a result a list of character vectors will be
 returned visibly instead of invisibly).}
 
@@ -177,6 +182,9 @@ an equals sign is less ambiguous, as a colon is also used for different
 types of codes (e.g. codes for cognitive interviews start with \verb{ci:}, and
 unique construct identifiers (UCIDs) from \code{psyverse} start with \verb{dct:}.}
 
+\item{attributesFile}{Optionally, a file to write the attributes to if you
+don't want them to be written to the source file(s).}
+
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 
 \item{encoding}{The encoding of the source(s).}
@@ -196,7 +204,7 @@ These functions first import data from a 'data format', such as spreadsheets
 in \code{.xlsx} format, comma-separated values files (\code{.csv}), or SPSS data
 files (\code{.sav}). You can also just use R data frames (imported however you
 want). These functions then use the columns you specified to convert these
-data to one (\verb{convert_*_to_source}) or more (\verb{convert_*_to_sources}) \code{rock}
+data to one (\code{oneFile=TRUE}) or more (\code{oneFile=FALSE}) \code{rock}
 source file(s), optionally including class instance
 identifiers (such as case identifiers to identify participants, or location
 identifiers, or moment identifiers, etc) and using those to link the

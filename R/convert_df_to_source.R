@@ -4,7 +4,7 @@
 #' in `.xlsx` format, comma-separated values files (`.csv`), or SPSS data
 #' files (`.sav`). You can also just use R data frames (imported however you
 #' want). These functions then use the columns you specified to convert these
-#' data to one (`convert_*_to_source`) or more (`convert_*_to_sources`) `rock`
+#' data to one (`oneFile=TRUE`) or more (`oneFile=FALSE`) `rock`
 #' source file(s), optionally including class instance
 #' identifiers (such as case identifiers to identify participants, or location
 #' identifiers, or moment identifiers, etc) and using those to link the
@@ -16,11 +16,11 @@
 #' @param file The path to a file containing the data to convert.
 #' @param importArgs Optionally, a list with named elements representing
 #' arguments to pass when importing the file.
-#' @param output For the `convert_*_to_source` functions, the name (and path)
+#' @param output If `oneFile=TRUE` (the default), the name (and path)
 #' of the file in which to save the processed source (if it is `NULL`, the
 #' resulting character vector will be returned visibly instead of invisibly).
 #' Note that the ROCK convention is to use `.rock` as extension.
-#' For the `convert_*_to_sources` functions, the path to which to write the
+#' If `oneFile=FALSE`, the path to which to write the
 #' sources (if it is `NULL`, as a result a list of character vectors will be
 #' returned visibly instead of invisibly).
 #' @param omit_empty_rows Whether to omit rows where the values in the columns
