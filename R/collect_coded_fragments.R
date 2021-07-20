@@ -32,6 +32,7 @@
 #' @param add_html_tags Whether to add HTML tags to the result.
 #' @param rawResult Whether to return the raw result, a list of the
 #' fragments, or one character value in markdown format.
+#' @param includeCSS Whether to include the ROCK CSS in the returned HTML.
 #' @param includeBootstrap Whether to include the default bootstrap CSS.
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
@@ -95,6 +96,7 @@ collect_coded_fragments <- function(x,
                                     outputViewer = "viewer",
                                     template = "default",
                                     rawResult = FALSE,
+                                    includeCSS = TRUE,
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
                                     preventOverwriting = rock::opts$get(preventOverwriting),
                                     silent=rock::opts$get(silent)) {
@@ -298,17 +300,19 @@ collect_coded_fragments <- function(x,
   ### Add CSS for html tags if requested
   if (add_html_tags) {
     res_without_css <- res;
-    res <-
-      paste0(
-        rock::css(
-          template=template,
-          includeBootstrap = ifelse(is.character(includeBootstrap),
-                                    FALSE,
-                                    includeBootstrap)
-        ),
-        "\n\n",
-        res
-      );
+    if (includeCSS) {
+      res <-
+        paste0(
+          rock::css(
+            template=template,
+            includeBootstrap = ifelse(is.character(includeBootstrap),
+                                      FALSE,
+                                      includeBootstrap)
+          ),
+          "\n\n",
+          res
+        );
+    }
   } else {
     res_without_css <- res;
   }
