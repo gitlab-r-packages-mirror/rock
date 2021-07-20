@@ -6,21 +6,24 @@
 \usage{
 add_html_tags(
   x,
+  context = NULL,
   codeClass = rock::opts$get(codeClass),
   idClass = rock::opts$get(idClass),
   sectionClass = rock::opts$get(sectionClass),
   uidClass = rock::opts$get(uidClass),
+  contextClass = rock::opts$get(contextClass),
   utteranceClass = rock::opts$get(utteranceClass)
 )
 }
 \arguments{
 \item{x}{A character vector with the source}
 
-\item{codeClass, idClass, sectionClass, uidClass, utteranceClass}{The classes
-to use for, respectively, codes, identifiers (such as case identifiers or
-coder identifiers), section breaks, utterance identifiers, and full
-utterances. All \verb{<span>} elements except for the full utterances, which
-are placed in \verb{<div>} elements.}
+\item{context}{Optionally, lines to pass the contextClass}
+
+\item{codeClass, idClass, sectionClass, uidClass, contextClass, utteranceClass}{The classes to use for, respectively, codes, identifiers (such as case
+identifiers or coder identifiers), section breaks, utterance
+identifiers, context, and full utterances. All \verb{<span>} elements except
+for the full utterances, which are placed in \verb{<div>} elements.}
 }
 \value{
 The character vector with the replacements made.

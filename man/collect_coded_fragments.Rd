@@ -98,16 +98,29 @@ examplePath <-
 
 ### Get a path to one example file
 exampleFile <-
-  file.path(examplePath, "example-1.rock");
+  file.path(
+    examplePath, "example-1.rock"
+  );
 
 ### Parse single example source
-parsedExample <- rock::parse_source(exampleFile);
+parsedExample <-
+  rock::parse_source(
+    exampleFile
+  );
 
 ### Show organised coded fragments in Markdown
-cat(collect_coded_fragments(parsedExample));
+cat(
+  rock::collect_coded_fragments(
+    parsedExample
+  )
+);
 
 ### Only for the codes containing 'Code2'
-cat(collect_coded_fragments(parsedExample,
-                            'Code2'));
+cat(
+  rock::collect_coded_fragments(
+    parsedExample,
+    'Code2'
+  )
+);
 
 }
