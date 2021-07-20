@@ -4,8 +4,9 @@
 #'
 #' @param x A character vector with the source
 #' @param context Optionally, lines to pass the contextClass
-#' @param codeClass,idClass,sectionClass,uidClass,contextClass,utteranceClass
-#' The classes to use for, respectively, codes, identifiers (such as case
+#' @param codeClass,codeValueClass,idClass,sectionClass,uidClass,contextClass,utteranceClass
+#' The classes to use for, respectively, codes, code values,
+#' class instance identifiers (such as case
 #' identifiers or coder identifiers), section breaks, utterance
 #' identifiers, context, and full utterances. All `<span>` elements except
 #' for the full utterances, which are placed in `<div>` elements.

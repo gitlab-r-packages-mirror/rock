@@ -17,6 +17,7 @@ collect_coded_fragments(
   outputViewer = "viewer",
   template = "default",
   rawResult = FALSE,
+  includeCSS = TRUE,
   includeBootstrap = rock::opts$get("includeBootstrap"),
   preventOverwriting = rock::opts$get(preventOverwriting),
   silent = rock::opts$get(silent)
@@ -69,6 +70,8 @@ the path and filename of a CSS file.}
 
 \item{rawResult}{Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.}
+
+\item{includeCSS}{Whether to include the ROCK CSS in the returned HTML.}
 
 \item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 
