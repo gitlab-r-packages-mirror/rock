@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,20 +129,20 @@
     <p>Create an ENA network out of one or more parsed sources</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parsed_sources_to_ena_network</span>(
-  <span class='no'>x</span>,
-  <span class='no'>unitCols</span>,
-  <span class='kw'>conversationCols</span> <span class='kw'>=</span> <span class='st'>"originalSource"</span>,
-  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>codingLeaves</span>,
-  <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>convenience</span>$<span class='no'>metadataVars</span>
-)</pre>
+    <pre class="usage"><span class='fu'>parsed_sources_to_ena_network</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>unitCols</span>,
+  conversationCols <span class='op'>=</span> <span class='st'>"originalSource"</span>,
+  codes <span class='op'>=</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>convenience</span><span class='op'>$</span><span class='va'>codingLeaves</span>,
+  metadata <span class='op'>=</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>convenience</span><span class='op'>$</span><span class='va'>attributesVars</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The parsed source(s) as provided by <code><a href='parsing_sources.html'>rock::parse_source</a></code> or <code><a href='parsing_sources.html'>rock::parse_sources</a></code>.</p></td>
+      <td><p>The parsed source(s) as provided by <code><a href='parse_source.html'>rock::parse_source</a></code> or <code><a href='parse_source.html'>rock::parse_sources</a></code>.</p></td>
     </tr>
     <tr>
       <th>unitCols</th>
@@ -167,29 +167,33 @@ metadata. By default, takes all read metadata.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The result of a call to <code>rENA::ena.plot.network()</code>.</p>
+    <p>The result of a call to <code><a href='https://rdrr.io/pkg/rENA/man/ena.plot.network.html'>rENA::ena.plot.network()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse all example sources in that directory</span>
-<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_sources</a></span>(<span class='no'>examplePath</span>);
+<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
 
 <span class='co'>### Add something to indicate which units belong together; normally,</span>
 <span class='co'>### these would probably be indicated using one of the identifier,</span>
 <span class='co'>### for example the stanza identifiers, the sid's</span>
-<span class='no'>nChunks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>) <span class='kw'>%/%</span> <span class='fl'>10</span>;
-<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>$<span class='no'>units</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='no'>nChunks</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='no'>nChunks</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>parsedExamples</span>$<span class='no'>mergedSourceDf</span>) - (<span class='fl'>10</span>*<span class='no'>nChunks</span>)));
+<span class='va'>nChunks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'>%/%</span> <span class='fl'>10</span>;
+<span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>units</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>nChunks</span>, each<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>nChunks</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'>-</span> <span class='op'>(</span><span class='fl'>10</span><span class='op'>*</span><span class='va'>nChunks</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;
 
 <span class='co'>### Generate ENA plot</span>
-<span class='no'>enaPlot</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>parsed_sources_to_ena_network</span>(<span class='no'>parsedExamples</span>,
-                                      <span class='kw'>unitCols</span><span class='kw'>=</span><span class='st'>'units'</span>);</div><div class='output co'>#&gt; <span class='error'>Error: To create ENA networks, the "rENA" package is required. Please install it using `install.packages('rENA');`.</span></div><div class='input'>
+<span class='co'># \donttest{</span>
+<span class='va'>enaPlot</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parsed_sources_to_ena_network</span><span class='op'>(</span><span class='va'>parsedExamples</span>,
+                                      unitCols<span class='op'>=</span><span class='st'>'units'</span><span class='op'>)</span>;
+
 <span class='co'>### Show the resulting plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>enaPlot</span>);</div><div class='output co'>#&gt; <span class='error'>Error in print(enaPlot): object 'enaPlot' not found</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>enaPlot</span><span class='op'>)</span>;
+<span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -206,7 +210,7 @@ metadata. By default, takes all read metadata.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

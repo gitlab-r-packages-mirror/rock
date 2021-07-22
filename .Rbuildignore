@@ -29,3 +29,8 @@ iROCK/
 ### Images
 img/
 
+^doc$
+^Meta$
+
+### Maybe a side effect of testing? A file just called 'unspecified'.
+unspecified

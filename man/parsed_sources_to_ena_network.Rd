@@ -48,11 +48,13 @@ parsedExamples$mergedSourceDf$units <-
   c(rep(1:nChunks, each=10), rep(max(nChunks), nrow(parsedExamples$mergedSourceDf) - (10*nChunks)));
 
 ### Generate ENA plot
+\donttest{
 enaPlot <-
   rock::parsed_sources_to_ena_network(parsedExamples,
                                       unitCols='units');
 
 ### Show the resulting plot
-\donttest{print(enaPlot);}
+print(enaPlot);
+}
 
 }

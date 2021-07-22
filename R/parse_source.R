@@ -31,18 +31,22 @@
 #' or not (`FALSE`).
 #' @param ignoreOddDelimiters If an odd number of YAML delimiters is encountered, whether this
 #' should result in an error (`FALSE`) or just be silently ignored (`TRUE`).
+#' @param checkClassInstanceIds Whether to check for the occurrence of class
+#' instance identifiers specified in the attributes.
 #' @param encoding The encoding of the file to read (in `file`).
 #' @param postponeDeductiveTreeBuilding Whether to imediately try to build the deductive
 #' tree(s) based on the information in this file (`FALSE`) or whether to skip that. Skipping
 #' this is useful if the full tree information is distributed over multiple files (in which case
 #' you should probably call `parse_sources` instead of `parse_source`).
+#' @param mergeInductiveTrees Merge multiple inductive code trees into one; this
+#' functionality is currently not yet implemented.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
 #' @param prefix The prefix to use before the 'headings' of the printed result.
 #' @param ... Any additional arguments are passed on to the default print method.
 #'
 #' @rdname parsing_sources
-#' @aliases parsing_sources parse_source parse_sources print.rockParsedSource
+#' @aliases parsing_sources parse_source parse_sources print.rock_parsedSource
 #'
 #' @examples ### Get path to example source
 #' examplePath <-
@@ -77,6 +81,7 @@ parse_source <- function(text,
                          file,
                          utteranceLabelRegexes = NULL,
                          ignoreOddDelimiters=FALSE,
+                         checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                          postponeDeductiveTreeBuilding = FALSE,
                          rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
@@ -141,7 +146,7 @@ parse_source <- function(text,
   ### Store results in the object to return
   res <-
     structure(list(arguments = as.list(environment())),
-              class="rockParsedSource");
+              class="rock_parsedSource");
 
   ### First process YAML fragments and remove them
   res$yamlFragments <-
@@ -754,6 +759,8 @@ parse_source <- function(text,
                         c("rankdir", "LR", "graph"),
                         c("outputorder", "edgesfirst", "graph"),
                         c("fixedsize", "false", "node"),
+                        c("font", "arial", "node"),
+                        c("font", "arial", "edge"),
                         c("shape", "box", "node"),
                         c("style", "rounded,filled", "node"),
                         c("color", "#000000", "node"),
@@ -837,19 +844,33 @@ parse_source <- function(text,
 
         if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
           msg <-
-            paste0("When processing identifier regex '", names(idRegexes)[i],
-                   "', I failed to find its shorthand ('", names(idRegexes[i]),
+            paste0("When processing identifier regex '", idRegexes[i],
+                   "', I failed to find its name ('", names(idRegexes[i]),
                    "') in the column names of the merged ",
                    "sources data frame (",
-                   vecTxtQ(names(res$mergedSourceDf)), ").")
-          warning(msg);
+                   vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
+                   "the attributes data frame with the source data frame for ",
+                   "this class instance identifier.")
+          if (checkClassInstanceIds) {
+            warning(msg);
+          }
           if (!silent) {
             cat(msg);
           }
         } else if (!(names(idRegexes)[i] %in% setdiff(names(res$attributesDf), 'type'))) {
-          warning("When processing identifier regex '", names(idRegexes)[i],
-                  "', I failed to find it in the column names of the merged ",
-                  "attributes data frame.");
+          msg <-
+            paste0("When processing identifier regex '", idRegexes[i],
+                   "', I failed to find its name (", names(idRegexes)[i],
+                   ") in the column names of the merged ",
+                   "attributes data frame, so not merging ",
+                   "the attributes data frame with the source data frame for ",
+                   "this class instance identifier..");
+          if (checkClassInstanceIds) {
+            warning(msg);
+          }
+          if (!silent) {
+            cat(msg);
+          }
         } else {
           # attributesDf[, names(idRegexes)[i]] <-
           #   as.character(attributesDf[, names(idRegexes)[i]]);
@@ -893,8 +914,9 @@ parse_source <- function(text,
 
   ### Add codings and leaves only to the convenience list
   res$convenience$codings <- sort(unique(unlist(res$rawCodings)));
+  res$codings <- res$convenience$codings;
   res$convenience$codingLeaves <-
-    sort(unique(unlist(get_leaf_codes(res$codings,
+    sort(unique(unlist(get_leaf_codes(res$convenience$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
   res$convenience$codingPaths <-
@@ -967,16 +989,16 @@ parse_source <- function(text,
 }
 
 #' @rdname parsing_sources
-#' @method print rockParsedSource
+#' @method print rock_parsedSource
 #' @export
-print.rockParsedSource <- function(x, prefix="### ",  ...) {
+print.rock_parsedSource <- function(x, prefix="### ",  ...) {
   totalSectionMatches <-
     sum(unlist(lapply(x$rawSourceDf[, grep('_match',
                                            names(x$rawSourceDf))],
                       as.numeric)));
 
   appliedCodes <-
-    sort(unique(unlist(x$codings)));
+    sort(unique(unlist(x$convenience$codingLeaves)));
 
   totalCodingMatches <-
     sum(unlist(x$sourceDf[, appliedCodes]));
@@ -1045,13 +1067,13 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
                    "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.",
                    " {totalSectionMatches} of these matched one of the section regular ",
                    "expressions ({vecTxtQ(x$arguments$sectionRegexes)}), and after ",
-                   " removing these lines and all lines that were empty after removing ",
-                   " characters that matched one or more identifier ",
-                   "({vecTxtQ(x$arguments$idRegexes)}) and coding ",
-                   "({vecTxtQ(x$arguments$codeRegexes)}) regular expressions, ",
+                   "removing these lines and all lines that were empty after removing ",
+                   "characters that matched one or more class instance identifier(s) ",
+                   "({vecTxtQ(x$arguments$idRegexes)}) and coding regular expressions",
+                   "regular expressions, ({vecTxtQ(x$arguments$codeRegexes)}), ",
                    "{nrow(x$sourceDf)} utterances remained.",
                    "\n\n",
-                   "{prefix}Identifiers\n\n",
+                   "{prefix}Class instance identifiers\n\n",
                    identifierInfo,
                    "\n\n",
                    "{prefix}Utterances and coding\n\n",
@@ -1067,7 +1089,9 @@ print.rockParsedSource <- function(x, prefix="### ",  ...) {
     #for (i in names(x$inductiveCodeTrees)) {
     for (i in names(x$inductiveDiagrammeRs)) {
       #print(graphics::plot(x$inductiveCodeTrees[[i]]));
-      print(DiagrammeR::render_graph(x$inductiveDiagrammeRs[[i]]));
+      if (!is.null(x$inductiveDiagrammeRs[[i]])) {
+        print(DiagrammeR::render_graph(x$inductiveDiagrammeRs[[i]]));
+      }
     }
   }
   if (length(x$deductiveCodeTrees) > 0) {

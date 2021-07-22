@@ -16,9 +16,9 @@
 #' @param output If specified, the recoded source(s) will be written here.
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
-#' this file. If not, it is saved to the [justifier::workspace()]. This can
+#' this file. If not, it is saved to the `justifier::workspace()`. This can
 #' then be saved or displayed at the end of the R Markdown file or R script
-#' using [justifier::save_workspace()].
+#' using `justifier::save_workspace()`.
 #' @param preventOverwriting Whether to prevent overwriting existing files
 #' when writing the files to `output`.
 #' @param encoding The encoding to use.
@@ -52,7 +52,7 @@ recode_rename <- function(input,
                           output = NULL,
                           decisionLabel = NULL,
                           justification = NULL,
-                          justificationFile = rock::opts$get('justificationFile'),
+                          justificationFile = NULL,
                           preventOverwriting = rock::opts$get('preventOverwriting'),
                           encoding = rock::opts$get('encoding'),
                           silent = rock::opts$get('silent')) {

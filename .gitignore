@@ -31,3 +31,5 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 
+/doc/
+/Meta/

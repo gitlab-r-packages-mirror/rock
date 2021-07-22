@@ -78,7 +78,7 @@ functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ functions." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@ functions." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,23 +135,29 @@ functions." />
     <p>These functions load one or more source(s) from a file or
 a string and store it in memory for further processing.
 Note that you'll probably want to clean the sources
-first, using one of the <code><a href='cleaning_sources.html'>clean_sources()</a></code> functions,
+first, using one of the <code><a href='clean_source.html'>clean_sources()</a></code> functions,
 and you'll probably want to add utterance identifiers
-to each utterance using one of the <code><a href='prepending_uids.html'>prepending_uids()</a></code>
+to each utterance using one of the <code><a href='prepend_ids_to_source.html'>prepending_uids()</a></code>
 functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_source</span>(<span class='no'>input</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>load_source</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"encoding"</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>,
+  rlWarn <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>rlWarn</span><span class='op'>)</span>,
+  diligentWarnings <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"diligentWarnings"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>load_sources</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>ignoreRegex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>load_sources</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  filenameRegex <span class='op'>=</span> <span class='st'>".*"</span>,
+  ignoreRegex <span class='op'>=</span> <span class='cn'>NULL</span>,
+  recursive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  full.names <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"encoding"</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,13 +177,23 @@ sources for <code>load_sources</code>.</p></td>
       <td><p>Whether to be chatty or quiet.</p></td>
     </tr>
     <tr>
+      <th>rlWarn</th>
+      <td><p>Whether to let <code><a href='https://rdrr.io/r/base/readLines.html'>readLines()</a></code> warn, e.g. if files do not end
+with a newline character.</p></td>
+    </tr>
+    <tr>
+      <th>diligentWarnings</th>
+      <td><p>Whether to display very diligent warnings.</p></td>
+    </tr>
+    <tr>
       <th>filenameRegex</th>
       <td><p>A regular expression to match against located files; only
 files matching this regular expression are processed.</p></td>
     </tr>
     <tr>
       <th>ignoreRegex</th>
-      <td><p>Regular expression indicating which files to ignore.</p></td>
+      <td><p>Regular expression indicating which files to ignore. This
+is a perl-style regular expression (see <a href='https://rdrr.io/r/base/regex.html'>base::regex</a>).</p></td>
     </tr>
     <tr>
       <th>recursive</th>
@@ -195,6 +211,18 @@ to include paths.</p></td>
     <p>Invisibly, an R character vector of
 classes <code>rock_source</code> and <code>character</code>.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
+
+<span class='co'>### Get a path to one example file</span>
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
+
+<span class='co'>### Parse single example source</span>
+<span class='va'>loadedSource</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>load_source</span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -210,7 +238,7 @@ classes <code>rock_source</code> and <code>character</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -10,17 +10,17 @@ codeIds_to_codePaths(
 )
 }
 \arguments{
-\item{x}{A \code{rockParsedSource} or \code{rockParsedSources} object as returned by
+\item{x}{A \code{rock_parsedSource} or \code{rock_parsedSources} object as returned by
 a call to \code{\link[=parse_source]{parse_source()}} or \code{\link[=parse_sources]{parse_sources()}}.}
 
 \item{stripRootsFromCodePaths}{Whether to strip the roots first (i.e. the
 type of code)}
 }
 \value{
-An adapted \code{rockParsedSource} or \code{rockParsedSources} object.
+An adapted \code{rock_parsedSource} or \code{rock_parsedSources} object.
 }
 \description{
 This function replaces the column names in the \code{mergedSourceDf} data frame
-in a \code{rockParsedSource} or \code{rockParsedSources} object with the full paths
+in a \code{rock_parsedSource} or \code{rock_parsedSources} object with the full paths
 to those code identifiers.
 }

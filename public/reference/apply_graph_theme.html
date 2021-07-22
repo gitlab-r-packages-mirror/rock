@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,7 +129,7 @@
     <p>Apply multiple DiagrammeR global graph attributes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>apply_graph_theme</span>(<span class='no'>graph</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>apply_graph_theme</span><span class='op'>(</span><span class='va'>graph</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,7 +151,7 @@ the attribute, the second the value, and the third, the attribute type (<code>gr
     <p>The <a href='https://rdrr.io/pkg/DiagrammeR/man/DiagrammeR.html'>DiagrammeR::DiagrammeR</a> graph.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>exampleSource</span> <span class='kw'>&lt;-</span> <span class='st'>'
+    <pre class="examples"><div class='input'><span class='va'>exampleSource</span> <span class='op'>&lt;-</span> <span class='st'>'
 ---
 codes:
   -
@@ -169,18 +169,19 @@ codes:
     children: [grandChild1, grandChild2]
 ---
 '</span>;
-<span class='no'>parsedSource</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='kw'>text</span><span class='kw'>=</span><span class='no'>exampleSource</span>);
-<span class='no'>miniGraph</span> <span class='kw'>&lt;-</span>
-  <span class='fu'>apply_graph_theme</span>(<span class='kw pkg'>data.tree</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/data.tree/man/ToDiagrammeRGraph.html'>ToDiagrammeRGraph</a></span>(<span class='no'>parsedSource</span>$<span class='no'>deductiveCodeTrees</span>),
-                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"color"</span>, <span class='st'>"#0000AA"</span>, <span class='st'>"node"</span>),
-                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"shape"</span>, <span class='st'>"triangle"</span>, <span class='st'>"node"</span>),
-                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fontcolor"</span>, <span class='st'>"#FF0000"</span>, <span class='st'>"node"</span>));
+<span class='va'>parsedSource</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span>text<span class='op'>=</span><span class='va'>exampleSource</span><span class='op'>)</span>;
+<span class='va'>miniGraph</span> <span class='op'>&lt;-</span>
+  <span class='fu'>apply_graph_theme</span><span class='op'>(</span><span class='fu'>data.tree</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/data.tree/man/ToDiagrammeRGraph.html'>ToDiagrammeRGraph</a></span><span class='op'>(</span><span class='va'>parsedSource</span><span class='op'>$</span><span class='va'>deductiveCodeTrees</span><span class='op'>)</span>,
+                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"color"</span>, <span class='st'>"#0000AA"</span>, <span class='st'>"node"</span><span class='op'>)</span>,
+                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"shape"</span>, <span class='st'>"triangle"</span>, <span class='st'>"node"</span><span class='op'>)</span>,
+                    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fontcolor"</span>, <span class='st'>"#FF0000"</span>, <span class='st'>"node"</span><span class='op'>)</span><span class='op'>)</span>;
 <span class='co'>### This line should be run when executing this example as test, because</span>
 <span class='co'>### rendering a DiagrammeR graph takes quite long</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw pkg'>DiagrammeR</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DiagrammeR/man/render_graph.html'>render_graph</a></span>(<span class='no'>miniGraph</span>);
-}</div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>DiagrammeR</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DiagrammeR/man/render_graph.html'>render_graph</a></span><span class='op'>(</span><span class='va'>miniGraph</span><span class='op'>)</span>;
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +197,7 @@ codes:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

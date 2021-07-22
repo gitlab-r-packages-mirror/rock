@@ -162,10 +162,12 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(### Used throughout
-       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9_>]+)\\]\\]"),
+       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9_>]+)\\]\\]",
+                       ci = "\\[\\[ci[=:]([a-zA-Z0-9_>]+)\\]\\]"),
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]"),
+                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]"),
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
        sectionRegexes = c(paragraphs = "---paragraph-break---",
                           secondary = "---<[a-zA-Z0-9_]+>---"),
@@ -180,17 +182,23 @@ opts$defaults <-
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
-       persistentIds = c('caseId', 'coderId'),
-       noCodes = "^uid:|^uid=|^dct:|^ci:",
+       persistentIds = c('caseId', 'coderId', 'uiid'),
+       noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]",
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),
+       delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
+       ignoreOddDelimiters = FALSE,
 
        ### Used to merge sources
-       coderId = "\\[\\[coderId=([a-zA-Z0-9_]+)\\]\\]",
+       coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
        idForOmittedCoderIds = "noCoderId",
+
+       ### Whether to warn if a class instance identifier for specified
+       ### attributes isn't encountered.
+       checkClassInstanceIds = FALSE,
 
        ### Used for cleaning sources and adding UIDs
        codeDelimiters = c("[[", "]]"),
@@ -221,10 +229,12 @@ opts$defaults <-
 
        ### Used for generating html
        codeClass = "code",
+       codeValueClass = "codeValue",
        idClass = "identifier",
        sectionClass = "sectionBreak",
        uidClass = "uid",
        utteranceClass = "utterance",
+       contextClass = "context",
 
        ### When displaying code identifiers, whether to by default show the
        ### full path or just the code identifier itself
@@ -234,7 +244,7 @@ opts$defaults <-
        stripRootsFromCodePaths = TRUE,
 
        ### For justifications
-       justificationFile = "unspecified",
+       justificationFile = "default_justifier_log.jmd",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
@@ -257,6 +267,9 @@ opts$defaults <-
                                "td{padding:3px;vertical-align:top;}",
                                "tr:nth-child(even){background-color:#f2f2f2}",
                                "</style>"),
+
+       ### default heading level
+       defaultHeadingLevel = 1,
 
        ### Used throughout for debugging,
        debug = FALSE,

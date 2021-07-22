@@ -1,12 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Pipeline
-status](https://gitlab.com/r-packages/rock/badges/master/pipeline.svg)](https://gitlab.com/r-packages/rock/commits/master)
+status](https://gitlab.com/r-packages/rock/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/rock/-/commits/prod)
 [![Coverage
-status](https://codecov.io/gl/r-packages/rock/branch/master/graph/badge.svg)](https://codecov.io/gl/r-packages/rock?branch=master)
+status](https://codecov.io/gl/r-packages/rock/branch/prod/graph/badge.svg)](https://codecov.io/gl/r-packages/rock?branch=prod)
 [![Version on
 CRAN](https://www.r-pkg.org/badges/version/rock?color=brightgreen)](https://cran.r-project.org/package=rock)
 [![Version on
@@ -24,9 +23,7 @@ The pkgdown website for this project is located at
 <https://r-packages.gitlab.io/rock>.
 
 <!--------------------------------------------->
-
 <!-- Start of a custom bit for every package -->
-
 <!--------------------------------------------->
 
 The Reproducible Open Coding Kit (ROCK, and this package, `rock`) was
@@ -39,17 +36,18 @@ Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
 There is a FLOSS interface for the ROCK, iROCK, available at
-<https://sci-ops.gitlab.io/irock/> (the accompanying git repository is
-available at <https://gitlab.com/sci-ops/irock>).
+<https://i.rock.science> (the accompanying git repository is available
+at <https://gitlab.com/sci-ops/irock>).
 
 We are in the process of writing a textbook to support working with the
 ROCK standard, this `rock` R package, and the iROCK interface. This book
 is available at <https://rockbook.org>.
 
+Materials for a brief workshop are available through
+<https://rock.science/workshop-2-hour>
+
 <!--------------------------------------------->
-
 <!--  End of a custom bit for every package  -->
-
 <!--------------------------------------------->
 
 ## Installation
@@ -62,7 +60,7 @@ install.packages('rock');
 ```
 
 You can install the development version of `rock` from
-[GitLab](https://gitlab.com) with:
+[GitLab](https://about.gitlab.com/) with:
 
 ``` r
 remotes::install_gitlab('r-packages/rock');
@@ -79,17 +77,12 @@ remotes::install_gitlab('r-packages/rock@dev');
 ```
 
 <!--------------------------------------------->
-
 <!-- Start of a custom bit for every package -->
-
 <!--------------------------------------------->
-
 <!-- ## References -->
-
 <!-- van Woerkum, C. and Aarts, N. (2012), ‘Accountability: New challenges, new forms’, *Journal of Organizational Transformation & Social Change*, 9, pp. 271–283, \doi{10.1386/jots.9.3.271_1}. -->
-
 <!--------------------------------------------->
-
 <!--  End of a custom bit for every package  -->
-
 <!--------------------------------------------->
+<!--  https://stackoverflow.com/questions/4822471/count-number-of-lines-in-a-git-repository    -->
+<!--  cloc $(git ls-files) -->

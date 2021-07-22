@@ -73,7 +73,7 @@ contained identifiers, sections, and codes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ contained identifiers, sections, and codes." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +104,7 @@ contained identifiers, sections, and codes." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -131,33 +131,38 @@ contained identifiers, sections, and codes." />
 contained identifiers, sections, and codes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_source</span>(
-  <span class='no'>text</span>,
-  <span class='no'>file</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>postponeDeductiveTreeBuilding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)
+    <pre class="usage"><span class='fu'>parse_source</span><span class='op'>(</span>
+  <span class='va'>text</span>,
+  <span class='va'>file</span>,
+  utteranceLabelRegexes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ignoreOddDelimiters <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  checkClassInstanceIds <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>checkClassInstanceIds</span><span class='op'>)</span>,
+  postponeDeductiveTreeBuilding <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rlWarn <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>rlWarn</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='co'># S3 method for rockParsedSource</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for rock_parsedSource</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, prefix <span class='op'>=</span> <span class='st'>"### "</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>parse_sources</span>(
-  <span class='no'>path</span>,
-  <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>"rock|dct"</span>,
-  <span class='kw'>regex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>ignoreOddDelimiters</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)
+<span class='fu'>parse_sources</span><span class='op'>(</span>
+  <span class='va'>path</span>,
+  extension <span class='op'>=</span> <span class='st'>"rock|dct"</span>,
+  regex <span class='op'>=</span> <span class='cn'>NULL</span>,
+  recursive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  ignoreOddDelimiters <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  checkClassInstanceIds <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>checkClassInstanceIds</span><span class='op'>)</span>,
+  mergeInductiveTrees <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='co'># S3 method for rockParsedSources</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"### "</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for rock_parsedSources</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, prefix <span class='op'>=</span> <span class='st'>"### "</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for rockParsedSources</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for rock_parsedSources</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,9 +184,20 @@ you're specifying a file and you want to be certain that an error is thrown if
 it doesn't exist, make sure to name it <code>file</code>.</p></td>
     </tr>
     <tr>
+      <th>utteranceLabelRegexes</th>
+      <td><p>Optionally, a list with two-element vectors
+to preprocess utterances before they are stored as labels (these 'utterance
+perl regular expression!</p></td>
+    </tr>
+    <tr>
       <th>ignoreOddDelimiters</th>
       <td><p>If an odd number of YAML delimiters is encountered, whether this
 should result in an error (<code>FALSE</code>) or just be silently ignored (<code>TRUE</code>).</p></td>
+    </tr>
+    <tr>
+      <th>checkClassInstanceIds</th>
+      <td><p>Whether to check for the occurrence of class
+instance identifiers specified in the attributes.</p></td>
     </tr>
     <tr>
       <th>postponeDeductiveTreeBuilding</th>
@@ -189,6 +205,11 @@ should result in an error (<code>FALSE</code>) or just be silently ignored (<cod
 tree(s) based on the information in this file (<code>FALSE</code>) or whether to skip that. Skipping
 this is useful if the full tree information is distributed over multiple files (in which case
 you should probably call <code>parse_sources</code> instead of <code>parse_source</code>).</p></td>
+    </tr>
+    <tr>
+      <th>rlWarn</th>
+      <td><p>Whether to let <code><a href='https://rdrr.io/r/base/readLines.html'>readLines()</a></code> warn, e.g. if files do not end
+with a newline character.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
@@ -217,7 +238,7 @@ you should probably call <code>parse_sources</code> instead of <code>parse_sourc
     <tr>
       <th>extension</th>
       <td><p>The extension of the files to read; files with other extensions will
-be ignored. Multiple extensions can be separated by a pipe (<code>|</code>).</p></td>
+be ignored. Multiple extensions can be separated by a pipe (<code><a href='https://rdrr.io/r/base/Logic.html'>|</a></code>).</p></td>
     </tr>
     <tr>
       <th>regex</th>
@@ -230,25 +251,31 @@ takes precedece over <code>extension</code>,</p></td>
       <td><p>Whether to also process subdirectories (<code>TRUE</code>)
 or not (<code>FALSE</code>).</p></td>
     </tr>
+    <tr>
+      <th>mergeInductiveTrees</th>
+      <td><p>Merge multiple inductive code trees into one; this
+functionality is currently not yet implemented.</p></td>
+    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Get a path to one example file</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse single example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>parse_source</span>(<span class='no'>exampleFile</span>);
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
 
 <span class='co'>### Show inductive code tree for the codes</span>
 <span class='co'>### extracted with the regular expression specified with</span>
 <span class='co'>### the name 'codes':</span>
-<span class='no'>parsedExample</span>$<span class='no'>inductiveCodeTrees</span>$<span class='no'>codes</span>;</div><div class='output co'>#&gt;                      levelName
+<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;
+</div><div class='output co'>#&gt;                      levelName
 #&gt; 1  codes                      
 #&gt; 2   ¦--parentCode1            
 #&gt; 3   ¦   ¦--childCode1         
@@ -266,8 +293,9 @@ or not (<code>FALSE</code>).</p></td>
 #&gt; 15  ¦       °--grandchildCode7
 #&gt; 16  °--someOtherCode          </div><div class='input'>
 <span class='co'>### If you want `rock` to be chatty, use:</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>parse_source</span>(<span class='no'>exampleFile</span>,
-                                    <span class='kw'>silent</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div><div class='output co'>#&gt; Read the contents of file 'C:/Users/micro/Documents/R/win-library/4.0/rock/extdata/example-1.rock' (111 lines read).
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span>,
+                                    silent<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; Read the contents of file 'C:/Users/micro/Documents/R/win-library/4.1/rock/extdata/example-1.rock' (111 lines read).
 #&gt; Encountered YAML fragments. Parsing them for attributes.
 #&gt; Read 0 attributes specifications. Continuing with deductive code trees.
 #&gt; Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').
@@ -370,12 +398,13 @@ or not (<code>FALSE</code>).</p></td>
 #&gt; Done processing the inductive code tree.
 #&gt; </div><div class='input'>
 <span class='co'>### Parse all example sources in that directory</span>
-<span class='no'>parsedExamples</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>parse_sources</span>(<span class='no'>examplePath</span>);
+<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_sources</span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
 
 <span class='co'>### Show combined inductive code tree for the codes</span>
 <span class='co'>### extracted with the regular expression specified with</span>
 <span class='co'>### the name 'codes':</span>
-<span class='no'>parsedExamples</span>$<span class='no'>inductiveCodeTrees</span>$<span class='no'>codes</span>;</div><div class='output co'>#&gt;                      levelName
+<span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;
+</div><div class='output co'>#&gt;                      levelName
 #&gt; 1  codes                      
 #&gt; 2   ¦--parentCode1            
 #&gt; 3   ¦   ¦--childCode1         
@@ -407,19 +436,24 @@ or not (<code>FALSE</code>).</p></td>
 #&gt; 29  ¦--tables                 
 #&gt; 30  ¦--Topic1                 
 #&gt; 31  ¦--Topic2                 
-#&gt; 32  ¦--bla                    
-#&gt; 33  ¦   ¦--subbla             
-#&gt; 34  ¦   ¦   ¦--bla2           
-#&gt; 35  ¦   ¦   °--bla3           
-#&gt; 36  ¦   °--subbla2            
-#&gt; 37  ¦--flups                  
-#&gt; 38  ¦--pets                   
-#&gt; 39  ¦   °--cats               
-#&gt; 40  ¦       °--siamese        
-#&gt; 41  ¦--property               
-#&gt; 42  ¦   °--hairy              
-#&gt; 43  °--relationships          
-#&gt; 44      °--love               </div><div class='input'>
+#&gt; 32  ¦--code1                  
+#&gt; 33  ¦--code2                  
+#&gt; 34  ¦   °--code4              
+#&gt; 35  ¦--code3                  
+#&gt; 36  ¦--code5                  
+#&gt; 37  ¦--bla                    
+#&gt; 38  ¦   ¦--subbla             
+#&gt; 39  ¦   ¦   ¦--bla2           
+#&gt; 40  ¦   ¦   °--bla3           
+#&gt; 41  ¦   °--subbla2            
+#&gt; 42  ¦--flups                  
+#&gt; 43  ¦--pets                   
+#&gt; 44  ¦   °--cats               
+#&gt; 45  ¦       °--siamese        
+#&gt; 46  ¦--property               
+#&gt; 47  ¦   °--hairy              
+#&gt; 48  ¦--relationships          
+#&gt; 49  ¦   °--love               </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -436,7 +470,7 @@ or not (<code>FALSE</code>).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

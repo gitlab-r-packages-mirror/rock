@@ -76,7 +76,7 @@ extract_codings_by_coderId <- function(input,
         sourceDf <-
           parsedSources[[filename]]$parsedSubsources[[coderId]]$rawSourceDf;
         codings <-
-          parsedSources[[filename]]$parsedSubsources[[coderId]]$codings;
+          parsedSources[[filename]]$parsedSubsources[[coderId]]$convenience$codingLeaves;
         if (length(codings) == 0) {
           codingsList <- NA;
         } else {

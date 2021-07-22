@@ -74,7 +74,7 @@ of all coded fragments per code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ of all coded fragments per code." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@ of all coded fragments per code." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,30 +133,31 @@ of all coded fragments per code." />
 of all coded fragments per code.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collect_coded_fragments</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>codes</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>context</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>attributes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>heading</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>headingLevel</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_html_tags</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cleanUtterances</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>template</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
-  <span class='kw'>rawResult</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>includeBootstrap</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='st'>"includeBootstrap"</span>),
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>collect_coded_fragments</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  codes <span class='op'>=</span> <span class='st'>".*"</span>,
+  context <span class='op'>=</span> <span class='fl'>0</span>,
+  attributes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  heading <span class='op'>=</span> <span class='cn'>NULL</span>,
+  headingLevel <span class='op'>=</span> <span class='fl'>3</span>,
+  add_html_tags <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cleanUtterances <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  outputViewer <span class='op'>=</span> <span class='st'>"viewer"</span>,
+  template <span class='op'>=</span> <span class='st'>"default"</span>,
+  rawResult <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  includeBootstrap <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"includeBootstrap"</span><span class='op'>)</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The parsed source(s) as provided by <code><a href='parsing_sources.html'>rock::parse_source</a></code>
-or <code><a href='parsing_sources.html'>rock::parse_sources</a></code>.</p></td>
+      <td><p>The parsed source(s) as provided by <code><a href='parse_source.html'>rock::parse_source</a></code>
+or <code><a href='parse_source.html'>rock::parse_sources</a></code>.</p></td>
     </tr>
     <tr>
       <th>codes</th>
@@ -207,6 +208,13 @@ result will be written. If provided, the result will be returned
 invisibly.</p></td>
     </tr>
     <tr>
+      <th>outputViewer</th>
+      <td><p>If showing output, where to show the output: in
+the console (<code>outputViewer='console'</code>) or in the viewer
+(<code>outputViewer='viewer'</code>), e.g. the RStudio viewer. You'll usually want
+the latter when outputting HTML, and otherwise the former.</p></td>
+    </tr>
+    <tr>
       <th>template</th>
       <td><p>The template to load; either the name of one
 of the ROCK templates (currently, only 'default' is available), or
@@ -216,6 +224,10 @@ the path and filename of a CSS file.</p></td>
       <th>rawResult</th>
       <td><p>Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.</p></td>
+    </tr>
+    <tr>
+      <th>includeBootstrap</th>
+      <td><p>Whether to include the default bootstrap CSS.</p></td>
     </tr>
     <tr>
       <th>preventOverwriting</th>
@@ -240,18 +252,19 @@ without the codes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>examplePath</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Get a path to one example file</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>examplePath</span>, <span class='st'>"example-1.rock"</span>);
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse single example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
 
 <span class='co'>### Show organised coded fragments in Markdown</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'>collect_coded_fragments</span>(<span class='no'>parsedExample</span>));</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>)</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; 
 #&gt; &lt;style
 #&gt; &gt;
 #&gt; 
@@ -323,43 +336,43 @@ without the codes.</p>
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### childCode2 *(path: childCode1&gt;grandchildCode2)*
+#&gt; #### childCode2 *(path: parentCode1&gt;childCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### childCode3 *(path: childCode5&gt;grandchildCode7)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### childCode4 *(path: grandchildCode2)*
+#&gt; #### childCode3 *(path: parentCode1&gt;childCode3)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;including versions of Lorem Ipsum. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### childCode5 *(path: parentCode1&gt;childCode1)*
+#&gt; #### childCode4 *(path: parentCode2&gt;childCode4)*
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; &lt;div class="utterance"&gt;~~including versions of Lorem Ipsum. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4]]&lt;/span&gt;&lt;/div&gt;
+#&gt; 
+#&gt; 
+#&gt; -----
+#&gt; 
+#&gt; 
+#&gt; #### childCode5 *(path: parentCode2&gt;childCode5)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -379,11 +392,11 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode2 *(path: parentCode1&gt;childCode1&gt;grandchildCode2)*
+#&gt; #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
@@ -409,7 +422,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode4 *(path: parentCode1&gt;childCode2)*
+#&gt; #### grandchildCode4 *(path: parentCode2&gt;childCode4&gt;grandchildCode4)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -419,7 +432,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode5 *(path: parentCode1&gt;childCode3)*
+#&gt; #### grandchildCode5 *(path: parentCode2&gt;childCode4&gt;grandchildCode5)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -429,7 +442,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode6 *(path: parentCode2&gt;childCode4)*
+#&gt; #### grandchildCode6 *(path: parentCode2&gt;childCode4&gt;grandchildCode6)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -439,7 +452,7 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode7 *(path: parentCode2&gt;childCode4&gt;grandchildCode4)*
+#&gt; #### grandchildCode7 *(path: childCode5&gt;grandchildCode7)*
 #&gt; 
 #&gt; -----
 #&gt; 
@@ -449,18 +462,19 @@ without the codes.</p>
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### someOtherCode *(path: parentCode2&gt;childCode4&gt;grandchildCode5)*
+#&gt; #### someOtherCode *(path: someOtherCode)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
 #&gt; </div><div class='input'>
 <span class='co'>### Only for the codes containing 'Code2'</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'>collect_coded_fragments</span>(<span class='no'>parsedExample</span>,
-                            <span class='st'>'Code2'</span>));</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span><span class='va'>parsedExample</span>,
+                            <span class='st'>'Code2'</span><span class='op'>)</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; 
 #&gt; &lt;style
 #&gt; &gt;
 #&gt; 
@@ -523,21 +537,21 @@ without the codes.</p>
 #&gt; 
 #&gt; ### Collected coded fragments for codes 'childCode2' &amp; 'grandchildCode2' with 0 lines of context
 #&gt; 
-#&gt; #### childCode2 *(path: childCode1&gt;grandchildCode2)*
+#&gt; #### childCode2 *(path: parentCode1&gt;childCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
 #&gt; 
 #&gt; 
-#&gt; #### grandchildCode2 *(path: parentCode1&gt;childCode1&gt;grandchildCode2)*
+#&gt; #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
@@ -568,7 +582,7 @@ without the codes.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

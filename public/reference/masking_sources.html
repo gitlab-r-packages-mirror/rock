@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,42 +129,43 @@
     <p>These functions can be used to mask a set of utterances or one or more sources.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mask_source</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
-  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
-  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)
+    <pre class="usage"><span class='fu'>mask_source</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  output <span class='op'>=</span> <span class='cn'>NULL</span>,
+  proportionToMask <span class='op'>=</span> <span class='fl'>1</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  rlWarn <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>rlWarn</span><span class='op'>)</span>,
+  maskRegex <span class='op'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  maskChar <span class='op'>=</span> <span class='st'>"X"</span>,
+  perl <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>mask_sources</span>(
-  <span class='no'>input</span>,
-  <span class='no'>output</span>,
-  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>outputPrefix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>outputSuffix</span> <span class='kw'>=</span> <span class='st'>"_masked"</span>,
-  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
-  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
-  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>filenameRegex</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
-  <span class='kw'>filenameReplacement</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"_PRIVATE_"</span>, <span class='st'>"_public_"</span>),
-  <span class='kw'>preventOverwriting</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>preventOverwriting</span>),
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>encoding</span>),
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>silent</span>)
-)
+<span class='fu'>mask_sources</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  <span class='va'>output</span>,
+  proportionToMask <span class='op'>=</span> <span class='fl'>1</span>,
+  outputPrefix <span class='op'>=</span> <span class='st'>""</span>,
+  outputSuffix <span class='op'>=</span> <span class='st'>"_masked"</span>,
+  maskRegex <span class='op'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  maskChar <span class='op'>=</span> <span class='st'>"X"</span>,
+  perl <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  recursive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  filenameRegex <span class='op'>=</span> <span class='st'>".*"</span>,
+  filenameReplacement <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"_PRIVATE_"</span>, <span class='st'>"_public_"</span><span class='op'>)</span>,
+  preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
+  encoding <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>mask_utterances</span>(
-  <span class='no'>input</span>,
-  <span class='kw'>proportionToMask</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>maskRegex</span> <span class='kw'>=</span> <span class='st'>"[[:alnum:]]"</span>,
-  <span class='kw'>maskChar</span> <span class='kw'>=</span> <span class='st'>"X"</span>,
-  <span class='kw'>perl</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+<span class='fu'>mask_utterances</span><span class='op'>(</span>
+  <span class='va'>input</span>,
+  proportionToMask <span class='op'>=</span> <span class='fl'>1</span>,
+  maskRegex <span class='op'>=</span> <span class='st'>"[[:alnum:]]"</span>,
+  maskChar <span class='op'>=</span> <span class='st'>"X"</span>,
+  perl <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,6 +198,11 @@ case, every file will be written to the same directory it was read from.</p></td
     <tr>
       <th>encoding</th>
       <td><p>The encoding of the source(s).</p></td>
+    </tr>
+    <tr>
+      <th>rlWarn</th>
+      <td><p>Whether to let <code><a href='https://rdrr.io/r/base/readLines.html'>readLines()</a></code> warn, e.g. if files do not end
+with a newline character.</p></td>
     </tr>
     <tr>
       <th>maskRegex</th>
@@ -245,6 +251,16 @@ not perform any replacement on the output file name.</p></td>
     <p>A character vector for <code>mask_utterance</code> and <code>mask_source</code>, or a list of
 character vectors, for <code>mask_sources</code>.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Mask text but not the codes</span>
+<span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>mask_utterances</span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span>
+    <span class='st'>"Lorem ipsum dolor sit amet, consectetur adipiscing "</span>,
+    <span class='st'>"elit. [[expAttitude_expectation_73dnt5z1&gt;earplugsFeelUnpleasant]]"</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "XXXXX XXXXX XXXXX XXX XXXX, XXXXXXXXXXX XXXXXXXXXX XXXX. [[expAttitude_expectation_73dnt5z1&gt;earplugsFeelUnpleasant]]"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -260,7 +276,7 @@ character vectors, for <code>mask_sources</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

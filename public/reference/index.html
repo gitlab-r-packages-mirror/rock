@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -102,7 +102,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -169,15 +169,51 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ci_heatmap.html">ci_heatmap()</a></code> </p>
+        </td>
+        <td><p>Create a heatmap showing issues with items</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cleaned_source_to_utterance_vector.html">cleaned_source_to_utterance_vector()</a></code> </p>
+        </td>
+        <td><p>Convert a character vector into an utterance vector</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="cleaning_sources.html">clean_source()</a></code> <code><a href="cleaning_sources.html">clean_sources()</a></code> <code><a href="cleaning_sources.html">search_and_replace_in_source()</a></code> <code><a href="cleaning_sources.html">search_and_replace_in_sources()</a></code> </p>
         </td>
         <td><p>Cleaning &amp; editing sources</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="codeIds_to_codePaths.html">codeIds_to_codePaths()</a></code> </p>
+        </td>
+        <td><p>Replace code identifiers with their full paths</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="codePaths_to_namedVector.html">codePaths_to_namedVector()</a></code> </p>
+        </td>
+        <td><p>Get a vector to find the full paths based on the leaf code identifier</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="code_freq_hist.html">code_freq_hist()</a></code> </p>
         </td>
         <td><p>Create a frequency histogram for codes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="codingSchemes.html">create_codingScheme()</a></code> <code><a href="codingSchemes.html">codingScheme_peterson</a></code> <code><a href="codingSchemes.html">codingScheme_levine</a></code> <code><a href="codingSchemes.html">codingScheme_willis</a></code> </p>
+        </td>
+        <td><p>Create a coding scheme</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="codingSchemes_get_all.html">codingSchemes_get_all()</a></code> </p>
+        </td>
+        <td><p>Convenience function to get a list of all available coding schemes</p></td>
       </tr><tr>
         
         <td>
@@ -196,6 +232,12 @@
           <p><code><a href="collect_coded_fragments.html">collect_coded_fragments()</a></code> </p>
         </td>
         <td><p>Create an overview of coded fragments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="convert_to_source.html">convert_df_to_source()</a></code> <code><a href="convert_to_source.html">convert_csv_to_source()</a></code> <code><a href="convert_to_source.html">convert_csv2_to_source()</a></code> <code><a href="convert_to_source.html">convert_xlsx_to_source()</a></code> <code><a href="convert_to_source.html">convert_sav_to_source()</a></code> </p>
+        </td>
+        <td><p>Convert 'rectangular' or spreadsheet-format data to one or more sources</p></td>
       </tr><tr>
         
         <td>
@@ -229,6 +271,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="exportToHTML.html">exportToHTML()</a></code> </p>
+        </td>
+        <td><p>Exporting tables to HTML</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="export_mergedSourceDf_to_file.html">export_mergedSourceDf_to_csv()</a></code> <code><a href="export_mergedSourceDf_to_file.html">export_mergedSourceDf_to_csv2()</a></code> <code><a href="export_mergedSourceDf_to_file.html">export_mergedSourceDf_to_xlsx()</a></code> <code><a href="export_mergedSourceDf_to_file.html">export_mergedSourceDf_to_sav()</a></code> </p>
+        </td>
+        <td><p>Export a merged source data frame</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="extract_codings_by_coderId.html">extract_codings_by_coderId()</a></code> </p>
         </td>
         <td><p>Extract the codings by each coder using the coderId</p></td>
@@ -238,6 +292,36 @@
           <p><code><a href="generate_uids.html">generate_uids()</a></code> </p>
         </td>
         <td><p>Generate utterance identifiers (UIDs)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generic_recoding.html">generic_recoding()</a></code> </p>
+        </td>
+        <td><p>Generic underlying recoding function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_childCodeIds.html">get_childCodeIds()</a></code> </p>
+        </td>
+        <td><p>Get the code identifiers of the children of a code with a given identifier</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_source_filter.html">get_source_filter()</a></code> </p>
+        </td>
+        <td><p>Create a filter to select utterances in a source</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="heading.html">heading()</a></code> </p>
+        </td>
+        <td><p>Print a heading</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="inspect_coded_sources.html">inspect_coded_sources()</a></code> </p>
+        </td>
+        <td><p>Read sources from a directory, parse them, and show coded fragments and code tree</p></td>
       </tr><tr>
         
         <td>
@@ -253,9 +337,21 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="match_consecutive_delimiters.html">match_consecutive_delimiters()</a></code> </p>
+        </td>
+        <td><p>Match the corresponding indices of (YAML) delimiters in a sequantial list</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="merge_sources.html">merge_sources()</a></code> </p>
         </td>
         <td><p>Merge source files by different coders</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moving_codes.html">recode_rename()</a></code> </p>
+        </td>
+        <td><p>Rename one or more codes</p></td>
       </tr><tr>
         
         <td>
@@ -271,7 +367,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rockParsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rockParsedSources&gt;</i>)</a></code> </p>
+          <p><code><a href="parsing_sources.html">parse_source()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rock_parsedSource&gt;</i>)</a></code> <code><a href="parsing_sources.html">parse_sources()</a></code> <code><a href="parsing_sources.html">print(<i>&lt;rock_parsedSources&gt;</i>)</a></code> <code><a href="parsing_sources.html">plot(<i>&lt;rock_parsedSources&gt;</i>)</a></code> </p>
         </td>
         <td><p>Parsing sources</p></td>
       </tr><tr>
@@ -289,9 +385,45 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="recoding_sources.html">recode_source()</a></code> </p>
+          <p><code><a href="print.rock_graphList.html">print(<i>&lt;rock_graphList&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Change a code into another code</p></td>
+        <td><p>Plot the graphs in a list of graphs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rbind_dfs.html">rbind_dfs()</a></code> </p>
+        </td>
+        <td><p>Simple alternative for rbind.fill or bind_rows</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rbind_df_list.html">rbind_df_list()</a></code> </p>
+        </td>
+        <td><p>Bind lots of dataframes together rowwise</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="recode_addChildCodes.html">recode_addChildCodes()</a></code> </p>
+        </td>
+        <td><p>Add child codes under a parent code</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="recode_merge.html">recode_merge()</a></code> </p>
+        </td>
+        <td><p>Merge two or more codes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="recode_move.html">recode_move()</a></code> </p>
+        </td>
+        <td><p>Move one or more codes to a different parent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="recode_split.html">recode_split()</a></code> </p>
+        </td>
+        <td><p>Split a code into multiple codes</p></td>
       </tr><tr>
         
         <td>
@@ -307,6 +439,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="root_from_codePaths.html">root_from_codePaths()</a></code> </p>
+        </td>
+        <td><p>Get the roots from a vector with code paths</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="save_workspace.html">save_workspace()</a></code> </p>
+        </td>
+        <td><p>Save your justifications to a file</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="show_attribute_table.html">show_attribute_table()</a></code> </p>
         </td>
         <td><p>Show a table with all attributes in the RStudio viewer and/or console</p></td>
@@ -319,9 +463,33 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="stripCodePathRoot.html">stripCodePathRoot()</a></code> </p>
+        </td>
+        <td><p>Strip the root from a code path</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="uncoding_sources.html">recode_delete()</a></code> </p>
+        </td>
+        <td><p>Remove one or more codes</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="vecTxt.html">vecTxt()</a></code> <code><a href="vecTxt.html">vecTxtQ()</a></code> </p>
         </td>
         <td><p>Easily parse a vector into a character value</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="wrapVector.html">wrapVector()</a></code> </p>
+        </td>
+        <td><p>Wrap all elements in a vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="yaml_delimiter_indices.html">yaml_delimiter_indices()</a></code> </p>
+        </td>
+        <td><p>Get indices of YAML delimiters</p></td>
       </tr>
     </tbody>
     </table>
@@ -341,7 +509,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

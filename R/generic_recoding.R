@@ -20,9 +20,9 @@
 #' source(s) to process (see [get_source_filter()]).
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
-#' this file. If not, it is saved to the [justifier::workspace()]. This can
+#' this file. If not, it is saved to the `justifier::workspace()`. This can
 #' then be saved or displayed at the end of the R Markdown file or R script
-#' using [justifier::save_workspace()].
+#' using `justifier::save_workspace()`.
 #' @param preventOverwriting Whether to prevent overwriting existing files
 #' when writing the files to `output`.
 #' @param encoding The encoding to use.
@@ -40,11 +40,13 @@ generic_recoding <- function(input,
                              outputSuffix = "_recoded",
                              decisionLabel = NULL,
                              justification = NULL,
-                             justificationFile = rock::opts$get('justificationFile'),
+                             justificationFile = NULL,
                              preventOverwriting = rock::opts$get('preventOverwriting'),
                              encoding = rock::opts$get('encoding'),
                              silent = rock::opts$get('silent'),
                              ...) {
+
+  originalFilter <- filter;
 
   if ("rock_loaded_sources_list" %in% class(input)) {
 
@@ -149,7 +151,8 @@ generic_recoding <- function(input,
     ### Check input
     if (!is.character(input)) {
       stop(
-        "One of 1) a character string specifying the path to a file with a ",
+        "As 'input', you must pass ",
+        "one of 1) a character string specifying the path to a file with a ",
         "source; 2) an object with a loaded source as produced by a call to ",
         "`rock::load_source()`; 3) a character string specifying the path to ",
         "a directory containing one or more sources; 4) or an object with a ",
@@ -238,19 +241,30 @@ generic_recoding <- function(input,
 
     if (requireNamespace("justifier", quietly = TRUE)) {
 
+      autoLabel <-
+        paste0(
+          "Decided to apply `", funcName, "` to source `",
+          as.character(substitute(source)),
+          "` for codes ", vecTxt(codes),
+          ", with filter ", originalFilter, "."
+        );
+
       if (is.null(decisionLabel)) {
         decisionLabel <-
-          paste0(
-            "Decided to apply `", funcName, "` to source `",
-            as.character(substitute(source)),
-            "` for codes [still have to add this bit]."
-          );
+          autoLabel;
       }
+
+      msg("Saved decision and justification '",
+          justification, "' using the {justifier} package.\n",
+          silent = silent);
 
       decisionObject <-
         justifier::log_decision(
           label = decisionLabel,
-          justification = justification
+          justification = justification,
+          tag = c("rock", "recoding", funcName),
+          rock_codes = codes,
+          autoLabel = autoLabel
         );
 
       if (!is.null(justificationFile)) {
@@ -267,7 +281,7 @@ generic_recoding <- function(input,
 
       warning("You specified a justification, but the `justifier` package ",
               "isn't installed. You can install the most recent version ",
-              "using thr `remotes` package with:\n\n",
+              "using the `remotes` package with:\n\n",
               "remotes::install_gitlab('r-packages/justifier');\n\n",
               "You can also install the version on CRAN with:\n\n",
               "install.packages('rock');\n");

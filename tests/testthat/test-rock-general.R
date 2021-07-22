@@ -12,7 +12,7 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
   testres <- parse_source(file.path(examplePath,
                                     "lorum-ipsum.rock"));
 
-  testthat::expect_s3_class(testres, "rockParsedSource");
+  testthat::expect_s3_class(testres, "rock_parsedSource");
 
 });
 
@@ -228,6 +228,9 @@ testthat::test_that("merging two sources works properly", {
     testResult[9],
     "---<some_section_break>--- ---<[a-zA-Z0-9_]+>---"
   );
+
+  ### readLines(file.path(examplePath, "merging-test-1-primary.rock"))[15]
+  ### readLines(file.path(examplePath, "merging-test-1-secondary.rock"))[14]
 
   testthat::expect_equal(
     testResult[16],

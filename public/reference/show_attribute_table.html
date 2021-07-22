@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,19 +129,19 @@
     <p>Show a table with all attributes in the RStudio viewer and/or console</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_attribute_table</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='no'><a href='opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>tableOutput</span>),
-  <span class='kw'>tableOutputCSS</span> <span class='kw'>=</span> <span class='kw pkg'>ufs</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/ufs/man/opts.html'>opts</a></span>$<span class='fu'><a href='opts.html'>get</a></span>(<span class='no'>tableOutputCSS</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>show_attribute_table</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  output <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"tableOutput"</span><span class='op'>)</span>,
+  tableOutputCSS <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"tableOutputCSS"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A <code>rockParsedSources</code> object (the result of a call to
-<code><a href='parsing_sources.html'>rock::parse_sources</a></code>).</p></td>
+      <td><p>A <code>rock_parsedSources</code> object (the result of a call to
+<code><a href='parse_source.html'>rock::parse_sources</a></code>).</p></td>
     </tr>
     <tr>
       <th>output</th>
@@ -176,7 +176,7 @@ in which case a <code><a href='https://rdrr.io/pkg/knitr/man/asis_output.html'>k
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

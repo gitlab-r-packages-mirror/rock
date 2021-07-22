@@ -74,7 +74,7 @@ identifier ([[sid=..]])." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ identifier ([[sid=..]])." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@ identifier ([[sid=..]])." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://gitlab.com/r-packages/rock/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,19 +133,19 @@ sharing the same identifier, by default the <code>stanzaId</code>
 identifier (<code>[[sid=..]]</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collapse_occurrences</span>(
-  <span class='no'>parsedSource</span>,
-  <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>"stanzaId"</span>,
-  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>collapse_occurrences</span><span class='op'>(</span>
+  <span class='va'>parsedSource</span>,
+  collapseBy <span class='op'>=</span> <span class='st'>"stanzaId"</span>,
+  columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  logical <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>parsedSource</th>
-      <td><p>The parsed sources as provided by <code><a href='parsing_sources.html'>parse_source()</a></code>.</p></td>
+      <td><p>The parsed sources as provided by <code><a href='parse_source.html'>parse_source()</a></code>.</p></td>
     </tr>
     <tr>
       <th>collapseBy</th>
@@ -174,21 +174,22 @@ for <code>collapseBy</code> and each of the <code>columns</code>, with in the ce
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='no'>exampleFile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rock"</span>);
+<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
 
 <span class='co'>### Parse example source</span>
-<span class='no'>parsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'><a href='parsing_sources.html'>parse_source</a></span>(<span class='no'>exampleFile</span>);
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
 
 <span class='co'>### Collapse logically, using a code (either occurring or not):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>);
+<span class='va'>collapsedExample</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,
+                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span><span class='op'>)</span>;
 
 <span class='co'>### Show result: only two rows left after collapsing,</span>
 <span class='co'>### because 'childCode1' is either 0 or 1:</span>
-<span class='no'>collapsedExample</span>;</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
+<span class='va'>collapsedExample</span>;
+</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
 #&gt; 1          0          0          0          1          1          1
 #&gt; 2          1          2          1          0          0          0
 #&gt;   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4
@@ -198,10 +199,13 @@ for <code>collapseBy</code> and each of the <code>columns</code>, with in the ce
 #&gt; 1               1               1               1             1
 #&gt; 2               0               0               0             0</div><div class='input'>
 <span class='co'>### Collapse using weights (i.e. count codes in each segment):</span>
-<span class='no'>collapsedExample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>rock</span><span class='kw ns'>::</span><span class='fu'>collapse_occurrences</span>(<span class='no'>parsedExample</span>,
-                             <span class='kw'>collapseBy</span> <span class='kw'>=</span> <span class='st'>'childCode1'</span>,
-                             <span class='kw'>logical</span><span class='kw'>=</span><span class='fl'>FALSE</span>);</div></pre>
+<span class='va'>collapsedExample</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,
+                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span>,
+                             logical<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;
+
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -217,7 +221,7 @@ for <code>collapseBy</code> and each of the <code>columns</code>, with in the ce
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
