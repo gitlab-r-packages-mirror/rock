@@ -165,11 +165,11 @@ opts$defaults <-
        codeRegexes = c(codes = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)\\]\\]",
                        ci = "\\[\\[ci[=:]([a-zA-Z0-9_>]+)\\]\\]"),
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]"),
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
-       sectionRegexes = c(sectionBreak = "---<<[a-zA-Z0-9_]+>>---"),
+       sectionRegexes = c(sectionBreak = "---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"),
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
        codeTreeMarker = ">",
@@ -181,7 +181,7 @@ opts$defaults <-
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
-       persistentIds = c('caseId', 'coderId', 'uiid'),
+       persistentIds = c('caseId', 'coderId', 'stanzaId', 'uiid'),
        noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]",
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
