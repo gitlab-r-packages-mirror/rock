@@ -51,6 +51,21 @@ testthat::test_that("a code tree is printed correctly", {
 
 ###-----------------------------------------------------------------------------
 
+testthat::test_that("an inductive code tree is read correctly using parse_sources()", {
+
+  examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  testres <- parse_sources(path = examplePath,
+                           regex = "longer-test.rock",
+                           silent=TRUE);
+
+  testthat::expect_equal(testres$inductiveCodeTrees$codes$inductFather$inducChild3$label,
+                         "inducChild3");
+
+});
+
+###-----------------------------------------------------------------------------
+
 testthat::test_that("a single deductive code tree is read correctly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
