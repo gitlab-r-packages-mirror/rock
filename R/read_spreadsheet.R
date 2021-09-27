@@ -49,8 +49,8 @@ read_spreadsheet <- function(x,
       openxlsx = "openxlsx",
       XLConnect = "XLConnect");
 
-  gSheetId_extractionRegex <- preregr::opts$get("gSheetId_extractionRegex");
-  gSheetId_to_exportLink <- preregr::opts$get("gSheetId_to_exportLink");
+  gSheetId_extractionRegex <- rock::opts$get("gSheetId_extractionRegex");
+  gSheetId_to_exportLink <- rock::opts$get("gSheetId_to_exportLink");
 
   if (!is.character(x)) {
     stop("As `x`, you must pass a character value (i.e. a single string). ",

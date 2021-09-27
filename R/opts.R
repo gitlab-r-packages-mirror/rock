@@ -226,6 +226,64 @@ opts$defaults <-
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
        codeHeadingFormatting = "%s *(path: %s)*",
 
+       ### Cognitive Interview: Narrative Response Models
+       nrm_wsNames = list(
+         metadata = "metadata",
+         instrument = "instrument",
+         probes = "probes",
+         stimuli = "stimuli",
+         operationalizations = "operationalizations",
+         responsemodel_prototype = "responsemodel_prototype",
+         responsemodels= "responsemodels"
+       ),
+
+       nrm_colNames = list(
+         metadata = c(
+           field = 'field',
+           content = 'content'
+         ),
+         instrument = c(
+           sequence = 'sequence',
+           item_id = 'item_id'
+         ),
+         probes = c(
+           item_id = 'item_id',
+           responsemodel_id = 'responsemodel_id',
+           stimulus_id = 'stimulus_id',
+           probe_id = 'probe_id',
+           target = 'target',
+           ci_category = 'ci_category',
+           ambiguity = 'ambiguity',
+           probe_label = 'probe_label'
+         ),
+         stimuli = c(
+           item_id = 'item_id',
+           stimulus_id = 'stimulus_id',
+           stimulus = 'stimulus',
+           language = 'language',
+           stimulus_function = 'stimulus_function'
+         ),
+         operationalizations = c(
+           item_id = 'item_id',
+           operationalization = 'operationalization',
+           closest_construct_description = 'closest_construct_description',
+           comments = 'comments'
+         ),
+         responsemodel_prototype = c(
+           responsemodel_id = 'responsemodel_id',
+           sequence = "sequence",
+           responsemodel_label = 'responsemodel_label',
+           comments = 'comments'
+         ),
+         responsemodels = c(
+           item_id = 'item_id',
+           sequence = "sequence",
+           responsemodel_id = 'responsemodel_id',
+           responsemodel_label = 'responsemodel_label',
+           comments = 'comments'
+         )
+       ),
+
        ### Used for generating html
        codeClass = "code",
        codeValueClass = "codeValue",
@@ -234,6 +292,13 @@ opts$defaults <-
        uidClass = "uid",
        utteranceClass = "utterance",
        contextClass = "context",
+
+       ### Regular expressions for Google Sheets
+       gSheetId_extractionRegex =
+         "^https://docs\\.google\\.com/spreadsheets/d/([a-zA-Z0-9_-]*)(/.*)?$",
+
+       gSheetId_to_exportLink =
+         "https://docs.google.com/spreadsheets/d/%s/export?format=xlsx",
 
        ### When displaying code identifiers, whether to by default show the
        ### full path or just the code identifier itself

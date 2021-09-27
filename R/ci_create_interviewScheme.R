@@ -1,16 +1,16 @@
-ci_create_interviewScheme <- function(qrm_spec,
+ci_create_interviewScheme <- function(nrm_spec,
                                       language = "en") {
 
-  if (!inherits(qrm_spec, "rock_qrm_spec")) {
-    stop("As `qrm_spec`, pass a Qualitative Response Model specification ",
-         "as produced by a call to rock::ci_import_qrm_spec().");
+  if (!inherits(nrm_spec, "rock_nrm_spec")) {
+    stop("As `nrm_spec`, pass a Narrative Response Model specification ",
+         "as produced by a call to rock::ci_import_nrm_spec().");
   }
 
-  res <- character()
+  res <- character();
 
   itemIds <-
-    qrm_spec$instrument$item_id[
-      order(as.numeric(qrm_spec$instrument$sequence))
+    nrm_spec$instrument$item_id[
+      order(as.numeric(nrm_spec$instrument$sequence))
     ];
 
   for (currentItem in itemIds) {
@@ -22,9 +22,9 @@ ci_create_interviewScheme <- function(qrm_spec,
         "--<<item_break>>--\n",
         "\n### Item text:\n\n",
         paste0(
-          qrm_spec$stimuli$stimulus[
-            qrm_spec$stimuli$item_id == currentItem &
-              qrm_spec$stimuli$language == language
+          nrm_spec$stimuli$stimulus[
+            nrm_spec$stimuli$item_id == currentItem &
+              nrm_spec$stimuli$language == language
           ],
           collapse = " "
         ),
@@ -32,12 +32,12 @@ ci_create_interviewScheme <- function(qrm_spec,
         "\n### Think-aloud notes:\n\n\n",
         "\n### Probes:\n\n",
         paste0(
-          qrm_spec$probes$probes_label[
-            qrm_spec$probes$item_id == currentItem
+          nrm_spec$probes$probe_label[
+            nrm_spec$probes$item_id == currentItem
           ],
           "   [[",
-          qrm_spec$probes$probes_id[
-            qrm_spec$probes$item_id == currentItem
+          nrm_spec$probes$probe_id[
+            nrm_spec$probes$item_id == currentItem
           ],
           "]]\n",
           collapse = "\n\n\n"
@@ -46,6 +46,8 @@ ci_create_interviewScheme <- function(qrm_spec,
       );
 
   }
+
+  res <- paste0(res, collapse="");
 
   return(res);
 
