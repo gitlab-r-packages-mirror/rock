@@ -57,7 +57,7 @@ ci_create_interviewScheme <- function(nrm_spec,
           probeDf[[nrm_colNames$probes['probe_label']]][
             probeDf[[nrm_colNames$probes['item_id']]] == currentItem
           ],
-          "   [[",
+          "   [[prbid:",
           probeDf[[nrm_colNames$probes['probe_id']]][
             probeDf[[nrm_colNames$probes['item_id']]] == currentItem
           ],

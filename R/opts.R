@@ -167,7 +167,8 @@ opts$defaults <-
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]"),
+                     uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     prbid = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]"),
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
        sectionRegexes = c(sectionBreak = "---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"),
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
@@ -181,8 +182,8 @@ opts$defaults <-
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
-       persistentIds = c('caseId', 'coderId', 'stanzaId', 'uiid'),
-       noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]",
+       persistentIds = c('caseId', 'coderId', 'stanzaId', 'uiid', 'prbid'),
+       noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
        attributeContainers = c("ROCK_attributes"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),

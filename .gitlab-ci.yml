@@ -11,7 +11,7 @@ before_script:
   - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc texlive-xetex
   - apt-get install -y --no-install-recommends ${APT_PKGS}
   - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
-  - R -e 'install.packages(c("knitr", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
+  - R -e 'install.packages(c("knitr", "markdown", rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
   - R -e 'install.packages("tinytex");'
   - R -e 'install.packages("DiagrammeRsvg")'
   - R -e 'devtools::install_gitlab("r-packages/yum")'
