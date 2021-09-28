@@ -59,7 +59,7 @@ ci_create_interviewScheme <- function(nrm_spec,
           ],
           "   [[",
           probeDf[[nrm_colNames$probes['probe_id']]][
-            probeDf[[nrm_colNames$probes['probe_label']]] == currentItem
+            probeDf[[nrm_colNames$probes['item_id']]] == currentItem
           ],
           "]]\n",
           collapse = "\n\n\n"
