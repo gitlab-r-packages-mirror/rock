@@ -38,12 +38,12 @@ ci_import_nrm_spec <- function(x,
     );
 
   if (nrm_wsNames$metadata %in% names(nrm_spec)) {
-    nrm_spec$metadata <-
+    nrm_spec[[nrm_wsNames$metadata]] <-
       stats::setNames(
         as.list(
-          nrm_spec$metadata[, nrm_colNames$metadata['content']]
+          nrm_spec[[nrm_wsNames$metadata]][, nrm_colNames$metadata['metadata_content']]
         ),
-        nm = nrm_spec$metadata[, nrm_colNames$metadata['field']]
+        nm = nrm_spec[[nrm_wsNames$metadata]][, nrm_colNames$metadata['metadata_field']]
       );
   }
 
@@ -51,19 +51,29 @@ ci_import_nrm_spec <- function(x,
 
   res <- list(nrm_spec = nrm_spec);
 
-  languages <- unique(nrm_spec$stimuli$language);
+  languages <-
+    unique(
+      nrm_spec[[nrm_wsNames$stimuli]][[nrm_colNames$stimuli['stimulus_language']]]
+    );
 
   res$interviewSchemes <- list();
+  res$nrm_md <- list();
 
   for (currentLanguage in languages) {
+
     res$interviewSchemes[[currentLanguage]] <-
       ci_create_interviewScheme(
         nrm_spec = nrm_spec,
         language = currentLanguage
       );
-  }
 
-  res$nrm_md <- ci_nrm_to_md(res$nrm_spec);
+    res$nrm_md[[currentLanguage]] <-
+      ci_nrm_to_md(
+        nrm_spec,
+        language = currentLanguage
+      );
+
+  }
 
   class(res) <- "rock_ci_nrm";
 

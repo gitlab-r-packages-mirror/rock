@@ -1,4 +1,5 @@
 ci_nrm_to_md <- function(nrm_spec,
+                         language,
                          label = NULL,
                          headingLevel = 2) {
 
@@ -16,6 +17,20 @@ ci_nrm_to_md <- function(nrm_spec,
          "must be named 'responsemodels' and must contain columns 'item_id', ",
          "'responsemodel_id', and 'responsemodel_label', and 'comments').");
   }
+
+  responsemodelDf <-
+    nrm_spec[[nrm_wsNames$responsemodels]];
+
+  instrumentDf <-
+    nrm_spec[[nrm_wsNames$instrument]];
+
+  stimuliDf <-
+    nrm_spec[[nrm_wsNames$stimuli]];
+  stimuliDf <-
+    stimuliDf[
+      stimuliDf[[nrm_colNames$stimuli['stimulus_language']]] == language
+      ,
+    ];
 
   ### Heading
 
@@ -49,7 +64,7 @@ ci_nrm_to_md <- function(nrm_spec,
 
     prototype_sequence<-
       prototype[,
-                nrm_colNames$responsemodel_prototype['sequence']
+                nrm_colNames$responsemodel_prototype['responsemodel_sequence']
       ];
 
     prototype_label <-
@@ -59,7 +74,7 @@ ci_nrm_to_md <- function(nrm_spec,
 
     prototype_comments <-
       prototype[,
-                nrm_colNames$responsemodel_prototype['comments']
+                nrm_colNames$responsemodel_prototype['responsemodel_comments']
       ];
 
     names(prototype_label) <- prototype_id;
@@ -92,10 +107,6 @@ ci_nrm_to_md <- function(nrm_spec,
   }
 
   ### Response models per item
-
-  responsemodelDf <-
-    nrm_spec[[nrm_wsNames$responsemodels]];
-
   itemIds <-
     responsemodelDf[, nrm_colNames$instrument['item_id']];
 
@@ -118,7 +129,7 @@ ci_nrm_to_md <- function(nrm_spec,
              res <-
                res[
                  order(
-                   res[[nrm_colNames$responsemodels['sequence']]]
+                   res[[nrm_colNames$responsemodels['responsemodel_sequence']]]
                  ),
                ];
              return(res);
@@ -137,28 +148,37 @@ ci_nrm_to_md <- function(nrm_spec,
                cat = FALSE
              ));
 
+    res <- c(res,
+             paste0("\n**",
+                    ci_get_item(
+                      nrm_spec = nrm_spec,
+                      language = language,
+                      item_id = currentItemId
+                    ),
+                    "**\n"));
+
     res <- c(
       res,
       paste0(
         "- ",
         responsemodels[[currentItemId]][[
-          nrm_colNames$responsemodels['sequence']
+          nrm_colNames$responsemodels['responsemodel_sequence']
         ]],
         ": ",
         responsemodels[[currentItemId]][[
           nrm_colNames$responsemodels['responsemodel_label']
         ]],
-        " (",
+        " (`",
         responsemodels[[currentItemId]][[
           nrm_colNames$responsemodels['responsemodel_id']
         ]],
         ifelse(
           is.na(responsemodels[[currentItemId]][[
-            nrm_colNames$responsemodels['comments']
+            nrm_colNames$responsemodels['responsemodel_comments']
           ]]),
-          "",
-          paste0("; ", responsemodels[[currentItemId]][[
-            nrm_colNames$responsemodels['comments']
+          "`",
+          paste0("`; ", responsemodels[[currentItemId]][[
+            nrm_colNames$responsemodels['responsemodel_comments']
           ]])
         ),
         ")\n",

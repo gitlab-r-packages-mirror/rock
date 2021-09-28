@@ -239,50 +239,55 @@ opts$defaults <-
 
        nrm_colNames = list(
          metadata = c(
-           field = 'field',
-           content = 'content'
+           metadata_field = 'metadata_field',
+           metadata_content = 'metadata_content'
          ),
          instrument = c(
-           sequence = 'sequence',
-           item_id = 'item_id'
+           item_sequence = 'item_sequence',
+           item_id = 'item_id',
+           item_template_nrm = 'item_template_nrm'
          ),
          probes = c(
            item_id = 'item_id',
            responsemodel_id = 'responsemodel_id',
            stimulus_id = 'stimulus_id',
            probe_id = 'probe_id',
-           target = 'target',
-           ci_category = 'ci_category',
-           ambiguity = 'ambiguity',
+           probe_target = 'probe_target',
+           probe_ci_category = 'probe_ci_category',
+           probe_ambiguity = 'probe_ambiguity',
            probe_label = 'probe_label'
          ),
          stimuli = c(
            item_id = 'item_id',
            stimulus_id = 'stimulus_id',
-           stimulus = 'stimulus',
-           language = 'language',
-           stimulus_function = 'stimulus_function'
+           stimulus_content = 'stimulus_content',
+           stimulus_language = 'stimulus_language',
+           stimulus_function = 'stimulus_function',
+           stimulus_alias = 'stimulus_alias'
          ),
          operationalizations = c(
            item_id = 'item_id',
-           operationalization = 'operationalization',
-           closest_construct_description = 'closest_construct_description',
-           comments = 'comments'
+           operationalization_label = 'operationalization_label',
+           operationalization_description = 'operationalization_construct',
+           operationalization_comments = 'operationalization_comments'
          ),
          responsemodel_prototype = c(
            responsemodel_id = 'responsemodel_id',
-           sequence = "sequence",
+           responsemodel_sequence = "responsemodel_sequence",
            responsemodel_label = 'responsemodel_label',
-           comments = 'comments'
+           responsemodel_comments = 'responsemodel_comments'
          ),
          responsemodels = c(
            item_id = 'item_id',
-           sequence = "sequence",
+           responsemodel_sequence = "responsemodel_sequence",
            responsemodel_id = 'responsemodel_id',
            responsemodel_label = 'responsemodel_label',
-           comments = 'comments'
+           responsemodel_comments = 'responsemodel_comments'
          )
        ),
+
+       ### For CI template replacements
+       ci_template_replacementDelimiters = c("<<", ">>"),
 
        ### Used for generating html
        codeClass = "code",
