@@ -69,7 +69,7 @@ ci_import_nrm_spec <- function(x,
 
     res$nrm_md[[currentLanguage]] <-
       ci_nrm_to_md(
-        nrm_spec,
+        nrm_spec = nrm_spec,
         language = currentLanguage
       );
 

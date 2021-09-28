@@ -6,12 +6,34 @@ ci_create_interviewScheme <- function(nrm_spec,
          "as produced by a call to rock::ci_import_nrm_spec().");
   }
 
-  res <- character();
+  nrm_wsNames <- rock::opts$get("nrm_wsNames");
+  nrm_colNames <- rock::opts$get("nrm_colNames");
+
+  ### Create dataframes for convenience
+
+  instrumentDf <-
+    nrm_spec[[nrm_wsNames$instrument]];
+
+  stimuliDf <-
+    nrm_spec[[nrm_wsNames$stimuli]];
+
+  probeDf <-
+    nrm_spec[[nrm_wsNames$probes]];
+
+  ### Get item identifiers in the right order
 
   itemIds <-
-    nrm_spec$instrument$item_id[
-      order(as.numeric(nrm_spec$instrument$sequence))
+    instrumentDf[, nrm_colNames$instrument['item_id']][
+      order(
+        as.numeric(
+          instrumentDf[, nrm_colNames$instrument['item_sequence']]
+        )
+      )
     ];
+
+  ### Start composing result
+
+  res <- character();
 
   for (currentItem in itemIds) {
 
@@ -22,9 +44,9 @@ ci_create_interviewScheme <- function(nrm_spec,
         "--<<item_break>>--\n",
         "\n### Item text:\n\n",
         paste0(
-          nrm_spec$stimuli$stimulus[
-            nrm_spec$stimuli$item_id == currentItem &
-              nrm_spec$stimuli$language == language
+          stimuliDf[nrm_colNames$stimuli['stimulus_content']][
+            stimuliDf[nrm_colNames$stimuli['item_id']] == currentItem &
+              stimuliDf[nrm_colNames$stimuli['stimulus_language']] == language
           ],
           collapse = " "
         ),
@@ -32,12 +54,12 @@ ci_create_interviewScheme <- function(nrm_spec,
         "\n### Think-aloud notes:\n\n\n",
         "\n### Probes:\n\n",
         paste0(
-          nrm_spec$probes$probe_label[
-            nrm_spec$probes$item_id == currentItem
+          probeDf[[nrm_colNames$probes['probe_label']]][
+            probeDf[[nrm_colNames$probes['item_id']]] == currentItem
           ],
           "   [[",
-          nrm_spec$probes$probe_id[
-            nrm_spec$probes$item_id == currentItem
+          probeDf[[nrm_colNames$probes['probe_id']]][
+            probeDf[[nrm_colNames$probes['probe_label']]] == currentItem
           ],
           "]]\n",
           collapse = "\n\n\n"
