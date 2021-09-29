@@ -98,7 +98,7 @@ ci_nrm_to_md <- function(nrm_spec,
         ifelse(
           is.na(prototype_comments),
           "`",
-          paste0("`; ", prototype_comments)
+          paste0("`; *", prototype_comments, "*")
         ),
         ")\n"
       ),
@@ -177,8 +177,9 @@ ci_nrm_to_md <- function(nrm_spec,
             nrm_colNames$responsemodels['responsemodel_comments']
           ]]),
           "`",
-          paste0("`; ", responsemodels[[currentItemId]][[
-            nrm_colNames$responsemodels['responsemodel_comments']
+          paste0("`; *", responsemodels[[currentItemId]][[
+            nrm_colNames$responsemodels['responsemodel_comments'],
+            "*"
           ]])
         ),
         ")\n",
