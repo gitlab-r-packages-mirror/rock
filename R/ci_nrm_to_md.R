@@ -1,6 +1,5 @@
 ci_nrm_to_md <- function(nrm_spec,
                          language,
-                         label = NULL,
                          headingLevel = 2) {
 
   nrm_wsNames <- rock::opts$get("nrm_wsNames");
@@ -43,7 +42,8 @@ ci_nrm_to_md <- function(nrm_spec,
   } else {
     res <- heading("Narrative Response Model for ",
                    nrm_spec$metadata$instrument_name,
-                   " {.tabset .tabset-pills}",
+                   " (", language,
+                   ") {.tabset .tabset-pills}",
                    headingLevel = headingLevel,
                    cat = FALSE);
   }
@@ -93,22 +93,22 @@ ci_nrm_to_md <- function(nrm_spec,
         prototype_sequence,
         ": ",
         prototype_label,
-        " (",
+        " (`",
         prototype_id,
         ifelse(
           is.na(prototype_comments),
-          "",
-          paste0("; ", prototype_comments)
-        )
+          "`",
+          paste0("`; ", prototype_comments)
+        ),
+        ")\n"
       ),
-      ")\n",
       collapse="\n"
     );
   }
 
   ### Response models per item
   itemIds <-
-    responsemodelDf[, nrm_colNames$instrument['item_id']];
+    instrumentDf[, nrm_colNames$instrument['item_id']];
 
   responsemodels <-
     lapply(itemIds,
