@@ -24,7 +24,7 @@
 prereg_initialize <- function(x,
                               initialText = "Unspecified") {
 
-  if (!requireNamespace("preregr", quiet=TRUE)) {
+  if (!requireNamespace("preregr", quietly = TRUE)) {
     stop("To work with (pre)registrations, you must have the {preregr} ",
          "package installed. To install it, use:\n\n  ",
          "install.packages(\"preregr\");");

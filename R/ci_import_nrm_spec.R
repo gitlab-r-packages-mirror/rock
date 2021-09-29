@@ -13,6 +13,7 @@
 #' @param read_ss_args A named list with arguments to pass to
 #' [rock::read_spreadsheet()].
 #' @param silent Whether to be silent or chatty.
+#' @param ... Additional arguments are ignored.
 #'
 #' @return A `rock_ci_nrm` object.
 #' @rdname rock_ci_nrm
