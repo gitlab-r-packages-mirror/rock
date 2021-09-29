@@ -28,7 +28,7 @@ check for presence. A named list of vectors.}
 backup to.}
 
 \item{exportGoogleSheet}{If \code{x} is a URL to a Google Sheet, instead of using
-thr \code{googlesheets4} package to download the data, by passing
+the \code{googlesheets4} package to download the data, by passing
 \code{exportGoogleSheet=TRUE}, an export link will be produced and the data
 will be downloaded as Excel spreadsheet.}
 

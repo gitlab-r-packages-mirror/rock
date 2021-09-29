@@ -23,11 +23,11 @@ form_to_rmd_template(
 }
 \arguments{
 \item{x}{The (pre)registration form (as produced by a call
-to \code{\link[preregr:form_create]{preregr::form_create()}} or \code{\link[preregr:import_from_html]{preregr::import_from_html()}}) or
+to \code{preregr::form_create()} or \code{preregr::import_from_html()}) or
 initialized \code{preregr} object (as produced by a call to
-\code{\link[preregr:prereg_initialize]{preregr::prereg_initialize()}} or [preregr::import_from_html()); or, for
+\code{preregr::prereg_initialize()} or \code{preregr::import_from_html()}); or, for
 the printing method, the R Markdown template produced by a call to
-\code{\link[preregr:rmd_templates]{preregr::form_to_rmd_template()}}.}
+\code{preregr::form_to_rmd_template()}.}
 
 \item{file}{Optionally, a file to save the html to.}
 
@@ -48,9 +48,9 @@ using this argument. If used, it overrides anything specified in \code{title},
 
 \item{chunkOpts}{The chunk options to set for the chunks in the template.}
 
-\item{justify}{Whether to use \code{\link[preregr:prereg_specify]{preregr::prereg_specify()}} as function for
+\item{justify}{Whether to use \code{preregr::prereg_specify()} as function for
 specifying the (pre)registration content (if \code{FALSE}), or
-\code{\link[preregr:prereg_justify]{preregr::prereg_justify()}} (if \code{TRUE}).}
+\code{preregr::prereg_justify()} (if \code{TRUE}).}
 
 \item{headingLevel}{The level of the top-most heading to use (the
 title of the (pre)registration form).}
@@ -62,8 +62,6 @@ the start of the Rmd template; otherwise, it is set to \code{FALSE}.}
 \item{preventOverwriting}{Set to \code{FALSE} to override overwrite prevention.}
 
 \item{silent}{Whether to be silent or chatty.}
-
-\item{...}{Additional argument are ignored.}
 }
 \value{
 x, invisibly

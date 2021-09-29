@@ -9,11 +9,11 @@
 #' specification, or a loaded or imported {preregr} (pre)registration form.
 #'
 #' @param x The (pre)registration form (as produced by a call
-#' to [preregr::form_create()] or [preregr::import_from_html()]) or
+#' to `preregr::form_create()` or `preregr::import_from_html()`) or
 #' initialized `preregr` object (as produced by a call to
-#' [preregr::prereg_initialize()] or [preregr::import_from_html()); or, for
+#' `preregr::prereg_initialize()` or `preregr::import_from_html()`); or, for
 #' the printing method, the R Markdown template produced by a call to
-#' [preregr::form_to_rmd_template()].
+#' `preregr::form_to_rmd_template()`.
 #' @param title The title to specify in the template's YAML front matter.
 #' @param author The author to specify in the template's YAML front matter.
 #' @param date The date to specify in the template's YAML front matter.
@@ -30,12 +30,11 @@
 #' output. When `FALSE`, the `preregr` option `silent` is set to `TRUE` at
 #' the start of the Rmd template; otherwise, it is set to `FALSE`.
 #' @param chunkOpts The chunk options to set for the chunks in the template.
-#' @param justify Whether to use [preregr::prereg_specify()] as function for
+#' @param justify Whether to use `preregr::prereg_specify()` as function for
 #' specifying the (pre)registration content (if `FALSE`), or
-#' [preregr::prereg_justify()] (if `TRUE`).
+#' `preregr::prereg_justify()` (if `TRUE`).
 #' @param preventOverwriting Set to `FALSE` to override overwrite prevention.
 #' @param silent Whether to be silent or chatty.
-#' @param ... Additional argument are ignored.
 #'
 #' @return x, invisibly
 #' @export

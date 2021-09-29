@@ -13,9 +13,10 @@ before_script:
   - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
   - R -e 'install.packages(c("knitr", "markdown", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
   - R -e 'install.packages("tinytex");'
-  - R -e 'install.packages("DiagrammeRsvg")'
+  - R -e 'install.packages("DiagrammeRsvg", "openxlsx", "XLConnect", "googlesheets4" "readxl")'
   - R -e 'devtools::install_gitlab("r-packages/yum")'
   - R -e 'devtools::install_gitlab("r-packages/justifier")'
+  - R -e 'devtools::install_gitlab("r-packages/preregr")'
   - apt-get install -y lmodern texlive-fonts-recommended
   #- R -e 'tinytex::tlmgr_update(); tinytex::tlmgr_install("lmodern");'
 

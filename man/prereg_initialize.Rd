@@ -30,6 +30,6 @@ vignette.
 }
 \examples{
 rock::prereg_initialize(
-  "form_preregQE_v0_93"
+  "preregQE_v0_93"
 );
 }

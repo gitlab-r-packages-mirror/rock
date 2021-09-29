@@ -10,7 +10,7 @@
 #' @param localBackup If not `NULL`, a valid filename to write a local
 #' backup to.
 #' @param exportGoogleSheet If `x` is a URL to a Google Sheet, instead of using
-#' thr `googlesheets4` package to download the data, by passing
+#' the `googlesheets4` package to download the data, by passing
 #' `exportGoogleSheet=TRUE`, an export link will be produced and the data
 #' will be downloaded as Excel spreadsheet.
 #' @param flattenSingleDf Whether to return the result as a data frame if

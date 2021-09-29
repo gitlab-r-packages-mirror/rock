@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples rock::prereg_initialize(
-#'   "form_preregQE_v0_93"
+#'   "preregQE_v0_93"
 #' );
 prereg_initialize <- function(x,
                               initialText = "Unspecified") {
