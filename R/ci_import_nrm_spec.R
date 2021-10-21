@@ -59,6 +59,7 @@ ci_import_nrm_spec <- function(x,
 
   res$interviewSchemes <- list();
   res$nrm_md <- list();
+  res$nrm_with_probes_md <- list();
 
   for (currentLanguage in languages) {
 
@@ -72,6 +73,13 @@ ci_import_nrm_spec <- function(x,
       ci_nrm_to_md(
         nrm_spec = nrm_spec,
         language = currentLanguage
+      );
+
+    res$nrm_with_probes_md[[currentLanguage]] <-
+      ci_nrm_to_md(
+        nrm_spec = nrm_spec,
+        language = currentLanguage,
+        includeProbes = TRUE
       );
 
   }
