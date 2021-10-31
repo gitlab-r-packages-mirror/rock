@@ -21,6 +21,8 @@ to \code{\link[=read_spreadsheet]{read_spreadsheet()}}.}
 \code{\link[=read_spreadsheet]{read_spreadsheet()}}.}
 
 \item{silent}{Whether to be silent or chatty.}
+
+\item{...}{Additional arguments are ignored.}
 }
 \value{
 A \code{rock_ci_nrm} object.
