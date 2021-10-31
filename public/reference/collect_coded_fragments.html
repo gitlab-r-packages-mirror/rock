@@ -74,7 +74,7 @@ of all coded fragments per code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -146,6 +146,7 @@ of all coded fragments per code.</p>
   outputViewer <span class='op'>=</span> <span class='st'>"viewer"</span>,
   template <span class='op'>=</span> <span class='st'>"default"</span>,
   rawResult <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  includeCSS <span class='op'>=</span> <span class='cn'>TRUE</span>,
   includeBootstrap <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"includeBootstrap"</span><span class='op'>)</span>,
   preventOverwriting <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>preventOverwriting</span><span class='op'>)</span>,
   silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>silent</span><span class='op'>)</span>
@@ -226,6 +227,10 @@ the path and filename of a CSS file.</p></td>
 fragments, or one character value in markdown format.</p></td>
     </tr>
     <tr>
+      <th>includeCSS</th>
+      <td><p>Whether to include the ROCK CSS in the returned HTML.</p></td>
+    </tr>
+    <tr>
       <th>includeBootstrap</th>
       <td><p>Whether to include the default bootstrap CSS.</p></td>
     </tr>
@@ -257,18 +262,34 @@ without the codes.</p>
 
 <span class='co'>### Get a path to one example file</span>
 <span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span>
+    <span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span>
+  <span class='op'>)</span>;
 
 <span class='co'>### Parse single example source</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
+<span class='va'>parsedExample</span> <span class='op'>&lt;-</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span>
+    <span class='va'>exampleFile</span>
+  <span class='op'>)</span>;
 
 <span class='co'>### Show organised coded fragments in Markdown</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>)</span><span class='op'>)</span>;
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span>
+    <span class='va'>parsedExample</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>;
 </div><div class='output co'>#&gt; 
-#&gt; &lt;style
-#&gt; &gt;
+#&gt; &lt;style&gt;
+#&gt; 
 #&gt; 
 #&gt; .code {
+#&gt;   border-radius: .25em;
+#&gt;   box-sizing: border-box;
+#&gt;   margin-left: 10px;
+#&gt;   padding: 2px;
+#&gt; }
+#&gt; 
+#&gt; .codeValue {
 #&gt;   border-radius: .25em;
 #&gt;   box-sizing: border-box;
 #&gt;   margin-left: 10px;
@@ -301,6 +322,10 @@ without the codes.</p>
 #&gt;   background-color: #f4d142;
 #&gt; }
 #&gt; 
+#&gt; .codeValue {
+#&gt;   background-color: #d2af20;
+#&gt; }
+#&gt; 
 #&gt; .identifier {
 #&gt;   background-color: #aaaaff;
 #&gt; }
@@ -322,6 +347,10 @@ without the codes.</p>
 #&gt; .utterance + .utterance {
 #&gt;   margin-top: -1px;
 #&gt; }
+#&gt; 
+#&gt; .context {
+#&gt;   color: #bbbbbb;
+#&gt; }
 #&gt; &lt;/style&gt;
 #&gt; 
 #&gt; 
@@ -336,7 +365,7 @@ without the codes.</p>
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
@@ -346,7 +375,7 @@ without the codes.</p>
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----
@@ -472,13 +501,24 @@ without the codes.</p>
 #&gt; -----
 #&gt; </div><div class='input'>
 <span class='co'>### Only for the codes containing 'Code2'</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span><span class='va'>parsedExample</span>,
-                            <span class='st'>'Code2'</span><span class='op'>)</span><span class='op'>)</span>;
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span>
+  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span>
+    <span class='va'>parsedExample</span>,
+    <span class='st'>'Code2'</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>;
 </div><div class='output co'>#&gt; 
-#&gt; &lt;style
-#&gt; &gt;
+#&gt; &lt;style&gt;
+#&gt; 
 #&gt; 
 #&gt; .code {
+#&gt;   border-radius: .25em;
+#&gt;   box-sizing: border-box;
+#&gt;   margin-left: 10px;
+#&gt;   padding: 2px;
+#&gt; }
+#&gt; 
+#&gt; .codeValue {
 #&gt;   border-radius: .25em;
 #&gt;   box-sizing: border-box;
 #&gt;   margin-left: 10px;
@@ -511,6 +551,10 @@ without the codes.</p>
 #&gt;   background-color: #f4d142;
 #&gt; }
 #&gt; 
+#&gt; .codeValue {
+#&gt;   background-color: #d2af20;
+#&gt; }
+#&gt; 
 #&gt; .identifier {
 #&gt;   background-color: #aaaaff;
 #&gt; }
@@ -532,6 +576,10 @@ without the codes.</p>
 #&gt; .utterance + .utterance {
 #&gt;   margin-top: -1px;
 #&gt; }
+#&gt; 
+#&gt; .context {
+#&gt;   color: #bbbbbb;
+#&gt; }
 #&gt; &lt;/style&gt;
 #&gt; 
 #&gt; 
@@ -541,7 +589,7 @@ without the codes.</p>
 #&gt; 
 #&gt; -----
 #&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; [[intensity||2]]&lt;/div&gt;
+#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
 #&gt; 
 #&gt; 
 #&gt; -----

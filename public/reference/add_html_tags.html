@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -131,10 +131,13 @@
 
     <pre class="usage"><span class='fu'>add_html_tags</span><span class='op'>(</span>
   <span class='va'>x</span>,
+  context <span class='op'>=</span> <span class='cn'>NULL</span>,
   codeClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>codeClass</span><span class='op'>)</span>,
+  codeValueClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>codeValueClass</span><span class='op'>)</span>,
   idClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>idClass</span><span class='op'>)</span>,
   sectionClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>sectionClass</span><span class='op'>)</span>,
   uidClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>uidClass</span><span class='op'>)</span>,
+  contextClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>contextClass</span><span class='op'>)</span>,
   utteranceClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>utteranceClass</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -146,12 +149,16 @@
       <td><p>A character vector with the source</p></td>
     </tr>
     <tr>
-      <th>codeClass, idClass, sectionClass, uidClass, utteranceClass</th>
-      <td><p>The classes
-to use for, respectively, codes, identifiers (such as case identifiers or
-coder identifiers), section breaks, utterance identifiers, and full
-utterances. All <code>&lt;span&gt;</code> elements except for the full utterances, which
-are placed in <code>&lt;div&gt;</code> elements.</p></td>
+      <th>context</th>
+      <td><p>Optionally, lines to pass the contextClass</p></td>
+    </tr>
+    <tr>
+      <th>codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass</th>
+      <td><p>The classes to use for, respectively, codes, code values,
+class instance identifiers (such as case
+identifiers or coder identifiers), section breaks, utterance
+identifiers, context, and full utterances. All <code>&lt;span&gt;</code> elements except
+for the full utterances, which are placed in <code>&lt;div&gt;</code> elements.</p></td>
     </tr>
     </table>
 
@@ -159,6 +166,14 @@ are placed in <code>&lt;div&gt;</code> elements.</p></td>
 
     <p>The character vector with the replacements made.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>### Add tags to a mini example source</span>
+<span class='fu'>add_html_tags</span><span class='op'>(</span><span class='st'>"[[cid=participant1]]
+This is something this participant may have said.
+Just like this. [[thisIsACode]]
+---paragraph-break---
+And another utterance."</span><span class='op'>)</span>;
+</div><div class='output co'>#&gt; [1] "&lt;div class=\"utterance\"&gt;&lt;span class=\"identifier caseId\"&gt;[[cid=participant1]]&lt;/span&gt;\nThis is something this participant may have said.\nJust like this. &lt;span class=\"code codes\"&gt;[[thisIsACode]]&lt;/span&gt;\n---paragraph-break---\nAnd another utterance.&lt;/div&gt;\n"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
