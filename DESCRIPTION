@@ -1,6 +1,6 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: 
     c(person(given = "Gjalt-Jorn Ygram",
              family = "Peters",
