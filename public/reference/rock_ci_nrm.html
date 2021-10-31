@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add HTML tags to a source — add_html_tags • rock</title>
+<title>Import a Narrative Response Model specification — ci_import_nrm_spec • rock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,14 @@
 
 
 
-<meta property="og:title" content="Add HTML tags to a source — add_html_tags" />
-<meta property="og:description" content="This function adds HTML tags to a source to allow pretty printing/viewing." />
+<meta property="og:title" content="Import a Narrative Response Model specification — ci_import_nrm_spec" />
+<meta property="og:description" content="Narrative Response Models are a description of the theory of how a
+measurement instrument that measures a psychological construct works,
+geared towards conducting cognitive interviews to verify the validity
+of that measurement instrument. One a Narrative Response Model has been
+imported, it can be used to generate interview schemes, overview of each
+item's narrative response model, and combined with coded cognitive
+interview notes or transcripts." />
 
 
 
@@ -120,60 +126,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add HTML tags to a source</h1>
-    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/add_html_tags.R'><code>R/add_html_tags.R</code></a></small>
-    <div class="hidden name"><code>add_html_tags.Rd</code></div>
+    <h1>Import a Narrative Response Model specification</h1>
+    <small class="dont-index">Source: <a href='https://gitlab.com/r-packages/rock/blob/master/R/ci_import_nrm_spec.R'><code>R/ci_import_nrm_spec.R</code></a></small>
+    <div class="hidden name"><code>rock_ci_nrm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function adds HTML tags to a source to allow pretty printing/viewing.</p>
+    <p>Narrative Response Models are a description of the theory of how a
+measurement instrument that measures a psychological construct works,
+geared towards conducting cognitive interviews to verify the validity
+of that measurement instrument. One a Narrative Response Model has been
+imported, it can be used to generate interview schemes, overview of each
+item's narrative response model, and combined with coded cognitive
+interview notes or transcripts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_html_tags</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>ci_import_nrm_spec</span><span class='op'>(</span>
   <span class='va'>x</span>,
-  context <span class='op'>=</span> <span class='cn'>NULL</span>,
-  codeClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>codeClass</span><span class='op'>)</span>,
-  codeValueClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>codeValueClass</span><span class='op'>)</span>,
-  idClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>idClass</span><span class='op'>)</span>,
-  sectionClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>sectionClass</span><span class='op'>)</span>,
-  uidClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>uidClass</span><span class='op'>)</span>,
-  contextClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>contextClass</span><span class='op'>)</span>,
-  utteranceClass <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='va'>utteranceClass</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+  read_ss_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>exportGoogleSheet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+  silent <span class='op'>=</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='va'><a href='opts.html'>opts</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='st'>"silent"</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for rock_ci_nrm</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A character vector with the source</p></td>
+      <td><p>A path to a file or an URL to a Google Sheet, passed
+to <code><a href='read_spreadsheet.html'>read_spreadsheet()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>context</th>
-      <td><p>Optionally, lines to pass the contextClass</p></td>
+      <th>read_ss_args</th>
+      <td><p>A named list with arguments to pass to
+<code><a href='read_spreadsheet.html'>read_spreadsheet()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass</th>
-      <td><p>The classes to use for, respectively, codes, code values,
-class instance identifiers (such as case
-identifiers or coder identifiers), section breaks, utterance
-identifiers, context, and full utterances. All <code>&lt;span&gt;</code> elements except
-for the full utterances, which are placed in <code>&lt;div&gt;</code> elements.</p></td>
+      <th>silent</th>
+      <td><p>Whether to be silent or chatty.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments are ignored.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The character vector with the replacements made.</p>
+    <p>A <code>rock_ci_nrm</code> object.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Add tags to a mini example source</span>
-<span class='fu'>add_html_tags</span><span class='op'>(</span><span class='st'>"[[cid=participant1]]
-This is something this participant may have said.
-Just like this. [[thisIsACode]]
----paragraph-break---
-And another utterance."</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; [1] "&lt;div class=\"utterance\"&gt;&lt;span class=\"identifier caseId\"&gt;[[cid=participant1]]&lt;/span&gt;\nThis is something this participant may have said.\nJust like this. &lt;span class=\"code codes\"&gt;[[thisIsACode]]&lt;/span&gt;\n---paragraph-break---\nAnd another utterance.&lt;/div&gt;\n"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
