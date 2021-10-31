@@ -1,5 +1,6 @@
 ci_nrm_to_md <- function(nrm_spec,
                          language,
+                         includeProbes = FALSE,
                          headingLevel = 2) {
 
   nrm_wsNames <- rock::opts$get("nrm_wsNames");
@@ -30,6 +31,9 @@ ci_nrm_to_md <- function(nrm_spec,
       stimuliDf[[nrm_colNames$stimuli['stimulus_language']]] == language
       ,
     ];
+
+  probeDf <-
+    nrm_spec[[nrm_wsNames$probes]];
 
   ### Heading
 
@@ -157,35 +161,119 @@ ci_nrm_to_md <- function(nrm_spec,
                     ),
                     "**\n"));
 
-    res <- c(
-      res,
-      paste0(
-        "- ",
-        responsemodels[[currentItemId]][[
-          nrm_colNames$responsemodels['responsemodel_sequence']
-        ]],
-        ": ",
-        responsemodels[[currentItemId]][[
-          nrm_colNames$responsemodels['responsemodel_label']
-        ]],
-        " (`",
-        responsemodels[[currentItemId]][[
-          nrm_colNames$responsemodels['responsemodel_id']
-        ]],
-        ifelse(
-          is.na(responsemodels[[currentItemId]][[
-            nrm_colNames$responsemodels['responsemodel_comments']
-          ]]),
-          "`",
-          paste0("`; *", responsemodels[[currentItemId]][[
-            nrm_colNames$responsemodels['responsemodel_comments'],
-            "*"
-          ]])
-        ),
-        ")\n",
-        collapse="\n"
-      )
-    );
+    if (includeProbes) {
+
+      # responseModelIds <-
+      #   responsemodels[[currentItemId]][[
+      #     nrm_colNames$responsemodels['responsemodel_id']
+      #   ]];
+
+      for (currentRow in 1:nrow(responsemodels[[currentItemId]])) {
+
+        currentResponseModelId <-
+          responsemodels[[currentItemId]][
+            currentRow,
+            nrm_colNames$responsemodels['responsemodel_id']
+          ];
+
+        ### Start with responsemodel step
+
+        res <- c(
+          res,
+          paste0(
+            "- ",
+            responsemodels[[currentItemId]][
+              currentRow,
+              nrm_colNames$responsemodels['responsemodel_sequence']
+            ],
+            ": ",
+            responsemodels[[currentItemId]][
+              currentRow,
+              nrm_colNames$responsemodels['responsemodel_label']
+            ],
+            " (`",
+            responsemodels[[currentItemId]][
+              currentRow,
+              nrm_colNames$responsemodels['responsemodel_id']
+            ],
+            ifelse(
+              is.na(
+                responsemodels[[currentItemId]][
+                  currentRow,
+                  nrm_colNames$responsemodels['responsemodel_comments']
+                ]
+              ),
+              "`",
+              paste0("`; *", responsemodels[[currentItemId]][
+                  currentRow,
+                  nrm_colNames$responsemodels['responsemodel_comments']
+                ],
+                "*"
+              )
+            ),
+            ")\n",
+            collapse="\n"
+          )
+        );
+
+        ### Probes
+
+        probes <-
+          probeDf[
+            probeDf[[nrm_colNames$probes['item_id']]] == currentItemId &
+              probeDf[[nrm_colNames$probes['responsemodel_id']]] == currentResponseModelId,
+          ];
+
+        if (nrow(probes) > 0) {
+
+          res <- c(
+            res,
+            paste0(
+              "    - ",
+              probes[[
+                nrm_colNames$probes['probe_label']
+              ]],
+              collapse="\n"
+            )
+          );
+
+        }
+
+      }
+
+    } else {
+
+      res <- c(
+        res,
+        paste0(
+          "- ",
+          responsemodels[[currentItemId]][[
+            nrm_colNames$responsemodels['responsemodel_sequence']
+          ]],
+          ": ",
+          responsemodels[[currentItemId]][[
+            nrm_colNames$responsemodels['responsemodel_label']
+          ]],
+          " (`",
+          responsemodels[[currentItemId]][[
+            nrm_colNames$responsemodels['responsemodel_id']
+          ]],
+          ifelse(
+            is.na(responsemodels[[currentItemId]][[
+              nrm_colNames$responsemodels['responsemodel_comments']
+            ]]),
+            "`",
+            paste0("`; *", responsemodels[[currentItemId]][[
+              nrm_colNames$responsemodels['responsemodel_comments'],
+              "*"
+            ]])
+          ),
+          ")\n",
+          collapse="\n"
+        )
+      );
+
+    }
 
   }
 
