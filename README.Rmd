@@ -26,7 +26,7 @@ gitLab_ci_url <-
 codecov_badge <-
   paste0("https://codecov.io/gl/r-packages/", packagename, "/branch/prod/graph/badge.svg");
 codecov_url <-
-  paste0("https://codecov.io/gl/r-packages/", packagename, "?branch=prod");
+  paste0("https://app.codecov.io/gl/r-packages/", packagename, "?branch=prod");
 
 dependency_badge <-
   paste0("https://tinyverse.netlify.com/badge/", packagename);
