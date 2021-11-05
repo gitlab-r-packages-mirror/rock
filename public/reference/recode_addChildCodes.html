@@ -74,7 +74,7 @@ original coding." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -224,49 +224,50 @@ when writing the files to <code>output</code>.</p></td>
     <p>Invisibly, the changed source(s) or source(s) object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Load example source</span>
-<span class='va'>loadedExampleSource</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Split a code into two codes, showing progress (the backticks are</span>
-<span class='co'>### used to be able to specify a name that starts with an underscore)</span>
-<span class='va'>recoded_source</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_addChildCodes</span><span class='op'>(</span>
-    <span class='va'>loadedExampleSource</span>,
-    codes<span class='op'>=</span><span class='st'>"childCode1"</span>,
-    childCodes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      `_and_` <span class='op'>=</span> <span class='st'>" and "</span>,
-      `_book_` <span class='op'>=</span> <span class='st'>"book"</span>,
-      `_else_` <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>,
-    silent<span class='op'>=</span><span class='cn'>FALSE</span>
-  <span class='op'>)</span>;
-</div><div class='output co'>#&gt; Creating 3 source filters.
-#&gt; To those occurrences of code 'childCode1' that match the respective filters, adding child codes 'childCode1&gt;_and_', 'childCode1&gt;_book_' &amp; 'childCode1&gt;_else_'.
-#&gt; Using regular expression '(\[\[|&gt;)childCode1(\]\]|&gt;)'.
-#&gt; 
-#&gt; Out of the 110 utterances in the provided source, 8 match both the general filter and the filter specified for child code '_and_'. Of those, 2 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_and_]]' will now be appended.
-#&gt; --PROCESSED: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]] [[childCode1&gt;_and_]]
-#&gt; --PROCESSED: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]] [[childCode1&gt;_and_]]
-#&gt; 
-#&gt; Out of the 110 utterances in the provided source, 2 match both the general filter and the filter specified for child code '_book_'. Of those, 1 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_book_]]' will now be appended.
-#&gt; --PROCESSED: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]] [[childCode1&gt;_book_]]
-#&gt; 
-#&gt; Out of the 110 utterances in the provided source, 110 match both the general filter and the filter specified for child code '_else_'. Of those, 6 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_else_]]' will now be appended.
-#&gt; --PROCESSED: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]] [[childCode1&gt;_else_]]
-#&gt; --PROCESSED: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]] [[childCode1&gt;_else_]]
-#&gt; --PROCESSED: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]] [[childCode1&gt;_else_]]
-#&gt; --PROCESSED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]] [[childCode1&gt;_else_]]
-#&gt; --PROCESSED: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]] [[childCode1&gt;_else_]]
-#&gt; --PROCESSED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]] [[childCode1&gt;_else_]]Added child codes 'childCode1' to 6 utterances that were coded with code  into code 'childCode1'.
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Load example source</span></span>
+<span class='r-in'><span class='va'>loadedExampleSource</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Split a code into two codes, showing progress (the backticks are</span></span>
+<span class='r-in'><span class='co'>### used to be able to specify a name that starts with an underscore)</span></span>
+<span class='r-in'><span class='va'>recoded_source</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_addChildCodes</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>loadedExampleSource</span>,</span>
+<span class='r-in'>    codes<span class='op'>=</span><span class='st'>"childCode1"</span>,</span>
+<span class='r-in'>    childCodes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      `_and_` <span class='op'>=</span> <span class='st'>" and "</span>,</span>
+<span class='r-in'>      `_book_` <span class='op'>=</span> <span class='st'>"book"</span>,</span>
+<span class='r-in'>      `_else_` <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span>,</span>
+<span class='r-in'>    silent<span class='op'>=</span><span class='cn'>FALSE</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Creating 3 source filters.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> To those occurrences of code 'childCode1' that match the respective filters, adding child codes 'childCode1&gt;_and_', 'childCode1&gt;_book_' &amp; 'childCode1&gt;_else_'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Using regular expression '(\[\[|&gt;)childCode1(\]\]|&gt;)'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 8 match both the general filter and the filter specified for child code '_and_'. Of those, 2 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_and_]]' will now be appended.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]] [[childCode1&gt;_and_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]] [[childCode1&gt;_and_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 2 match both the general filter and the filter specified for child code '_book_'. Of those, 1 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_book_]]' will now be appended.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]] [[childCode1&gt;_book_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 match both the general filter and the filter specified for child code '_else_'. Of those, 6 have been coded with code 'NA', so to those utterances, child code '[[childCode1&gt;_else_]]' will now be appended.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]] [[childCode1&gt;_else_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]] [[childCode1&gt;_else_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]] [[childCode1&gt;_else_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]] [[childCode1&gt;_else_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]] [[childCode1&gt;_else_]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --PROCESSED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]] [[childCode1&gt;_else_]]Added child codes 'childCode1' to 6 utterances that were coded with code  into code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ contained identifiers, sections, and codes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -238,7 +238,7 @@ with a newline character.</p></td>
     <tr>
       <th>extension</th>
       <td><p>The extension of the files to read; files with other extensions will
-be ignored. Multiple extensions can be separated by a pipe (<code><a href='https://rdrr.io/r/base/Logic.html'>|</a></code>).</p></td>
+be ignored. Multiple extensions can be separated by a pipe (<code>|</code>).</p></td>
     </tr>
     <tr>
       <th>regex</th>
@@ -260,201 +260,204 @@ functionality is currently not yet implemented.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Parse single example source</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Show inductive code tree for the codes</span>
-<span class='co'>### extracted with the regular expression specified with</span>
-<span class='co'>### the name 'codes':</span>
-<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;
-</div><div class='output co'>#&gt;                      levelName
-#&gt; 1  codes                      
-#&gt; 2   ¦--parentCode1            
-#&gt; 3   ¦   ¦--childCode1         
-#&gt; 4   ¦   ¦   ¦--grandchildCode1
-#&gt; 5   ¦   ¦   ¦--grandchildCode2
-#&gt; 6   ¦   ¦   °--grandchildCode3
-#&gt; 7   ¦   ¦--childCode2         
-#&gt; 8   ¦   °--childCode3         
-#&gt; 9   ¦--parentCode2            
-#&gt; 10  ¦   ¦--childCode4         
-#&gt; 11  ¦   ¦   ¦--grandchildCode4
-#&gt; 12  ¦   ¦   ¦--grandchildCode5
-#&gt; 13  ¦   ¦   °--grandchildCode6
-#&gt; 14  ¦   °--childCode5         
-#&gt; 15  ¦       °--grandchildCode7
-#&gt; 16  °--someOtherCode          </div><div class='input'>
-<span class='co'>### If you want `rock` to be chatty, use:</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span>,
-                                    silent<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; Read the contents of file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/example-1.rock' (111 lines read).
-#&gt; Encountered YAML fragments. Parsing them for attributes.
-#&gt; Read 0 attributes specifications. Continuing with deductive code trees.
-#&gt; Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').
-#&gt; Read 0 section break codes.
-#&gt; 
-#&gt; Starting to process the inductive codes and building a code tree.
-#&gt; Building tree containing all 'true local roots'.
-#&gt; - Processing 'true local root' 'parentCode1'.
-#&gt; - Processing 'true local root' 'parentCode2'.
-#&gt; - Processing 'true local root' 'someOtherCode'.
-#&gt; 
-#&gt; Processing subtrees of those 'true local roots'.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode1'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode1'.
-#&gt;       - This parent node does not yet have a child with the name 'childCode1', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode1'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode1'.
-#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode1'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode1', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode2'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode1'.
-#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode2'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode2', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode3'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode1'.
-#&gt;       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode3'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode3', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode2'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode2'.
-#&gt;       - This parent node does not yet have a child with the name 'childCode2', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode3'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode3'.
-#&gt;       - This parent node does not yet have a child with the name 'childCode3', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode4'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode4'.
-#&gt;       - This parent node does not yet have a child with the name 'childCode4', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode4'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode4'.
-#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode4'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode4', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode5'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode4'.
-#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode5'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode5', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode6'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode4'.
-#&gt;       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.
-#&gt;     - Processing node 'grandchildCode6'.
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode6', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode5'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;     - Processing node 'childCode5'.
-#&gt;       - This parent node does not yet have a child with the name 'childCode5', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'someOtherCode'.
-#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
-#&gt; 
-#&gt; Processing subtrees of 'local roots that are branches', i.e. single codes that are descendants of other codes (without the full path to the root being specified in the code), or subtrees where the local root is in fact a descendant.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'childCode1'.
-#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'childCode1' &amp; 'grandchildCode2'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;       - This parent node already has a child with the name 'grandchildCode2', so not adding anything at this point.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'childCode5' &amp; 'grandchildCode7'.
-#&gt;   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).
-#&gt;       - This parent node does not yet have a child with the name 'grandchildCode7', so adding it to that parent node.
-#&gt; 
-#&gt; - Processing subtree consisting of the node sequence 'grandchildCode2'.
-#&gt;   - This 'subtree' only consists of the parent/root code, so no further processing required.
-#&gt; 
-#&gt; Done processing the inductive code tree.
-#&gt; </div><div class='input'>
-<span class='co'>### Parse all example sources in that directory</span>
-<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_sources</span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
-
-<span class='co'>### Show combined inductive code tree for the codes</span>
-<span class='co'>### extracted with the regular expression specified with</span>
-<span class='co'>### the name 'codes':</span>
-<span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;
-</div><div class='output co'>#&gt;                      levelName
-#&gt; 1  codes                      
-#&gt; 2   ¦--parentCode1            
-#&gt; 3   ¦   ¦--childCode1         
-#&gt; 4   ¦   ¦   ¦--grandchildCode1
-#&gt; 5   ¦   ¦   ¦--grandchildCode2
-#&gt; 6   ¦   ¦   °--grandchildCode3
-#&gt; 7   ¦   ¦--childCode2         
-#&gt; 8   ¦   °--childCode3         
-#&gt; 9   ¦--parentCode2            
-#&gt; 10  ¦   ¦--childCode4         
-#&gt; 11  ¦   ¦   ¦--grandchildCode4
-#&gt; 12  ¦   ¦   ¦--grandchildCode5
-#&gt; 13  ¦   ¦   °--grandchildCode6
-#&gt; 14  ¦   °--childCode5         
-#&gt; 15  ¦       °--grandchildCode7
-#&gt; 16  ¦--someOtherCode          
-#&gt; 17  ¦--att_ins_eval           
-#&gt; 18  ¦--chairs                 
-#&gt; 19  ¦--inductFather           
-#&gt; 20  ¦   ¦--inducChild3        
-#&gt; 21  ¦   ¦--inducChild4        
-#&gt; 22  ¦   °--inducChild5        
-#&gt; 23  ¦--inductMother           
-#&gt; 24  ¦   ¦--inducChild1        
-#&gt; 25  ¦   °--inducChild2        
-#&gt; 26  ¦--internet               
-#&gt; 27  ¦--oaken_chests           
-#&gt; 28  ¦--people                 
-#&gt; 29  ¦--tables                 
-#&gt; 30  ¦--Topic1                 
-#&gt; 31  ¦--Topic2                 
-#&gt; 32  ¦--code1                  
-#&gt; 33  ¦--code2                  
-#&gt; 34  ¦   °--code4              
-#&gt; 35  ¦--code3                  
-#&gt; 36  ¦--code5                  
-#&gt; 37  ¦--bla                    
-#&gt; 38  ¦   ¦--subbla             
-#&gt; 39  ¦   ¦   ¦--bla2           
-#&gt; 40  ¦   ¦   °--bla3           
-#&gt; 41  ¦   °--subbla2            
-#&gt; 42  ¦--flups                  
-#&gt; 43  ¦--pets                   
-#&gt; 44  ¦   °--cats               
-#&gt; 45  ¦       °--siamese        
-#&gt; 46  ¦--property               
-#&gt; 47  ¦   °--hairy              
-#&gt; 48  ¦--relationships          
-#&gt; 49  ¦   °--love               </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse single example source</span></span>
+<span class='r-in'><span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show inductive code tree for the codes</span></span>
+<span class='r-in'><span class='co'>### extracted with the regular expression specified with</span></span>
+<span class='r-in'><span class='co'>### the name 'codes':</span></span>
+<span class='r-in'><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  codes                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   ¦--parentCode1            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   ¦   ¦--childCode1         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   ¦   ¦   ¦--grandchildCode1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   ¦   ¦   ¦--grandchildCode2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   ¦   ¦   °--grandchildCode3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   ¦   ¦--childCode2         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   ¦   °--childCode3         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9   ¦--parentCode2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  ¦   ¦--childCode4         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11  ¦   ¦   ¦--grandchildCode4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  ¦   ¦   ¦--grandchildCode5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  ¦   ¦   °--grandchildCode6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  ¦   °--childCode5         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  ¦       °--grandchildCode7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  °--someOtherCode          </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### If you want `rock` to be chatty, use:</span></span>
+<span class='r-in'><span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_source</span><span class='op'>(</span><span class='va'>exampleFile</span>,</span>
+<span class='r-in'>                                    silent<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Read the contents of file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/example-1.rock' (111 lines read).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Encountered YAML fragments. Parsing them for attributes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Read 0 attributes specifications. Continuing with deductive code trees.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Read 4 deductive codes ('moreChildCodes1', 'moreChildCodes2', 'moreCodes' &amp; 'parentCode1').</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Read 0 section break codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Starting to process the inductive codes and building a code tree.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Building tree containing all 'true local roots'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing 'true local root' 'parentCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing 'true local root' 'parentCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing 'true local root' 'someOtherCode'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing subtrees of those 'true local roots'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'childCode1', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode1', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode2', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1', 'childCode1' &amp; 'grandchildCode3'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode1', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode3'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode3', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'childCode2', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode1' &amp; 'childCode3'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode3'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'childCode3', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'childCode4', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode4', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode5'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode5'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode5', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode2', 'childCode4' &amp; 'grandchildCode6'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 2 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode4'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'childCode4', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'grandchildCode6'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode6', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'parentCode2' &amp; 'childCode5'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     - Processing node 'childCode5'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'childCode5', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'someOtherCode'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This 'subtree' only consists of the parent/root code, so no further processing required.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing subtrees of 'local roots that are branches', i.e. single codes that are descendants of other codes (without the full path to the root being specified in the code), or subtrees where the local root is in fact a descendant.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This 'subtree' only consists of the parent/root code, so no further processing required.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'childCode1' &amp; 'grandchildCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node already has a child with the name 'grandchildCode2', so not adding anything at this point.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'childCode5' &amp; 'grandchildCode7'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This subtree doesn't only consist of the parent/root code, but contains 1 child(ren). Processing child(ren).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       - This parent node does not yet have a child with the name 'grandchildCode7', so adding it to that parent node.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - Processing subtree consisting of the node sequence 'grandchildCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   - This 'subtree' only consists of the parent/root code, so no further processing required.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Done processing the inductive code tree.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse all example sources in that directory</span></span>
+<span class='r-in'><span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parse_sources</span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show combined inductive code tree for the codes</span></span>
+<span class='r-in'><span class='co'>### extracted with the regular expression specified with</span></span>
+<span class='r-in'><span class='co'>### the name 'codes':</span></span>
+<span class='r-in'><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>inductiveCodeTrees</span><span class='op'>$</span><span class='va'>codes</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  codes                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   ¦--parentCode1            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   ¦   ¦--childCode1         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   ¦   ¦   ¦--grandchildCode1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   ¦   ¦   ¦--grandchildCode2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   ¦   ¦   °--grandchildCode3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   ¦   ¦--childCode2         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   ¦   °--childCode3         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9   ¦--parentCode2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  ¦   ¦--childCode4         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11  ¦   ¦   ¦--grandchildCode4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  ¦   ¦   ¦--grandchildCode5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  ¦   ¦   °--grandchildCode6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  ¦   °--childCode5         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  ¦       °--grandchildCode7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  ¦--someOtherCode          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17  ¦--att_ins_eval           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18  ¦--chairs                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19  ¦--inductFather           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20  ¦   ¦--inducChild3        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21  ¦   ¦--inducChild4        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22  ¦   °--inducChild5        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23  ¦--inductMother           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24  ¦   ¦--inducChild1        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25  ¦   °--inducChild2        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26  ¦--internet               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27  ¦--oaken_chests           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 28  ¦--people                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 29  ¦--tables                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 30  ¦--Topic1                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31  ¦--Topic2                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32  ¦--code1                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33  ¦--code2                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 34  ¦   °--code4              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 35  ¦--code3                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 36  ¦--code5                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 37  ¦--bla                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 38  ¦   ¦--subbla             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 39  ¦   ¦   ¦--bla2           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 40  ¦   ¦   °--bla3           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 41  ¦   °--subbla2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 42  ¦--flups                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 43  ¦--pets                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 44  ¦   °--cats               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 45  ¦       °--siamese        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 46  ¦--property               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 47  ¦   °--hairy              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 48  ¦--relationships          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 49  ¦   °--love               </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

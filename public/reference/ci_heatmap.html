@@ -74,7 +74,7 @@ process." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -188,13 +188,14 @@ and for the frequency color legend.</p></td>
     <p>The heatmap</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>examplePath</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span>package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>, <span class='st'>'extdata'</span><span class='op'>)</span>;
-<span class='va'>parsedCI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>,
-                                   <span class='st'>"ci_example_1.rock"</span><span class='op'>)</span><span class='op'>)</span>;
-
-<span class='fu'>ci_heatmap</span><span class='op'>(</span><span class='va'>parsedCI</span>,
-           codingScheme <span class='op'>=</span> <span class='st'>"peterson"</span><span class='op'>)</span>;
-</div><div class='img'><img src='ci_heatmap-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span>package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>, <span class='st'>'extdata'</span><span class='op'>)</span>;</span>
+<span class='r-in'><span class='va'>parsedCI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>,</span>
+<span class='r-in'>                                   <span class='st'>"ci_example_1.rock"</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>ci_heatmap</span><span class='op'>(</span><span class='va'>parsedCI</span>,</span>
+<span class='r-in'>           codingScheme <span class='op'>=</span> <span class='st'>"peterson"</span><span class='op'>)</span>;</span>
+<span class='r-plt img'><img src='ci_heatmap-1.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

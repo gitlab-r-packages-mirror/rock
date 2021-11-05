@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -196,52 +196,54 @@ frame or not.</p></td>
     <p>A data.frame</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Parse single example source</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Create a categorical attribute column</span>
-<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>13</span><span class='op'>)</span>;
-
-<span class='co'>### Expand to four logical columns</span>
-<span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>expand_attributes</span><span class='op'>(</span>
-    <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span>,
-    <span class='st'>"age_group"</span>,
-    valueLabels <span class='op'>=</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-        <span class='st'>"&lt;18"</span> <span class='op'>=</span> <span class='st'>"youngest"</span>,
-        <span class='st'>"18-30"</span> <span class='op'>=</span> <span class='st'>"youngish"</span>,
-        <span class='st'>"31-60"</span> <span class='op'>=</span> <span class='st'>"oldish"</span>,
-        <span class='st'>"&gt;60"</span> <span class='op'>=</span> <span class='st'>"oldest"</span>
-       <span class='op'>)</span>,
-    valueFirst <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>;
-
-<span class='co'>### Show result</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,
-      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__youngest</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt;        
-#&gt;          0  1
-#&gt;   &lt;18    0 13
-#&gt;   &gt;60   13  0
-#&gt;   18-30 13  0
-#&gt;   31-60 13  0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,
-      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__oldish</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt;        
-#&gt;          0  1
-#&gt;   &lt;18   13  0
-#&gt;   &gt;60   13  0
-#&gt;   18-30 13  0
-#&gt;   31-60  0 13</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse single example source</span></span>
+<span class='r-in'><span class='va'>parsedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Create a categorical attribute column</span></span>
+<span class='r-in'><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;18"</span>, <span class='st'>"18-30"</span>, <span class='st'>"31-60"</span>, <span class='st'>"&gt;60"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>13</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Expand to four logical columns</span></span>
+<span class='r-in'><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>expand_attributes</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span>,</span>
+<span class='r-in'>    <span class='st'>"age_group"</span>,</span>
+<span class='r-in'>    valueLabels <span class='op'>=</span></span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>        <span class='st'>"&lt;18"</span> <span class='op'>=</span> <span class='st'>"youngest"</span>,</span>
+<span class='r-in'>        <span class='st'>"18-30"</span> <span class='op'>=</span> <span class='st'>"youngish"</span>,</span>
+<span class='r-in'>        <span class='st'>"31-60"</span> <span class='op'>=</span> <span class='st'>"oldish"</span>,</span>
+<span class='r-in'>        <span class='st'>"&gt;60"</span> <span class='op'>=</span> <span class='st'>"oldest"</span></span>
+<span class='r-in'>       <span class='op'>)</span>,</span>
+<span class='r-in'>    valueFirst <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show result</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,</span>
+<span class='r-in'>      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__youngest</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          0  1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;18    0 13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &gt;60   13  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   18-30 13  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   31-60 13  0</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group</span>,</span>
+<span class='r-in'>      <span class='va'>parsedExample</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>age_group__oldish</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          0  1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;18   13  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &gt;60   13  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   18-30 13  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   31-60  0 13</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ collect_coded_fragments() and show_inductive_code_tree()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -172,122 +172,124 @@ to <code><a href='show_inductive_code_tree.html'>show_inductive_code_tree()</a><
     <p>The parsedSources object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Inspect sources</span>
-<span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>inspect_coded_sources</span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt;                      levelName
-#&gt; 1  codes                      
-#&gt; 2   ¦--parentCode1            
-#&gt; 3   ¦   ¦--childCode1         
-#&gt; 4   ¦   ¦   ¦--grandchildCode1
-#&gt; 5   ¦   ¦   ¦--grandchildCode2
-#&gt; 6   ¦   ¦   °--grandchildCode3
-#&gt; 7   ¦   ¦--childCode2         
-#&gt; 8   ¦   °--childCode3         
-#&gt; 9   ¦--parentCode2            
-#&gt; 10  ¦   ¦--childCode4         
-#&gt; 11  ¦   ¦   ¦--grandchildCode4
-#&gt; 12  ¦   ¦   ¦--grandchildCode5
-#&gt; 13  ¦   ¦   °--grandchildCode6
-#&gt; 14  ¦   °--childCode5         
-#&gt; 15  ¦       °--grandchildCode7
-#&gt; 16  ¦--someOtherCode          
-#&gt; 17  ¦--att_ins_eval           
-#&gt; 18  ¦--chairs                 
-#&gt; 19  ¦--inductFather           
-#&gt; 20  ¦   ¦--inducChild3        
-#&gt; 21  ¦   ¦--inducChild4        
-#&gt; 22  ¦   °--inducChild5        
-#&gt; 23  ¦--inductMother           
-#&gt; 24  ¦   ¦--inducChild1        
-#&gt; 25  ¦   °--inducChild2        
-#&gt; 26  ¦--internet               
-#&gt; 27  ¦--oaken_chests           
-#&gt; 28  ¦--people                 
-#&gt; 29  ¦--tables                 
-#&gt; 30  ¦--Topic1                 
-#&gt; 31  ¦--Topic2                 
-#&gt; 32  ¦--code1                  
-#&gt; 33  ¦--code2                  
-#&gt; 34  ¦   °--code4              
-#&gt; 35  ¦--code3                  
-#&gt; 36  ¦--code5                  
-#&gt; 37  ¦--bla                    
-#&gt; 38  ¦   ¦--subbla             
-#&gt; 39  ¦   ¦   ¦--bla2           
-#&gt; 40  ¦   ¦   °--bla3           
-#&gt; 41  ¦   °--subbla2            
-#&gt; 42  ¦--flups                  
-#&gt; 43  ¦--pets                   
-#&gt; 44  ¦   °--cats               
-#&gt; 45  ¦       °--siamese        
-#&gt; 46  ¦--property               
-#&gt; 47  ¦   °--hairy              
-#&gt; 48  ¦--relationships          
-#&gt; 49  ¦   °--love               
-#&gt;              levelName
-#&gt; 1 codes               
-#&gt; 2  ¦--content_adequacy
-#&gt; 3  ¦--retrieval       
-#&gt; 4  °--understanding   
-#&gt;                      levelName
-#&gt; 1  codes                      
-#&gt; 2   ¦--parentCode1            
-#&gt; 3   ¦   ¦--childCode1         
-#&gt; 4   ¦   ¦   ¦--grandchildCode1
-#&gt; 5   ¦   ¦   ¦--grandchildCode2
-#&gt; 6   ¦   ¦   °--grandchildCode3
-#&gt; 7   ¦   ¦--childCode2         
-#&gt; 8   ¦   °--childCode3         
-#&gt; 9   ¦--parentCode2            
-#&gt; 10  ¦   ¦--childCode4         
-#&gt; 11  ¦   ¦   ¦--grandchildCode4
-#&gt; 12  ¦   ¦   ¦--grandchildCode5
-#&gt; 13  ¦   ¦   °--grandchildCode6
-#&gt; 14  ¦   °--childCode5         
-#&gt; 15  ¦       °--grandchildCode7
-#&gt; 16  ¦--someOtherCode          
-#&gt; 17  ¦--att_ins_eval           
-#&gt; 18  ¦--chairs                 
-#&gt; 19  ¦--inductFather           
-#&gt; 20  ¦   ¦--inducChild3        
-#&gt; 21  ¦   ¦--inducChild4        
-#&gt; 22  ¦   °--inducChild5        
-#&gt; 23  ¦--inductMother           
-#&gt; 24  ¦   ¦--inducChild1        
-#&gt; 25  ¦   °--inducChild2        
-#&gt; 26  ¦--internet               
-#&gt; 27  ¦--oaken_chests           
-#&gt; 28  ¦--people                 
-#&gt; 29  ¦--tables                 
-#&gt; 30  ¦--Topic1                 
-#&gt; 31  ¦--Topic2                 
-#&gt; 32  ¦--code1                  
-#&gt; 33  ¦--code2                  
-#&gt; 34  ¦   °--code4              
-#&gt; 35  ¦--code3                  
-#&gt; 36  ¦--code5                  
-#&gt; 37  ¦--bla                    
-#&gt; 38  ¦   ¦--subbla             
-#&gt; 39  ¦   ¦   ¦--bla2           
-#&gt; 40  ¦   ¦   °--bla3           
-#&gt; 41  ¦   °--subbla2            
-#&gt; 42  ¦--flups                  
-#&gt; 43  ¦--pets                   
-#&gt; 44  ¦   °--cats               
-#&gt; 45  ¦       °--siamese        
-#&gt; 46  ¦--property               
-#&gt; 47  ¦   °--hairy              
-#&gt; 48  ¦--relationships          
-#&gt; 49  ¦   °--love               
-#&gt;              levelName
-#&gt; 1 codes               
-#&gt; 2  ¦--content_adequacy
-#&gt; 3  ¦--retrieval       
-#&gt; 4  °--understanding   </div><div class='output co'>#&gt; Parsed 14 sources, with filenames 'attitude.dct', 'attributes.rock', 'behavior.dct', 'ci_example_1.rock', 'example-1.rock', 'intention.dct', 'longer-test.rock', 'lorum-ipsum.rock', 'lorum-ipsum2.rock', 'merging-test-1-primary.rock', 'merging-test-1-secondary.rock', 'perceived_behavioral_control.dct', 'perceived_norm.dct' &amp; 'second-test-file.rock'.</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Inspect sources</span></span>
+<span class='r-in'><span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>inspect_coded_sources</span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  codes                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   ¦--parentCode1            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   ¦   ¦--childCode1         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   ¦   ¦   ¦--grandchildCode1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   ¦   ¦   ¦--grandchildCode2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   ¦   ¦   °--grandchildCode3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   ¦   ¦--childCode2         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   ¦   °--childCode3         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9   ¦--parentCode2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  ¦   ¦--childCode4         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11  ¦   ¦   ¦--grandchildCode4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  ¦   ¦   ¦--grandchildCode5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  ¦   ¦   °--grandchildCode6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  ¦   °--childCode5         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  ¦       °--grandchildCode7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  ¦--someOtherCode          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17  ¦--att_ins_eval           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18  ¦--chairs                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19  ¦--inductFather           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20  ¦   ¦--inducChild3        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21  ¦   ¦--inducChild4        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22  ¦   °--inducChild5        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23  ¦--inductMother           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24  ¦   ¦--inducChild1        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25  ¦   °--inducChild2        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26  ¦--internet               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27  ¦--oaken_chests           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 28  ¦--people                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 29  ¦--tables                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 30  ¦--Topic1                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31  ¦--Topic2                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32  ¦--code1                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33  ¦--code2                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 34  ¦   °--code4              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 35  ¦--code3                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 36  ¦--code5                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 37  ¦--bla                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 38  ¦   ¦--subbla             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 39  ¦   ¦   ¦--bla2           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 40  ¦   ¦   °--bla3           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 41  ¦   °--subbla2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 42  ¦--flups                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 43  ¦--pets                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 44  ¦   °--cats               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 45  ¦       °--siamese        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 46  ¦--property               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 47  ¦   °--hairy              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 48  ¦--relationships          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 49  ¦   °--love               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 codes               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  ¦--content_adequacy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  ¦--retrieval       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  °--understanding   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  codes                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   ¦--parentCode1            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   ¦   ¦--childCode1         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   ¦   ¦   ¦--grandchildCode1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   ¦   ¦   ¦--grandchildCode2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   ¦   ¦   °--grandchildCode3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   ¦   ¦--childCode2         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   ¦   °--childCode3         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9   ¦--parentCode2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  ¦   ¦--childCode4         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11  ¦   ¦   ¦--grandchildCode4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  ¦   ¦   ¦--grandchildCode5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  ¦   ¦   °--grandchildCode6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  ¦   °--childCode5         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  ¦       °--grandchildCode7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  ¦--someOtherCode          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17  ¦--att_ins_eval           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18  ¦--chairs                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19  ¦--inductFather           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20  ¦   ¦--inducChild3        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21  ¦   ¦--inducChild4        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22  ¦   °--inducChild5        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23  ¦--inductMother           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24  ¦   ¦--inducChild1        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25  ¦   °--inducChild2        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26  ¦--internet               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27  ¦--oaken_chests           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 28  ¦--people                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 29  ¦--tables                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 30  ¦--Topic1                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31  ¦--Topic2                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32  ¦--code1                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33  ¦--code2                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 34  ¦   °--code4              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 35  ¦--code3                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 36  ¦--code5                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 37  ¦--bla                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 38  ¦   ¦--subbla             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 39  ¦   ¦   ¦--bla2           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 40  ¦   ¦   °--bla3           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 41  ¦   °--subbla2            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 42  ¦--flups                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 43  ¦--pets                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 44  ¦   °--cats               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 45  ¦       °--siamese        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 46  ¦--property               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 47  ¦   °--hairy              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 48  ¦--relationships          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 49  ¦   °--love               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              levelName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 codes               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  ¦--content_adequacy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  ¦--retrieval       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  °--understanding   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parsed 14 sources, with filenames 'attitude.dct', 'attributes.rock', 'behavior.dct', 'ci_example_1.rock', 'example-1.rock', 'intention.dct', 'longer-test.rock', 'lorum-ipsum.rock', 'lorum-ipsum2.rock', 'merging-test-1-primary.rock', 'merging-test-1-secondary.rock', 'perceived_behavioral_control.dct', 'perceived_norm.dct' &amp; 'second-test-file.rock'.</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

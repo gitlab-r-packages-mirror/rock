@@ -74,7 +74,7 @@ identifier ([[sid=..]])." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -173,39 +173,40 @@ for <code>collapseBy</code> and each of the <code>columns</code>, with in the ce
 <code>logical</code> is <code>FALSE</code>) or <code>TRUE</code> or <code>FALSE</code> (if <code>logical</code> is <code>TRUE</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Parse example source</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Collapse logically, using a code (either occurring or not):</span>
-<span class='va'>collapsedExample</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,
-                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span><span class='op'>)</span>;
-
-<span class='co'>### Show result: only two rows left after collapsing,</span>
-<span class='co'>### because 'childCode1' is either 0 or 1:</span>
-<span class='va'>collapsedExample</span>;
-</div><div class='output co'>#&gt;   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5
-#&gt; 1          0          0          0          1          1          1
-#&gt; 2          1          2          1          0          0          0
-#&gt;   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4
-#&gt; 1               1               3               1               1
-#&gt; 2               0               0               0               0
-#&gt;   grandchildCode5 grandchildCode6 grandchildCode7 someOtherCode
-#&gt; 1               1               1               1             1
-#&gt; 2               0               0               0             0</div><div class='input'>
-<span class='co'>### Collapse using weights (i.e. count codes in each segment):</span>
-<span class='va'>collapsedExample</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,
-                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span>,
-                             logical<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;
-
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example-1.rock"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse example source</span></span>
+<span class='r-in'><span class='va'>parsedExample</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Collapse logically, using a code (either occurring or not):</span></span>
+<span class='r-in'><span class='va'>collapsedExample</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,</span>
+<span class='r-in'>                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show result: only two rows left after collapsing,</span></span>
+<span class='r-in'><span class='co'>### because 'childCode1' is either 0 or 1:</span></span>
+<span class='r-in'><span class='va'>collapsedExample</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   childCode1 childCode1 childCode2 childCode3 childCode4 childCode5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          0          0          0          1          1          1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          1          2          1          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   grandchildCode1 grandchildCode2 grandchildCode3 grandchildCode4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1               1               3               1               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2               0               0               0               0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   grandchildCode5 grandchildCode6 grandchildCode7 someOtherCode</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1               1               1               1             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2               0               0               0             0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Collapse using weights (i.e. count codes in each segment):</span></span>
+<span class='r-in'><span class='va'>collapsedExample</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collapse_occurrences</span><span class='op'>(</span><span class='va'>parsedExample</span>,</span>
+<span class='r-in'>                             collapseBy <span class='op'>=</span> <span class='st'>'childCode1'</span>,</span>
+<span class='r-in'>                             logical<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
