@@ -68,9 +68,10 @@ when writing the files to \code{output}.}
 Invisibly, the changed source(s) or source(s) object.
 }
 \description{
-This function conditionally splits a code into multiple codes. Note that you
-may want to use \code{\link[=recode_addChildCodes]{recode_addChildCodes()}} instead to not lose the
-original coding.
+This function conditionally adds new child codes under a code. Where
+\code{\link[=recode_split]{recode_split()}} removes the original code (splitting
+it into the new codes), this function retains the original, adding the new
+codes as sub-codes.
 }
 \examples{
 ### Get path to example source
