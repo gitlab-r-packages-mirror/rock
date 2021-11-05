@@ -73,7 +73,7 @@ ancestry) in one or more sources." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -209,53 +209,54 @@ when writing the files to <code>output</code>.</p></td>
     <p>Invisibly, the changed source(s) or source(s) object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Load example source</span>
-<span class='va'>loadedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Move two codes to a new parent, showing progress</span>
-<span class='va'>recoded_source</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_move</span><span class='op'>(</span>
-    <span class='va'>loadedExample</span>,
-    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,
-    newAncestry <span class='op'>=</span> <span class='st'>"parentCode2"</span>,
-    silent<span class='op'>=</span><span class='cn'>FALSE</span>
-  <span class='op'>)</span>;
-</div><div class='output co'>#&gt; Multiple codes to move have been specified: starting sequential moving of 2 codes.
-#&gt; Moving all occurrences of code 'childCode2' to new ancestry 'parentCode2&gt;'.
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.
-#&gt; Using regular expression '(\s?\[\[)([a-zA-Z0-9_&gt;]*&gt;)?(childCode2&gt;?[a-zA-Z0-9_&gt;]*\]\])'.
-#&gt; --------PRE: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode2&gt;childCode2]] [[childCode1]] [[intensity||2]]
-#&gt; --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]
-#&gt; Moved 1 code instances for code 'childCode2'.
-#&gt; 
-#&gt; Moving all occurrences of code 'childCode1' to new ancestry 'parentCode2&gt;'.
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.
-#&gt; Using regular expression '(\s?\[\[)([a-zA-Z0-9_&gt;]*&gt;)?(childCode1&gt;?[a-zA-Z0-9_&gt;]*\]\])'.
-#&gt; --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]
-#&gt;        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode2&gt;childCode1]]
-#&gt; --------PRE: ~specimen book. [[parentCode2&gt;childCode2]] [[childCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode2&gt;childCode2]] [[parentCode2&gt;childCode1]] [[intensity||2]]
-#&gt; --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]
-#&gt;        POST: using 'Content here, content here', making it look like readable English. [[parentCode2&gt;childCode1&gt;grandchildCode1]]
-#&gt; --------PRE: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt;        POST: ~still in their infancy. [[parentCode2&gt;childCode1&gt;grandchildCode2]]
-#&gt; --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]
-#&gt;        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode2&gt;childCode1&gt;grandchildCode3]]
-#&gt; --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt;        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[parentCode2&gt;childCode1&gt;grandchildCode2]]
-#&gt; Moved 6 code instances for code 'childCode1'.
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Load example source</span></span>
+<span class='r-in'><span class='va'>loadedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Move two codes to a new parent, showing progress</span></span>
+<span class='r-in'><span class='va'>recoded_source</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_move</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>loadedExample</span>,</span>
+<span class='r-in'>    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    newAncestry <span class='op'>=</span> <span class='st'>"parentCode2"</span>,</span>
+<span class='r-in'>    silent<span class='op'>=</span><span class='cn'>FALSE</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to move have been specified: starting sequential moving of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Moving all occurrences of code 'childCode2' to new ancestry 'parentCode2&gt;'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Using regular expression '(\s?\[\[)([a-zA-Z0-9_&gt;]*&gt;)?(childCode2&gt;?[a-zA-Z0-9_&gt;]*\]\])'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode2&gt;childCode2]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Moved 1 code instances for code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Moving all occurrences of code 'childCode1' to new ancestry 'parentCode2&gt;'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Using regular expression '(\s?\[\[)([a-zA-Z0-9_&gt;]*&gt;)?(childCode1&gt;?[a-zA-Z0-9_&gt;]*\]\])'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode2&gt;childCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode2&gt;childCode2]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode2&gt;childCode2]] [[parentCode2&gt;childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: using 'Content here, content here', making it look like readable English. [[parentCode2&gt;childCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~still in their infancy. [[parentCode2&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode2&gt;childCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[parentCode2&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Moved 6 code instances for code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -137,111 +137,112 @@
     <p>A list of all available coding schemes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>codingSchemes_get_all</span><span class='op'>(</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; $codingScheme_peterson
-#&gt; $label
-#&gt; [1] "Peterson, Peterson &amp; Powell"
-#&gt; 
-#&gt; $codes
-#&gt; [1] "understanding"    "retrieval"        "judgment"         "response"        
-#&gt; [5] "content_adequacy"
-#&gt; 
-#&gt; $codingInstructions
-#&gt;                                                                                                                                                                                                            understanding 
-#&gt;                                                                                                                                          "Is the item wording, terminology, and structure clear and easy to understand?" 
-#&gt;                                                                                                                                                                                                                retrieval 
-#&gt; "Has the respondent ever formed an attitude about the topic? Does the respondent have the necessary knowledge to answer the question? Are the mental calculations or long-term memory retrieval requirements too great?" 
-#&gt;                                                                                                                                                                                                                 judgment 
-#&gt;                                                                          "Is the question too sensitive to yield an honest response? Is the question relevant to the respondent? Is the answer likely to be a constant?" 
-#&gt;                                                                                                                                                                                                                 response 
-#&gt;                                                                                                 "Is the desired response available and/or accurately reflected in the response options? Are the response options clear?" 
-#&gt;                                                                                                                                                                                                         content_adequacy 
-#&gt;                                                                                                                   "Do all of the items combined adequately represent the construct? Are there items that do not belong?" 
-#&gt; 
-#&gt; $description
-#&gt; [1] ""
-#&gt; 
-#&gt; $source
-#&gt; [1] "Christina Hamme Peterson, N. Andrew Peterson &amp; Kristen Gilmore Powell (2017) Cognitive Interviewing for Item Development: Validity Evidence Based on Content and Response Processes, Measurement and Evaluation in Counseling and Development, 50:4, 217-223, https://10.1080/07481756.2017.1339564"
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "rock_codingScheme"
-#&gt; 
-#&gt; $codingScheme_levine
-#&gt; $label
-#&gt; [1] "Levine, Fowler &amp; Brown"
-#&gt; 
-#&gt; $codes
-#&gt; [1] "comprehension" "knowledge"     "inapplicable"  "construct"    
-#&gt; [5] "subtle"        "general"      
-#&gt; 
-#&gt; $codingInstructions
-#&gt;                                                                                   comprehension 
-#&gt;        "Items with unclear or ambigous terms, failed to understand the questions consistently." 
-#&gt;                                                                                       knowledge 
-#&gt;                          "Items for which respondents lacked information to answer a question." 
-#&gt;                                                                                    inapplicable 
-#&gt; "Items measuring construct that are inapplicable for many respondents (e.g. made assumptions)." 
-#&gt;                                                                                       construct 
-#&gt;                                               "Items failed to measure the intended construct." 
-#&gt;                                                                                          subtle 
-#&gt;                        "Items making discriminations that are too subtle for many respondents." 
-#&gt;                                                                                         general 
-#&gt;              "Several other general issues associated with the development of a questionnaire." 
-#&gt; 
-#&gt; $description
-#&gt; [1] ""
-#&gt; 
-#&gt; $source
-#&gt; [1] "Levine, R., Fowler, F., Jr., &amp; Brown, J. (2005).Role of cognitive testing in the development of the CAHPS hospital survey. Health Research and Educational Trust, 40, 2037-2056. https://doi.org/10.1111/j.1475-6773.2005.00472.x"
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "rock_codingScheme"
-#&gt; 
-#&gt; $codingScheme_willis
-#&gt; $label
-#&gt; [1] "Willis, 1999"
-#&gt; 
-#&gt; $codes
-#&gt;  [1] "clarity"                          "clarity&gt;wording"                 
-#&gt;  [3] "clarity&gt;technical_term"           "clarity&gt;vague"                   
-#&gt;  [5] "clarity&gt;reference_periods"        "knowledge"                       
-#&gt;  [7] "knowledge&gt;knowledge"              "knowlede&gt;recall"                 
-#&gt;  [9] "knowledge&gt;computation"            "assumptions"                     
-#&gt; [11] "assumptions&gt;inappropriate"        "assumptions&gt;constant_behavior"   
-#&gt; [13] "assumptions&gt;double_barrelled"     "response_categories"             
-#&gt; [15] "response_categories&gt;missing"      "response_categories&gt;mismatch"    
-#&gt; [17] "response_categories&gt;vague"        "response_categories&gt;open_ended"  
-#&gt; [19] "response_categories&gt;overlapping"  "response_categories&gt;order"       
-#&gt; [21] "sensitivity"                      "sensitivity&gt;general_content"     
-#&gt; [23] "sensitivity&gt;specific_wording"     "sensitivity&gt;social_acceptability"
-#&gt; [25] "instructions"                     "formatting"                      
-#&gt; 
-#&gt; $codingInstructions
-#&gt;                                                       clarity 
-#&gt;              "Problems with intent or meaning of a question." 
-#&gt;                                                     knowledge 
-#&gt; "Likely not to know or have trouble remembering information." 
-#&gt;                                                   assumptions 
-#&gt;              "Problems with assumptions or underlying logic." 
-#&gt;                                           response_categories 
-#&gt;                      "Problems with the response categories." 
-#&gt;                                                   sensitivity 
-#&gt;                           "Sensitive nature or wording/bias." 
-#&gt;                                                  instructions 
-#&gt; "Problems with introductions, instructions, or explanations." 
-#&gt;                                                    formatting 
-#&gt;                        "Problems with lay-out or formatting." 
-#&gt; 
-#&gt; $description
-#&gt; [1] ""
-#&gt; 
-#&gt; $source
-#&gt; [1] ""
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "rock_codingScheme"
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>codingSchemes_get_all</span><span class='op'>(</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingScheme_peterson</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Peterson, Peterson &amp; Powell"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "understanding"    "retrieval"        "judgment"         "response"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "content_adequacy"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingInstructions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                                                                                            understanding </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                          "Is the item wording, terminology, and structure clear and easy to understand?" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                                                                                                retrieval </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Has the respondent ever formed an attitude about the topic? Does the respondent have the necessary knowledge to answer the question? Are the mental calculations or long-term memory retrieval requirements too great?" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                                                                                                 judgment </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                          "Is the question too sensitive to yield an honest response? Is the question relevant to the respondent? Is the answer likely to be a constant?" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                                                                                                 response </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                 "Is the desired response available and/or accurately reflected in the response options? Are the response options clear?" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                                                                                         content_adequacy </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                   "Do all of the items combined adequately represent the construct? Are there items that do not belong?" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $description</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $source</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Christina Hamme Peterson, N. Andrew Peterson &amp; Kristen Gilmore Powell (2017) Cognitive Interviewing for Item Development: Validity Evidence Based on Content and Response Processes, Measurement and Evaluation in Counseling and Development, 50:4, 217-223, https://10.1080/07481756.2017.1339564"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "rock_codingScheme"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingScheme_levine</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Levine, Fowler &amp; Brown"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "comprehension" "knowledge"     "inapplicable"  "construct"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "subtle"        "general"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingInstructions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                   comprehension </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        "Items with unclear or ambigous terms, failed to understand the questions consistently." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                       knowledge </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          "Items for which respondents lacked information to answer a question." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                    inapplicable </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Items measuring construct that are inapplicable for many respondents (e.g. made assumptions)." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                       construct </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               "Items failed to measure the intended construct." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                          subtle </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        "Items making discriminations that are too subtle for many respondents." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                         general </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              "Several other general issues associated with the development of a questionnaire." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $description</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $source</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Levine, R., Fowler, F., Jr., &amp; Brown, J. (2005).Role of cognitive testing in the development of the CAHPS hospital survey. Health Research and Educational Trust, 40, 2037-2056. https://doi.org/10.1111/j.1475-6773.2005.00472.x"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "rock_codingScheme"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingScheme_willis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Willis, 1999"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "clarity"                          "clarity&gt;wording"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "clarity&gt;technical_term"           "clarity&gt;vague"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "clarity&gt;reference_periods"        "knowledge"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "knowledge&gt;knowledge"              "knowlede&gt;recall"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "knowledge&gt;computation"            "assumptions"                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "assumptions&gt;inappropriate"        "assumptions&gt;constant_behavior"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "assumptions&gt;double_barrelled"     "response_categories"             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "response_categories&gt;missing"      "response_categories&gt;mismatch"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "response_categories&gt;vague"        "response_categories&gt;open_ended"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "response_categories&gt;overlapping"  "response_categories&gt;order"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "sensitivity"                      "sensitivity&gt;general_content"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [23] "sensitivity&gt;specific_wording"     "sensitivity&gt;social_acceptability"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "instructions"                     "formatting"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $codingInstructions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                       clarity </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              "Problems with intent or meaning of a question." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                     knowledge </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Likely not to know or have trouble remembering information." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                   assumptions </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              "Problems with assumptions or underlying logic." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                           response_categories </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      "Problems with the response categories." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                   sensitivity </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                           "Sensitive nature or wording/bias." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                  instructions </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Problems with introductions, instructions, or explanations." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                    formatting </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        "Problems with lay-out or formatting." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $description</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $source</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "rock_codingScheme"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

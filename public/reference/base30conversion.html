@@ -73,7 +73,7 @@ used by the generate_uids() functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -155,9 +155,11 @@ followed by the alphabet without vowels but including the y. This
 vector is available as <code>base30</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>numericToBase30</span><span class='op'>(</span><span class='fl'>654321</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; [1] "s70p"</div><div class='input'><span class='fu'>base30toNumeric</span><span class='op'>(</span><span class='fu'>numericToBase30</span><span class='op'>(</span><span class='fl'>654321</span><span class='op'>)</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; [1] 654321</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>numericToBase30</span><span class='op'>(</span><span class='fl'>654321</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "s70p"</span>
+<span class='r-in'><span class='fu'>base30toNumeric</span><span class='op'>(</span><span class='fu'>numericToBase30</span><span class='op'>(</span><span class='fl'>654321</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 654321</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -78,7 +78,7 @@ specification, or a loaded or imported preregr (pre)registration form." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -164,11 +164,11 @@ specification, or a loaded or imported preregr (pre)registration form.</p>
     <tr>
       <th>x</th>
       <td><p>The (pre)registration form (as produced by a call
-to <code><a href='https://rdrr.io/pkg/preregr/man/form_create.html'>preregr::form_create()</a></code> or <code><a href='https://rdrr.io/pkg/preregr/man/import_from_html.html'>preregr::import_from_html()</a></code>) or
+to <code><a href='https://r-packages.gitlab.io/preregr/reference/form_create.html'>preregr::form_create()</a></code> or <code><a href='https://r-packages.gitlab.io/preregr/reference/import_from_html.html'>preregr::import_from_html()</a></code>) or
 initialized <code>preregr</code> object (as produced by a call to
-<code><a href='https://rdrr.io/pkg/preregr/man/prereg_initialize.html'>preregr::prereg_initialize()</a></code> or <code><a href='https://rdrr.io/pkg/preregr/man/import_from_html.html'>preregr::import_from_html()</a></code>); or, for
+<code><a href='https://r-packages.gitlab.io/preregr/reference/prereg_initialize.html'>preregr::prereg_initialize()</a></code> or <code><a href='https://r-packages.gitlab.io/preregr/reference/import_from_html.html'>preregr::import_from_html()</a></code>); or, for
 the printing method, the R Markdown template produced by a call to
-<code><a href='https://rdrr.io/pkg/preregr/man/rmd_templates.html'>preregr::form_to_rmd_template()</a></code>.</p></td>
+<code><a href='https://r-packages.gitlab.io/preregr/reference/rmd_templates.html'>preregr::form_to_rmd_template()</a></code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -207,9 +207,9 @@ using this argument. If used, it overrides anything specified in <code>title</co
     </tr>
     <tr>
       <th>justify</th>
-      <td><p>Whether to use <code><a href='https://rdrr.io/pkg/preregr/man/prereg_specify.html'>preregr::prereg_specify()</a></code> as function for
+      <td><p>Whether to use <code><a href='https://r-packages.gitlab.io/preregr/reference/prereg_specify.html'>preregr::prereg_specify()</a></code> as function for
 specifying the (pre)registration content (if <code>FALSE</code>), or
-<code><a href='https://rdrr.io/pkg/preregr/man/prereg_justify.html'>preregr::prereg_justify()</a></code> (if <code>TRUE</code>).</p></td>
+<code><a href='https://r-packages.gitlab.io/preregr/reference/prereg_justify.html'>preregr::prereg_justify()</a></code> (if <code>TRUE</code>).</p></td>
     </tr>
     <tr>
       <th>headingLevel</th>
@@ -237,107 +237,107 @@ the start of the Rmd template; otherwise, it is set to <code>FALSE</code>.</p></
     <p>x, invisibly</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>preregr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/preregr/man/form_create.html'>form_create</a></span><span class='op'>(</span>
-  title <span class='op'>=</span> <span class='st'>"Example form"</span>,
-  version <span class='op'>=</span> <span class='st'>"0.1.0"</span>
-<span class='op'>)</span> |&gt;
-  <span class='fu'>preregr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/preregr/man/rmd_templates.html'>form_to_rmd_template</a></span><span class='op'>(</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; ---
-#&gt; title: Example form
-#&gt; author: Specify author here
-#&gt; date: '`r format(Sys.time(), "%H:%M:%S on %Y-%m-%d %Z (UTC%z)")`'
-#&gt; output: html_document
-#&gt; 
-#&gt; ---
-#&gt; 
-#&gt; &lt;!-- This preregistration template was written by `preregr` at ------&gt;
-#&gt; &lt;!-- 19:44:13 on 2021-10-31 CET (UTC+0100) --------------------------&gt;
-#&gt; 
-#&gt; ```{r formSpecification, echo=FALSE, results='hide'}
-#&gt; ```
-#&gt; 
-#&gt; ```{r preregr-setup, echo=FALSE, results='hide'}
-#&gt; 
-#&gt; ###-------------------------------------------------------------------
-#&gt; ### Setup
-#&gt; ###-------------------------------------------------------------------
-#&gt; 
-#&gt; preregr::opts$set(silent = TRUE);
-#&gt; 
-#&gt; preregrObject &lt;-
-#&gt;   preregr::prereg_initialize(preregrFormSpec);
-#&gt; 
-#&gt; ```
-#&gt; 
-#&gt; &lt;!-------------------------------------------------------------------&gt;
-#&gt; &lt;!--------    GENERAL (PRE)REGISTRATION FORM INSTRUCTIONS    --------&gt;
-#&gt; &lt;!-------------------------------------------------------------------&gt;
-#&gt; 
-#&gt; 
-#&gt; &lt;!-- First instruction ----------------------------------------------&gt;
-#&gt; 
-#&gt; &lt;!-- Actual instructions                                           --&gt;
-#&gt; 
-#&gt; 
-#&gt; &lt;!-- Example Section ------------------------------------------------&gt;
-#&gt; 
-#&gt; ```{r example_section-example_item, echo=FALSE, results='hide'}
-#&gt; 
-#&gt; ###-------------------------------------------------------------------
-#&gt; ### Example Label
-#&gt; ###-------------------------------------------------------------------
-#&gt; 
-#&gt; ### Example item description
-#&gt; 
-#&gt; preregrObject &lt;-
-#&gt;   preregr::prereg_specify(
-#&gt;     preregrObject,
-#&gt;     example_item = "Unspecified"
-#&gt; );
-#&gt; 
-#&gt; ```
-#&gt; 
-#&gt; ```{r, show-form-contents, echo=FALSE, }
-#&gt; preregr::prereg_knit_item_content(
-#&gt;   preregrObject
-#&gt;   headingLevel = 
-#&gt; 2
-#&gt; );
-#&gt; ```
-#&gt; 
-#&gt; 
-#&gt; &lt;!-- Here, the form specification is included. ----------------------&gt;
-#&gt; &lt;!-- This chunk is executed earlier on though. ----------------------&gt;
-#&gt; 
-#&gt; ```{r formSpecification, echo=FALSE, eval=FALSE}
-#&gt; 
-#&gt; preregrFormSpec &lt;- 
-#&gt;   structure(list(instructions = structure(list(heading = "First instruction", 
-#&gt;       description = "Actual instructions"), class = "data.frame", row.names = c(NA, 
-#&gt;   -1L)), metadata = structure(list(field = c("title", "version", 
-#&gt;   "author", "date"), contents = c("Example form", "0.1.0", NA, 
-#&gt;   "2021-10-31")), class = "data.frame", row.names = c(NA, -4L)), 
-#&gt;       items = structure(list(section_id = "example_section", item_id = "example_item", 
-#&gt;           item_label = "Example Label", item_description = "Example item description", 
-#&gt;           item_valueTemplate = "string", item_validValues = NA, 
-#&gt;           item_validation = NA), class = "data.frame", row.names = c(NA, 
-#&gt;       -1L)), sections = structure(list(section_id = "example_section", 
-#&gt;           section_label = "Example Section", section_description = "Example section description"), class = "data.frame", row.names = c(NA, 
-#&gt;       -1L)), valueTemplates = structure(list(identifier = c("numeric", 
-#&gt;       "integer", "string", "categorical"), description = c("Any valid number", 
-#&gt;       "Any valid whole number", "A single character value", "A string that has to exactly match one of the values specified in the 'items_validValues' column of the items sheet"
-#&gt;       ), validValues = c(NA, NA, NA, NA), default = c(NA, NA, NA, 
-#&gt;       NA), examples = c("2.3 || 643.2", "30 || 8762", "'Example' || 'Another example'", 
-#&gt;       "VALIDVALUES"), validation = c("is.na(VALUE) || (is.numeric(VALUE) &amp;&amp; (length(VALUE) == 1))", 
-#&gt;       "is.na(VALUE) || (is.numeric(VALUE) &amp;&amp; (VALUE%%1==0) &amp;&amp; (length(VALUE) == 1))", 
-#&gt;       "is.na(VALUE) || (is.character(VALUE) &amp;&amp; length(VALUE) == 1)", 
-#&gt;       "is.na(VALUE) || (VALUE %in% VALIDVALUES)"), error = c("NAME is not numeric, or contains more than one value.", 
-#&gt;       "NAME is not numeric, contains more than one value, or contains decimals.", 
-#&gt;       "NAME is not a single text string.", "NAME is not one of VALIDVALUES."
-#&gt;       )), class = "data.frame", row.names = c(NA, -4L))), class = c("preregr", 
-#&gt;   "preregr_form", "list"))
-#&gt; 
-#&gt; ```</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>preregr</span><span class='fu'>::</span><span class='fu'><a href='https://r-packages.gitlab.io/preregr/reference/form_create.html'>form_create</a></span><span class='op'>(</span></span>
+<span class='r-in'>  title <span class='op'>=</span> <span class='st'>"Example form"</span>,</span>
+<span class='r-in'>  version <span class='op'>=</span> <span class='st'>"0.1.0"</span></span>
+<span class='r-in'><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>preregr</span><span class='fu'>::</span><span class='fu'><a href='https://r-packages.gitlab.io/preregr/reference/rmd_templates.html'>form_to_rmd_template</a></span><span class='op'>(</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> title: Example form</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> author: Specify author here</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> date: '`r format(Sys.time(), "%Y-%m-%d at %H:%M:%S %Z (UTC%z)")`'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> output: html_document</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- This preregistration template was written by `preregr` at ------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- 2021-11-05 at 10:24:45 CET (UTC+0100) --------------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r preregr-formSpecification-iq6RTX, echo=FALSE, results='hide'}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r preregr-setup-YjSWnm, echo=FALSE, results='hide'}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ###-------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### Setup</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ###-------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> preregr::opts$set(silent = TRUE);</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> preregrObject &lt;-</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   preregr::prereg_initialize(preregrFormSpec);</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-------------------------------------------------------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!--------    GENERAL (PRE)REGISTRATION FORM INSTRUCTIONS    --------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-------------------------------------------------------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- First instruction ----------------------------------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- Actual instructions                                           --&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- Example Section ------------------------------------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r preregr-example_section-example_item-QjeFKk, echo=FALSE, results='hide'}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ###-------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### Example Label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ###-------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### Example item description</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> preregrObject &lt;-</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   preregr::prereg_specify(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     preregrObject,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     example_item = "Unspecified"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> );</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r, preregr-show-form-contents-Vg239e, echo=FALSE}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> preregr::prereg_knit_item_content(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   preregrObject,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   headingLevel = 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> );</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- Here, the form specification is included. ----------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;!-- This chunk is executed earlier on though. ----------------------&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r preregr-formSpecification-iq6RTX, echo=FALSE, eval=FALSE}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> preregrFormSpec &lt;- </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   structure(list(instructions = structure(list(heading = "First instruction", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       description = "Actual instructions"), class = "data.frame", row.names = c(NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -1L)), metadata = structure(list(field = c("title", "version", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   "author", "date"), contents = c("Example form", "0.1.0", NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   "2021-11-05")), class = "data.frame", row.names = c(NA, -4L)), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       items = structure(list(section_id = "example_section", item_id = "example_item", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           item_label = "Example Label", item_description = "Example item description", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           item_valueTemplate = "string", item_validValues = NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           item_validation = NA), class = "data.frame", row.names = c(NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       -1L)), sections = structure(list(section_id = "example_section", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           section_label = "Example Section", section_description = "Example section description"), class = "data.frame", row.names = c(NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       -1L)), valueTemplates = structure(list(identifier = c("numeric", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "integer", "string", "categorical"), description = c("Any valid number", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "Any valid whole number", "A single character value", "A string that has to exactly match one of the values specified in the 'items_validValues' column of the items sheet"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       ), validValues = c(NA, NA, NA, NA), default = c(NA, NA, NA, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       NA), examples = c("2.3 || 643.2", "30 || 8762", "'Example' || 'Another example'", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "VALIDVALUES"), validation = c("is.na(VALUE) || (is.numeric(VALUE) &amp;&amp; (length(VALUE) == 1))", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "is.na(VALUE) || (is.numeric(VALUE) &amp;&amp; (VALUE%%1==0) &amp;&amp; (length(VALUE) == 1))", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "is.na(VALUE) || (is.character(VALUE) &amp;&amp; length(VALUE) == 1)", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "is.na(VALUE) || (VALUE %in% VALIDVALUES)"), error = c("NAME is not numeric, or contains more than one value.", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "NAME is not numeric, contains more than one value, or contains decimals.", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "NAME is not a single text string.", "NAME is not one of VALIDVALUES."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       )), class = "data.frame", row.names = c(NA, -4L))), class = c("preregr", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   "preregr_form", "list"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

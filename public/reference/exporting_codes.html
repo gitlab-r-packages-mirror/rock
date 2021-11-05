@@ -73,7 +73,7 @@ or to convert all sources to tabbed sections in Markdown." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -213,74 +213,76 @@ include the path to the root (e.g. <code>code1&gt;code2&gt;code</code>).</p></td
     <p>A character vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Parse all example sources in that directory</span>
-<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
-
-<span class='co'>### Show results of exporting the codes</span>
-<span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt;  [1] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_instrumental_xl678lqgp"
-#&gt;  [2] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_experiential_xl678lqgn"
-#&gt;  [3] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedBehavioralControl_71w8sfdk"              
-#&gt;  [4] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedNorm_71w98kk2"                           
-#&gt;  [5] "parentCode1&gt;childCode1&gt;grandchildCode1"                                                 
-#&gt;  [6] "parentCode1&gt;childCode1&gt;grandchildCode2"                                                 
-#&gt;  [7] "parentCode1&gt;childCode1&gt;grandchildCode3"                                                 
-#&gt;  [8] "parentCode1&gt;childCode2"                                                                 
-#&gt;  [9] "parentCode1&gt;childCode3"                                                                 
-#&gt; [10] "pets&gt;cats&gt;siamese"                                                                      
-#&gt; [11] "furniture&gt;tables"                                                                       
-#&gt; [12] "furniture&gt;chairs"                                                                       
-#&gt; [13] "furniture&gt;oaken_chests"                                                                 
-#&gt; [14] "source&gt;internet"                                                                        
-#&gt; [15] "source&gt;books"                                                                           
-#&gt; [16] "source&gt;people"                                                                          
-#&gt; [17] "attitude&gt;exp_attitude&gt;exp_att_expect"                                                   
-#&gt; [18] "attitude&gt;exp_attitude&gt;exp_att_eval"                                                     
-#&gt; [19] "attitude&gt;instr_att&gt;instr_att_expect"                                                    
-#&gt; [20] "attitude&gt;instr_att&gt;instr_att_eval"                                                      
-#&gt; [21] "parentCode2&gt;childCode4&gt;grandchildCode4"                                                 
-#&gt; [22] "parentCode2&gt;childCode4&gt;grandchildCode5"                                                 
-#&gt; [23] "parentCode2&gt;childCode4&gt;grandchildCode6"                                                 
-#&gt; [24] "parentCode2&gt;childCode5&gt;grandchildCode7"                                                 
-#&gt; [25] "someOtherCode"                                                                          
-#&gt; [26] "att_ins_eval"                                                                           
-#&gt; [27] "chairs"                                                                                 
-#&gt; [28] "inductFather&gt;inducChild3"                                                               
-#&gt; [29] "inductFather&gt;inducChild4"                                                               
-#&gt; [30] "inductFather&gt;inducChild5"                                                               
-#&gt; [31] "inductMother&gt;inducChild1"                                                               
-#&gt; [32] "inductMother&gt;inducChild2"                                                               
-#&gt; [33] "internet"                                                                               
-#&gt; [34] "oaken_chests"                                                                           
-#&gt; [35] "people"                                                                                 
-#&gt; [36] "tables"                                                                                 
-#&gt; [37] "Topic1"                                                                                 
-#&gt; [38] "Topic2"                                                                                 
-#&gt; [39] "code1"                                                                                  
-#&gt; [40] "code2&gt;code4"                                                                            
-#&gt; [41] "code3"                                                                                  
-#&gt; [42] "code5"                                                                                  
-#&gt; [43] "bla&gt;subbla&gt;bla2"                                                                        
-#&gt; [44] "bla&gt;subbla&gt;bla3"                                                                        
-#&gt; [45] "bla&gt;subbla2"                                                                            
-#&gt; [46] "flups"                                                                                  
-#&gt; [47] "property&gt;hairy"                                                                         
-#&gt; [48] "relationships&gt;love"                                                                     
-#&gt; [49] "content_adequacy"                                                                       
-#&gt; [50] "retrieval"                                                                              
-#&gt; [51] "understanding"                                                                          </div><div class='input'>
-<span class='co'>### Only show select a narrow set of codes</span>
-<span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span>,
-                    leavesOnly<span class='op'>=</span><span class='cn'>TRUE</span>,
-                    includePath<span class='op'>=</span><span class='cn'>FALSE</span>,
-                    onlyChildrenOf <span class='op'>=</span> <span class='st'>"parentCode2"</span>,
-                    regex<span class='op'>=</span><span class='st'>"5|6"</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; [1] "grandchildCode5" "grandchildCode6"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse all example sources in that directory</span></span>
+<span class='r-in'><span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show results of exporting the codes</span></span>
+<span class='r-in'><span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_instrumental_xl678lqgp"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;attitude_71vqm37n&gt;attitude_experiential_xl678lqgn"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedBehavioralControl_71w8sfdk"              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "behavior_xl67k7w8j&gt;intention_71vr5q3q&gt;perceivedNorm_71w98kk2"                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "parentCode1&gt;childCode1&gt;grandchildCode1"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "parentCode1&gt;childCode1&gt;grandchildCode2"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "parentCode1&gt;childCode1&gt;grandchildCode3"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "parentCode1&gt;childCode2"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "parentCode1&gt;childCode3"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "pets&gt;cats&gt;siamese"                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "furniture&gt;tables"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "furniture&gt;chairs"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "furniture&gt;oaken_chests"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "source&gt;internet"                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "source&gt;books"                                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "source&gt;people"                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "attitude&gt;exp_attitude&gt;exp_att_expect"                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "attitude&gt;exp_attitude&gt;exp_att_eval"                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "attitude&gt;instr_att&gt;instr_att_expect"                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "attitude&gt;instr_att&gt;instr_att_eval"                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "parentCode2&gt;childCode4&gt;grandchildCode4"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [22] "parentCode2&gt;childCode4&gt;grandchildCode5"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [23] "parentCode2&gt;childCode4&gt;grandchildCode6"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [24] "parentCode2&gt;childCode5&gt;grandchildCode7"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "someOtherCode"                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "att_ins_eval"                                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [27] "chairs"                                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [28] "inductFather&gt;inducChild3"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "inductFather&gt;inducChild4"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [30] "inductFather&gt;inducChild5"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] "inductMother&gt;inducChild1"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [32] "inductMother&gt;inducChild2"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [33] "internet"                                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [34] "oaken_chests"                                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [35] "people"                                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [36] "tables"                                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] "Topic1"                                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [38] "Topic2"                                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [39] "code1"                                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [40] "code2&gt;code4"                                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "code3"                                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [42] "code5"                                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [43] "bla&gt;subbla&gt;bla2"                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [44] "bla&gt;subbla&gt;bla3"                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [45] "bla&gt;subbla2"                                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [46] "flups"                                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [47] "property&gt;hairy"                                                                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [48] "relationships&gt;love"                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] "content_adequacy"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [50] "retrieval"                                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [51] "understanding"                                                                          </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Only show select a narrow set of codes</span></span>
+<span class='r-in'><span class='fu'>export_codes_to_txt</span><span class='op'>(</span><span class='va'>parsedExamples</span>,</span>
+<span class='r-in'>                    leavesOnly<span class='op'>=</span><span class='cn'>TRUE</span>,</span>
+<span class='r-in'>                    includePath<span class='op'>=</span><span class='cn'>FALSE</span>,</span>
+<span class='r-in'>                    onlyChildrenOf <span class='op'>=</span> <span class='st'>"parentCode2"</span>,</span>
+<span class='r-in'>                    regex<span class='op'>=</span><span class='st'>"5|6"</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "grandchildCode5" "grandchildCode6"</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

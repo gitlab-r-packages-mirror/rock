@@ -74,7 +74,7 @@ of all coded fragments per code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -256,365 +256,367 @@ potentially set <code>cleanUtterances</code> to only return the utterances,
 without the codes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span>
-    <span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span>
-  <span class='op'>)</span>;
-
-<span class='co'>### Parse single example source</span>
-<span class='va'>parsedExample</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span>
-    <span class='va'>exampleFile</span>
-  <span class='op'>)</span>;
-
-<span class='co'>### Show organised coded fragments in Markdown</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span>
-    <span class='va'>parsedExample</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>;
-</div><div class='output co'>#&gt; 
-#&gt; &lt;style&gt;
-#&gt; 
-#&gt; 
-#&gt; .code {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .codeValue {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .identifier {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .sectionBreak {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   display: block;
-#&gt; }
-#&gt; 
-#&gt; .uid {
-#&gt;   border-radius: 0;
-#&gt;   box-sizing: border-box;
-#&gt; }
-#&gt; 
-#&gt; .utterance {
-#&gt;   display: block;
-#&gt; }
-#&gt; 
-#&gt; .code {
-#&gt;   background-color: #f4d142;
-#&gt; }
-#&gt; 
-#&gt; .codeValue {
-#&gt;   background-color: #d2af20;
-#&gt; }
-#&gt; 
-#&gt; .identifier {
-#&gt;   background-color: #aaaaff;
-#&gt; }
-#&gt; 
-#&gt; .sectionBreak {
-#&gt;   background-color: #eeeeff;
-#&gt; }
-#&gt; 
-#&gt; .uid {
-#&gt;   background-color: #eeeeee;
-#&gt;   color: #bbbbbb;
-#&gt; }
-#&gt; 
-#&gt; .utterance {
-#&gt;   border-top: 1px dotted black;
-#&gt;   border-bottom: 1px dotted black;
-#&gt; }
-#&gt; 
-#&gt; .utterance + .utterance {
-#&gt;   margin-top: -1px;
-#&gt; }
-#&gt; 
-#&gt; .context {
-#&gt;   color: #bbbbbb;
-#&gt; }
-#&gt; &lt;/style&gt;
-#&gt; 
-#&gt; 
-#&gt; ### Collected coded fragments with 0 lines of context
-#&gt; 
-#&gt; #### childCode1 *(path: childCode1)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### childCode2 *(path: parentCode1&gt;childCode2)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### childCode3 *(path: parentCode1&gt;childCode3)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### childCode4 *(path: parentCode2&gt;childCode4)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~~including versions of Lorem Ipsum. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### childCode5 *(path: parentCode2&gt;childCode5)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;content of a page when looking at its layout. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode5]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode1 *(path: parentCode1&gt;childCode1&gt;grandchildCode1)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;using 'Content here, content here', making it look like readable English. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode1]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;accompanied by English versions from the 1914 translation by H. Rackham. &lt;span class="code codes"&gt;[[childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;reasonable. The generated Lorem Ipsum is therefore always free from &lt;span class="code codes"&gt;[[grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode3 *(path: parentCode1&gt;childCode1&gt;grandchildCode3)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;by accident, sometimes on purpose (injected humour and the like). &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode3]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode4 *(path: parentCode2&gt;childCode4&gt;grandchildCode4)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;Where does it come from? &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode4]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode5 *(path: parentCode2&gt;childCode4&gt;grandchildCode5)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;old.  &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode5]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode6 *(path: parentCode2&gt;childCode4&gt;grandchildCode6)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;discovered the undoubtable source. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode6]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode7 *(path: childCode5&gt;grandchildCode7)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;repetition, injected humour, or non-characteristic words etc. &lt;span class="code codes"&gt;[[childCode5&amp;gt;grandchildCode7]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### someOtherCode *(path: someOtherCode)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; </div><div class='input'>
-<span class='co'>### Only for the codes containing 'Code2'</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span>
-    <span class='va'>parsedExample</span>,
-    <span class='st'>'Code2'</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>;
-</div><div class='output co'>#&gt; 
-#&gt; &lt;style&gt;
-#&gt; 
-#&gt; 
-#&gt; .code {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .codeValue {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .identifier {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   margin-left: 10px;
-#&gt;   padding: 2px;
-#&gt; }
-#&gt; 
-#&gt; .sectionBreak {
-#&gt;   border-radius: .25em;
-#&gt;   box-sizing: border-box;
-#&gt;   display: block;
-#&gt; }
-#&gt; 
-#&gt; .uid {
-#&gt;   border-radius: 0;
-#&gt;   box-sizing: border-box;
-#&gt; }
-#&gt; 
-#&gt; .utterance {
-#&gt;   display: block;
-#&gt; }
-#&gt; 
-#&gt; .code {
-#&gt;   background-color: #f4d142;
-#&gt; }
-#&gt; 
-#&gt; .codeValue {
-#&gt;   background-color: #d2af20;
-#&gt; }
-#&gt; 
-#&gt; .identifier {
-#&gt;   background-color: #aaaaff;
-#&gt; }
-#&gt; 
-#&gt; .sectionBreak {
-#&gt;   background-color: #eeeeff;
-#&gt; }
-#&gt; 
-#&gt; .uid {
-#&gt;   background-color: #eeeeee;
-#&gt;   color: #bbbbbb;
-#&gt; }
-#&gt; 
-#&gt; .utterance {
-#&gt;   border-top: 1px dotted black;
-#&gt;   border-bottom: 1px dotted black;
-#&gt; }
-#&gt; 
-#&gt; .utterance + .utterance {
-#&gt;   margin-top: -1px;
-#&gt; }
-#&gt; 
-#&gt; .context {
-#&gt;   color: #bbbbbb;
-#&gt; }
-#&gt; &lt;/style&gt;
-#&gt; 
-#&gt; 
-#&gt; ### Collected coded fragments for codes 'childCode2' &amp; 'grandchildCode2' with 0 lines of context
-#&gt; 
-#&gt; #### childCode2 *(path: parentCode1&gt;childCode2)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; 
-#&gt; #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;accompanied by English versions from the 1914 translation by H. Rackham. &lt;span class="code codes"&gt;[[childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; 
-#&gt; &lt;div class="utterance"&gt;reasonable. The generated Lorem Ipsum is therefore always free from &lt;span class="code codes"&gt;[[grandchildCode2]]&lt;/span&gt;&lt;/div&gt;
-#&gt; 
-#&gt; 
-#&gt; -----
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse single example source</span></span>
+<span class='r-in'><span class='va'>parsedExample</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_source</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>exampleFile</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show organised coded fragments in Markdown</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>parsedExample</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;style&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .code {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .codeValue {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .identifier {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .sectionBreak {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   display: block;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .uid {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: 0;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   display: block;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .code {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #f4d142;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .codeValue {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #d2af20;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .identifier {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #aaaaff;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .sectionBreak {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #eeeeff;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .uid {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #eeeeee;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   color: #bbbbbb;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-top: 1px dotted black;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-bottom: 1px dotted black;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance + .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-top: -1px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .context {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   color: #bbbbbb;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;/style&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### Collected coded fragments with 0 lines of context</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode1 *(path: childCode1)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode2 *(path: parentCode1&gt;childCode2)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode3 *(path: parentCode1&gt;childCode3)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode4 *(path: parentCode2&gt;childCode4)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~~including versions of Lorem Ipsum. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode5 *(path: parentCode2&gt;childCode5)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;content of a page when looking at its layout. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode5]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode1 *(path: parentCode1&gt;childCode1&gt;grandchildCode1)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;using 'Content here, content here', making it look like readable English. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode1]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;accompanied by English versions from the 1914 translation by H. Rackham. &lt;span class="code codes"&gt;[[childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;reasonable. The generated Lorem Ipsum is therefore always free from &lt;span class="code codes"&gt;[[grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode3 *(path: parentCode1&gt;childCode1&gt;grandchildCode3)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;by accident, sometimes on purpose (injected humour and the like). &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode3]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode4 *(path: parentCode2&gt;childCode4&gt;grandchildCode4)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;Where does it come from? &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode4]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode5 *(path: parentCode2&gt;childCode4&gt;grandchildCode5)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;old.  &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode5]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode6 *(path: parentCode2&gt;childCode4&gt;grandchildCode6)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;discovered the undoubtable source. &lt;span class="code codes"&gt;[[parentCode2&amp;gt;childCode4&amp;gt;grandchildCode6]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode7 *(path: childCode5&gt;grandchildCode7)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;repetition, injected humour, or non-characteristic words etc. &lt;span class="code codes"&gt;[[childCode5&amp;gt;grandchildCode7]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### someOtherCode *(path: someOtherCode)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~~electronic typesetting, remaining essentially unchanged. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode3]]&lt;/span&gt; &lt;span class="code codes"&gt;[[someOtherCode]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Only for the codes containing 'Code2'</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>collect_coded_fragments</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>parsedExample</span>,</span>
+<span class='r-in'>    <span class='st'>'Code2'</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;style&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .code {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .codeValue {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .identifier {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-left: 10px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   padding: 2px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .sectionBreak {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: .25em;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   display: block;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .uid {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-radius: 0;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   box-sizing: border-box;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   display: block;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .code {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #f4d142;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .codeValue {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #d2af20;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .identifier {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #aaaaff;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .sectionBreak {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #eeeeff;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .uid {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   background-color: #eeeeee;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   color: #bbbbbb;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-top: 1px dotted black;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   border-bottom: 1px dotted black;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .utterance + .utterance {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   margin-top: -1px;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .context {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   color: #bbbbbb;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;/style&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### Collected coded fragments for codes 'childCode2' &amp; 'grandchildCode2' with 0 lines of context</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### childCode2 *(path: parentCode1&gt;childCode2)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~specimen book. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode2]]&lt;/span&gt; &lt;span class="code codes"&gt;[[childCode1]]&lt;/span&gt; &lt;span class="codeValue codeValues"&gt;[[intensity||2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### grandchildCode2 *(path: childCode1&gt;grandchildCode2)*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;~still in their infancy. &lt;span class="code codes"&gt;[[parentCode1&amp;gt;childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;accompanied by English versions from the 1914 translation by H. Rackham. &lt;span class="code codes"&gt;[[childCode1&amp;gt;grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="utterance"&gt;reasonable. The generated Lorem Ipsum is therefore always free from &lt;span class="code codes"&gt;[[grandchildCode2]]&lt;/span&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

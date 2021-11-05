@@ -74,7 +74,7 @@ utterance markers, and conducting search and replaces using regular expressions.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -306,90 +306,95 @@ considered sentence ends, wheread ellipses ("…" or unicode 2026, see the examp
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>exampleSource</span> <span class='op'>&lt;-</span>
-<span class='st'>"Do you like icecream?
-
-
-Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,
-but otherwise... not really, actually."</span>
-
-<span class='co'>### Default settings:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>clean_source</span><span class='op'>(</span><span class='va'>exampleSource</span><span class='op'>)</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; Do you like icecream?
-#&gt; 
-#&gt; Well, that depends… 
-#&gt; Sometimes, when it's... Nice. 
-#&gt; Then I do,
-#&gt; but otherwise... not really, actually.</div><div class='input'>
-<span class='co'>### First remove existing newlines:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>clean_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,
-                 removeNewlines<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; Do you like icecream?
-#&gt; Well, that depends… 
-#&gt; Sometimes, when it's... Nice. 
-#&gt; Then I do, but otherwise... not really, actually.</div><div class='input'>
-<span class='co'>### Example with a YAML fragment</span>
-<span class='va'>exampleWithYAML</span> <span class='op'>&lt;-</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"Do you like icecream?"</span>,
-  <span class='st'>""</span>,
-  <span class='st'>""</span>,
-  <span class='st'>"Well, that depends\u2026 Sometimes, when it's..... Nice."</span>,
-  <span class='st'>"Then I do,"</span>,
-  <span class='st'>"but otherwise... not really, actually."</span>,
-  <span class='st'>""</span>,
-  <span class='st'>"---"</span>,
-  <span class='st'>"This acts as some YAML. So this won't be split."</span>,
-  <span class='st'>"Not real YAML, mind... It just has the delimiters, really."</span>,
-  <span class='st'>"---"</span>,
-  <span class='st'>"This is an utterance again."</span>
-<span class='op'>)</span>;
-
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>clean_source</span><span class='op'>(</span>
-    <span class='va'>exampleWithYAML</span>
-  <span class='op'>)</span>,
-  sep<span class='op'>=</span><span class='st'>"\n"</span>
-<span class='op'>)</span>;
-</div><div class='output co'>#&gt; Do you like icecream?
-#&gt; 
-#&gt; 
-#&gt; Well, that depends… 
-#&gt; Sometimes, when it's... Nice.
-#&gt; Then I do,
-#&gt; but otherwise... not really, actually.
-#&gt; 
-#&gt; ---
-#&gt; This acts as some YAML. So this won't be split.
-#&gt; Not real YAML, mind... It just has the delimiters, really.
-#&gt; ---
-#&gt; This is an utterance again.</div><div class='input'>
-<span class='va'>exampleSource</span> <span class='op'>&lt;-</span>
-<span class='st'>"Do you like icecream?
-
-
-Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,
-but otherwise... not really, actually."</span>
-
-<span class='co'>### Simple text replacements:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>search_and_replace_in_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,
-                                 replacements<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\u2026"</span>, <span class='st'>"..."</span><span class='op'>)</span>,
-                                                   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Nice"</span>, <span class='st'>"Great"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; Do you like icecream?
-#&gt; 
-#&gt; 
-#&gt; Well, that depends... Sometimes, when it's..... Great. Then I do,
-#&gt; but otherwise... not really, actually.</div><div class='input'>
-<span class='co'>### Using a regular expression to capitalize all words following</span>
-<span class='co'>### a period:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>search_and_replace_in_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,
-                                 replacements<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\\.(\\s*)([a-z])"</span>, <span class='st'>".\\1\\U\\2"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt; Do you like icecream?
-#&gt; 
-#&gt; 
-#&gt; Well, that depends… Sometimes, when it's..... Nice. Then I do,
-#&gt; but otherwise... Not really, actually.</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>exampleSource</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'><span class='st'>"Do you like icecream?</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'>Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,</span>
+<span class='r-in'>but otherwise... not really, actually."</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Default settings:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>clean_source</span><span class='op'>(</span><span class='va'>exampleSource</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Do you like icecream?</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Well, that depends… </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sometimes, when it's... Nice. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Then I do,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> but otherwise... not really, actually.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### First remove existing newlines:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>clean_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,</span>
+<span class='r-in'>                 removeNewlines<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Do you like icecream?</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Well, that depends… </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sometimes, when it's... Nice. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Then I do, but otherwise... not really, actually.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example with a YAML fragment</span></span>
+<span class='r-in'><span class='va'>exampleWithYAML</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"Do you like icecream?"</span>,</span>
+<span class='r-in'>  <span class='st'>""</span>,</span>
+<span class='r-in'>  <span class='st'>""</span>,</span>
+<span class='r-in'>  <span class='st'>"Well, that depends\u2026 Sometimes, when it's..... Nice."</span>,</span>
+<span class='r-in'>  <span class='st'>"Then I do,"</span>,</span>
+<span class='r-in'>  <span class='st'>"but otherwise... not really, actually."</span>,</span>
+<span class='r-in'>  <span class='st'>""</span>,</span>
+<span class='r-in'>  <span class='st'>"---"</span>,</span>
+<span class='r-in'>  <span class='st'>"This acts as some YAML. So this won't be split."</span>,</span>
+<span class='r-in'>  <span class='st'>"Not real YAML, mind... It just has the delimiters, really."</span>,</span>
+<span class='r-in'>  <span class='st'>"---"</span>,</span>
+<span class='r-in'>  <span class='st'>"This is an utterance again."</span></span>
+<span class='r-in'><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>clean_source</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>exampleWithYAML</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  sep<span class='op'>=</span><span class='st'>"\n"</span></span>
+<span class='r-in'><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Do you like icecream?</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Well, that depends… </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sometimes, when it's... Nice.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Then I do,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> but otherwise... not really, actually.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This acts as some YAML. So this won't be split.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Not real YAML, mind... It just has the delimiters, really.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This is an utterance again.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>exampleSource</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'><span class='st'>"Do you like icecream?</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'>Well, that depends\u2026 Sometimes, when it's..... Nice. Then I do,</span>
+<span class='r-in'>but otherwise... not really, actually."</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Simple text replacements:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>search_and_replace_in_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,</span>
+<span class='r-in'>                                 replacements<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\u2026"</span>, <span class='st'>"..."</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                                   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Nice"</span>, <span class='st'>"Great"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Do you like icecream?</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Well, that depends... Sometimes, when it's..... Great. Then I do,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> but otherwise... not really, actually.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Using a regular expression to capitalize all words following</span></span>
+<span class='r-in'><span class='co'>### a period:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>search_and_replace_in_source</span><span class='op'>(</span><span class='va'>exampleSource</span>,</span>
+<span class='r-in'>                                 replacements<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\\.(\\s*)([a-z])"</span>, <span class='st'>".\\1\\U\\2"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Do you like icecream?</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Well, that depends… Sometimes, when it's..... Nice. Then I do,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> but otherwise... Not really, actually.</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

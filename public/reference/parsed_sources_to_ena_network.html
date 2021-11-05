@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -170,31 +170,31 @@ metadata. By default, takes all read metadata.</p></td>
     <p>The result of a call to <code><a href='https://rdrr.io/pkg/rENA/man/ena.plot.network.html'>rENA::ena.plot.network()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Parse all example sources in that directory</span>
-<span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;
-
-<span class='co'>### Add something to indicate which units belong together; normally,</span>
-<span class='co'>### these would probably be indicated using one of the identifier,</span>
-<span class='co'>### for example the stanza identifiers, the sid's</span>
-<span class='va'>nChunks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'>%/%</span> <span class='fl'>10</span>;
-<span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>units</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>nChunks</span>, each<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>nChunks</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'>-</span> <span class='op'>(</span><span class='fl'>10</span><span class='op'>*</span><span class='va'>nChunks</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;
-
-<span class='co'>### Generate ENA plot</span>
-<span class='co'># \donttest{</span>
-<span class='va'>enaPlot</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parsed_sources_to_ena_network</span><span class='op'>(</span><span class='va'>parsedExamples</span>,
-                                      unitCols<span class='op'>=</span><span class='st'>'units'</span><span class='op'>)</span>;
-
-<span class='co'>### Show the resulting plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>enaPlot</span><span class='op'>)</span>;
-<span class='co'># }</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Parse all example sources in that directory</span></span>
+<span class='r-in'><span class='va'>parsedExamples</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='parse_source.html'>parse_sources</a></span><span class='op'>(</span><span class='va'>examplePath</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Add something to indicate which units belong together; normally,</span></span>
+<span class='r-in'><span class='co'>### these would probably be indicated using one of the identifier,</span></span>
+<span class='r-in'><span class='co'>### for example the stanza identifiers, the sid's</span></span>
+<span class='r-in'><span class='va'>nChunks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/r/base/Arithmetic.html'>%/%</a></span> <span class='fl'>10</span>;</span>
+<span class='r-in'><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>$</span><span class='va'>units</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>nChunks</span>, each<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>nChunks</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>parsedExamples</span><span class='op'>$</span><span class='va'>mergedSourceDf</span><span class='op'>)</span> <span class='op'>-</span> <span class='op'>(</span><span class='fl'>10</span><span class='op'>*</span><span class='va'>nChunks</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Generate ENA plot</span></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='va'>enaPlot</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>parsed_sources_to_ena_network</span><span class='op'>(</span><span class='va'>parsedExamples</span>,</span>
+<span class='r-in'>                                      unitCols<span class='op'>=</span><span class='st'>'units'</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Show the resulting plot</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>enaPlot</span><span class='op'>)</span>;</span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

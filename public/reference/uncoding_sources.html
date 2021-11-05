@@ -73,7 +73,7 @@ justify that decision." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -218,342 +218,344 @@ when writing the files to <code>output</code>.</p></td>
     <p>Invisibly, the recoded source(s) or source(s) object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### Get path to example source</span>
-<span class='va'>examplePath</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Get a path to one example file</span>
-<span class='va'>exampleFile</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;
-
-<span class='co'>### Load example source</span>
-<span class='va'>loadedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;
-
-<span class='co'>### Delete two codes, moving children to the codes' parents</span>
-<span class='va'>recoded_source</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_delete</span><span class='op'>(</span>
-    <span class='va'>loadedExample</span>,
-    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,
-    silent<span class='op'>=</span><span class='cn'>FALSE</span>
-  <span class='op'>)</span>;
-</div><div class='output co'>#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.
-#&gt; --------PRE: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]
-#&gt; --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]
-#&gt; Deleted 1 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.
-#&gt; --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1]]
-#&gt;        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]
-#&gt; --------PRE: ~specimen book. [[parentCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]
-#&gt; --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;grandchildCode1]]
-#&gt;        POST: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]
-#&gt; --------PRE: ~still in their infancy. [[parentCode1&gt;grandchildCode2]]
-#&gt;        POST: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt; --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;grandchildCode3]]
-#&gt;        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]
-#&gt; --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[grandchildCode2]]
-#&gt;        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt; Deleted 6 occurrences of code 'childCode1'.
-#&gt; </div><div class='input'>
-<span class='co'>### Process an entire directory</span>
-<span class='va'>list_of_recoded_sources</span> <span class='op'>&lt;-</span>
-  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_delete</span><span class='op'>(</span>
-    <span class='va'>examplePath</span>,
-    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,
-    silent<span class='op'>=</span><span class='cn'>FALSE</span>
-  <span class='op'>)</span>;
-</div><div class='output co'>#&gt; The path to a directory was passed; loading all sources.
-#&gt; 
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/attitude.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/attributes.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/behavior.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/ci_example_1.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/example-1.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/intention.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/longer-test.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/lorum-ipsum.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/lorum-ipsum2.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/merging-test-1-primary.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/merging-test-1-secondary.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/perceived_behavioral_control.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/perceived_norm.dct'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/second-test-file.rock'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/spreadsheet-import-test.csv'.
-#&gt; Loading source from file 'C:/Users/micro/AppData/Local/Temp/Rtmpg9SvMz/temp_libpath7914610823c2/rock/extdata/spreadsheet-import-test.xlsx'.
-#&gt; I just loaded 16 sources.
-#&gt; 
-#&gt; A list of loaded sources was passed; processing them sequentially.
-#&gt; 
-#&gt; Processing source 'attitude.dct'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 82 utterances in the provided source, 82 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 82 utterances in the provided source, 82 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'attributes.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 15 utterances in the provided source, 15 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 15 utterances in the provided source, 15 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'behavior.dct'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 9 utterances in the provided source, 9 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 9 utterances in the provided source, 9 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'ci_example_1.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 20 utterances in the provided source, 20 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 20 utterances in the provided source, 20 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'example-1.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.
-#&gt; --------PRE: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]
-#&gt; --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt; --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]
-#&gt; Deleted 1 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.
-#&gt; --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1]]
-#&gt;        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]
-#&gt; --------PRE: ~specimen book. [[parentCode1]] [[intensity||2]]
-#&gt;        POST: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]
-#&gt; --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;grandchildCode1]]
-#&gt;        POST: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]
-#&gt; --------PRE: ~still in their infancy. [[parentCode1&gt;grandchildCode2]]
-#&gt;        POST: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]
-#&gt; --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;grandchildCode3]]
-#&gt;        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]
-#&gt; --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[grandchildCode2]]
-#&gt;        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]
-#&gt; Deleted 6 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'intention.dct'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'longer-test.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 146 utterances in the provided source, 146 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 146 utterances in the provided source, 146 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'lorum-ipsum.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'lorum-ipsum2.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'merging-test-1-primary.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 24 utterances in the provided source, 24 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 24 utterances in the provided source, 24 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'merging-test-1-secondary.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'perceived_behavioral_control.dct'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'perceived_norm.dct'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'second-test-file.rock'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 47 utterances in the provided source, 47 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 47 utterances in the provided source, 47 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'spreadsheet-import-test.csv'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; 
-#&gt; Processing source 'spreadsheet-import-test.xlsx'.
-#&gt; Multiple codes to remove have been specified: starting sequential removal of 2 codes.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode2'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode2'.
-#&gt; 
-#&gt; Removing all occurrences of code 'childCode1'.
-#&gt; If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.
-#&gt; If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).
-#&gt; Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.
-#&gt; Deleted 0 occurrences of code 'childCode1'.
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### Get path to example source</span></span>
+<span class='r-in'><span class='va'>examplePath</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package<span class='op'>=</span><span class='st'>"rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Get a path to one example file</span></span>
+<span class='r-in'><span class='va'>exampleFile</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>examplePath</span>, <span class='st'>"example-1.rock"</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Load example source</span></span>
+<span class='r-in'><span class='va'>loadedExample</span> <span class='op'>&lt;-</span> <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'><a href='load_source.html'>load_source</a></span><span class='op'>(</span><span class='va'>exampleFile</span><span class='op'>)</span>;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Delete two codes, moving children to the codes' parents</span></span>
+<span class='r-in'><span class='va'>recoded_source</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_delete</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>loadedExample</span>,</span>
+<span class='r-in'>    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    silent<span class='op'>=</span><span class='cn'>FALSE</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 1 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~still in their infancy. [[parentCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 6 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Process an entire directory</span></span>
+<span class='r-in'><span class='va'>list_of_recoded_sources</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'>rock</span><span class='fu'>::</span><span class='fu'>recode_delete</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>examplePath</span>,</span>
+<span class='r-in'>    codes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"childCode2"</span>, <span class='st'>"childCode1"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    silent<span class='op'>=</span><span class='cn'>FALSE</span></span>
+<span class='r-in'>  <span class='op'>)</span>;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> The path to a directory was passed; loading all sources.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/attitude.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/attributes.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/behavior.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/ci_example_1.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/example-1.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/intention.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/longer-test.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/lorum-ipsum.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/lorum-ipsum2.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/merging-test-1-primary.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/merging-test-1-secondary.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/perceived_behavioral_control.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/perceived_norm.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/second-test-file.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/spreadsheet-import-test.csv'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Loading source from file 'C:/Users/gjalt/AppData/Local/Temp/Rtmp67EOMK/temp_libpath4e1c2f727f80/rock/extdata/spreadsheet-import-test.xlsx'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> I just loaded 16 sources.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A list of loaded sources was passed; processing them sequentially.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'attitude.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 82 utterances in the provided source, 82 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 82 utterances in the provided source, 82 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'attributes.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 15 utterances in the provided source, 15 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 15 utterances in the provided source, 15 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'behavior.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 9 utterances in the provided source, 9 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 9 utterances in the provided source, 9 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'ci_example_1.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 20 utterances in the provided source, 20 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 20 utterances in the provided source, 20 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'example-1.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 4 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode1&gt;childCode2]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --UNCHANGED: reasonable. The generated Lorem Ipsum is therefore always free from [[grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 1 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 110 utterances in the provided source, 110 are selected by the filter, 6 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: Lorem Ipsum is simply dummy text of the printing and typesetting industry. [[parentCode1&gt;childCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~specimen book. [[parentCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~specimen book. [[parentCode1]] [[childCode1]] [[intensity||2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: using 'Content here, content here', making it look like readable English. [[parentCode1&gt;childCode1&gt;grandchildCode1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: ~still in their infancy. [[parentCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: ~still in their infancy. [[parentCode1&gt;childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: by accident, sometimes on purpose (injected humour and the like). [[parentCode1&gt;childCode1&gt;grandchildCode3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------PRE: accompanied by English versions from the 1914 translation by H. Rackham. [[grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        POST: accompanied by English versions from the 1914 translation by H. Rackham. [[childCode1&gt;grandchildCode2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 6 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'intention.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'longer-test.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 146 utterances in the provided source, 146 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 146 utterances in the provided source, 146 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'lorum-ipsum.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'lorum-ipsum2.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 16 utterances in the provided source, 16 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'merging-test-1-primary.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 24 utterances in the provided source, 24 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 24 utterances in the provided source, 24 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'merging-test-1-secondary.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 23 utterances in the provided source, 23 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'perceived_behavioral_control.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'perceived_norm.dct'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 31 utterances in the provided source, 31 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'second-test-file.rock'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 47 utterances in the provided source, 47 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 47 utterances in the provided source, 47 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'spreadsheet-import-test.csv'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 4 utterances in the provided source, 4 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Processing source 'spreadsheet-import-test.xlsx'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple codes to remove have been specified: starting sequential removal of 2 codes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode2'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Removing all occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code descendency (i.e. a child code, grandchild code, etc), the direct child code will replace the removed code.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> If this code has code ancestry (i.e. a (partial) path to the code root is specified with a parent code, potential grandparent code, etc), the ancestry specified in that coding instance will be retained, so the utterance will remain coded with the parent code (and any ancestry of that parent code will also be retained in that coding instance).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Out of the 1 utterances in the provided source, 1 are selected by the filter, 0 of which contain the code text.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deleted 0 occurrences of code 'childCode1'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
