@@ -1,8 +1,9 @@
 #' Add child codes under a parent code
 #'
-#' This function conditionally splits a code into multiple codes. Note that you
-#' may want to use [rock::recode_addChildCodes()] instead to not lose the
-#' original coding.
+#' This function conditionally adds new child codes under a code. Where
+#' [rock::recode_split()] removes the original code (splitting
+#' it into the new codes), this function retains the original, adding the new
+#' codes as sub-codes.
 #'
 #' @param input One of 1) a character string specifying the path to a file
 #' with a source; 2) an object with a loaded source as produced by a call
