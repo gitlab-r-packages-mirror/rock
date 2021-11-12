@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Add child codes under a parent code — recode_addChildCodes" />
-<meta property="og:description" content="This function conditionally splits a code into multiple codes. Note that you
-may want to use recode_addChildCodes() instead to not lose the
-original coding." />
+<meta property="og:description" content="This function conditionally adds new child codes under a code. Where
+recode_split() removes the original code (splitting
+it into the new codes), this function retains the original, adding the new
+codes as sub-codes." />
 
 
 
@@ -128,9 +129,10 @@ original coding." />
     </div>
 
     <div class="ref-description">
-    <p>This function conditionally splits a code into multiple codes. Note that you
-may want to use <code>recode_addChildCodes()</code> instead to not lose the
-original coding.</p>
+    <p>This function conditionally adds new child codes under a code. Where
+<code><a href='recode_split.html'>recode_split()</a></code> removes the original code (splitting
+it into the new codes), this function retains the original, adding the new
+codes as sub-codes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>recode_addChildCodes</span><span class='op'>(</span>
