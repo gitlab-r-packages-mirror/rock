@@ -208,20 +208,15 @@ clean_source <- function(input,
            dirname(output),
            "') does not exist.");
     }
-    if (file.exists(output) && preventOverwriting) {
-      if (!silent) {
-        message("File '",
-                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
-                "write the cleaned source to disk.");
-      }
-    } else {
-      con <- file(description=output,
-                  open="w",
-                  encoding=encoding);
-      writeLines(text=res,
-                 con=con);
-      close(con);
-    }
+
+    writeTxtFile(
+      x = res,
+      output = output,
+      preventOverwriting = preventOverwriting,
+      encoding = encoding,
+      silent = silent
+    );
+
     if (!silent) {
       message("I just wrote a cleaned source to file '",
               output,

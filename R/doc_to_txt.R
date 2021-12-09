@@ -13,6 +13,8 @@
 #' @param newExt The extension to append: only used if `output = NULL` and
 #' `newExt` is not `NULL`, in which case the output will be written to a file
 #' with the same name as `input` but with `newExt` as extension.
+#' @param preventOverwriting Whether to prevent overwriting existing files.
+#' @param silent Whether to the silent or chatty.
 #' @param skip The number of lines to skip (see [textreadr::read_document()]).
 #' @param remove.empty If `TRUE` empty elements in the vector are
 #' removed (see [textreadr::read_document()]).
@@ -45,6 +47,8 @@ doc_to_txt <- function(input,
                        output = NULL,
                        encoding = rock::opts$get("encoding"),
                        newExt = NULL,
+                       preventOverwriting = rock::opts$get("preventOverwriting"),
+                       silent = rock::opts$get("silent"),
                        skip = 0,
                        remove.empty = TRUE,
                        trim = TRUE,
@@ -53,6 +57,9 @@ doc_to_txt <- function(input,
                        ocr = TRUE,
                        ...
                       ) {
+
+  msg("Reading input file from '", input, "'.\n",
+      silent = silent);
 
   res <-
     textreadr::read_document(
@@ -96,37 +103,13 @@ doc_to_txt <- function(input,
 
   if ((!is.null(output)) && (dir.exists(dirname(output)))) {
 
-    if (encoding == "UTF-8") {
-
-      resToWrite <- paste0(res, collapse="\n");
-
-      Encoding(resToWrite) <- "UTF-8";
-
-      conToWriteTo <- file(output, "wb");
-
-      writeBin(
-        charToRaw(resToWrite),
-        conToWriteTo,
-        endian="little"
-      );
-
-    } else {
-
-      conToWriteTo <-
-        file(
-          output,
-          open = "w",
-          encoding = encoding
-        );
-
-      writeLines(
-        res,
-        conToWriteTo
-      );
-
-    }
-
-    close(conToWriteTo);
+    writeTxtFile(
+      x = res,
+      output = output,
+      preventOverwriting = preventOverwriting,
+      encoding = encoding,
+      silent = silent
+    );
 
   }
 
