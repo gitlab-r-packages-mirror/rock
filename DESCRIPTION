@@ -55,6 +55,7 @@ Suggests:
     rmarkdown,
     rstudioapi,
     testthat,
+    textreadr,
     writexl,
     XLConnect
 VignetteBuilder: knitr
