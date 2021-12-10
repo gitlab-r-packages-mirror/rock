@@ -210,10 +210,14 @@ opts$defaults <-
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
                                 "\\1...\\3"),
                               c("(\\s*\\r?\\n){3,}",
-                                "\n")),
+                                "\n"),
+                              c("\u2018|\u2019",
+                                "'"),
+                              c('\u201c|\u201d',
+                                '"')),
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
-       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]'\"]\\s*\\.(?!\\.\\.)\\s?)"),
        nestingMarker = "~",
 
        ### Saniziting for DiagrammeR
