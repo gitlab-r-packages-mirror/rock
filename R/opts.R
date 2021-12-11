@@ -170,6 +170,8 @@ opts$defaults <-
                      uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      prbid = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]"),
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
+       networkCodeRegexes = c(network = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)->([a-zA-Z][a-zA-Z0-9_>]*)\\|\\|([a-zA-Z][a-zA-Z0-9_>]*)(\\|\\|[a-zA-Z0-9_>]*)?\\]\\]"),
+       networkCodeRegexOrder = c("from", "to", "type", "weight"),
        sectionRegexes = c(sectionBreak = "---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"),
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
@@ -185,12 +187,19 @@ opts$defaults <-
        persistentIds = c('caseId', 'coderId', 'stanzaId', 'uiid', 'prbid'),
        noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
        attributeContainers = c("ROCK_attributes"),
+       networkContainers = c("ROCK_network"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),
        delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
        ignoreOddDelimiters = FALSE,
+
+       ### Network settings
+       networkEdgeWeights = "manual",
+       networkDefaultEdgeWeight = 1,
+       networkCodeCleaningRegexes = c("\\|\\|", ""),
+       networkCollapseEdges = TRUE,
 
        ### Used to merge sources
        coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
@@ -210,10 +219,14 @@ opts$defaults <-
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
                                 "\\1...\\3"),
                               c("(\\s*\\r?\\n){3,}",
-                                "\n")),
+                                "\n"),
+                              c("\u2018|\u2019",
+                                "'"),
+                              c('\u201c|\u201d',
+                                '"')),
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
-       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]'\"]\\s*\\.(?!\\.\\.)\\s?)"),
        nestingMarker = "~",
 
        ### Saniziting for DiagrammeR
@@ -338,10 +351,42 @@ opts$defaults <-
                                "tr:nth-child(even){background-color:#f2f2f2}",
                                "</style>"),
 
-       ### default heading level
+       ### Default heading level
        defaultHeadingLevel = 1,
 
-       ### Used throughout for debugging,
+       theme_utteranceDiagram =
+         list(
+           c("layout", "dot", "graph"),
+           c("rankdir", "LR", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("font", "arial", "node"),
+           c("font", "arial", "edge"),
+           c("shape", "box", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           c("width", "4", "node"),
+           c("color", "#888888", "edge"),
+           c("dir", "none", "edge"),
+           c("headclip", "false", "edge"),
+           c("tailclip", "false", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
+       theme_networkDiagram =
+         list(
+           c("outputorder", "nodesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("font", "arial", "node"),
+           c("font", "arial", "edge"),
+           c("shape", "ellipse", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           c("color", "#000000", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
+       ### Used throughout for debugging
        debug = FALSE,
 
        ### Used throughout for suppressing messages

@@ -101,15 +101,21 @@ doc_to_txt <- function(input,
       );
   }
 
-  if ((!is.null(output)) && (dir.exists(dirname(output)))) {
+  if (!is.null(output)) {
 
-    writeTxtFile(
-      x = res,
-      output = output,
-      preventOverwriting = preventOverwriting,
-      encoding = encoding,
-      silent = silent
-    );
+    writingResult <-
+      writeTxtFile(
+        x = res,
+        output = output,
+        preventOverwriting = preventOverwriting,
+        encoding = encoding,
+        silent = silent
+      );
+
+    if (!writingResult) {
+      warning("Could not write output file to `",
+              output, "`.");
+    }
 
   }
 

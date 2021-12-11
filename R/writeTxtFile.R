@@ -4,11 +4,25 @@ writeTxtFile <- function(x,
                          preventOverwriting = rock::opts$get("preventOverwriting"),
                          silent = rock::opts$get("silent")) {
 
+  if (!dir.exists(dirname(output))) {
+
+    msg("The directory specified where the output file '",
+        basename(output), "' is supposed to be written ('",
+        dirname(output),
+        "') does not exist.",
+        silent = silent);
+
+    return(FALSE);
+
+  }
+
   if (file.exists(output) && preventOverwriting) {
 
     msg("The specified output file '", output, "' exists, and ",
         "`preventOverwriting` is `TRUE`, so not overwriting it.\n",
         silent = silent);
+
+    return(FALSE);
 
   } else {
 
@@ -56,6 +70,6 @@ writeTxtFile <- function(x,
 
   }
 
-  return(invisible(x));
+  return(invisible(TRUE));
 
 }

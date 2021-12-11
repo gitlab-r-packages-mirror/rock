@@ -87,22 +87,32 @@ parse_source <- function(text,
                          encoding=rock::opts$get(encoding),
                          silent=rock::opts$get(silent)) {
 
-  codeRegexes <- rock::opts$get(codeRegexes);
-  idRegexes <- rock::opts$get(idRegexes);
-  codeValueRegexes <- rock::opts$get(codeValueRegexes);
-  sectionRegexes <- rock::opts$get(sectionRegexes);
-  uidRegex <- rock::opts$get(uidRegex);
-  autoGenerateIds <- rock::opts$get(autoGenerateIds);
-  persistentIds <- rock::opts$get(persistentIds);
-  noCodes <- rock::opts$get(noCodes);
-  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
-  attributeContainers <- rock::opts$get(attributeContainers);
-  codesContainers <- rock::opts$get(codesContainers);
-  sectionBreakContainers <- rock::opts$get(sectionBreakContainers);
-  delimiterRegEx <- rock::opts$get(delimiterRegEx);
-  ignoreRegex <- rock::opts$get(ignoreRegex);
-  nestingMarker <- rock::opts$get(nestingMarker);
+  codeRegexes <- rock::opts$get('codeRegexes');
+  idRegexes <- rock::opts$get('idRegexes');
+  codeValueRegexes <- rock::opts$get('codeValueRegexes');
+  sectionRegexes <- rock::opts$get('sectionRegexes');
+  uidRegex <- rock::opts$get('uidRegex');
+  autoGenerateIds <- rock::opts$get('autoGenerateIds');
+  persistentIds <- rock::opts$get('persistentIds');
+  noCodes <- rock::opts$get('noCodes');
+  inductiveCodingHierarchyMarker <- rock::opts$get('inductiveCodingHierarchyMarker');
+  attributeContainers <- rock::opts$get('attributeContainers');
+  codesContainers <- rock::opts$get('codesContainers');
+  sectionBreakContainers <- rock::opts$get('sectionBreakContainers');
+  delimiterRegEx <- rock::opts$get('delimiterRegEx');
+  ignoreRegex <- rock::opts$get('ignoreRegex');
+  nestingMarker <- rock::opts$get('nestingMarker');
   diagrammerSanitizing <- rock::opts$get('diagrammerSanitizing');
+  networkCodeRegexes <- rock::opts$get('networkCodeRegexes');
+  networkCodeRegexOrder <- rock::opts$get('networkCodeRegexOrder');
+  networkEdgeWeights <- rock::opts$get('networkEdgeWeights');
+  networkDefaultEdgeWeight <- rock::opts$get('networkDefaultEdgeWeight');
+  networkCodeCleaningRegexes <- rock::opts$get('networkCodeCleaningRegexes');
+  networkCollapseEdges <- rock::opts$get('networkCollapseEdges');
+  theme_networkDiagram <- rock::opts$get('theme_networkDiagram');
+  theme_utteranceDiagram <- rock::opts$get('theme_utteranceDiagram');
+
+  ###---------------------------------------------------------------------------
 
   if (missing(file)) {
     if (missing(text)) {
@@ -147,6 +157,8 @@ parse_source <- function(text,
   res <-
     structure(list(arguments = as.list(environment())),
               class="rock_parsedSource");
+
+  ###---------------------------------------------------------------------------
 
   ### First process YAML fragments and remove them
   res$yamlFragments <-
@@ -211,6 +223,8 @@ parse_source <- function(text,
     res$sectionBreakRegexes <- NA;
   }
 
+  ###---------------------------------------------------------------------------
+
   if ((length(res$attributes) > 0) && (!all(is.na(unlist(res$attributes))))) {
 
     ### Simplify YAML attributes and convert into a data frame
@@ -236,6 +250,7 @@ parse_source <- function(text,
 
   }
 
+  ###---------------------------------------------------------------------------
 
   ### Then remove lines to ignore
   linesToIgnore <- grepl(ignoreRegex,
@@ -246,6 +261,8 @@ parse_source <- function(text,
   ### Create dataframe for parsing
   sourceDf <- data.frame(utterances_raw = x,
                          stringsAsFactors=FALSE);
+
+  ###---------------------------------------------------------------------------
 
   ### Identify sections
   if (!is.null(sectionRegexes) && length(sectionRegexes) > 0) {
@@ -323,6 +340,8 @@ parse_source <- function(text,
     }
   }
 
+  ###---------------------------------------------------------------------------
+
   ### Process identifiers
   if (!is.null(idRegexes) && length(idRegexes) > 0) {
     for (idRegex in names(idRegexes)) {
@@ -393,6 +412,8 @@ parse_source <- function(text,
       }
     }
   }
+
+  ###---------------------------------------------------------------------------
 
   ### Delete identifiers and store clean version in sourceDf
   x <-
@@ -604,10 +625,12 @@ parse_source <- function(text,
       ### Retain only the 'parenthesized' expression (i.e. the part of
       ### this code's regex between the parentheses, i.e., the actual code itself)
       cleanedCodeValueNames <-
-        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\1");
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex],
+               replacement="\\1");
 
       cleanedValues <-
-        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex], replacement="\\2");
+        lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex],
+               replacement="\\2");
 
       namedCodeValues <-
         mapply(
@@ -650,6 +673,187 @@ parse_source <- function(text,
 
     }
   }
+
+  ###---------------------------------------------------------------------------
+  ### Process network code identifiers
+
+  if (!is.null(networkCodeRegexes) && length(networkCodeRegexes) > 0) {
+
+    res$networkCodes <- list();
+
+    for (networkCodeRegex in names(networkCodeRegexes)) {
+
+      res$networkCodes[[networkCodeRegex]] <-
+        list(coded = data.frame());
+
+      ### Find matches (the full substrings that match this code in each line)
+      matches <-
+        regmatches(x,
+                   gregexpr(networkCodeRegexes[networkCodeRegex], x));
+
+      res$networkCodes[[networkCodeRegex]]$matches <- matches;
+
+      ### Cycle through the four elements; then through the matches;
+      ### then through the elments of each match (in case there are
+      ### more than one).
+      res$networkCodes[[networkCodeRegex]]$coded_list <-
+        lapply(
+          c(from = "from", to = "to", type = "type", weight = "weight"),
+          function(col) {
+            return(
+              do.call(
+                rbind,
+                lapply(
+                  seq_along(matches),
+                  function(originalSequenceNr) {
+                    selection <-
+                      unlist(
+                        lapply(
+                          matches[[originalSequenceNr]],
+                          function(match) {
+                            return(
+                              gsub(
+                                networkCodeRegexes[networkCodeRegex],
+                                paste0("\\", which(networkCodeRegexOrder==col)),
+                                match
+                              )
+                            );
+                          }
+                        )
+                      );
+                    if (is.null(selection)) {
+                      selection <-
+                        data.frame(
+                          NA,
+                          originalSequenceNr
+                        );
+                    } else {
+                      selection <-
+                        data.frame(
+                          gsub(
+                            networkCodeCleaningRegexes[1],
+                            networkCodeCleaningRegexes[2],
+                            selection
+                          ),
+                          rep(originalSequenceNr, length(selection))
+                        );
+                    }
+                    names(selection) <- c(col, "originalSequenceNr");
+                    return(selection);
+                  }
+                )
+              )
+            );
+          }
+        );
+
+      res$networkCodes[[networkCodeRegex]]$coded_df_full <-
+        data.frame(
+          from = res$networkCodes[[networkCodeRegex]]$coded_list$from$from,
+          to = res$networkCodes[[networkCodeRegex]]$coded_list$to$to,
+          type = res$networkCodes[[networkCodeRegex]]$coded_list$type$type,
+          weight = res$networkCodes[[networkCodeRegex]]$coded_list$weight$weight
+        );
+
+      res$networkCodes[[networkCodeRegex]]$coded_df <-
+        res$networkCodes[[networkCodeRegex]]$coded_df_full[
+          (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$from)) &
+            (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$to)),
+        ];
+
+      ### Set edge weights
+      if (networkEdgeWeights == "manual") {
+        res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
+          ifelse(
+            is.na(res$networkCodes[[networkCodeRegex]]$coded_df$weight) |
+              (nchar(res$networkCodes[[networkCodeRegex]]$coded_df$weight) == 0),
+            networkDefaultEdgeWeight,
+            res$networkCodes[[networkCodeRegex]]$coded_df$weight
+          );
+      } else {
+      }
+
+      if (networkCollapseEdges) {
+        res$networkCodes[[networkCodeRegex]]$coded_df <-
+          unique(res$networkCodes[[networkCodeRegex]]$coded_df);
+      }
+
+      ### Delete codes from utterances
+      x <-
+        gsub(networkCodeRegexes[networkCodeRegex],
+             "",
+             x);
+
+      res$networkCodes[[networkCodeRegex]]$nodeList <-
+        unique(
+          c(res$networkCodes[[networkCodeRegex]]$coded_df$to,
+            res$networkCodes[[networkCodeRegex]]$coded_df$from)
+        );
+
+      if (length(res$networkCodes[[networkCodeRegex]]$nodeList) > 0) {
+
+        ### Build DiagrammeR's node_df and edge_df
+        res$networkCodes[[networkCodeRegex]]$node_df <-
+          DiagrammeR::create_node_df(
+            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+            label = res$networkCodes[[networkCodeRegex]]$nodeList,
+          );
+
+        res$networkCodes[[networkCodeRegex]]$label_to_id <-
+          stats::setNames(
+            seq_along(res$networkCodes[[networkCodeRegex]]$nodeList),
+            nm = res$networkCodes[[networkCodeRegex]]$nodeList
+          );
+
+        res$networkCodes[[networkCodeRegex]]$node_df <-
+          DiagrammeR::create_node_df(
+            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+            label = res$networkCodes[[networkCodeRegex]]$nodeList,
+            type = networkCodeRegex
+          );
+
+        res$networkCodes[[networkCodeRegex]]$edge_df <-
+          DiagrammeR::create_edge_df(
+            from =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$from
+              ],
+            to =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$to
+              ],
+            rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
+            penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+          );
+
+        res$networkCodes[[networkCodeRegex]]$graph <-
+          DiagrammeR::create_graph(
+            nodes_df = res$networkCodes[[networkCodeRegex]]$node_df,
+            edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
+          );
+
+        res$networkCodes[[networkCodeRegex]]$graph <-
+          do.call(
+            apply_graph_theme,
+            c(
+              list(graph = res$networkCodes[[networkCodeRegex]]$graph),
+              theme_networkDiagram
+            )
+          );
+
+      } else {
+
+        res$networkCodes <- NULL;
+
+      }
+
+    }
+
+  } else {
+    res$networkCodes <- NULL;
+  }
+
+  ###---------------------------------------------------------------------------
 
   ### Trim spaces from front and back and store almost clean utterances
   sourceDf$utterances_clean_with_uids <-
@@ -803,22 +1007,14 @@ parse_source <- function(text,
       );
 
     utteranceDiagram <-
-      apply_graph_theme(utteranceDiagram,
-                        c("layout", "dot", "graph"),
-                        c("rankdir", "LR", "graph"),
-                        c("outputorder", "edgesfirst", "graph"),
-                        c("fixedsize", "false", "node"),
-                        c("font", "arial", "node"),
-                        c("font", "arial", "edge"),
-                        c("shape", "box", "node"),
-                        c("style", "rounded,filled", "node"),
-                        c("color", "#000000", "node"),
-                        c("width", "4", "node"),
-                        c("color", "#888888", "edge"),
-                        c("dir", "none", "edge"),
-                        c("headclip", "false", "edge"),
-                        c("tailclip", "false", "edge"),
-                        c("fillcolor", "#FFFFFF", "node"));
+      do.call(
+        apply_graph_theme,
+        list(
+          utteranceDiagram,
+          theme_utteranceDiagram
+        )
+      );
+
   } else {
     utteranceDiagram <- NA;
   }
