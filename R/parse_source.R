@@ -790,55 +790,62 @@ parse_source <- function(text,
             res$networkCodes[[networkCodeRegex]]$coded_df$from)
         );
 
-      ### Build DiagrammeR's node_df and edge_df
-      res$networkCodes[[networkCodeRegex]]$node_df <-
-        DiagrammeR::create_node_df(
-          n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
-          label = res$networkCodes[[networkCodeRegex]]$nodeList,
-        );
+      if (length(res$networkCodes[[networkCodeRegex]]$nodeList) > 0) {
 
-      res$networkCodes[[networkCodeRegex]]$label_to_id <-
-        stats::setNames(
-          seq_along(res$networkCodes[[networkCodeRegex]]$nodeList),
-          nm = res$networkCodes[[networkCodeRegex]]$nodeList
-        );
+        ### Build DiagrammeR's node_df and edge_df
+        res$networkCodes[[networkCodeRegex]]$node_df <-
+          DiagrammeR::create_node_df(
+            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+            label = res$networkCodes[[networkCodeRegex]]$nodeList,
+          );
 
-      res$networkCodes[[networkCodeRegex]]$node_df <-
-        DiagrammeR::create_node_df(
-          n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
-          label = res$networkCodes[[networkCodeRegex]]$nodeList,
-          type = networkCodeRegex
-        );
+        res$networkCodes[[networkCodeRegex]]$label_to_id <-
+          stats::setNames(
+            seq_along(res$networkCodes[[networkCodeRegex]]$nodeList),
+            nm = res$networkCodes[[networkCodeRegex]]$nodeList
+          );
 
-      res$networkCodes[[networkCodeRegex]]$edge_df <-
-        DiagrammeR::create_edge_df(
-          from =
-            res$networkCodes[[networkCodeRegex]]$label_to_id[
-              res$networkCodes[[networkCodeRegex]]$coded_df$from
-            ],
-          to =
-            res$networkCodes[[networkCodeRegex]]$label_to_id[
-              res$networkCodes[[networkCodeRegex]]$coded_df$to
-            ],
-          rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
-          penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
-        );
+        res$networkCodes[[networkCodeRegex]]$node_df <-
+          DiagrammeR::create_node_df(
+            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+            label = res$networkCodes[[networkCodeRegex]]$nodeList,
+            type = networkCodeRegex
+          );
 
-      res$networkCodes[[networkCodeRegex]]$graph <-
-        DiagrammeR::create_graph(
-          nodes_df = res$networkCodes[[networkCodeRegex]]$node_df,
-          edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
-        );
+        res$networkCodes[[networkCodeRegex]]$edge_df <-
+          DiagrammeR::create_edge_df(
+            from =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$from
+              ],
+            to =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$to
+              ],
+            rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
+            penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+          );
 
-      res$networkCodes[[networkCodeRegex]]$graph <-
-        do.call(
-          apply_graph_theme,
-          c(
-            list(graph = res$networkCodes[[networkCodeRegex]]$graph),
-            theme_networkDiagram
-          )
-        );
+        res$networkCodes[[networkCodeRegex]]$graph <-
+          DiagrammeR::create_graph(
+            nodes_df = res$networkCodes[[networkCodeRegex]]$node_df,
+            edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
+          );
 
+        res$networkCodes[[networkCodeRegex]]$graph <-
+          do.call(
+            apply_graph_theme,
+            c(
+              list(graph = res$networkCodes[[networkCodeRegex]]$graph),
+              theme_networkDiagram
+            )
+          );
+
+      } else {
+
+        res$networkCodes <- NULL;
+
+      }
 
     }
 
