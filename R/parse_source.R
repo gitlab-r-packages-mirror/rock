@@ -40,6 +40,7 @@
 #' you should probably call `parse_sources` instead of `parse_source`).
 #' @param mergeInductiveTrees Merge multiple inductive code trees into one; this
 #' functionality is currently not yet implemented.
+#' @param filesWithYAML Any additional files to process to look for YAML fragments.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
 #' @param prefix The prefix to use before the 'headings' of the printed result.
@@ -83,6 +84,7 @@ parse_source <- function(text,
                          ignoreOddDelimiters=FALSE,
                          checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                          postponeDeductiveTreeBuilding = FALSE,
+                         filesWithYAML = NULL,
                          rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
                          silent=rock::opts$get(silent)) {
@@ -165,11 +167,35 @@ parse_source <- function(text,
   res$yamlFragments <-
     yum::extract_yaml_fragments(text=x,
                                 delimiterRegEx=delimiterRegEx,
-                                ignoreOddDelimiters=ignoreOddDelimiters);
+                                ignoreOddDelimiters=ignoreOddDelimiters,
+                                encoding=encoding,
+                                silent=silent);
   x <-
     yum::delete_yaml_fragments(text=x,
                                delimiterRegEx=delimiterRegEx,
-                               ignoreOddDelimiters=ignoreOddDelimiters);
+                               ignoreOddDelimiters=ignoreOddDelimiters,
+                               silent=silent);
+
+  if (!is.null(filesWithYAML)) {
+    for (currentYAMLfile in filesWithYAML) {
+      if (file.exists(currentYAMLfile)) {
+        res$yamlFragments <-
+          structure(
+            c(
+              res$yamlFragments,
+              yum::extract_yaml_fragments(
+                file=currentYAMLfile,
+                delimiterRegEx=delimiterRegEx,
+                ignoreOddDelimiters=ignoreOddDelimiters,
+                encoding=encoding,
+                silent=silent
+              )
+            ),
+            class = "yamlFragments"
+          );
+      }
+    }
+  }
 
   ### Process attributes and deductive code trees
   if (!is.null(res$yamlFragments)) {
@@ -842,6 +868,21 @@ parse_source <- function(text,
             type = networkCodeRegex
           );
 
+        ### Prepare a list to provide to do.call when creating the edge_df
+        list_for_edf <-
+          list(
+            from =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$from
+              ],
+            to =
+              res$networkCodes[[networkCodeRegex]]$label_to_id[
+                res$networkCodes[[networkCodeRegex]]$coded_df$to
+              ],
+            rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
+            penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+          );
+
         if (!is.na(res$networkConfig)) {
 
           configName <- paste0("ROCK_", networkCodeRegex);
@@ -865,7 +906,7 @@ parse_source <- function(text,
               )
             );
 
-          edgeConfig <-
+          res$networkCodes[[networkCodeRegex]]$edgeConfig <-
             stats::setNames(
               res$networkConfig[[configName]]$edges,
               configuredEdgeTypes
@@ -876,28 +917,40 @@ parse_source <- function(text,
             res$networkCodes[[networkCodeRegex]]$coded_df[
               res$networkCodes[[networkCodeRegex]]$coded_df$type ==
                 currentType,
-              setdiff(names(edgeConfig[[currentType]]), "type")
+              setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
             ] <-
-              edgeConfig[[currentType]][
-                setdiff(names(edgeConfig[[currentType]]), "type")
+              res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
               ];
 
+          }
+
+          configuredEdgeAttributes <-
+            setdiff(
+              names(res$networkCodes[[networkCodeRegex]]$coded_df),
+              c("from", "to", "type", "weight", "edge_weight")
+            );
+
+          for (edgeInfoToAdd in configuredEdgeAttributes) {
+            list_for_edf <-
+              c(list_for_edf,
+                structure(
+                  list(
+                    unlist(
+                      res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
+                    )
+                  ),
+                  names = edgeInfoToAdd
+                )
+              );
           }
 
         }
 
         res$networkCodes[[networkCodeRegex]]$edge_df <-
-          DiagrammeR::create_edge_df(
-            from =
-              res$networkCodes[[networkCodeRegex]]$label_to_id[
-                res$networkCodes[[networkCodeRegex]]$coded_df$from
-              ],
-            to =
-              res$networkCodes[[networkCodeRegex]]$label_to_id[
-                res$networkCodes[[networkCodeRegex]]$coded_df$to
-              ],
-            rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
-            penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+          do.call(
+            DiagrammeR::create_edge_df,
+            list_for_edf
           );
 
         res$networkCodes[[networkCodeRegex]]$graph <-

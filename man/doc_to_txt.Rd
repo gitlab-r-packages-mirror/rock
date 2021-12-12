@@ -9,6 +9,8 @@ doc_to_txt(
   output = NULL,
   encoding = rock::opts$get("encoding"),
   newExt = NULL,
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent"),
   skip = 0,
   remove.empty = TRUE,
   trim = TRUE,
@@ -30,6 +32,10 @@ will be used, and the extension will be replaced with \code{extension}.}
 \item{newExt}{The extension to append: only used if \code{output = NULL} and
 \code{newExt} is not \code{NULL}, in which case the output will be written to a file
 with the same name as \code{input} but with \code{newExt} as extension.}
+
+\item{preventOverwriting}{Whether to prevent overwriting existing files.}
+
+\item{silent}{Whether to the silent or chatty.}
 
 \item{skip}{The number of lines to skip (see \code{\link[textreadr:read_document]{textreadr::read_document()}}).}
 
