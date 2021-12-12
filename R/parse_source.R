@@ -97,6 +97,7 @@ parse_source <- function(text,
   noCodes <- rock::opts$get('noCodes');
   inductiveCodingHierarchyMarker <- rock::opts$get('inductiveCodingHierarchyMarker');
   attributeContainers <- rock::opts$get('attributeContainers');
+  networkContainers <- rock::opts$get('networkContainers');
   codesContainers <- rock::opts$get('codesContainers');
   sectionBreakContainers <- rock::opts$get('sectionBreakContainers');
   delimiterRegEx <- rock::opts$get('delimiterRegEx');
@@ -172,16 +173,19 @@ parse_source <- function(text,
 
   ### Process attributes and deductive code trees
   if (!is.null(res$yamlFragments)) {
-    if (!silent) {
-      cat0("Encountered YAML fragments. Parsing them for attributes.\n");
-    }
+    msg(
+      "Encountered YAML fragments. Parsing them for attributes.\n",
+      silent = silent
+    );
     res$attributes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(attributeContainers, collapse="|"));
-    if (!silent) {
-      cat0("Read ", length(unlist(res$attributes)),
-                " attributes specifications. Continuing with deductive code trees.\n");
-    }
+    msg(
+      "Read ", length(unlist(res$attributes)),
+      " attributes specifications. Continuing with deductive code trees.\n",
+      silent = silent
+    );
+
     res$rawDeductiveCodes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(codesContainers, collapse="|"));
@@ -192,11 +196,12 @@ parse_source <- function(text,
     ### Remove empty codes
     res$deductiveCodes <-
       res$deductiveCodes[nchar(res$deductiveCodes)>0];
-    if (!silent) {
-      cat0("Read ", length(res$deductiveCodes),
-                " deductive codes (",
-                vecTxtQ(res$deductiveCodes), ").\n");
-    }
+    msg(
+      "Read ", length(res$deductiveCodes),
+      " deductive codes (",
+      vecTxtQ(res$deductiveCodes), ").\n"
+    );
+
     ### Store tree, unless we should postpone that
     if (!postponeDeductiveTreeBuilding) {
       ### Build tree
@@ -211,16 +216,41 @@ parse_source <- function(text,
     res$sectionBreakRegexes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(sectionBreakContainers, collapse="|"));
-    if (!silent) {
-      cat0("Read ", length(unlist(res$sectionBreakRegexes)),
-           " section break codes.\n");
-    }
+    msg(
+      "Read ", length(unlist(res$sectionBreakRegexes)),
+      " section break codes.\n"
+    );
+
+    msg(
+      "Looking for network configuration.\n",
+      silent = silent
+    );
+    res$networkConfig <-
+      yum::load_and_simplify(yamlFragments=res$yamlFragments,
+                             select=paste0(networkContainers, collapse="|"));
+    msg(
+      "Read ", length(unlist(res$networkConfig)),
+      " network confguration specifications.\n",
+      silent = silent
+    );
+
+    msg(
+      "Done parsing YAML fragments.\n",
+      silent = silent
+    );
 
   } else {
+
+    msg(
+      "No YAML fragments encountered.\n",
+      silent = silent
+    );
+
     res$attributes <- NA;
     res$deductiveCodes <- NA;
     res$deductiveCodeTrees <- NA;
     res$sectionBreakRegexes <- NA;
+    res$networkConfig <- NA;
   }
 
   ###---------------------------------------------------------------------------
@@ -811,6 +841,50 @@ parse_source <- function(text,
             label = res$networkCodes[[networkCodeRegex]]$nodeList,
             type = networkCodeRegex
           );
+
+        if (!is.na(res$networkConfig)) {
+
+          configName <- paste0("ROCK_", networkCodeRegex);
+
+          uniqueTypes <-
+            unique(
+              res$networkCodes[[networkCodeRegex]]$coded_df$type
+            );
+
+          configuredEdgeTypes <-
+            unlist(
+              lapply(
+                res$networkConfig[[configName]]$edges,
+                function(x) {
+                  if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
+                    return("no_type_specified");
+                  } else {
+                    return(x$type);
+                  }
+                }
+              )
+            );
+
+          edgeConfig <-
+            stats::setNames(
+              res$networkConfig[[configName]]$edges,
+              configuredEdgeTypes
+            );
+
+          for (currentType in uniqueTypes) {
+
+            res$networkCodes[[networkCodeRegex]]$coded_df[
+              res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+                currentType,
+              setdiff(names(edgeConfig[[currentType]]), "type")
+            ] <-
+              edgeConfig[[currentType]][
+                setdiff(names(edgeConfig[[currentType]]), "type")
+              ];
+
+          }
+
+        }
 
         res$networkCodes[[networkCodeRegex]]$edge_df <-
           DiagrammeR::create_edge_df(
