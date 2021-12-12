@@ -40,6 +40,7 @@
 #' you should probably call `parse_sources` instead of `parse_source`).
 #' @param mergeInductiveTrees Merge multiple inductive code trees into one; this
 #' functionality is currently not yet implemented.
+#' @param filesWithYAML Any additional files to process to look for YAML fragments.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
 #' @param prefix The prefix to use before the 'headings' of the printed result.
@@ -83,6 +84,7 @@ parse_source <- function(text,
                          ignoreOddDelimiters=FALSE,
                          checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                          postponeDeductiveTreeBuilding = FALSE,
+                         filesWithYAML = NULL,
                          rlWarn = rock::opts$get(rlWarn),
                          encoding=rock::opts$get(encoding),
                          silent=rock::opts$get(silent)) {
@@ -97,6 +99,7 @@ parse_source <- function(text,
   noCodes <- rock::opts$get('noCodes');
   inductiveCodingHierarchyMarker <- rock::opts$get('inductiveCodingHierarchyMarker');
   attributeContainers <- rock::opts$get('attributeContainers');
+  networkContainers <- rock::opts$get('networkContainers');
   codesContainers <- rock::opts$get('codesContainers');
   sectionBreakContainers <- rock::opts$get('sectionBreakContainers');
   delimiterRegEx <- rock::opts$get('delimiterRegEx');
@@ -164,24 +167,51 @@ parse_source <- function(text,
   res$yamlFragments <-
     yum::extract_yaml_fragments(text=x,
                                 delimiterRegEx=delimiterRegEx,
-                                ignoreOddDelimiters=ignoreOddDelimiters);
+                                ignoreOddDelimiters=ignoreOddDelimiters,
+                                encoding=encoding,
+                                silent=silent);
   x <-
     yum::delete_yaml_fragments(text=x,
                                delimiterRegEx=delimiterRegEx,
-                               ignoreOddDelimiters=ignoreOddDelimiters);
+                               ignoreOddDelimiters=ignoreOddDelimiters,
+                               silent=silent);
+
+  if (!is.null(filesWithYAML)) {
+    for (currentYAMLfile in filesWithYAML) {
+      if (file.exists(currentYAMLfile)) {
+        res$yamlFragments <-
+          structure(
+            c(
+              res$yamlFragments,
+              yum::extract_yaml_fragments(
+                file=currentYAMLfile,
+                delimiterRegEx=delimiterRegEx,
+                ignoreOddDelimiters=ignoreOddDelimiters,
+                encoding=encoding,
+                silent=silent
+              )
+            ),
+            class = "yamlFragments"
+          );
+      }
+    }
+  }
 
   ### Process attributes and deductive code trees
   if (!is.null(res$yamlFragments)) {
-    if (!silent) {
-      cat0("Encountered YAML fragments. Parsing them for attributes.\n");
-    }
+    msg(
+      "Encountered YAML fragments. Parsing them for attributes.\n",
+      silent = silent
+    );
     res$attributes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(attributeContainers, collapse="|"));
-    if (!silent) {
-      cat0("Read ", length(unlist(res$attributes)),
-                " attributes specifications. Continuing with deductive code trees.\n");
-    }
+    msg(
+      "Read ", length(unlist(res$attributes)),
+      " attributes specifications. Continuing with deductive code trees.\n",
+      silent = silent
+    );
+
     res$rawDeductiveCodes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(codesContainers, collapse="|"));
@@ -192,11 +222,12 @@ parse_source <- function(text,
     ### Remove empty codes
     res$deductiveCodes <-
       res$deductiveCodes[nchar(res$deductiveCodes)>0];
-    if (!silent) {
-      cat0("Read ", length(res$deductiveCodes),
-                " deductive codes (",
-                vecTxtQ(res$deductiveCodes), ").\n");
-    }
+    msg(
+      "Read ", length(res$deductiveCodes),
+      " deductive codes (",
+      vecTxtQ(res$deductiveCodes), ").\n"
+    );
+
     ### Store tree, unless we should postpone that
     if (!postponeDeductiveTreeBuilding) {
       ### Build tree
@@ -211,16 +242,41 @@ parse_source <- function(text,
     res$sectionBreakRegexes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(sectionBreakContainers, collapse="|"));
-    if (!silent) {
-      cat0("Read ", length(unlist(res$sectionBreakRegexes)),
-           " section break codes.\n");
-    }
+    msg(
+      "Read ", length(unlist(res$sectionBreakRegexes)),
+      " section break codes.\n"
+    );
+
+    msg(
+      "Looking for network configuration.\n",
+      silent = silent
+    );
+    res$networkConfig <-
+      yum::load_and_simplify(yamlFragments=res$yamlFragments,
+                             select=paste0(networkContainers, collapse="|"));
+    msg(
+      "Read ", length(unlist(res$networkConfig)),
+      " network confguration specifications.\n",
+      silent = silent
+    );
+
+    msg(
+      "Done parsing YAML fragments.\n",
+      silent = silent
+    );
 
   } else {
+
+    msg(
+      "No YAML fragments encountered.\n",
+      silent = silent
+    );
+
     res$attributes <- NA;
     res$deductiveCodes <- NA;
     res$deductiveCodeTrees <- NA;
     res$sectionBreakRegexes <- NA;
+    res$networkConfig <- NA;
   }
 
   ###---------------------------------------------------------------------------
@@ -812,8 +868,9 @@ parse_source <- function(text,
             type = networkCodeRegex
           );
 
-        res$networkCodes[[networkCodeRegex]]$edge_df <-
-          DiagrammeR::create_edge_df(
+        ### Prepare a list to provide to do.call when creating the edge_df
+        list_for_edf <-
+          list(
             from =
               res$networkCodes[[networkCodeRegex]]$label_to_id[
                 res$networkCodes[[networkCodeRegex]]$coded_df$from
@@ -824,6 +881,76 @@ parse_source <- function(text,
               ],
             rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
             penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+          );
+
+        if (!is.na(res$networkConfig)) {
+
+          configName <- paste0("ROCK_", networkCodeRegex);
+
+          uniqueTypes <-
+            unique(
+              res$networkCodes[[networkCodeRegex]]$coded_df$type
+            );
+
+          configuredEdgeTypes <-
+            unlist(
+              lapply(
+                res$networkConfig[[configName]]$edges,
+                function(x) {
+                  if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
+                    return("no_type_specified");
+                  } else {
+                    return(x$type);
+                  }
+                }
+              )
+            );
+
+          res$networkCodes[[networkCodeRegex]]$edgeConfig <-
+            stats::setNames(
+              res$networkConfig[[configName]]$edges,
+              configuredEdgeTypes
+            );
+
+          for (currentType in uniqueTypes) {
+
+            res$networkCodes[[networkCodeRegex]]$coded_df[
+              res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+                currentType,
+              setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+            ] <-
+              res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+              ];
+
+          }
+
+          configuredEdgeAttributes <-
+            setdiff(
+              names(res$networkCodes[[networkCodeRegex]]$coded_df),
+              c("from", "to", "type", "weight", "edge_weight")
+            );
+
+          for (edgeInfoToAdd in configuredEdgeAttributes) {
+            list_for_edf <-
+              c(list_for_edf,
+                structure(
+                  list(
+                    unlist(
+                      res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
+                    )
+                  ),
+                  names = edgeInfoToAdd
+                )
+              );
+          }
+
+        }
+
+        res$networkCodes[[networkCodeRegex]]$edge_df <-
+          do.call(
+            DiagrammeR::create_edge_df,
+            list_for_edf
           );
 
         res$networkCodes[[networkCodeRegex]]$graph <-
