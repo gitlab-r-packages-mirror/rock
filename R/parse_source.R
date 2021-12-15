@@ -813,7 +813,7 @@ parse_source <- function(text,
 
       res$networkCodes[[networkCodeRegex]]$coded_df_full$frequency <-
         apply(
-          dat$networkCodes$network$coded_df_full,
+          res$networkCodes[[networkCodeRegex]]$coded_df_full,
           1,
           function(row) {
             if (all(is.na(row))) {
@@ -821,10 +821,10 @@ parse_source <- function(text,
             } else {
               return(
                 nrow(
-                  dat$networkCodes$network$coded_df_full[
-                    (dat$networkCodes$network$coded_df_full$from %in% row['from']) &
-                      (dat$networkCodes$network$coded_df_full$to %in% row['to']) &
-                      (dat$networkCodes$network$coded_df_full$type %in% row['type']),
+                  res$networkCodes[[networkCodeRegex]]$coded_df_full[
+                    (res$networkCodes[[networkCodeRegex]]$coded_df_full$from %in% row['from']) &
+                      (res$networkCodes[[networkCodeRegex]]$coded_df_full$to %in% row['to']) &
+                      (res$networkCodes[[networkCodeRegex]]$coded_df_full$type %in% row['type']),
                   ]
                 )
               );
