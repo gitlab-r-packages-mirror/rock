@@ -811,6 +811,27 @@ parse_source <- function(text,
           weight = res$networkCodes[[networkCodeRegex]]$coded_list$weight$weight
         );
 
+      res$networkCodes[[networkCodeRegex]]$coded_df_full$frequency <-
+        apply(
+          dat$networkCodes$network$coded_df_full,
+          1,
+          function(row) {
+            if (all(is.na(row))) {
+              return(0);
+            } else {
+              return(
+                nrow(
+                  dat$networkCodes$network$coded_df_full[
+                    (dat$networkCodes$network$coded_df_full$from %in% row['from']) &
+                      (dat$networkCodes$network$coded_df_full$to %in% row['to']) &
+                      (dat$networkCodes$network$coded_df_full$type %in% row['type']),
+                  ]
+                )
+              );
+            }
+          }
+        );
+
       res$networkCodes[[networkCodeRegex]]$coded_df <-
         res$networkCodes[[networkCodeRegex]]$coded_df_full[
           (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$from)) &
@@ -828,25 +849,7 @@ parse_source <- function(text,
           );
       } else if (networkEdgeWeights == "frequency") {
         res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
-          apply(
-            dat$networkCodes$network$coded_df_full,
-            1,
-            function(row) {
-              if (all(is.na(row))) {
-                return(0);
-              } else {
-                return(
-                  nrow(
-                    dat$networkCodes$network$coded_df_full[
-                      (dat$networkCodes$network$coded_df_full$from %in% row['from']) &
-                        (dat$networkCodes$network$coded_df_full$to %in% row['to']) &
-                        (dat$networkCodes$network$coded_df_full$type %in% row['type']),
-                    ]
-                  )
-                );
-              }
-            }
-          );
+          res$networkCodes[[networkCodeRegex]]$coded_df$frequency
       }
 
       if (networkCollapseEdges) {
