@@ -826,7 +826,27 @@ parse_source <- function(text,
             networkDefaultEdgeWeight,
             res$networkCodes[[networkCodeRegex]]$coded_df$weight
           );
-      } else {
+      } else if (networkEdgeWeights == "frequency") {
+        res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
+          apply(
+            dat$networkCodes$network$coded_df_full,
+            1,
+            function(row) {
+              if (all(is.na(row))) {
+                return(0);
+              } else {
+                return(
+                  nrow(
+                    dat$networkCodes$network$coded_df_full[
+                      (dat$networkCodes$network$coded_df_full$from %in% row['from']) &
+                        (dat$networkCodes$network$coded_df_full$to %in% row['to']) &
+                        (dat$networkCodes$network$coded_df_full$type %in% row['type']),
+                    ]
+                  )
+                );
+              }
+            }
+          );
       }
 
       if (networkCollapseEdges) {
