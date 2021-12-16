@@ -125,6 +125,9 @@ testthat::test_that("A deductive code tree is read correctly from multiple DCT f
 
 testthat::test_that("Sources are exported to html properly", {
 
+  # devtools::load_all();
+  # rock::opts$set(debug = TRUE);
+
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
   testres <- parse_sources(examplePath,
