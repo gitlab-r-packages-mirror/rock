@@ -749,251 +749,262 @@ parse_source <- function(text,
 
       res$networkCodes[[networkCodeRegex]]$matches <- matches;
 
-      ### Cycle through the four elements; then through the matches;
-      ### then through the elments of each match (in case there are
-      ### more than one).
-      res$networkCodes[[networkCodeRegex]]$coded_list <-
-        lapply(
-          c(from = "from", to = "to", type = "type", weight = "weight"),
-          function(col) {
-            return(
-              do.call(
-                rbind,
-                lapply(
-                  seq_along(matches),
-                  function(originalSequenceNr) {
-                    selection <-
-                      unlist(
-                        lapply(
-                          matches[[originalSequenceNr]],
-                          function(match) {
-                            return(
-                              gsub(
-                                networkCodeRegexes[networkCodeRegex],
-                                paste0("\\", which(networkCodeRegexOrder==col)),
-                                match
-                              )
-                            );
-                          }
-                        )
-                      );
-                    if (is.null(selection)) {
-                      selection <-
-                        data.frame(
-                          NA,
-                          originalSequenceNr
-                        );
-                    } else {
-                      selection <-
-                        data.frame(
-                          gsub(
-                            networkCodeCleaningRegexes[1],
-                            networkCodeCleaningRegexes[2],
-                            selection
-                          ),
-                          rep(originalSequenceNr, length(selection))
-                        );
-                    }
-                    names(selection) <- c(col, "originalSequenceNr");
-                    return(selection);
-                  }
-                )
-              )
-            );
-          }
-        );
+      if (length(matches) > 0) {
 
-      res$networkCodes[[networkCodeRegex]]$coded_df_full <-
-        data.frame(
-          from = res$networkCodes[[networkCodeRegex]]$coded_list$from$from,
-          to = res$networkCodes[[networkCodeRegex]]$coded_list$to$to,
-          type = res$networkCodes[[networkCodeRegex]]$coded_list$type$type,
-          weight = res$networkCodes[[networkCodeRegex]]$coded_list$weight$weight
-        );
-
-      res$networkCodes[[networkCodeRegex]]$coded_df_full$frequency <-
-        apply(
-          res$networkCodes[[networkCodeRegex]]$coded_df_full,
-          1,
-          function(row) {
-            if (all(is.na(row))) {
-              return(0);
-            } else {
+        ### Cycle through the four elements; then through the matches;
+        ### then through the elments of each match (in case there are
+        ### more than one).
+        res$networkCodes[[networkCodeRegex]]$coded_list <-
+          lapply(
+            c(from = "from", to = "to", type = "type", weight = "weight"),
+            function(col) {
               return(
-                nrow(
-                  res$networkCodes[[networkCodeRegex]]$coded_df_full[
-                    (res$networkCodes[[networkCodeRegex]]$coded_df_full$from %in% row['from']) &
-                      (res$networkCodes[[networkCodeRegex]]$coded_df_full$to %in% row['to']) &
-                      (res$networkCodes[[networkCodeRegex]]$coded_df_full$type %in% row['type']),
-                  ]
+                do.call(
+                  rbind,
+                  lapply(
+                    seq_along(matches),
+                    function(originalSequenceNr) {
+                      selection <-
+                        unlist(
+                          lapply(
+                            matches[[originalSequenceNr]],
+                            function(match) {
+                              return(
+                                gsub(
+                                  networkCodeRegexes[networkCodeRegex],
+                                  paste0("\\", which(networkCodeRegexOrder==col)),
+                                  match
+                                )
+                              );
+                            }
+                          )
+                        );
+                      if (is.null(selection)) {
+                        selection <-
+                          data.frame(
+                            NA,
+                            originalSequenceNr
+                          );
+                      } else {
+                        selection <-
+                          data.frame(
+                            gsub(
+                              networkCodeCleaningRegexes[1],
+                              networkCodeCleaningRegexes[2],
+                              selection
+                            ),
+                            rep(originalSequenceNr, length(selection))
+                          );
+                      }
+                      names(selection) <- c(col, "originalSequenceNr");
+                      return(selection);
+                    }
+                  )
                 )
               );
             }
-          }
-        );
-
-      res$networkCodes[[networkCodeRegex]]$coded_df <-
-        res$networkCodes[[networkCodeRegex]]$coded_df_full[
-          (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$from)) &
-            (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$to)),
-        ];
-
-      ### Set edge weights
-      if (networkEdgeWeights == "manual") {
-        res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
-          ifelse(
-            is.na(res$networkCodes[[networkCodeRegex]]$coded_df$weight) |
-              (nchar(res$networkCodes[[networkCodeRegex]]$coded_df$weight) == 0),
-            networkDefaultEdgeWeight,
-            res$networkCodes[[networkCodeRegex]]$coded_df$weight
           );
-      } else if (networkEdgeWeights == "frequency") {
-        res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
-          res$networkCodes[[networkCodeRegex]]$coded_df$frequency
-      }
 
-      if (networkCollapseEdges) {
+        res$networkCodes[[networkCodeRegex]]$coded_df_full <-
+          data.frame(
+            from = res$networkCodes[[networkCodeRegex]]$coded_list$from$from,
+            to = res$networkCodes[[networkCodeRegex]]$coded_list$to$to,
+            type = res$networkCodes[[networkCodeRegex]]$coded_list$type$type,
+            weight = res$networkCodes[[networkCodeRegex]]$coded_list$weight$weight
+          );
+
+        res$networkCodes[[networkCodeRegex]]$coded_df_full$frequency <-
+          apply(
+            res$networkCodes[[networkCodeRegex]]$coded_df_full,
+            1,
+            function(row) {
+              if (all(is.na(row))) {
+                return(0);
+              } else {
+                return(
+                  nrow(
+                    res$networkCodes[[networkCodeRegex]]$coded_df_full[
+                      (res$networkCodes[[networkCodeRegex]]$coded_df_full$from %in% row['from']) &
+                        (res$networkCodes[[networkCodeRegex]]$coded_df_full$to %in% row['to']) &
+                        (res$networkCodes[[networkCodeRegex]]$coded_df_full$type %in% row['type']),
+                    ]
+                  )
+                );
+              }
+            }
+          );
+
         res$networkCodes[[networkCodeRegex]]$coded_df <-
-          unique(res$networkCodes[[networkCodeRegex]]$coded_df);
-      }
+          res$networkCodes[[networkCodeRegex]]$coded_df_full[
+            (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$from)) &
+              (!is.na(res$networkCodes[[networkCodeRegex]]$coded_df_full$to)),
+          ];
 
-      ### Delete codes from utterances
-      x <-
-        gsub(networkCodeRegexes[networkCodeRegex],
-             "",
-             x);
+        ### Set edge weights
+        if (networkEdgeWeights == "manual") {
+          res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
+            ifelse(
+              is.na(res$networkCodes[[networkCodeRegex]]$coded_df$weight) |
+                (nchar(res$networkCodes[[networkCodeRegex]]$coded_df$weight) == 0),
+              networkDefaultEdgeWeight,
+              res$networkCodes[[networkCodeRegex]]$coded_df$weight
+            );
+        } else if (networkEdgeWeights == "frequency") {
+          res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight <-
+            res$networkCodes[[networkCodeRegex]]$coded_df$frequency
+        }
 
-      res$networkCodes[[networkCodeRegex]]$nodeList <-
-        unique(
-          c(res$networkCodes[[networkCodeRegex]]$coded_df$to,
-            res$networkCodes[[networkCodeRegex]]$coded_df$from)
-        );
+        if (networkCollapseEdges) {
+          res$networkCodes[[networkCodeRegex]]$coded_df <-
+            unique(res$networkCodes[[networkCodeRegex]]$coded_df);
+        }
 
-      if (length(res$networkCodes[[networkCodeRegex]]$nodeList) > 0) {
+        ### Delete codes from utterances
+        x <-
+          gsub(networkCodeRegexes[networkCodeRegex],
+               "",
+               x);
 
-        ### Build DiagrammeR's node_df and edge_df
-        res$networkCodes[[networkCodeRegex]]$node_df <-
-          DiagrammeR::create_node_df(
-            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
-            label = res$networkCodes[[networkCodeRegex]]$nodeList,
+        res$networkCodes[[networkCodeRegex]]$nodeList <-
+          unique(
+            c(res$networkCodes[[networkCodeRegex]]$coded_df$to,
+              res$networkCodes[[networkCodeRegex]]$coded_df$from)
           );
 
-        res$networkCodes[[networkCodeRegex]]$label_to_id <-
-          stats::setNames(
-            seq_along(res$networkCodes[[networkCodeRegex]]$nodeList),
-            nm = res$networkCodes[[networkCodeRegex]]$nodeList
-          );
+        if (length(res$networkCodes[[networkCodeRegex]]$nodeList) > 0) {
 
-        res$networkCodes[[networkCodeRegex]]$node_df <-
-          DiagrammeR::create_node_df(
-            n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
-            label = res$networkCodes[[networkCodeRegex]]$nodeList,
-            type = networkCodeRegex
-          );
-
-        ### Prepare a list to provide to do.call when creating the edge_df
-        list_for_edf <-
-          list(
-            from =
-              res$networkCodes[[networkCodeRegex]]$label_to_id[
-                res$networkCodes[[networkCodeRegex]]$coded_df$from
-              ],
-            to =
-              res$networkCodes[[networkCodeRegex]]$label_to_id[
-                res$networkCodes[[networkCodeRegex]]$coded_df$to
-              ],
-            rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
-            penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
-          );
-
-        if (!is.na(res$networkConfig)) {
-
-          configName <- paste0("ROCK_", networkCodeRegex);
-
-          uniqueTypes <-
-            unique(
-              res$networkCodes[[networkCodeRegex]]$coded_df$type
+          ### Build DiagrammeR's node_df and edge_df
+          res$networkCodes[[networkCodeRegex]]$node_df <-
+            DiagrammeR::create_node_df(
+              n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+              label = res$networkCodes[[networkCodeRegex]]$nodeList,
             );
 
-          configuredEdgeTypes <-
-            unlist(
-              lapply(
-                res$networkConfig[[configName]]$edges,
-                function(x) {
-                  if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
-                    return("no_type_specified");
-                  } else {
-                    return(x$type);
+          res$networkCodes[[networkCodeRegex]]$label_to_id <-
+            stats::setNames(
+              seq_along(res$networkCodes[[networkCodeRegex]]$nodeList),
+              nm = res$networkCodes[[networkCodeRegex]]$nodeList
+            );
+
+          res$networkCodes[[networkCodeRegex]]$node_df <-
+            DiagrammeR::create_node_df(
+              n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
+              label = res$networkCodes[[networkCodeRegex]]$nodeList,
+              type = networkCodeRegex
+            );
+
+          ### Prepare a list to provide to do.call when creating the edge_df
+          list_for_edf <-
+            list(
+              from =
+                res$networkCodes[[networkCodeRegex]]$label_to_id[
+                  res$networkCodes[[networkCodeRegex]]$coded_df$from
+                ],
+              to =
+                res$networkCodes[[networkCodeRegex]]$label_to_id[
+                  res$networkCodes[[networkCodeRegex]]$coded_df$to
+                ],
+              rel = res$networkCodes[[networkCodeRegex]]$coded_df$type,
+              penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
+            );
+
+          if (!is.na(res$networkConfig)) {
+
+            configName <- paste0("ROCK_", networkCodeRegex);
+
+            uniqueTypes <-
+              unique(
+                res$networkCodes[[networkCodeRegex]]$coded_df$type
+              );
+
+            configuredEdgeTypes <-
+              unlist(
+                lapply(
+                  res$networkConfig[[configName]]$edges,
+                  function(x) {
+                    if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
+                      return("no_type_specified");
+                    } else {
+                      return(x$type);
+                    }
                   }
-                }
+                )
+              );
+
+            res$networkCodes[[networkCodeRegex]]$edgeConfig <-
+              stats::setNames(
+                res$networkConfig[[configName]]$edges,
+                configuredEdgeTypes
+              );
+
+            for (currentType in uniqueTypes) {
+
+              res$networkCodes[[networkCodeRegex]]$coded_df[
+                res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+                  currentType,
+                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+              ] <-
+                res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+                  setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+                ];
+
+            }
+
+            configuredEdgeAttributes <-
+              setdiff(
+                names(res$networkCodes[[networkCodeRegex]]$coded_df),
+                c("from", "to", "type", "weight", "edge_weight")
+              );
+
+            for (edgeInfoToAdd in configuredEdgeAttributes) {
+              list_for_edf <-
+                c(list_for_edf,
+                  structure(
+                    list(
+                      unlist(
+                        res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
+                      )
+                    ),
+                    names = edgeInfoToAdd
+                  )
+                );
+            }
+
+          }
+
+          res$networkCodes[[networkCodeRegex]]$edge_df <-
+            do.call(
+              DiagrammeR::create_edge_df,
+              list_for_edf
+            );
+
+          res$networkCodes[[networkCodeRegex]]$graph <-
+            DiagrammeR::create_graph(
+              nodes_df = res$networkCodes[[networkCodeRegex]]$node_df,
+              edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
+            );
+
+          res$networkCodes[[networkCodeRegex]]$graph <-
+            do.call(
+              apply_graph_theme,
+              c(
+                list(graph = res$networkCodes[[networkCodeRegex]]$graph),
+                theme_networkDiagram
               )
             );
 
-          res$networkCodes[[networkCodeRegex]]$edgeConfig <-
-            stats::setNames(
-              res$networkConfig[[configName]]$edges,
-              configuredEdgeTypes
-            );
-
-          for (currentType in uniqueTypes) {
-
-            res$networkCodes[[networkCodeRegex]]$coded_df[
-              res$networkCodes[[networkCodeRegex]]$coded_df$type ==
-                currentType,
-              setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-            ] <-
-              res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
-                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-              ];
-
-          }
-
-          configuredEdgeAttributes <-
-            setdiff(
-              names(res$networkCodes[[networkCodeRegex]]$coded_df),
-              c("from", "to", "type", "weight", "edge_weight")
-            );
-
-          for (edgeInfoToAdd in configuredEdgeAttributes) {
-            list_for_edf <-
-              c(list_for_edf,
-                structure(
-                  list(
-                    unlist(
-                      res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
-                    )
-                  ),
-                  names = edgeInfoToAdd
-                )
-              );
-          }
-
         }
-
-        res$networkCodes[[networkCodeRegex]]$edge_df <-
-          do.call(
-            DiagrammeR::create_edge_df,
-            list_for_edf
-          );
-
-        res$networkCodes[[networkCodeRegex]]$graph <-
-          DiagrammeR::create_graph(
-            nodes_df = res$networkCodes[[networkCodeRegex]]$node_df,
-            edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
-          );
-
-        res$networkCodes[[networkCodeRegex]]$graph <-
-          do.call(
-            apply_graph_theme,
-            c(
-              list(graph = res$networkCodes[[networkCodeRegex]]$graph),
-              theme_networkDiagram
-            )
-          );
 
       } else {
 
-        res$networkCodes <- NULL;
+        res$networkCodes[[networkCodeRegex]]$coded_df_full <- NA;
+        res$networkCodes[[networkCodeRegex]]$coded_df <- NA;
+        res$networkCodes[[networkCodeRegex]]$label_to_id <- NA;
+        res$networkCodes[[networkCodeRegex]]$edges <- NA;
+        res$networkCodes[[networkCodeRegex]]$edgeConfig <- NA;
+        res$networkCodes[[networkCodeRegex]]$node_df <- NA;
+        res$networkCodes[[networkCodeRegex]]$edge_df <- NA;
+        res$networkCodes[[networkCodeRegex]]$graph <- NA;
 
       }
 
