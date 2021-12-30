@@ -167,9 +167,10 @@ opts$defaults <-
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     uiid = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     prbid = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]"),
-       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: -]+)\\]\\]"),
+                     itemId = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     probeId = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     metaqId = "\\[\\[mqid[=:]([a-zA-Z0-9_]+)\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: ?!-]+)\\]\\]"),
        networkCodeRegexes = c(network = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)->([a-zA-Z][a-zA-Z0-9_>]*)\\|\\|([a-zA-Z][a-zA-Z0-9_>]*)(\\|\\|[a-zA-Z0-9_>]*)?\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
        sectionRegexes = c(sectionBreak = "---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"),
@@ -302,6 +303,14 @@ opts$defaults <-
 
        ### For CI template replacements
        ci_template_replacementDelimiters = c("<<", ">>"),
+       rpe_mq_idName = "mqid",
+       nrm_probe_idName = "prbid",
+       rpe_itemEval_template = "### Coder evaluation
+
+[[eval|| ]]
+
+[[comment||none]]
+",
 
        ### Used for generating html
        codeClass = "code",
