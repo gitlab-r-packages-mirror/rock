@@ -14,7 +14,7 @@ rpe_create_itemFragment <- function(item_text,
   rpe_batchId_idName = rock::opts$get("rpe_batchId");
   rpe_popId_idName = rock::opts$get("rpe_popId");
   rpe_mq_idName = rock::opts$get("rpe_mq_idName");
-  coderId_name_idName = rock::opts$get("coderId_name");
+  coderId_name = rock::opts$get("coderId_name");
 
   res <- paste0("
 --<<item_break>>--
@@ -22,7 +22,7 @@ rpe_create_itemFragment <- function(item_text,
 [[", rpe_iterId_idName, "=", rpe_iterId, "]] [[",
 rpe_batchId_idName, "=", rpe_batchId, "]] [[",
 rpe_popId_idName, "=", rpe_popId, "]] [[",
-coderId_idName, "=", coderId, "]]
+coderId_name, "=", coderId, "]]
 
 ### Item text:
 
@@ -30,7 +30,7 @@ coderId_idName, "=", coderId, "]]
 
 ### Participants' response:
 
-", response, "
+", itemResponse, "
 
 ### Meta questions:
 
