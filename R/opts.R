@@ -305,6 +305,14 @@ opts$defaults <-
        ci_template_replacementDelimiters = c("<<", ">>"),
        rpe_mq_idName = "mqid",
        nrm_probe_idName = "prbid",
+
+       uiid_idName = "uiid",
+       rpe_iterId = "iterId",
+       rpe_batchId = "batchId",
+       rpe_popId = "popId",
+       rpe_mq_idName = "mqid",
+       coderId_name = "coderId",
+
        rpe_itemEval_template = "### Coder evaluation
 
 [[eval|| ]]
