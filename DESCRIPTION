@@ -48,6 +48,7 @@ Suggests:
     haven (>= 2.4),
     justifier (>= 0.2),
     knitr,
+    limonaid,
     openxlsx (>= 4.2),
     preregr (>= 0.1.9),
     rENA (>= 0.1.6),
