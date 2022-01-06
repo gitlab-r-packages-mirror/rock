@@ -12,10 +12,11 @@ test_that("an RPE coding file can be prepared", {
     limonaid::ls_import_data(sid = 795779,
                              path = lsFilesPath);
 
-  ### Add empty labels for variables without labels
-  # attributes(lsDat)$variable.labels <-
-  #   c(attributes(lsDat)$variable.labels,
-  #     names(lsDat)[(length(attributes(lsDat)$variable.labels)+1):ncol(lsDat)]);
+  ### Add empty labels for variables without labels in case we have
+  ### an old {limonaid} version
+  attributes(lsDat)$variable.labels <-
+    c(attributes(lsDat)$variable.labels,
+      names(lsDat)[(length(attributes(lsDat)$variable.labels)+1):ncol(lsDat)]);
 
   labelDf <-
     limonaid::ls_process_labels(
