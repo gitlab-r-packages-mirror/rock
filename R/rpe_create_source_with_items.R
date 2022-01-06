@@ -31,6 +31,7 @@
 #' question's content, with the values being the content and the names the
 #' meta question identifiers.
 #' @param coderId The identifier of the coder that will code this source.
+#' @param outputFile Optionally, a file to write the source to.
 #'
 #' @return
 #' @export
@@ -45,9 +46,18 @@ rpe_create_source_with_items <- function(data,
                                          metaquestionVarNames,
                                          itemContents,
                                          metaquestionContents,
-                                         coderId) {
+                                         coderId,
+                                         caseIds = NULL,
+                                         outputFile = NULL,
+                                         preventOverwriting = rock::opts$get("preventOverwriting"),
+                                         encoding = rock::opts$get("encoding"),
+                                         silent = rock::opts$get("silent")) {
 
-  res <- c("### ROCK RPE file",
+  bar <- paste0("###", repStr("-", 75));
+
+  res <- c(bar,
+           "### ROCK RPE file",
+           bar,
            "");
 
   if (iterationId %in% names(data)) {
@@ -75,15 +85,28 @@ rpe_create_source_with_items <- function(data,
           metaquestion_responses =
             data[
               participantRowNr,
-              metaquestionVarNames[[itemId]][metaquestionIdentifiers[[itemId]]]
+              metaquestionVarNames[metaquestionIdentifiers[[itemId]]]
             ],
           coderId = coderId,
           rpe_iterId = iterationId[participantRowNr],
           rpe_batchId = batchId[participantRowNr],
-          rpe_popId = populationId[participantRowNr]
+          rpe_popId = populationId[participantRowNr],
+          caseId = ifelse(is.null(caseIds),
+                          list(NULL),
+                          caseIds[participantRowNr])
         )
       );
     }
+  }
+
+  if (!is.null(outputFile)) {
+
+    writeTxtFile(x = res,
+                 output = outputFile,
+                 encoding = encoding,
+                 preventOverwriting = preventOverwriting,
+                 silent = silent);
+
   }
 
   return(res);

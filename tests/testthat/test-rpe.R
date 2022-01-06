@@ -1,13 +1,21 @@
 test_that("an RPE coding file can be prepared", {
 
-  ### devtools::load_all("B:/Data/R/limonaid");
+  # devtools::load_all("B:/Data/R/rock");
+  # devtools::load_all("B:/Data/R/limonaid");
 
   lsFilesPath <- system.file("limesurvey",
+                             package="rock");
+  extdataPath <- system.file("extdata",
                              package="rock");
 
   lsDat <-
     limonaid::ls_import_data(sid = 795779,
                              path = lsFilesPath);
+
+  ### Add empty labels for variables without labels
+  # attributes(lsDat)$variable.labels <-
+  #   c(attributes(lsDat)$variable.labels,
+  #     names(lsDat)[(length(attributes(lsDat)$variable.labels)+1):ncol(lsDat)]);
 
   labelDf <-
     limonaid::ls_process_labels(
@@ -27,7 +35,7 @@ test_that("an RPE coding file can be prepared", {
                 "item2mq2")
     );
 
-  metaquestionVarNames <-
+  mq_varNames <-
     c(item1mq1 = "item1mq1",
       item1mq2 = "item1mq2",
       item2mq1 = "item2mq1",
@@ -36,7 +44,7 @@ test_that("an RPE coding file can be prepared", {
   item_questionTextMatches <-
     match(labelDf$varNames.raw, item_varNames);
   item_questionTextIndices <-
-    which(questionTextMatches %in% na.omit(questionTextMatches));
+    which(item_questionTextMatches %in% na.omit(item_questionTextMatches));
   item_contents <-
     stats::setNames(
       labelDf[item_questionTextIndices, "questionText"],
@@ -44,13 +52,13 @@ test_that("an RPE coding file can be prepared", {
     );
 
   mq_questionTextMatches <-
-    match(labelDf$varNames.raw, metaquestionVarNames);
+    match(labelDf$varNames.raw, mq_varNames);
   mq_questionTextIndices <-
     which(mq_questionTextMatches %in% na.omit(mq_questionTextMatches));
   mq_itemContents <-
     stats::setNames(
       labelDf[mq_questionTextIndices, "questionText"],
-      nm = names(metaquestionVarNames)
+      nm = names(mq_varNames)
     );
 
   itemSource <-
@@ -61,12 +69,18 @@ test_that("an RPE coding file can be prepared", {
       populationId = "populationId",
       itemVarNames = item_varNames,
       metaquestionIdentifiers = metaquestionIdentifiers,
-      metaquestionVarNames = metaquestion_VarNames,
+      metaquestionVarNames = mq_varNames,
       itemContents = item_contents,
       metaquestionContents = mq_itemContents,
-      coderId = "coder1"
+      coderId = "coder1",
+      caseIds = lsDat$id,
+      outputFile = file.path(extdataPath, "simple-rpe-example.rock"),
+      preventOverwriting = FALSE
     );
 
-  cat(itemSource);
+  parsedItemSource <-
+    rock::parse_source(
+      file = file.path(extdataPath, "simple-rpe-example.rock")
+    );
 
 });
