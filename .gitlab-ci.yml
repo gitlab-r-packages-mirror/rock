@@ -12,12 +12,13 @@ before_script:
   - apt-get install -y --no-install-recommends ${APT_PKGS}
   - R -e 'install.packages(c("data.tree", "dplyr", "DiagrammeR", "glue", "purrr", "yum"))'
   - R -e 'install.packages(c("knitr", "markdown", "rmarkdown", "devtools", "covr", "testthat", "here", "rENA"))'
-  - R -e 'install.packages(c("tinytex", "limonaid"));'
+  - R -e 'install.packages(c("tinytex"));'
   - R -e 'install.packages(c("DiagrammeRsvg", "googlesheets4", "textreadr"))'
   - R -e 'install.packages(c("openxlsx", "XLConnect", "readxl", "writexl"))'
   - R -e 'devtools::install_gitlab("r-packages/yum")'
   - R -e 'devtools::install_gitlab("r-packages/justifier")'
   - R -e 'devtools::install_gitlab("r-packages/preregr")'
+  - R -e 'devtools::install_gitlab("r-packages/limonaid")'
   - apt-get install -y lmodern texlive-fonts-recommended
   #- R -e 'tinytex::tlmgr_update(); tinytex::tlmgr_install("lmodern");'
 
