@@ -312,6 +312,7 @@ opts$defaults <-
        rpe_popId = "popId",
        rpe_mq_idName = "mqid",
        coderId_name = "coderId",
+       caseId_name = "caseId",
 
        rpe_itemEval_template = "### Coder evaluation
 
