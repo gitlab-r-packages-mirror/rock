@@ -24,6 +24,8 @@ rpe_create_itemFragment <- function(item_text,
     caseIdBit <- paste0("[[", caseId_name, "=", caseId, "]] ");
   }
 
+  bar <- paste0("###", repStr("-", 75));
+
   res <- paste0("\n",
                 bar,
                 "\n---<<item_break>>---
