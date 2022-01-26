@@ -8,6 +8,7 @@ generic_recoding(
   input,
   codes,
   func,
+  filenameRegex = ".*",
   filter = TRUE,
   output = NULL,
   outputPrefix = "",

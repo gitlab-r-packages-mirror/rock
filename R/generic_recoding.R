@@ -28,12 +28,15 @@
 #' @param encoding The encoding to use.
 #' @param silent Whether to be chatty or quiet.
 #' @param ... Other arguments to pass to `fnc`.
+#' @inheritParams loading_sources
+#' @rdname generic_recoding
 #'
 #' @return Invisibly, the recoded source(s) or source(s) object.
 #' @export
 generic_recoding <- function(input,
                              codes,
                              func,
+                             filenameRegex = ".*",
                              filter = TRUE,
                              output = NULL,
                              outputPrefix = "",
@@ -93,6 +96,7 @@ generic_recoding <- function(input,
               codes = codes,
               func = func,
               filter = filter,
+              filenameRegex = filenameRegex,
               output = currentOutputFilename,
               decisionLabel = decisionLabel,
               justification = justification,
