@@ -43,21 +43,16 @@ resultsOverview_allCodedFragments <- function(x,
                                               preventOverwriting = rock::opts$get(preventOverwriting),
                                               silent=rock::opts$get(silent)) {
 
-  if (includeCSS) {
-    res <- rock::css();
-  } else {
-    res <- "";
-  }
-
   if (!is.null(heading)) {
     res <-
-      c(res,
-        rock::heading(
-          heading,
-          headingLevel = headingLevel,
-          cat = FALSE
-        ));
+      rock::heading(
+        heading,
+        headingLevel = headingLevel,
+        cat = FALSE
+      );
     headingLevel <- headingLevel + 1;
+  } else {
+    res <- character();
   }
 
   res <- c(res,
@@ -65,6 +60,7 @@ resultsOverview_allCodedFragments <- function(x,
              x = x,
              root = root,
              context = context,
+             omitHeading = TRUE,
              headingLevel = headingLevel,
              add_html_tags = add_html_tags,
              cleanUtterances = cleanUtterances,
@@ -107,9 +103,11 @@ resultsOverview_allCodedFragments <- function(x,
                                   res,
                                   "\n\n")));
     } else {
+
       if (outputToViewer) {
-        viewerHTML <- markdown::markdownToHTML(text=res_without_css);
-        if (add_html_tags) {
+        viewerHTML <- markdown::markdownToHTML(text=res);
+
+        if (add_html_tags && includeCSS) {
           viewerHTML <- htmltools::HTML(
             rock::css(template=template,
                       includeBootstrap = ifelse(is.character(includeBootstrap),
@@ -132,8 +130,8 @@ resultsOverview_allCodedFragments <- function(x,
   } else {
 
     if (outputToViewer) {
-      viewerHTML <- markdown::markdownToHTML(text=res_without_css);
-      if (add_html_tags) {
+      viewerHTML <- markdown::markdownToHTML(text=res);
+      if (add_html_tags && includeCSS) {
         viewerHTML <- htmltools::HTML(
           rock::css(template=template,
                     includeBootstrap = ifelse(is.character(includeBootstrap),

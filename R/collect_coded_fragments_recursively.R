@@ -2,6 +2,7 @@ collect_coded_fragments_recursively <- function(x,
                                                 root,
                                                 context = 0,
                                                 attributes = NULL,
+                                                omitHeading = FALSE,
                                                 headingLevel = 3,
                                                 add_html_tags = TRUE,
                                                 cleanUtterances = FALSE,
@@ -18,13 +19,16 @@ collect_coded_fragments_recursively <- function(x,
     stop("Also selecting based on attributes is not yet implemented");
   }
 
-  res <-
-    rock::heading(
-      "Code: `", root, "` ",
-      "{.tabset .tabset-pills}",
-      headingLevel = headingLevel,
-      cat = FALSE
-    );
+  if (omitHeading) {
+    res <- character();
+  } else {
+    res <-
+      rock::heading(
+        "Code: `", root, "`",
+        headingLevel = headingLevel,
+        cat = FALSE
+      );
+  }
 
   ### Get all children in the designated 'root'
   allParentCodes <-
@@ -41,20 +45,25 @@ collect_coded_fragments_recursively <- function(x,
         silent = silent);
   }
 
-  res <- c(res,
-           collect_coded_fragments(
-             x,
-             codes = paste0("^", root, ">?$"),
-             context = context,
-             attributes = attributes,
-             headingLevel = headingLevel,
-             add_html_tags = add_html_tags,
-             cleanUtterances = cleanUtterances,
-             template = template,
-             rawResult = rawResult,
-             outputViewer = FALSE,
-             includeCSS = FALSE
-           ));
+  if ((root %in% names(x$mergedSourceDf)) &&
+    sum(x$mergedSourceDf[, root] == 1) > 0) {
+
+    res <- c(res,
+             collect_coded_fragments(
+               x,
+               codes = paste0("^", root, ">?$"),
+               context = context,
+               attributes = attributes,
+               headingLevel = headingLevel,
+               add_html_tags = add_html_tags,
+               cleanUtterances = cleanUtterances,
+               template = template,
+               rawResult = rawResult,
+               outputViewer = FALSE,
+               includeCSS = FALSE
+             ));
+
+  }
 
   if (!(is.null(allParentCodes) || is.na(allParentCodes) || (length(allParentCodes) == 0))) {
 

@@ -185,7 +185,7 @@ opts$defaults <-
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
-       persistentIds = c('caseId', 'coderId', 'stanzaId', 'uiid', 'prbid'),
+       persistentIds = c('caseId', 'coderId', 'stanzaId', 'itemId', 'probeId', 'metaqId'),
        noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
        attributeContainers = c("ROCK_attributes"),
        networkContainers = c("ROCK_network"),

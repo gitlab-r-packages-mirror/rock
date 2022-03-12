@@ -57,6 +57,13 @@ ci_import_nrm_spec <- function(x,
       nrm_spec[[nrm_wsNames$stimuli]][[nrm_colNames$stimuli['stimulus_language']]]
     );
 
+  # res$codingScheme <-
+  #   rock::create_codingScheme(
+  #     nrm_spec[[nrm_wsNames$metadata]][[nrm_colNames$metadata['']]]
+  #     id = "quic_codingScheme",
+  #     label = "QUIC Coding Scheme",
+  #     codes = nrmSpec$nrm_spec$codes$code_id
+  #   );
   res$interviewSchemes <- list();
   res$nrm_md <- list();
   res$nrm_with_probes_md <- list();

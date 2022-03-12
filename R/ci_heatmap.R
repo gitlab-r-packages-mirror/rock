@@ -27,7 +27,7 @@
 #' ci_heatmap(parsedCI,
 #'            codingScheme = "peterson");
 ci_heatmap <- function(x,
-                       itemIdentifier = "uiid",
+                       itemIdentifier = "itemId",
                        codingScheme = "peterson",
                        itemlab = "Item",
                        codelab = "Code",
