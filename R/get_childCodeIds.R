@@ -11,7 +11,8 @@ get_childCodeIds <- function(x,
                              parentCodeId,
                              returnNodes = FALSE) {
 
-  if (!inherits(x, "rock_parsedSources")) {
+  if ((!inherits(x, "rock_parsedSources")) ||
+      (!inherits(x, "rock_parsedSource"))) { ### Added this, might be wrong
     stop("As `x`, you have to pass a parsed sources object. You passed ",
             substitute(deparse(x)), "', which instead has class(es) ",
             vecTxtQ(class(x)), ".");
