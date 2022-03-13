@@ -37,7 +37,7 @@ collect_coded_fragments_recursively <- function(x,
       root
     );
 
-  if (is.null(allParentCodes) || is.na(allParentCodes) || (length(allParentCodes) == 0)) {
+  if (is.null(allParentCodes) || all(is.na(allParentCodes)) || (length(allParentCodes) == 0)) {
     msg("Code `", root, "` has no child codes.\n",
         silent = silent);
   } else {
