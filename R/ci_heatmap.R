@@ -171,7 +171,13 @@ ci_heatmap <- function(x,
     ggplot2::labs(x = codelab,
                   y = itemlab,
                   fill = freqlab,
-                  title = plotTitle);
+                  title = plotTitle) +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 1),
+      plot.subtitle = ggplot2::element_text(hjust = 1),
+      axis.text.x = ggplot2::element_text(angle = 30,
+                                          hjust = 0)
+    );
 
   return(heatMap);
 
