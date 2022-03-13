@@ -14,6 +14,7 @@
 #' @param outputPrefix,outputSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk, in case multiple
 #' sources are passed as input.
+#' @param filenameRegex Only process files matching this regular expression.
 #' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param func The function to apply.
 #' @param filter Optionally, a filter to apply to specify a subset of the

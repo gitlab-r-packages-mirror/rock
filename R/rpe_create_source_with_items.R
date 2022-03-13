@@ -31,6 +31,12 @@
 #' question's content, with the values being the content and the names the
 #' meta question identifiers.
 #' @param coderId The identifier of the coder that will code this source.
+#' @param caseIds The variable name with the participants' case identifiers (i.e.
+#' a unique identifier for each participant).
+#' @param preventOverwriting Whether to overwrite existing files (`FALSE`) or
+#' prevent that from happening (`TRUE`).
+#' @param encoding The encoding to use when writing the source(s).
+#' @param silent Whether to the silent (`TRUE`) or chatty (`FALSE`).
 #' @param outputFile Optionally, a file to write the source to.
 #'
 #' @return
