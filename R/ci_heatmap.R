@@ -6,18 +6,30 @@
 #'
 #' @param x The object with the parsed coded source(s) as resulting from a
 #' call to [rock::parse_source()] or [rock::parse_sources()].
+#' @param nrmSpec Optionally, an imported Narrative Response Model
+#' specification, as imported with [rock::ci_import_nrm_spec()], which will
+#' then be used to obtain the item labels.
+#' @param language If `nrmSpec` is specified, the language to use.
+#' @param itemOrder,itemLabels Instead of specifying an NRM specification,
+#' you can also directly specify the item order and item labels. `itemOrder`
+#' is a character vector of item identifiers, and `itemLabels` is a named
+#' character vector of item labels, where each value's name is the
+#' corresponding item identifier. If `itemLabels` is provided but `itemOrder`
+#' is not, the order of the `itemLabel` is used.
+#' @param wrapLabels Whether to wrap the labels; if not `NULL`, the
+#' number of character to wrap at.
 #' @param itemIdentifier The column identifying the items.
 #' @param codingScheme The coding scheme, either as a string if it represents
 #' one of the cognitive interviewig coding schemes provided with the `rock`
 #' package, or as a coding scheme resulting from a call
 #' to [rock::create_codingScheme()].
 #' @param itemlab,codelab,freqlab Labels to use for the item and code axes
-#' and for the frequency color legend.
+#' and for the frequency color legend (`NULL` to omit the label).
 #' @param plotTitle The title to use for the plot
 #' @param fillScale Convenient way to specify the fill scale (the colours)
 #' @param theme Convenient way to specify the [ggplot2::ggplot()] theme.
 #'
-#' @return The heatmap
+#' @return The heatmap as a ggplot2 plot.
 #' @export
 #'
 #' @examples examplePath <- file.path(system.file(package="rock"), 'extdata');
@@ -27,11 +39,16 @@
 #' ci_heatmap(parsedCI,
 #'            codingScheme = "peterson");
 ci_heatmap <- function(x,
-                       itemIdentifier = "uiid",
+                       nrmSpec = NULL,
+                       language = nrmSpec$defaultLanguage,
+                       wrapLabels = 80,
+                       itemOrder = NULL,
+                       itemLabels = NULL,
+                       itemIdentifier = "itemId",
                        codingScheme = "peterson",
-                       itemlab = "Item",
-                       codelab = "Code",
-                       freqlab = "Frequency",
+                       itemlab = NULL,
+                       codelab = NULL,
+                       freqlab = "Count",
                        plotTitle = "Cognitive Interview Heatmap",
                        fillScale = ggplot2::scale_fill_viridis_c(),
                        theme = ggplot2::theme_minimal()) {
@@ -88,6 +105,58 @@ ci_heatmap <- function(x,
     );
   names(tidyCodeFrequencies) <- c(itemIdentifier, "code", "frequency");
 
+  ### For convenience
+  newItemCol <- tidyCodeFrequencies[, itemIdentifier];
+
+  if (!is.null(nrmSpec)) {
+    validItemLabels <-
+      nrmSpec$items[[language]][
+        nrmSpec$itemIds_sorted %in%
+          newItemCol
+      ];
+  } else {
+    if (is.null(itemOrder)) {
+      if (is.null(itemLabels)) {
+        itemOrder <- sort(unique(newItemCol));
+      } else {
+        itemOrder <- names(itemLabels);
+      }
+    }
+    if (is.null(itemLabels)) {
+      validItemLabels <-
+        stats::setNames(itemOrder, nm = itemOrder);
+    } else {
+      validItemLabels <-
+        itemLabels[itemOrder];
+    }
+  }
+
+  if (any(!(newItemCol %in% names(validItemLabels)))) {
+    validItemLabels <-
+      c(validItemLabels,
+        stats::setNames(
+          unique(newItemCol[!(newItemCol %in% names(validItemLabels))]),
+          nm = unique(newItemCol[!(newItemCol %in% names(validItemLabels))])
+        )
+      );
+  }
+  if (!is.null(wrapLabels)) {
+    validItemLabels <-
+      wrapVector(
+        validItemLabels,
+        wrapLabels
+      );
+  }
+  newItemCol <-
+    factor(
+      newItemCol,
+      levels = rev(names(validItemLabels)),
+      labels = rev(validItemLabels),
+      ordered = TRUE
+    );
+  tidyCodeFrequencies[, itemIdentifier] <-
+    newItemCol;
+
   heatMap <-
     ggplot2::ggplot(data = tidyCodeFrequencies,
                     mapping = ggplot2::aes_string(
@@ -96,6 +165,7 @@ ci_heatmap <- function(x,
                       fill = "frequency")
     ) +
     ggplot2::geom_tile() +
+    ggplot2::scale_x_discrete(position = "top") +
     theme +
     fillScale +
     ggplot2::labs(x = codelab,
