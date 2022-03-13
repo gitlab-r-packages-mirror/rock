@@ -41,6 +41,7 @@
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the changed source(s) or source(s) object.
+#' @inheritParams generic_recoding
 #' @examples ### Get path to example source
 #' examplePath <-
 #'   system.file("extdata", package="rock");
@@ -71,6 +72,9 @@ recode_addChildCodes <- function(input,
                                  childCodes,
                                  filter = TRUE,
                                  output = NULL,
+                                 filenameRegex = ".*",
+                                 outputPrefix = "",
+                                 outputSuffix = "_rcAdded",
                                  decisionLabel = NULL,
                                  justification = NULL,
                                  justificationFile = NULL,
@@ -86,6 +90,9 @@ recode_addChildCodes <- function(input,
       filter = filter,
       func = changeSource_addChildCodes,
       output = output,
+      filenameRegex = filenameRegex,
+      outputPrefix = outputPrefix,
+      outputSuffix = outputSuffix,
       decisionLabel = decisionLabel,
       justification = justification,
       justificationFile = justificationFile,

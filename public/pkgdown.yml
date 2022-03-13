@@ -1,7 +1,0 @@
-pandoc: 2.14.0.3
-pkgdown: 1.6.1
-pkgdown_sha: ~
-articles:
-  introduction_to_rock: introduction_to_rock.html
-last_built: 2021-11-05T17:42Z
-
