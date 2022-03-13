@@ -1,8 +1,10 @@
 #' Show all coded fragments
 #'
 #' @param root The root code
+#'
 #' @inheritParams collect_coded_fragments
-#' @return
+#'
+#' @return Invisibly, the coded fragments in a character vector.
 #' @export
 #'
 #' @examples ### Get path to example source
