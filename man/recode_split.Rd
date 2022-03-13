@@ -55,6 +55,16 @@ source(s) to process (see \code{\link[=get_source_filter]{get_source_filter()}})
 
 \item{output}{If specified, the recoded source(s) will be written here.}
 
+\item{filenameRegex}{Only process files matching this regular expression.}
+
+\item{outputPrefix}{The prefix and suffix to add to the
+filenames when writing the processed files to disk, in case multiple
+sources are passed as input.}
+
+\item{outputSuffix}{The prefix and suffix to add to the
+filenames when writing the processed files to disk, in case multiple
+sources are passed as input.}
+
 \item{decisionLabel}{A description of the (recoding) decision that was taken.}
 
 \item{justification}{The justification for this action.}

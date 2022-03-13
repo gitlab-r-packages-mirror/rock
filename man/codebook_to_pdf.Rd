@@ -30,6 +30,7 @@ x, invisibly
 \description{
 Use this function to export your codebook specification to a PDF
 file. To embed it in an R Markdown file, use
+!!! CREATE rock::knit_codebook() !!!
 \code{\link[=knit_codebook]{knit_codebook()}} instead.
 }
 \examples{

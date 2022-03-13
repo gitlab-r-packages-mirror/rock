@@ -13,7 +13,7 @@ sanitize_identifiers <- function(x,
       sprintf(
         message,
         vecTxtQ(x[illegalIds]),
-        vexTctQ(sanitizedIds[illegalIds])
+        vecTxtQ(sanitizedIds[illegalIds])
       )
     );
   }

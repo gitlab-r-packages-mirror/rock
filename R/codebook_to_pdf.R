@@ -2,7 +2,8 @@
 #'
 #' Use this function to export your codebook specification to a PDF
 #' file. To embed it in an R Markdown file, use
-#' [rock::knit_codebook()] instead.
+#' !!! CREATE rock::knit_codebook() !!!
+##' [rock::knit_codebook()] instead.
 #'
 #' @param x The codebook object (as produced by a call to
 #' [rock::codebook_fromSpreadsheet()]).

@@ -44,6 +44,7 @@
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the changed source(s) or source(s) object.
+#' @inheritParams generic_recoding
 #' @examples ### Get path to example source
 #' examplePath <-
 #'   system.file("extdata", package="rock");

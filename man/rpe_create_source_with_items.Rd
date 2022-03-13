@@ -59,7 +59,17 @@ meta question identifiers.}
 
 \item{coderId}{The identifier of the coder that will code this source.}
 
+\item{caseIds}{The variable name with the participants' case identifiers (i.e.
+a unique identifier for each participant).}
+
 \item{outputFile}{Optionally, a file to write the source to.}
+
+\item{preventOverwriting}{Whether to overwrite existing files (\code{FALSE}) or
+prevent that from happening (\code{TRUE}).}
+
+\item{encoding}{The encoding to use when writing the source(s).}
+
+\item{silent}{Whether to the silent (\code{TRUE}) or chatty (\code{FALSE}).}
 }
 \value{
 
