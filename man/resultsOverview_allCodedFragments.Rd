@@ -70,7 +70,7 @@ the path and filename of a CSS file.}
 \item{silent}{Whether to provide (\code{FALSE}) or suppress (\code{TRUE}) more detailed progress updates.}
 }
 \value{
-
+Invisibly, the coded fragments in a character vector.
 }
 \description{
 Show all coded fragments
