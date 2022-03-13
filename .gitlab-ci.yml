@@ -30,6 +30,7 @@ devtools-check:
 pages:
   stage: build
   script:
+    - mkdir public
     - mkdir public/iROCK
     - cp -R iROCK public
     - mkdir public/img
