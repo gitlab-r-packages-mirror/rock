@@ -12,6 +12,8 @@
 #' to [rock::read_spreadsheet()].
 #' @param read_ss_args A named list with arguments to pass to
 #' [rock::read_spreadsheet()].
+#' @param defaultLanguage Language to set as default language (by default,
+#' i.e. if `NULL`, the first language is used).
 #' @param silent Whether to be silent or chatty.
 #' @param ... Additional arguments are ignored.
 #'
