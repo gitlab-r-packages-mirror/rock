@@ -65,7 +65,7 @@ collect_coded_fragments_recursively <- function(x,
 
   }
 
-  if (!(is.null(allParentCodes) || is.na(allParentCodes) || (length(allParentCodes) == 0))) {
+  if (!(is.null(allParentCodes) || all(is.na(allParentCodes)) || (length(allParentCodes) == 0))) {
 
     for (currentParentCode in allParentCodes) {
 
