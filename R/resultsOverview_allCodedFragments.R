@@ -101,9 +101,22 @@ resultsOverview_allCodedFragments <- function(x,
       ### Adding the CSS is missing, isn't that wrong?
       ###-----------------------------------------------------------------------
 
-      return(knitr::asis_output(c("\n\n",
-                                  res,
-                                  "\n\n")));
+      if (add_html_tags && includeCSS) {
+        res <-
+          c(rock::css(template=template,
+                      includeBootstrap = ifelse(is.character(includeBootstrap),
+                                                TRUE,
+                                                includeBootstrap)),
+            res);
+      }
+
+      res <-
+        knitr::asis_output(c("\n\n",
+                             res,
+                             "\n\n"));
+
+      return(res);
+
     } else {
 
       if (outputToViewer) {
