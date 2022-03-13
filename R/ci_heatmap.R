@@ -24,12 +24,12 @@
 #' package, or as a coding scheme resulting from a call
 #' to [rock::create_codingScheme()].
 #' @param itemlab,codelab,freqlab Labels to use for the item and code axes
-#' and for the frequency color legend.
+#' and for the frequency color legend (`NULL` to omit the label).
 #' @param plotTitle The title to use for the plot
 #' @param fillScale Convenient way to specify the fill scale (the colours)
 #' @param theme Convenient way to specify the [ggplot2::ggplot()] theme.
 #'
-#' @return The heatmap
+#' @return The heatmap as a ggplot2 plot.
 #' @export
 #'
 #' @examples examplePath <- file.path(system.file(package="rock"), 'extdata');
@@ -46,9 +46,9 @@ ci_heatmap <- function(x,
                        itemLabels = NULL,
                        itemIdentifier = "itemId",
                        codingScheme = "peterson",
-                       itemlab = "Item",
-                       codelab = "Code",
-                       freqlab = "Frequency",
+                       itemlab = NULL,
+                       codelab = NULL,
+                       freqlab = "Count",
                        plotTitle = "Cognitive Interview Heatmap",
                        fillScale = ggplot2::scale_fill_viridis_c(),
                        theme = ggplot2::theme_minimal()) {
