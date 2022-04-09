@@ -18,14 +18,14 @@
 #' @return Invisibly, a vector of the available packages.
 #' @export
 #'
-#' @examples metabefor::checkPkgs('base');
+#' @examples rock::checkPkgs('base');
 #'
 #' ### Require a version
-#' metabefor::checkPkgs(metabefor = "0.1.0");
+#' rock::checkPkgs(rock = "0.5.0");
 #'
 #' ### This will show the error message
 #' tryCatch(
-#'   metabefor::checkPkgs(
+#'   rock::checkPkgs(
 #'     base = "99",
 #'     stats = "42.5",
 #'     ufs = 20
