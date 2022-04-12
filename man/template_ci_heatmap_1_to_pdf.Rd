@@ -50,7 +50,7 @@ parsedCI <- parse_source(file.path(examplePath,
                                    "ci_example_1.rock"));
 
 rock::template_ci_heatmap_1_to_pdf(
-  exampleCodebook_1,
+  parsedCI,
   file = tmpFile
 );
 }
