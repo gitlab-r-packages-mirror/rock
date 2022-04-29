@@ -41,8 +41,6 @@
 #'
 #' @return The created source, as a character vector (invisibly);
 #' @export
-#'
-#' @examples
 rpe_create_source_with_items <- function(data,
                                          iterationId,
                                          batchId,
