@@ -18,7 +18,8 @@
 #' @return Invisibly, a vector of the available packages.
 #' @export
 #'
-#' @examples rock::checkPkgs('base');
+#' @examples \donttest{
+#' rock::checkPkgs('base');
 #'
 #' ### Require a version
 #' rock::checkPkgs(rock = "0.5.0");
@@ -32,6 +33,7 @@
 #'   ),
 #'   error = print
 #' );
+#' }
 checkPkgs <- function(...,
                       install = FALSE,
                       load = FALSE,

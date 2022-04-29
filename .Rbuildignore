@@ -35,3 +35,4 @@ img/
 ### Maybe a side effect of testing? A file just called 'unspecified'.
 unspecified
 ^CRAN-RELEASE$
+^cran-comments\.md$

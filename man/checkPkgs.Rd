@@ -35,6 +35,7 @@ syntax for addressing functions; you can make sure required packages
 are installed, but their namespace won't attach to the search path.
 }
 \examples{
+\donttest{
 rock::checkPkgs('base');
 
 ### Require a version
@@ -49,4 +50,5 @@ tryCatch(
   ),
   error = print
 );
+}
 }
