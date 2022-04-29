@@ -72,7 +72,7 @@ prevent that from happening (\code{TRUE}).}
 \item{silent}{Whether to the silent (\code{TRUE}) or chatty (\code{FALSE}).}
 }
 \value{
-
+The created source, as a character vector (invisibly);
 }
 \description{
 This function creates a plain text file, a \code{.rock} source, that can be
