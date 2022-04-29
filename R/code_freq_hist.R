@@ -66,7 +66,7 @@ code_freq_hist <- function(x,
 
   }
 
-  if (!is.null(trimSourceIdentifiers)) {
+  if (('Source' %in% names(tmpDf)) && (!is.null(trimSourceIdentifiers))) {
     tmpDf$Source <-
       substr(
         tmpDf$Source,
