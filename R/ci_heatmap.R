@@ -53,6 +53,11 @@ ci_heatmap <- function(x,
                        fillScale = ggplot2::scale_fill_viridis_c(),
                        theme = ggplot2::theme_minimal()) {
 
+  if (!inherits(x, c("rock_parsedSource", "rock_parsedSources"))) {
+    stop("As `x`, pass one or more parsed sources (as resulting from ",
+         "a call to `rock::parse_source()` or `rock::parse_sources()`.");
+  }
+
   if (is.character(codingScheme) && (length(codingScheme) == 1)) {
     codingScheme <- get0(paste0("codingScheme_", codingScheme));
   } else if (is.character(codingScheme) && (length(codingScheme) > 1)) {
@@ -61,17 +66,18 @@ ci_heatmap <- function(x,
       label = "Ad Hoc Coding Scheme",
       codes = codingScheme
     );
+  } else if (is.null(codingScheme)) {
+    codingScheme <- create_codingScheme(
+      id = "adHoc_codingScheme",
+      label = "Ad Hoc Coding Scheme",
+      codes = x$convenience$codingLeaves
+    );
   }
 
   if (!inherits(codingScheme, "rock_codingScheme")) {
     stop("As `codingScheme`, pass either a codingScheme as created by ",
          "a call to `rock::create_codingScheme()`, or the name of a ",
          "coding scheme that exists in the `rock` package.");
-  }
-
-  if (!inherits(x, c("rock_parsedSource", "rock_parsedSources"))) {
-    stop("As `x`, pass one or more parsed sources (as resulting from ",
-         "a call to `rock::parse_source()` or `rock::parse_sources()`.");
   }
 
   mergedSourceDf <- x$mergedSourceDf;
