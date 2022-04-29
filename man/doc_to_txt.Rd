@@ -62,7 +62,7 @@ larger compute time (see \code{\link[textreadr:read_document]{textreadr::read_do
 or \code{\link[base:readLines]{base::readLines()}} (by \code{\link[textreadr:read_document]{textreadr::read_document()}}).}
 }
 \value{
-
+The converted source, as a character vector.
 }
 \description{
 This is a thin wrapper around \code{\link[textreadr:read_document]{textreadr::read_document()}} that also

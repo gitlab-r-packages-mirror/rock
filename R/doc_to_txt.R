@@ -33,7 +33,7 @@
 #' [textreadr::read_html()], [textreadr::read_docx()], [textreadr::read_doc()],
 #' or [base::readLines()] (by [textreadr::read_document()]).
 #'
-#' @return
+#' @return The converted source, as a character vector.
 #' @export
 #'
 #' @examples print(

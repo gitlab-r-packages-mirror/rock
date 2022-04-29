@@ -39,7 +39,7 @@
 #' @param silent Whether to the silent (`TRUE`) or chatty (`FALSE`).
 #' @param outputFile Optionally, a file to write the source to.
 #'
-#' @return
+#' @return The created source, as a character vector (invisibly);
 #' @export
 #'
 #' @examples
