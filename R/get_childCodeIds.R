@@ -24,8 +24,18 @@ get_childCodeIds <- function(x,
          "has a length other than 1 (i.e. 0, 2, or larger).");
   }
 
-  node <-
-    data.tree::FindNode(x$fullyMergedCodeTrees, parentCodeId);
+  if (inherits(x, "rock_parsedSource")) {
+    node <- NULL;
+    for (i in seq_along(x$inductiveCodeTrees)) {
+      if (!is.null(x$inductiveCodeTrees[[i]])) {
+        node <-
+          data.tree::FindNode(x$inductiveCodeTrees[[i]], parentCodeId);
+      }
+    }
+  } else {
+    node <-
+      data.tree::FindNode(x$fullyMergedCodeTrees, parentCodeId);
+  }
 
   if (is.null(node)) {
     stop("In the parsed sources object that you passed (",

@@ -1,10 +1,10 @@
+image: rocker/tidyverse
+
 variables:
   CODECOV_TOKEN: "8ff529cc-45e2-4835-8485-29df0961b10b"
   _R_CHECK_CRAN_INCOMING_: "false"
   _R_CHECK_FORCE_SUGGESTS_: "true"
   APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git libgsl0-dev libv8-dev libpoppler-cpp-dev"
-
-image: rocker/tidyverse
 
 before_script:
   - apt-get update
@@ -15,6 +15,7 @@ before_script:
   - R -e 'install.packages(c("tinytex"));'
   - R -e 'install.packages(c("DiagrammeRsvg", "googlesheets4", "textreadr"))'
   - R -e 'install.packages(c("openxlsx", "XLConnect", "readxl", "writexl"))'
+  - R -e 'install.packages(c("pkgdown"));'
   - R -e 'devtools::install_gitlab("r-packages/yum")'
   - R -e 'devtools::install_gitlab("r-packages/justifier")'
   - R -e 'devtools::install_gitlab("r-packages/preregr")'
@@ -30,7 +31,7 @@ devtools-check:
 pages:
   stage: build
   script:
-    - mkdir public
+    - R -e 'pkgdown::build_site()'
     - mkdir public/iROCK
     - cp -R iROCK public
     - mkdir public/img
