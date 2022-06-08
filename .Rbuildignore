@@ -36,3 +36,4 @@ img/
 unspecified
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
