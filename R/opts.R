@@ -373,6 +373,25 @@ opts$defaults <-
        ### Default heading level
        defaultHeadingLevel = 1,
 
+       theme_codeTreeDiagram =
+         list(
+           c("layout", "dot", "graph"),
+           c("rankdir", "LR", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("font", "arial", "node"),
+           c("font", "arial", "edge"),
+           c("shape", "box", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           #c("width", "4", "node"),
+           c("color", "#888888", "edge"),
+           c("dir", "none", "edge"),
+           c("headclip", "false", "edge"),
+           c("tailclip", "false", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
        theme_utteranceDiagram =
          list(
            c("layout", "dot", "graph"),
