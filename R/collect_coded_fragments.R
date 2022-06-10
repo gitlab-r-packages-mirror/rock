@@ -161,7 +161,7 @@ collect_coded_fragments <- function(x,
 
   allCodes <-
     setdiff(
-      unique(unlist(round1_parsed$convenience$inductiveSplitCodes)),
+      unique(unlist(x$convenience$inductiveSplitCodes)),
       x$convenience$original_inductiveCodeTreeNames
     );
 
