@@ -84,6 +84,11 @@ fragments, or one character value in markdown format.}
 
 \item{includeCSS}{Whether to include the ROCK CSS in the returned HTML.}
 
+\item{codeHeadingFormatting}{A character value of the
+form \verb{\%s *(path: \%s)*} (the default) or \verb{\\n\\n### \%s\\n\\n*path:* ``\%s``\\n\\n}.
+The first \verb{\%s} is replaced by the code identifier; the second \verb{\%s} by the
+corresponding path in the code tree.}
+
 \item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}

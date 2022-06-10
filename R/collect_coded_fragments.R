@@ -52,6 +52,10 @@
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
+#' @param codeHeadingFormatting A character value of the
+#' form `%s *(path: %s)*` (the default) or `\n\n### %s\n\n*path:* ``%s``\n\n`.
+#' The first `%s` is replaced by the code identifier; the second `%s` by the
+#' corresponding path in the code tree.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
 #' when constructing the fragments (the raw versions contain all codes). Note that
 #' this should be set to `FALSE` to have `add_html_tags` be of the most use.

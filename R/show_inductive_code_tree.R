@@ -37,6 +37,10 @@ show_inductive_code_tree <- function(x,
 
   trees <- names(x$inductiveDiagrammeRs);
 
+  if (is.null(x$inductiveDiagrammeRs)) {
+    return(invisible(NULL));
+  }
+
   trees <-
     trees[!unlist(lapply(x$inductiveDiagrammeRs, is.null))];
 
