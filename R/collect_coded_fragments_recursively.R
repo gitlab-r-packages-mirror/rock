@@ -1,7 +1,9 @@
 #' @param root The root code(s) for which to collect the coded fragments.
 #' @param inductiveCodingHierarchyMarker The character(s) used to mark nesting of codes.
-#' @export
-#' @rdname collect_coded_fragments
+#'
+#' @noRd
+# #' @export
+# #' @rdname collect_coded_fragments
 collect_coded_fragments_recursively <- function(x,
                                                 root,
                                                 context = 0,
@@ -53,8 +55,7 @@ collect_coded_fragments_recursively <- function(x,
 
     res <- do.call(
       paste,
-      res,
-      sep = "\n\n\n"
+      c(list(collapse = "\n\n\n"), res)
     );
 
     return(res);

@@ -150,7 +150,10 @@ collect_coded_fragments <- function(x,
   }
 
   matchedCodes <- grep(codes,
-                       x$convenience$codingLeaves,
+                       x$convenience$codings,
+                       ### Changed at 2022-06-10: you also want to be
+                       ### able to match 'ancestor codes', not only leaves
+                       #x$convenience$codingLeaves,
                        value=TRUE);
   dat <- x$mergedSourceDf;
 
@@ -184,76 +187,80 @@ collect_coded_fragments <- function(x,
   res <- lapply(
     matchedCodes,
     function(i) {
-      return(
-        lapply(
-          which(selectedUtterances & (dat[, i] == 1)),
-          function(center) {
+      if (i %in% names(dat)) {
+        return(
+          lapply(
+            which(selectedUtterances & (dat[, i] == 1)),
+            function(center) {
 
-            indices <- seq(center - context,
-                           center + context);
+              indices <- seq(center - context,
+                             center + context);
 
-            ### Store indices corresponding source of this utterance
-            if (singleSource) {
-              sourceIndices <- c(1, nrow(dat));
-            } else {
-              sourceIndices <-
-                which(dat[, 'originalSource'] == dat[center, 'originalSource']);
-            }
+              ### Store indices corresponding source of this utterance
+              if (singleSource) {
+                sourceIndices <- c(1, nrow(dat));
+              } else {
+                sourceIndices <-
+                  which(dat[, 'originalSource'] == dat[center, 'originalSource']);
+              }
 
-            ### If this source is shorter than the number of lines requested,
-            ### simply send the complete source
-            if ((max(sourceIndices) - min(sourceIndices)) <= (1 + 2*context)) {
-              indices <- sourceIndices;
-            } else {
-              ### Shift forwards or backwards to make sure early or late
-              ### fragments don't exceed valid utterance (line) numbers
-              indices <- indices - min(0, (min(indices) - min(sourceIndices)));
-              indices <- indices - max(0, (max(indices) - max(sourceIndices)));
-            }
+              ### If this source is shorter than the number of lines requested,
+              ### simply send the complete source
+              if ((max(sourceIndices) - min(sourceIndices)) <= (1 + 2*context)) {
+                indices <- sourceIndices;
+              } else {
+                ### Shift forwards or backwards to make sure early or late
+                ### fragments don't exceed valid utterance (line) numbers
+                indices <- indices - min(0, (min(indices) - min(sourceIndices)));
+                indices <- indices - max(0, (max(indices) - max(sourceIndices)));
+              }
 
-            ### Get clean or raw utterances
-            if (cleanUtterances) {
-              res <- dat[indices, 'utterances_clean'];
-            } else {
-              res <- dat[indices, 'utterances_raw'];
-            }
+              ### Get clean or raw utterances
+              if (cleanUtterances) {
+                res <- dat[indices, 'utterances_clean'];
+              } else {
+                res <- dat[indices, 'utterances_raw'];
+              }
 
-            if (rawResult) {
-              return(res);
-            } else {
-              ### Add html tags, if requested
-              if (add_html_tags) {
-                res <- paste0(
-                  rock::add_html_tags(
-                    res,
-                    context = setdiff(
-                      seq_along(indices),
-                      which(indices == center)
+              if (rawResult) {
+                return(res);
+              } else {
+                ### Add html tags, if requested
+                if (add_html_tags) {
+                  res <- paste0(
+                    rock::add_html_tags(
+                      res,
+                      context = setdiff(
+                        seq_along(indices),
+                        which(indices == center)
+                      )
                     )
-                  )
-                );
+                  );
+                }
+
+                ### Collapse all utterances into one character value
+                res <- paste0(res,
+                              collapse=utteranceGlue);
+
+                ### Add the sources, if necessary
+                if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
+                  res <- paste0(
+                    sprintf(
+                      sourceFormatting,
+                      dat[center, 'originalSource']
+                    ),
+                    res);
+                }
+
+                ### Return result
+                return(res);
               }
-
-              ### Collapse all utterances into one character value
-              res <- paste0(res,
-                            collapse=utteranceGlue);
-
-              ### Add the sources, if necessary
-              if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
-                res <- paste0(
-                  sprintf(
-                    sourceFormatting,
-                    dat[center, 'originalSource']
-                  ),
-                  res);
-              }
-
-              ### Return result
-              return(res);
             }
-          }
-        )
-      );
+          )
+        );
+      } else {
+        return(NULL);
+      }
     }
   );
 
