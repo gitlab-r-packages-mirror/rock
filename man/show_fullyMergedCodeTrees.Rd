@@ -10,7 +10,7 @@ show_fullyMergedCodeTrees(x)
 \item{x}{A parsed source(s) object.}
 }
 \value{
-Invisibly, \code{x}.
+The result of a call to \code{\link[DiagrammeR:render_graph]{DiagrammeR::render_graph()}}.
 }
 \description{
 Show the fully merged code tree(s)

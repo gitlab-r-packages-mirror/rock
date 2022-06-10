@@ -1,7 +1,7 @@
 #' Create an overview of coded fragments
 #'
 #' Collect all coded utterances and optionally add some context
-#' (utterances before and utterances after) to create ann overview
+#' (utterances before and utterances after) to create an overview
 #' of all coded fragments per code.
 #'
 #' By default, the output is optimized for inclusion in an R Markdown
@@ -12,7 +12,7 @@
 #'
 #' @param x The parsed source(s) as provided by `rock::parse_source`
 #' or `rock::parse_sources`.
-#' @param codes The regular expression that matches the codes to include
+#' @param codes The regular expression that matches the codes to include.
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
 #' @param attributes To only select coded utterances matching one or more
@@ -52,6 +52,9 @@
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #'
 #' @return Either a list of character vectors, or a single character value.
+#'
+#' @rdname collect_coded_fragments
+#' @inheritParams collect_coded_fragments_recursively
 #'
 #' @examples ### Get path to example source
 #' examplePath <-
