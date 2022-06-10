@@ -619,6 +619,12 @@ parse_source <- function(text,
         tryCatch({
           codeProcessing[[codeRegex]]$inductiveDiagrammeR <-
             data.tree::ToDiagrammeRGraph(codeProcessing[[codeRegex]]$inductiveCodeTrees);
+          codeProcessing[[codeRegex]]$inductiveDiagrammeR <-
+            do.call(
+              rock::apply_graph_theme,
+              c(list(graph = codeProcessing[[codeRegex]]$inductiveDiagrammeR),
+                rock::opts$get("theme_codeTreeDiagram"))
+            );
         }, error = function(e) {
           warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
                   codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n",

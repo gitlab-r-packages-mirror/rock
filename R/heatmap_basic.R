@@ -12,7 +12,7 @@
 #' @return The heatmap, as a ggplot2 object.
 #' @export
 #'
-#' @examples rock::heatmap(mtcars, 'am', 'cyl', 'mpg');
+#' @examples rock::heatmap_basic(mtcars, 'am', 'cyl', 'mpg');
 heatmap_basic <- function(data,
                           x,
                           y,
