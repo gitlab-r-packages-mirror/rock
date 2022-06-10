@@ -1355,7 +1355,10 @@ parse_source <- function(text,
              return(sort(unique(unname(unlist(x)))));
            });
 
-  if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
+  if (postponeDeductiveTreeBuilding) {
+    res$extendedDeductiveCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- NA;
+  } else if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
     ### Merge inductive code tree into deductive code tree (currently only support
     ### for one deductive code tree)
     res$extendedDeductiveCodeTrees <-
@@ -1383,9 +1386,9 @@ parse_source <- function(text,
         }
       }
     }
-  } else {
+  } else if (!postponeDeductiveTreeBuilding) {
     res$extendedDeductiveCodeTrees <- NA;
-    res$fullyMergedCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- res$inductiveCodeTrees;
   }
 
   if (!silent) {

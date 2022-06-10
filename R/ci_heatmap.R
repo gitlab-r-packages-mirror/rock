@@ -166,16 +166,18 @@ ci_heatmap <- function(x,
     newItemCol;
 
   heatMap <-
-    rock::heatmap(data = tidyCodeFrequencies,
-                  x = "code",
-                  y = itemIdentifier,
-                  fill = "frequency",
-                  xLab = codelab,
-                  yLab = itemlab,
-                  fillLab = freqlab,
-                  plotTitle = plotTitle,
-                  fillScale = fillScale,
-                  theme =theme);
+    rock::heatmap_basic(
+      data = tidyCodeFrequencies,
+      x = "code",
+      y = itemIdentifier,
+      fill = "frequency",
+      xLab = codelab,
+      yLab = itemlab,
+      fillLab = freqlab,
+      plotTitle = plotTitle,
+      fillScale = fillScale,
+      theme = theme
+    );
 
   return(heatMap);
 
