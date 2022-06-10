@@ -12,7 +12,10 @@
 #'
 #' @param x The parsed source(s) as provided by `rock::parse_source`
 #' or `rock::parse_sources`.
-#' @param codes The regular expression that matches the codes to include.
+#' @param codes The regular expression that matches the codes to include,
+#' or a character vector with codes or regular expressions for codes (which
+#' will be concatenated using "`|`" as a separator, to create a regulation
+#' expression matching all codes).
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
 #' @param attributes To only select coded utterances matching one or more
@@ -135,6 +138,15 @@ collect_coded_fragments <- function(x,
     singleSource <- TRUE;
   } else {
     singleSource <- FALSE;
+  }
+
+  if (length(codes) == 0) {
+    stop("Argument `codes` has a length of 0. Without any codes to collect ",
+         "fragments for, I have nothing to do!");
+  }
+
+  if (length(codes) > 1) {
+    codes <- paste0(codes, collapse="|");
   }
 
   matchedCodes <- grep(codes,
