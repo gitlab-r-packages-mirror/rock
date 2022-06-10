@@ -161,7 +161,7 @@ collect_coded_fragments <- function(x,
 
   allCodes <-
     setdiff(
-      names(x$convenience$codingPaths),
+      unique(unlist(round1_parsed$convenience$inductiveSplitCodes)),
       x$convenience$original_inductiveCodeTreeNames
     );
 
@@ -174,6 +174,13 @@ collect_coded_fragments <- function(x,
                        #x$convenience$codingLeaves,
                        value=TRUE);
 
+  msg(
+    "The regular expression passed in argument `codes` ('",
+    codes, "') matches the following codings: ",
+    vecTxtQ(matchedCodes), ".\n\n",
+    silent = silent
+  );
+
   if (includeDescendents) {
     matchedCodes <- unlist(
       lapply(
@@ -183,6 +190,13 @@ collect_coded_fragments <- function(x,
         includeParentCode = TRUE
       )
     );
+
+    msg(
+      "After combining with the descendent codes, the current list is: ",
+      vecTxtQ(matchedCodes), ".\n\n",
+      silent = silent
+    );
+
   }
 
   ### For convenience
@@ -194,15 +208,15 @@ collect_coded_fragments <- function(x,
     matchedCodes[matchedCodes %in% names(dat)];
   unusedCodes <- setdiff(matchedCodes, usedCodes);
 
+  msg(
+    "Of these, the following were not ",
+    "used on any utterances: ", vecTxtQ(unusedCodes), ".\n\n",
+    "This leaves the following codes: ", vecTxtQ(usedCodes), ".\n",
+    silent = silent
+  );
+
   usedCodesPaths <-
     x$convenience$codingPaths[usedCodes];
-
-  if (!silent) {
-    cat0("The regular expression passed in argument `codes` ('",
-              codes, "') matches the following codings: ",
-              vecTxtQ(matchedCodes), ". Of these, the following were not ",
-         "used on any utterances: ", vecTxtQ(usedCodes), ".\n\n");
-  }
 
   ### Select utterances matching the specified attributes
   selectedUtterances <- rep(TRUE, nrow(dat));
@@ -225,6 +239,12 @@ collect_coded_fragments <- function(x,
   res <- lapply(
     usedCodes,
     function(i) {
+
+      msg(
+        "\n   - Processing code '", i, "'. ",
+        silent = silent
+      );
+
       if (i %in% names(dat)) {
         return(
           lapply(
