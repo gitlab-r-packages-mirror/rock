@@ -1,5 +1,5 @@
 #' @param root The root code(s) for which to collect the coded fragments.
-#' @param hierarchyMarker The character(s) used to mark nesting.
+#' @param inductiveCodingHierarchyMarker The character(s) used to mark nesting of codes.
 #' @export
 #' @rdname collect_coded_fragments
 collect_coded_fragments_recursively <- function(x,
@@ -16,7 +16,7 @@ collect_coded_fragments_recursively <- function(x,
                                                 rawResult = FALSE,
                                                 includeCSS = TRUE,
                                                 includeBootstrap = rock::opts$get("includeBootstrap"),
-                                                hierarchyMarker = rock::opts$get("hierarchyMarker"),
+                                                inductiveCodingHierarchyMarker = rock::opts$get("inductiveCodingHierarchyMarker"),
                                                 preventOverwriting = rock::opts$get(preventOverwriting),
                                                 silent=rock::opts$get(silent)) {
 
@@ -46,7 +46,7 @@ collect_coded_fragments_recursively <- function(x,
       rawResult = rawResult,
       includeCSS = includeCSS,
       includeBootstrap = includeBootstrap,
-      hierarchyMarker = hierarchyMarker,
+      inductiveCodingHierarchyMarker = inductiveCodingHierarchyMarker,
       preventOverwriting = preventOverwriting,
       silent=silent
     );
@@ -93,7 +93,7 @@ collect_coded_fragments_recursively <- function(x,
       res <- c(res,
                collect_coded_fragments(
                  x,
-                 codes = paste0("^", root, hierarchyMarker,
+                 codes = paste0("^", root, inductiveCodingHierarchyMarker,
                                 "?$"),
                  context = context,
                  attributes = attributes,
