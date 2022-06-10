@@ -39,5 +39,5 @@ The heatmap, as a ggplot2 object.
 Generic convenience function to create a heatmap
 }
 \examples{
-rock::heatmap(mtcars, 'am', 'cyl', 'mpg');
+rock::heatmap_basic(mtcars, 'am', 'cyl', 'mpg');
 }
