@@ -61,7 +61,7 @@
 #' @return Either a list of character vectors, or a single character value.
 #'
 #' @rdname collect_coded_fragments
-#' @inheritParams collect_coded_fragments_recursively
+# #' @inheritParams collect_coded_fragments_recursively
 #'
 #' @examples ### Get path to example source
 #' examplePath <-
