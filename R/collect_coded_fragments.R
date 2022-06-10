@@ -14,10 +14,14 @@
 #' or `rock::parse_sources`.
 #' @param codes The regular expression that matches the codes to include,
 #' or a character vector with codes or regular expressions for codes (which
-#' will be concatenated using "`|`" as a separator, to create a regulation
-#' expression matching all codes).
+#' will be prepended with "`^`" and appended with "`$`", and then
+#' concatenated using "`|`" as a separator, to create a regular expression
+#' matching all codes).
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
+#' @param includeDescendents Whether to also collect the fragments coded with
+#' descendent codes (i.e. child codes, 'grand child codes', etc; in other
+#' words, whether to collect the fragments recursively).
 #' @param attributes To only select coded utterances matching one or more
 #' values for one or more attributes, pass a list where every element's
 #' name is a valid (i.e. occurring) attribute name, and every element is a
@@ -94,6 +98,7 @@
 collect_coded_fragments <- function(x,
                                     codes = ".*",
                                     context = 0,
+                                    includeDescendents = FALSE,
                                     attributes = NULL,
                                     heading = NULL,
                                     headingLevel = 3,
@@ -104,14 +109,14 @@ collect_coded_fragments <- function(x,
                                     template = "default",
                                     rawResult = FALSE,
                                     includeCSS = TRUE,
+                                    codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
-                                    preventOverwriting = rock::opts$get(preventOverwriting),
-                                    silent=rock::opts$get(silent)) {
+                                    preventOverwriting = rock::opts$get("preventOverwriting"),
+                                    silent=rock::opts$get("silent")) {
 
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
-  codeHeadingFormatting <- rock::opts$get(codeHeadingFormatting);
 
   if (!("rock_parsedSource" %in% class(x)) &&
       !("rock_parsedSources" %in% class(x))) {
@@ -146,24 +151,53 @@ collect_coded_fragments <- function(x,
   }
 
   if (length(codes) > 1) {
-    codes <- paste0(codes, collapse="|");
+    codes <- paste0(paste0("^", codes, "$"),
+                    collapse="|");
   }
 
+  allCodes <-
+    setdiff(
+      names(x$convenience$codingPaths),
+      x$convenience$original_inductiveCodeTreeNames
+    );
+
+  ### Check against used codes
   matchedCodes <- grep(codes,
-                       x$convenience$codings,
+                       allCodes,
+                       #x$convenience$codings,
                        ### Changed at 2022-06-10: you also want to be
                        ### able to match 'ancestor codes', not only leaves
                        #x$convenience$codingLeaves,
                        value=TRUE);
+
+  if (includeDescendents) {
+    matchedCodes <- unlist(
+      lapply(
+        matchedCodes,
+        rock::get_descendentCodeIds,
+        x = x,
+        includeParentCode = TRUE
+      )
+    );
+  }
+
+  ### For convenience
   dat <- x$mergedSourceDf;
 
-  matchedCodesPaths <-
-    x$convenience$codingPaths[matchedCodes];
+  ### Remove codes that were not used on any utterances
+  allCodes <- matchedCodes;
+  usedCodes <-
+    matchedCodes[matchedCodes %in% names(dat)];
+  unusedCodes <- setdiff(matchedCodes, usedCodes);
+
+  usedCodesPaths <-
+    x$convenience$codingPaths[usedCodes];
 
   if (!silent) {
     cat0("The regular expression passed in argument `codes` ('",
               codes, "') matches the following codings: ",
-              vecTxtQ(matchedCodes), ".\n\n");
+              vecTxtQ(matchedCodes), ". Of these, the following were not ",
+         "used on any utterances: ", vecTxtQ(usedCodes), ".\n\n");
   }
 
   ### Select utterances matching the specified attributes
@@ -185,7 +219,7 @@ collect_coded_fragments <- function(x,
   ### Get line numbers of the fragments to extract,
   ### get fragments, store them
   res <- lapply(
-    matchedCodes,
+    usedCodes,
     function(i) {
       if (i %in% names(dat)) {
         return(
@@ -266,12 +300,12 @@ collect_coded_fragments <- function(x,
 
   if (rawResult) {
     names(res) <-
-      matchedCodes;
+      usedCodes;
   } else {
     ### Set codePrefix based on whether a heading
     ### will be included
     if (is.null(heading)) {
-      if (length(matchedCodes) > 5) {
+      if (length(usedCodes) > 5) {
         heading <-
           paste0("<h", headingLevel, ">",
                  "Collected coded fragments with ",
@@ -282,7 +316,7 @@ collect_coded_fragments <- function(x,
         heading <-
           paste0("<h", headingLevel, ">",
                  "Collected coded fragments for codes ",
-                 vecTxtQ(matchedCodes), " with ",
+                 vecTxtQ(usedCodes), " with ",
                  context, " lines of context",
                  "</h", headingLevel, ">",
                  "\n\n");
@@ -309,7 +343,7 @@ collect_coded_fragments <- function(x,
     res <- unlist(res);
     ### Add titles
     res <- paste0(codePrefix,
-                  sprintf(codeHeadingFormatting, matchedCodes, matchedCodesPaths),
+                  sprintf(codeHeadingFormatting, usedCodes, usedCodesPaths),
                   fragmentDelimiter,
                   res,
                   fragmentDelimiter);

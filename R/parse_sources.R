@@ -581,19 +581,25 @@ parse_sources <- function(path,
       data.tree::ToDiagrammeRGraph(res$deductiveCodeTrees);
 
     res$deductiveCodeTreeGraph <-
-      apply_graph_theme(res$deductiveCodeTreeGraph,
-                        c("layout", "dot", "graph"),
-                        c("rankdir", "LR", "graph"),
-                        c("outputorder", "edgesfirst", "graph"),
-                        c("fixedsize", "false", "node"),
-                        c("shape", "box", "node"),
-                        c("style", "rounded,filled", "node"),
-                        c("color", "#000000", "node"),
-                        c("color", "#888888", "edge"),
-                        c("dir", "none", "edge"),
-                        c("headclip", "false", "edge"),
-                        c("tailclip", "false", "edge"),
-                        c("fillcolor", "#FFFFFF", "node"));
+      do.call(
+        rock::apply_graph_theme,
+        c(list(graph = res$deductiveCodeTreeGraph),
+          rock::opts$get("theme_codeTreeDiagram"))
+      );
+
+      # apply_graph_theme(res$deductiveCodeTreeGraph,
+      #                   c("layout", "dot", "graph"),
+      #                   c("rankdir", "LR", "graph"),
+      #                   c("outputorder", "edgesfirst", "graph"),
+      #                   c("fixedsize", "false", "node"),
+      #                   c("shape", "box", "node"),
+      #                   c("style", "rounded,filled", "node"),
+      #                   c("color", "#000000", "node"),
+      #                   c("color", "#888888", "edge"),
+      #                   c("dir", "none", "edge"),
+      #                   c("headclip", "false", "edge"),
+      #                   c("tailclip", "false", "edge"),
+      #                   c("fillcolor", "#FFFFFF", "node"));
 
     if (!silent) {
       cat0("Successfully combined deductive code tree specifications into actual tree. Starting merging with inductive code trees.\n");
