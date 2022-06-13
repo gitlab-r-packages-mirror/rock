@@ -1397,6 +1397,16 @@ parse_source <- function(text,
     res$fullyMergedCodeTrees <- res$inductiveCodeTrees;
   }
 
+
+  res$convenience$valid_inductiveCodeTrees <-
+    which(unlist(lapply(res$inductiveCodeTrees, is.environment)));
+
+  res$convenience$original_inductiveCodeTreeNames <-
+    names(res$inductiveCodeTrees);
+
+  res$inductiveCodeTrees <-
+    res$inductiveCodeTrees[res$convenience$valid_inductiveCodeTrees];
+
   if (!silent) {
     cat("\n\n");
   }

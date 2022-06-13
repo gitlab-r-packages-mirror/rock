@@ -159,10 +159,26 @@ collect_coded_fragments <- function(x,
                     collapse="|");
   }
 
+  if (!is.null(x$convenience$inductiveSplitCodes)) {
+    allCodes <- unique(unlist(x$convenience$inductiveSplitCodes));
+  } else if (!is.null(x$inductiveSplitCodes)) {
+    allCodes <- unique(unlist(x$inductiveSplitCodes));
+  } else {
+    stop("Cannot find 'inductiveSplitCodes'!");
+  }
+
+  if (!is.null(x$convenience$original_inductiveCodeTreeNames)) {
+    codeTreeNames <- x$convenience$original_inductiveCodeTreeNames;
+  } else if (!is.null(x$original_inductiveCodeTreeNames)) {
+    codeTreeNames <- x$original_inductiveCodeTreeNames;
+  } else {
+    stop("Cannot find 'original_inductiveCodeTreeNames'!");
+  }
+
   allCodes <-
     setdiff(
-      unique(unlist(x$inductiveSplitCodes)),
-      x$convenience$original_inductiveCodeTreeNames
+      allCodes,
+      codeTreeNames
     );
 
   ### Check against used codes
