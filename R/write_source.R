@@ -7,6 +7,8 @@
 #' @param output The filename (for `rock::write_source()`) or path (for
 #' `rock::write_sources()`) to write to.
 #' @param encoding The encoding to use.
+#' @param preventOverwriting Whether to prevent against overwriting of the
+#' file(s) to write. Set to `FALSE` to overwrite.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the input (`x`), to enable chaining in pipes.
@@ -37,6 +39,7 @@
 write_source <- function(x,
                          output,
                          encoding = rock::opts$get('encoding'),
+                         preventOverwriting = rock::opts$get("preventOverwriting"),
                          silent = rock::opts$get('silent')) {
 
   if (!("rock_source" %in% class(x))) {
