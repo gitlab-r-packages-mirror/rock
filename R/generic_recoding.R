@@ -328,19 +328,39 @@ generic_recoding <- function(input,
         "write the recoded source to disk.",
         silent=silent);
     } else {
-      con <- file(description=output,
-                  open="w",
-                  encoding=encoding);
-      writeLines(text=input,
-                 con=con);
-      close(con);
+
+      # con <- file(description=output,
+      #             open="w",
+      #             encoding=encoding);
+      # writeLines(text=input,
+      #            con=con);
+      # close(con);
+        writingResult <-
+          writeTxtFile(
+            x = input,
+            output = output,
+            preventOverwriting = preventOverwriting,
+            encoding = encoding,
+            silent = silent
+          );
+
+        if (writingResult) {
+          msg("I just wrote a recoded source to file '",
+              output,
+              "'.",
+              silent = silent);
+        } else {
+          warning("Could not write output file to `",
+                  output, "`.");
+        }
+
     }
-    msg(
-      "I just wrote a recoded source to file '",
-      output,
-      "'.",
-      silent=silent
-    );
+    # msg(
+    #   "I just wrote a recoded source to file '",
+    #   output,
+    #   "'.",
+    #   silent=silent
+    # );
   }
 
   return(invisible(input));
