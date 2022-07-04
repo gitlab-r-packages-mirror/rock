@@ -55,7 +55,7 @@ export_mergedSourceDf_to_xlsx <- function(x,
                                           preventOverwriting = rock::opts$get('preventOverwriting'),
                                           silent = rock::opts$get('silent')) {
 
-  if (requireNamespace("openxlsx", quietly = TRUE)) {
+  if (requireNamespace("writexl", quietly = TRUE)) {
     return(
       export_mergedSourceDf_to_file(
         x = x,
@@ -63,13 +63,13 @@ export_mergedSourceDf_to_xlsx <- function(x,
         exportArgs = exportArgs,
         preventOverwriting = preventOverwriting,
         silent = silent,
-        exportFunc = openxlsx::write.xlsx
+        exportFunc = writexl::write_xlsx
       )
     );
   } else {
-    stop("To export to .xlsx files, you need to have the {openxlsx} package ",
+    stop("To export to .xlsx files, you need to have the {writexl} package ",
          "installed. You can install it with:\n\n  ",
-         "install.packages('openxlsx');\n");
+         "install.packages('writexl');\n");
   }
 }
 
