@@ -945,14 +945,22 @@ parse_source <- function(text,
 
             for (currentType in uniqueTypes) {
 
-              res$networkCodes[[networkCodeRegex]]$coded_df[
-                res$networkCodes[[networkCodeRegex]]$coded_df$type ==
-                  currentType,
-                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-              ] <-
-                res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+              configuredColor <-
+                unlist(
+                  res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+                    setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+                    ]
+                );
+
+              if (!is.null(configuredColor)) {
+
+                res$networkCodes[[networkCodeRegex]]$coded_df[
+                  which(res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+                          currentType),
                   setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-                ];
+                ] <-
+                  configuredColor;
+              }
 
             }
 
