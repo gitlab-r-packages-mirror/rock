@@ -82,6 +82,24 @@ ci_heatmap <- function(x,
          "coding scheme that exists in the `rock` package.");
   }
 
+  nrOfCodes <-
+    length(x$codeProcessing$ci$leafCodes);
+  nrOfItems <-
+    length(na.omit(unique(x$mergedSourceDf$itemId)));
+
+  if (nrOfItems == 0) {
+    stop("No items were coded (or no valid item identifiers were ",
+         "specified)!");
+  }
+
+  if ((nrOfCodes*nrOfItems) < 2) {
+    stop("Only one item ('",
+         na.omit(unique(x$mergedSourceDf$itemId)),
+         "') was coded with one code ('",
+         x$codeProcessing$ci$leafCodes,
+         "')!");
+  }
+
   mergedSourceDf <- x$mergedSourceDf;
 
   usedCodes <- intersect(
