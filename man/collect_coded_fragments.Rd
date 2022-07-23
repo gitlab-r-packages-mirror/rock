@@ -8,27 +8,39 @@ collect_coded_fragments(
   x,
   codes = ".*",
   context = 0,
+  includeDescendents = FALSE,
   attributes = NULL,
   heading = NULL,
   headingLevel = 3,
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
   output = NULL,
+  outputViewer = "viewer",
   template = "default",
   rawResult = FALSE,
+  includeCSS = TRUE,
+  codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
   includeBootstrap = rock::opts$get("includeBootstrap"),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  silent = rock::opts$get(silent)
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
 \item{x}{The parsed source(s) as provided by \code{rock::parse_source}
 or \code{rock::parse_sources}.}
 
-\item{codes}{The regular expression that matches the codes to include}
+\item{codes}{The regular expression that matches the codes to include,
+or a character vector with codes or regular expressions for codes (which
+will be prepended with "\code{^}" and appended with "\code{$}", and then
+concatenated using "\code{|}" as a separator, to create a regular expression
+matching all codes).}
 
 \item{context}{How many utterances before and after the target
 utterances to include in the fragments.}
+
+\item{includeDescendents}{Whether to also collect the fragments coded with
+descendent codes (i.e. child codes, 'grand child codes', etc; in other
+words, whether to collect the fragments recursively).}
 
 \item{attributes}{To only select coded utterances matching one or more
 values for one or more attributes, pass a list where every element's
@@ -57,12 +69,25 @@ this should be set to \code{FALSE} to have \code{add_html_tags} be of the most u
 result will be written. If provided, the result will be returned
 invisibly.}
 
+\item{outputViewer}{If showing output, where to show the output: in
+the console (\code{outputViewer='console'}) or in the viewer
+(\code{outputViewer='viewer'}), e.g. the RStudio viewer. You'll usually want
+the latter when outputting HTML, and otherwise the former. Set to \code{FALSE}
+to not output anything to the console or the viewer.}
+
 \item{template}{The template to load; either the name of one
 of the ROCK templates (currently, only 'default' is available), or
 the path and filename of a CSS file.}
 
 \item{rawResult}{Whether to return the raw result, a list of the
 fragments, or one character value in markdown format.}
+
+\item{includeCSS}{Whether to include the ROCK CSS in the returned HTML.}
+
+\item{codeHeadingFormatting}{A character value of the
+form \verb{\%s *(path: \%s)*} (the default) or \verb{\\n\\n### \%s\\n\\n*path:* ``\%s``\\n\\n}.
+The first \verb{\%s} is replaced by the code identifier; the second \verb{\%s} by the
+corresponding path in the code tree.}
 
 \item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 
@@ -75,7 +100,7 @@ Either a list of character vectors, or a single character value.
 }
 \description{
 Collect all coded utterances and optionally add some context
-(utterances before and utterances after) to create ann overview
+(utterances before and utterances after) to create an overview
 of all coded fragments per code.
 }
 \details{
@@ -92,16 +117,29 @@ examplePath <-
 
 ### Get a path to one example file
 exampleFile <-
-  file.path(examplePath, "example-1.rock");
+  file.path(
+    examplePath, "example-1.rock"
+  );
 
 ### Parse single example source
-parsedExample <- rock::parse_source(exampleFile);
+parsedExample <-
+  rock::parse_source(
+    exampleFile
+  );
 
 ### Show organised coded fragments in Markdown
-cat(collect_coded_fragments(parsedExample));
+cat(
+  rock::collect_coded_fragments(
+    parsedExample
+  )
+);
 
 ### Only for the codes containing 'Code2'
-cat(collect_coded_fragments(parsedExample,
-                            'Code2'));
+cat(
+  rock::collect_coded_fragments(
+    parsedExample,
+    'Code2'
+  )
+);
 
 }

@@ -1,7 +1,7 @@
 #' Create an overview of coded fragments
 #'
 #' Collect all coded utterances and optionally add some context
-#' (utterances before and utterances after) to create ann overview
+#' (utterances before and utterances after) to create an overview
 #' of all coded fragments per code.
 #'
 #' By default, the output is optimized for inclusion in an R Markdown
@@ -12,9 +12,16 @@
 #'
 #' @param x The parsed source(s) as provided by `rock::parse_source`
 #' or `rock::parse_sources`.
-#' @param codes The regular expression that matches the codes to include
+#' @param codes The regular expression that matches the codes to include,
+#' or a character vector with codes or regular expressions for codes (which
+#' will be prepended with "`^`" and appended with "`$`", and then
+#' concatenated using "`|`" as a separator, to create a regular expression
+#' matching all codes).
 #' @param context How many utterances before and after the target
 #' utterances to include in the fragments.
+#' @param includeDescendents Whether to also collect the fragments coded with
+#' descendent codes (i.e. child codes, 'grand child codes', etc; in other
+#' words, whether to collect the fragments recursively).
 #' @param attributes To only select coded utterances matching one or more
 #' values for one or more attributes, pass a list where every element's
 #' name is a valid (i.e. occurring) attribute name, and every element is a
@@ -32,13 +39,23 @@
 #' @param add_html_tags Whether to add HTML tags to the result.
 #' @param rawResult Whether to return the raw result, a list of the
 #' fragments, or one character value in markdown format.
+#' @param includeCSS Whether to include the ROCK CSS in the returned HTML.
 #' @param includeBootstrap Whether to include the default bootstrap CSS.
 #' @param output Here, a path and filename can be provided where the
 #' result will be written. If provided, the result will be returned
 #' invisibly.
+#' @param outputViewer If showing output, where to show the output: in
+#' the console (`outputViewer='console'`) or in the viewer
+#' (`outputViewer='viewer'`), e.g. the RStudio viewer. You'll usually want
+#' the latter when outputting HTML, and otherwise the former. Set to `FALSE`
+#' to not output anything to the console or the viewer.
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
+#' @param codeHeadingFormatting A character value of the
+#' form `%s *(path: %s)*` (the default) or `\n\n### %s\n\n*path:* ``%s``\n\n`.
+#' The first `%s` is replaced by the code identifier; the second `%s` by the
+#' corresponding path in the code tree.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
 #' when constructing the fragments (the raw versions contain all codes). Note that
 #' this should be set to `FALSE` to have `add_html_tags` be of the most use.
@@ -47,72 +64,175 @@
 #'
 #' @return Either a list of character vectors, or a single character value.
 #'
+#' @rdname collect_coded_fragments
+# #' @inheritParams collect_coded_fragments_recursively
+#'
 #' @examples ### Get path to example source
 #' examplePath <-
 #'   system.file("extdata", package="rock");
 #'
 #' ### Get a path to one example file
 #' exampleFile <-
-#'   file.path(examplePath, "example-1.rock");
+#'   file.path(
+#'     examplePath, "example-1.rock"
+#'   );
 #'
 #' ### Parse single example source
-#' parsedExample <- rock::parse_source(exampleFile);
+#' parsedExample <-
+#'   rock::parse_source(
+#'     exampleFile
+#'   );
 #'
 #' ### Show organised coded fragments in Markdown
-#' cat(collect_coded_fragments(parsedExample));
+#' cat(
+#'   rock::collect_coded_fragments(
+#'     parsedExample
+#'   )
+#' );
 #'
 #' ### Only for the codes containing 'Code2'
-#' cat(collect_coded_fragments(parsedExample,
-#'                             'Code2'));
+#' cat(
+#'   rock::collect_coded_fragments(
+#'     parsedExample,
+#'     'Code2'
+#'   )
+#' );
 #'
 #' @export
 collect_coded_fragments <- function(x,
                                     codes = ".*",
                                     context = 0,
+                                    includeDescendents = FALSE,
                                     attributes = NULL,
                                     heading = NULL,
                                     headingLevel = 3,
                                     add_html_tags = TRUE,
                                     cleanUtterances = FALSE,
                                     output = NULL,
+                                    outputViewer = "viewer",
                                     template = "default",
                                     rawResult = FALSE,
+                                    includeCSS = TRUE,
+                                    codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
-                                    preventOverwriting = rock::opts$get(preventOverwriting),
-                                    silent=rock::opts$get(silent)) {
+                                    preventOverwriting = rock::opts$get("preventOverwriting"),
+                                    silent=rock::opts$get("silent")) {
 
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
-  codeHeadingFormatting <- rock::opts$get(codeHeadingFormatting);
 
-  if (!("rockParsedSource" %in% class(x)) &&
-      !("rockParsedSources" %in% class(x))) {
+  if (!("rock_parsedSource" %in% class(x)) &&
+      !("rock_parsedSources" %in% class(x))) {
     stop(glue::glue("The object you provided (as argument `x`) has class '{vecTxtQ(class(x))}', ",
                     "but I can only process objects obtained by parsing one or more sources (with ",
-                    "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
-                    "or 'rockParsedSources'."));
+                    "`rock::parse_source` or `rock::parse_sources`), which have class 'rock_parsedSource' ",
+                    "or 'rock_parsedSources'."));
   }
 
-  if ("rockParsedSource" %in% class(x)) {
+  if (interactive() && ("viewer" %in% outputViewer)) {
+    if ((!requireNamespace("rstudioapi", quietly = TRUE)) &&
+        (rstudioapi::isAvailable())) {
+      viewer <- rstudioapi::viewer
+    }
+    else {
+      viewer <- getOption("viewer", utils::browseURL)
+    }
+    outputToViewer <- TRUE
+  } else {
+    outputToViewer <- FALSE
+  }
+
+  if ("rock_parsedSource" %in% class(x)) {
     singleSource <- TRUE;
   } else {
     singleSource <- FALSE;
   }
 
+  if (length(codes) == 0) {
+    stop("Argument `codes` has a length of 0. Without any codes to collect ",
+         "fragments for, I have nothing to do!");
+  }
+
+  if (length(codes) > 1) {
+    codes <- paste0(paste0("^", codes, "$"),
+                    collapse="|");
+  }
+
+  if (!is.null(x$convenience$inductiveSplitCodes)) {
+    allCodes <- unique(unlist(x$convenience$inductiveSplitCodes));
+  } else if (!is.null(x$inductiveSplitCodes)) {
+    allCodes <- unique(unlist(x$inductiveSplitCodes));
+  } else {
+    stop("Cannot find 'inductiveSplitCodes'!");
+  }
+
+  if (!is.null(x$convenience$original_inductiveCodeTreeNames)) {
+    codeTreeNames <- x$convenience$original_inductiveCodeTreeNames;
+  } else if (!is.null(x$original_inductiveCodeTreeNames)) {
+    codeTreeNames <- x$original_inductiveCodeTreeNames;
+  } else {
+    stop("Cannot find 'original_inductiveCodeTreeNames'!");
+  }
+
+  allCodes <-
+    setdiff(
+      allCodes,
+      codeTreeNames
+    );
+
+  ### Check against used codes
   matchedCodes <- grep(codes,
-                       x$convenience$codingLeaves,
+                       allCodes,
+                       #x$convenience$codings,
+                       ### Changed at 2022-06-10: you also want to be
+                       ### able to match 'ancestor codes', not only leaves
+                       #x$convenience$codingLeaves,
                        value=TRUE);
+
+  msg(
+    "The regular expression passed in argument `codes` ('",
+    codes, "') matches the following codings: ",
+    vecTxtQ(matchedCodes), ".\n\n",
+    silent = silent
+  );
+
+  if (includeDescendents) {
+    matchedCodes <- unlist(
+      lapply(
+        matchedCodes,
+        rock::get_descendentCodeIds,
+        x = x,
+        includeParentCode = TRUE
+      )
+    );
+
+    msg(
+      "After combining with the descendent codes, the current list is: ",
+      vecTxtQ(matchedCodes), ".\n\n",
+      silent = silent
+    );
+
+  }
+
+  ### For convenience
   dat <- x$mergedSourceDf;
 
-  matchedCodesPaths <-
-    x$convenience$codingPaths[matchedCodes];
+  ### Remove codes that were not used on any utterances
+  allCodes <- matchedCodes;
+  usedCodes <-
+    matchedCodes[matchedCodes %in% names(dat)];
+  unusedCodes <- setdiff(matchedCodes, usedCodes);
 
-  if (!silent) {
-    cat0("The regular expression passed in argument `codes` ('",
-              codes, "') matches the following codings: ",
-              vecTxtQ(matchedCodes), ".\n\n");
-  }
+  msg(
+    "Of these, the following were not ",
+    "used on any utterances: ", vecTxtQ(unusedCodes), ".\n\n",
+    "This leaves the following codes: ", vecTxtQ(usedCodes), ".\n",
+    silent = silent
+  );
+
+  usedCodesPaths <-
+    x$convenience$codingPaths[usedCodes];
 
   ### Select utterances matching the specified attributes
   selectedUtterances <- rep(TRUE, nrow(dat));
@@ -132,82 +252,113 @@ collect_coded_fragments <- function(x,
 
   ### Get line numbers of the fragments to extract,
   ### get fragments, store them
-  res <- lapply(matchedCodes,
-                function(i) {
-                  return(lapply(which(selectedUtterances & (dat[, i] == 1)),
-                           function(center) {
-                             indices <- seq(center - context,
-                                            center + context);
+  res <- lapply(
+    usedCodes,
+    function(i) {
 
-                             ### Store indices corresponding source of this utterance
-                             if (singleSource) {
-                               sourceIndices <- c(1, nrow(dat));
-                             } else {
-                               sourceIndices <-
-                                 which(dat[, 'originalSource'] == dat[center, 'originalSource']);
-                             }
+      msg(
+        "\n   - Processing code '", i, "'. ",
+        silent = silent
+      );
 
-                             ### If this source is shorter than the number of lines requested,
-                             ### simply send the complete source
-                             if (length(sourceIndices) <= (1 + 2*context)) {
-                               indices <- sourceIndices;
-                             } else {
-                               ### Shift forwards or backwards to make sure early or late
-                               ### fragments don't exceed valid utterance (line) numbers
-                               indices <- indices - min(0, (min(indices) - min(sourceIndices)));
-                               indices <- indices - max(0, (max(indices) - max(sourceIndices)));
-                             }
+      if (i %in% names(dat)) {
+        return(
+          lapply(
+            which(selectedUtterances & (dat[, i] == 1)),
+            function(center) {
 
-                             ### Get clean or raw utterances
-                             if (cleanUtterances) {
-                               res <- dat[indices, 'utterances_clean'];
-                             } else {
-                               res <- dat[indices, 'utterances_raw'];
-                             }
+              indices <- seq(center - context,
+                             center + context);
 
-                             if (rawResult) {
-                               return(res);
-                             } else {
-                               ### Add html tags, if requested
-                               if (add_html_tags) {
-                                 res <- paste0(rock::add_html_tags(res));
-                               }
+              ### Store indices corresponding source of this utterance
+              if (singleSource) {
+                sourceIndices <- c(1, nrow(dat));
+              } else {
+                sourceIndices <-
+                  which(dat[, 'originalSource'] == dat[center, 'originalSource']);
+              }
 
-                               ### Collapse all utterances into one character value
-                               res <- paste0(res,
-                                             collapse=utteranceGlue);
+              ### If this source is shorter than the number of lines requested,
+              ### simply send the complete source
+              if ((max(sourceIndices) - min(sourceIndices)) <= (1 + 2*context)) {
+                indices <- sourceIndices;
+              } else {
+                ### Shift forwards or backwards to make sure early or late
+                ### fragments don't exceed valid utterance (line) numbers
+                indices <- indices - min(0, (min(indices) - min(sourceIndices)));
+                indices <- indices - max(0, (max(indices) - max(sourceIndices)));
+              }
 
-                               ### Add the sources, if necessary
-                               if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
-                                 res <- paste0(sprintf(sourceFormatting, dat[center, 'originalSource']),
-                                               res);
-                               }
+              ### Get clean or raw utterances
+              if (cleanUtterances) {
+                res <- dat[indices, 'utterances_clean'];
+              } else {
+                res <- dat[indices, 'utterances_raw'];
+              }
 
-                               ### Return result
-                               return(res);
-                             }
-                           }));
-                });
+              if (rawResult) {
+                return(res);
+              } else {
+                ### Add html tags, if requested
+                if (add_html_tags) {
+                  res <- paste0(
+                    rock::add_html_tags(
+                      res,
+                      context = setdiff(
+                        seq_along(indices),
+                        which(indices == center)
+                      )
+                    )
+                  );
+                }
+
+                ### Collapse all utterances into one character value
+                res <- paste0(res,
+                              collapse=utteranceGlue);
+
+                ### Add the sources, if necessary
+                if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
+                  res <- paste0(
+                    sprintf(
+                      sourceFormatting,
+                      dat[center, 'originalSource']
+                    ),
+                    res);
+                }
+
+                ### Return result
+                return(res);
+              }
+            }
+          )
+        );
+      } else {
+        return(NULL);
+      }
+    }
+  );
 
   if (rawResult) {
     names(res) <-
-      matchedCodes;
+      usedCodes;
   } else {
     ### Set codePrefix based on whether a heading
     ### will be included
     if (is.null(heading)) {
-      if (length(matchedCodes) > 5) {
+      if (length(usedCodes) > 5) {
         heading <-
-          paste0(repStr("#", headingLevel), " ",
+          paste0("<h", headingLevel, ">",
                  "Collected coded fragments with ",
                  context, " lines of context",
+                 "</h", headingLevel, ">",
                  "\n\n");
       } else {
         heading <-
-          paste0(repStr("#", headingLevel), " ",
+          paste0("<h", headingLevel, ">",
                  "Collected coded fragments for codes ",
-                 vecTxtQ(matchedCodes), " with ",
+                 vecTxtQ(usedCodes), " with ",
                  context, " lines of context",
+                 "</h", headingLevel, ">",
                  "\n\n");
       }
       codePrefix <-
@@ -232,7 +383,7 @@ collect_coded_fragments <- function(x,
     res <- unlist(res);
     ### Add titles
     res <- paste0(codePrefix,
-                  sprintf(codeHeadingFormatting, matchedCodes, matchedCodesPaths),
+                  sprintf(codeHeadingFormatting, usedCodes, usedCodesPaths),
                   fragmentDelimiter,
                   res,
                   fragmentDelimiter);
@@ -245,23 +396,82 @@ collect_coded_fragments <- function(x,
     }
   }
 
-  ### Add CSS for html tags, if requested
+  ### Add CSS for html tags if requested
   if (add_html_tags) {
-    res <- paste0(rock::css(template=template,
-                            includeBootstrap = includeBootstrap),
-                  "\n\n",
-                  res);
+    res_without_css <- res;
+    if (includeCSS) {
+      res <-
+        paste0(
+          rock::css(
+            template=template,
+            includeBootstrap = ifelse(is.character(includeBootstrap),
+                                      FALSE,
+                                      includeBootstrap)
+          ),
+          "\n\n",
+          res
+        );
+    }
+  } else {
+    res_without_css <- res;
   }
 
   if (is.null(output)) {
     if (isTRUE(getOption('knitr.in.progress'))) {
+
+      ###-----------------------------------------------------------------------
+      ### Adding the CSS is missing, isn't that wrong?
+      ###-----------------------------------------------------------------------
+
       return(knitr::asis_output(c("\n\n",
                                   res,
                                   "\n\n")));
     } else {
-      return(res);
+      if (outputToViewer) {
+        viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+        if (add_html_tags) {
+          viewerHTML <- htmltools::HTML(
+            rock::css(template=template,
+                      includeBootstrap = ifelse(is.character(includeBootstrap),
+                                                TRUE,
+                                                includeBootstrap)),
+            viewerHTML
+          );
+        } else {
+          viewerHTML <- htmltools::HTML(viewerHTML);
+        }
+        htmltools::html_print(htmltools::HTML(viewerHTML),
+                              background = "white",
+                              viewer = viewer)
+      }
+      if ("console" %in% outputViewer) {
+        cat(res)
+      }
+      return(invisible(res));
     }
   } else {
+
+    if (outputToViewer) {
+      viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+      if (add_html_tags) {
+        viewerHTML <- htmltools::HTML(
+          rock::css(template=template,
+                    includeBootstrap = ifelse(is.character(includeBootstrap),
+                                              TRUE,
+                                              includeBootstrap)),
+          viewerHTML
+        );
+      } else {
+        viewerHTML <- htmltools::HTML(viewerHTML);
+      }
+      htmltools::html_print(htmltools::HTML(viewerHTML),
+                            background = "white",
+                            viewer = viewer)
+    }
+    if ("console" %in% outputViewer) {
+      cat(res)
+    }
+
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
         writeLines(res,

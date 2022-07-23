@@ -23,7 +23,8 @@
 #'
 #' }
 #'
-#' The following options can be set:
+#' Some of the options that can be set (see `rock::opts$defaults` for the
+#' full list):
 #'
 #' \describe{
 #'   \item{codeRegexes}{A named character vector with one or more regular
@@ -162,28 +163,53 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(### Used throughout
-       codeRegexes = c(codes = "\\[\\[([a-zA-Z0-9._>-]+)\\]\\]"),
-       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9._-]+)\\]\\]",
-                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9._-]+)\\]\\]"),
-       sectionRegexes = c(paragraphs = "---paragraph-break---",
-                          secondary = "---<[a-zA-Z0-9]?>---"),
-       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9._-]+)\\]\\]",
+       codeRegexes = c(codes = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)\\]\\]",
+                       ci = "\\[\\[ci[=:]([a-zA-Z0-9_>]+)\\]\\]"),
+       idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     itemId = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     probeId = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     metaqId = "\\[\\[mqid[=:]([a-zA-Z0-9_]+)\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: ?!-]+)\\]\\]"),
+       networkCodeRegexes = c(network = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)->([a-zA-Z][a-zA-Z0-9_>]*)\\|\\|([a-zA-Z][a-zA-Z0-9_>]*)(\\|\\|[a-zA-Z0-9_>]*)?\\]\\]"),
+       networkCodeRegexOrder = c("from", "to", "type", "weight"),
+       sectionRegexes = c(sectionBreak = "---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"),
+       uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
+       codeTreeMarker = ">",
+
+       ### Regular expression describing the characters that can be used for
+       ### code identifiers (has to include `inductiveCodingHierarchyMarker`
+       ### and `codeTreeMarker`).
+       validCodeCharacters = "[a-zA-Z0-9_>]",
 
        ### Used to parse sources
        autoGenerateIds = c('stanzaId'),
-       persistentIds = c('caseId', 'coderId'),
-       noCodes = "^uid:|^uid=|^dct:|^ci:",
+       persistentIds = c('caseId', 'coderId', 'stanzaId', 'itemId', 'probeId', 'metaqId'),
+       noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
        attributeContainers = c("ROCK_attributes"),
+       networkContainers = c("ROCK_network"),
        codesContainers = c("codes", "dct"),
        sectionBreakContainers = c("section_breaks"),
+       delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",
+       ignoreOddDelimiters = FALSE,
+
+       ### Network settings
+       networkEdgeWeights = "manual",
+       networkDefaultEdgeWeight = 1,
+       networkCodeCleaningRegexes = c("\\|\\|", ""),
+       networkCollapseEdges = TRUE,
 
        ### Used to merge sources
-       coderId = "\\[\\[coderId=([a-zA-Z0-9._-]+)\\]\\]",
+       coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
        idForOmittedCoderIds = "noCoderId",
+
+       ### Whether to warn if a class instance identifier for specified
+       ### attributes isn't encountered.
+       checkClassInstanceIds = FALSE,
 
        ### Used for cleaning sources and adding UIDs
        codeDelimiters = c("[[", "]]"),
@@ -195,32 +221,140 @@ opts$defaults <-
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
                                 "\\1...\\3"),
                               c("(\\s*\\r?\\n){3,}",
-                                "\n")),
+                                "\n"),
+                              c("\u2018|\u2019",
+                                "'"),
+                              c('\u201c|\u201d',
+                                '"')),
        replacementsPost = list(c("([^\\,]),([^\\s])",
                                  "\\1, \\2")),
-       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]\\s?]\\.(?!\\.\\.)\\s?)"),
+       utteranceSplits = c("([\\?\\!]+\\s?|\u2026\\s?|[[:alnum:]'\"]\\s*\\.(?!\\.\\.)\\s?)"),
+       nestingMarker = "~",
+
+       ### Saniziting for DiagrammeR
+       diagrammerSanitizing = list(c("\\\"", "`"),
+                                   c("\\'", "`"),
+                                   c("\\\\", "/"),
+                                   c("[^a-zA-Z0-9;)(,._/`-]", " ")),
 
        ### Used for collecting sources
        utteranceGlue = "\n\n",
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
        codeHeadingFormatting = "%s *(path: %s)*",
 
+       ### Cognitive Interview: Narrative Response Models
+       nrm_wsNames = list(
+         metadata = "metadata",
+         instrument = "instrument",
+         probes = "probes",
+         stimuli = "stimuli",
+         operationalizations = "operationalizations",
+         responsemodel_prototype = "responsemodel_prototype",
+         responsemodels= "responsemodels"
+       ),
+
+       nrm_colNames = list(
+         metadata = c(
+           metadata_field = 'metadata_field',
+           metadata_content = 'metadata_content'
+         ),
+         instrument = c(
+           item_sequence = 'item_sequence',
+           item_id = 'item_id',
+           item_template_nrm = 'item_template_nrm'
+         ),
+         probes = c(
+           item_id = 'item_id',
+           responsemodel_id = 'responsemodel_id',
+           stimulus_id = 'stimulus_id',
+           probe_id = 'probe_id',
+           probe_target = 'probe_target',
+           probe_ci_category = 'probe_ci_category',
+           probe_ambiguity = 'probe_ambiguity',
+           probe_label = 'probe_label'
+         ),
+         stimuli = c(
+           item_id = 'item_id',
+           stimulus_id = 'stimulus_id',
+           stimulus_content = 'stimulus_content',
+           stimulus_language = 'stimulus_language',
+           stimulus_function = 'stimulus_function',
+           stimulus_alias = 'stimulus_alias'
+         ),
+         operationalizations = c(
+           item_id = 'item_id',
+           operationalization_label = 'operationalization_label',
+           operationalization_description = 'operationalization_construct',
+           operationalization_comments = 'operationalization_comments'
+         ),
+         responsemodel_prototype = c(
+           responsemodel_id = 'responsemodel_id',
+           responsemodel_sequence = "responsemodel_sequence",
+           responsemodel_label = 'responsemodel_label',
+           responsemodel_comments = 'responsemodel_comments'
+         ),
+         responsemodels = c(
+           item_id = 'item_id',
+           responsemodel_sequence = "responsemodel_sequence",
+           responsemodel_id = 'responsemodel_id',
+           responsemodel_label = 'responsemodel_label',
+           responsemodel_comments = 'responsemodel_comments'
+         )
+       ),
+
+       ### For CI template replacements
+       ci_template_replacementDelimiters = c("<<", ">>"),
+       rpe_mq_idName = "mqid",
+       nrm_probe_idName = "prbid",
+
+       uiid_idName = "uiid",
+       rpe_iterId = "iterId",
+       rpe_batchId = "batchId",
+       rpe_popId = "popId",
+       rpe_mq_idName = "mqid",
+       coderId_name = "coderId",
+       caseId_name = "caseId",
+
+       rpe_itemEval_template = "### Coder evaluation
+
+[[eval|| ]]
+
+[[comment||none]]
+",
+
        ### Used for generating html
        codeClass = "code",
+       codeValueClass = "codeValue",
        idClass = "identifier",
        sectionClass = "sectionBreak",
        uidClass = "uid",
        utteranceClass = "utterance",
+       contextClass = "context",
+
+       ### Regular expressions for Google Sheets
+       gSheetId_extractionRegex =
+         "^https://docs\\.google\\.com/spreadsheets/d/([a-zA-Z0-9_-]*)(/.*)?$",
+
+       gSheetId_to_exportLink =
+         "https://docs.google.com/spreadsheets/d/%s/export?format=xlsx",
+
+       ### When displaying code identifiers, whether to by default show the
+       ### full path or just the code identifier itself
+       showFullCodePaths = TRUE,
+
+       ### When displaying code paths, whether to by default strip the root
+       stripRootsFromCodePaths = TRUE,
 
        ### For justifications
-       justificationFile = "unspecified",
+       justificationFile = "default_justifier_log.jmd",
 
        ### Used throughout for working with files
        encoding = "UTF-8",
        preventOverwriting = TRUE,
+       rlWarn = FALSE, ### Whether to let readLines emit a warning
 
        ### Whether to include bootstrap CSS when collecting fragments
-       includeBootstrap = FALSE,
+       includeBootstrap = "smart",
 
        ### Whether to show table output in the console or viewer,
        ### if shown interactively
@@ -236,8 +370,67 @@ opts$defaults <-
                                "tr:nth-child(even){background-color:#f2f2f2}",
                                "</style>"),
 
-       ### Used throughout for debugging,
+       ### Default heading level
+       defaultHeadingLevel = 1,
+
+       theme_codeTreeDiagram =
+         list(
+           c("layout", "dot", "graph"),
+           c("rankdir", "LR", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
+           c("shape", "box", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           #c("width", "4", "node"),
+           c("color", "#888888", "edge"),
+           c("dir", "none", "edge"),
+           c("headclip", "false", "edge"),
+           c("tailclip", "false", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
+       theme_utteranceDiagram =
+         list(
+           c("layout", "dot", "graph"),
+           c("rankdir", "LR", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
+           c("shape", "box", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           c("width", "4", "node"),
+           c("color", "#888888", "edge"),
+           c("dir", "none", "edge"),
+           c("headclip", "false", "edge"),
+           c("tailclip", "false", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
+       theme_networkDiagram =
+         list(
+           c("outputorder", "nodesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
+           c("shape", "ellipse", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           c("color", "#000000", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
+       ### Used throughout for debugging
        debug = FALSE,
 
        ### Used throughout for suppressing messages
-       silent = TRUE);
+       silent = TRUE,
+
+       ### And warnings
+       diligentWarnings = TRUE
+
+    );

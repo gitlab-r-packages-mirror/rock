@@ -5,11 +5,11 @@ search_and_replace_in_sources <- function(input,
                                           replacements = NULL,
                                           outputPrefix = "",
                                           outputSuffix = "_postReplacing",
-                                          preventOverwriting = rock::opts$get(preventOverwriting),
+                                          preventOverwriting = rock::opts$get("preventOverwriting"),
                                           recursive=TRUE,
                                           filenameRegex=".*",
-                                          encoding = rock::opts$get(encoding),
-                                          silent=FALSE) {
+                                          encoding = rock::opts$get("encoding"),
+                                          silent=rock::opts$get("silent")) {
 
   if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string as 'input'!");
@@ -64,11 +64,10 @@ search_and_replace_in_sources <- function(input,
       skippedFiles <-
         c(skippedFiles,
           filename);
-      if (!silent) {
-        message("File '", basename(filename), "' already contains ",
-                "the prefix ('", outputPrefix, "') or suffix ('",
-                outputSuffix, "') string; skipping this file!");
-      }
+      msg("File '", basename(filename), "' already contains ",
+          "the prefix ('", outputPrefix, "') or suffix ('",
+          outputSuffix, "') string; skipping this file!",
+          silent = silent);
     } else {
       newFilename <-
         paste0(outputPrefix,
@@ -103,27 +102,28 @@ search_and_replace_in_sources <- function(input,
           newFilename);
     }
   }
-  if (!silent) {
-    message("Out of ", length(rawSourceFiles), " provided sources, I just wrote ",
-            length(rawSourceFiles) - length(skippedFiles),
-            " 'post-search-replace-sources' to path '",
-            output,
-            "' ",
-            ifelse(preventOverwriting,
-                   paste0("(skipping ", length(skippedFiles),
-                          " files that already existed)"),
-                   "(overwriting any files that may already have existed)"),
-            ". Note that these files may all be overwritten if this ",
-            "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
-            "Therefore, make sure to copy them to ",
-            "another directory before starting to code those sources!\n\n",
-            "A recommended convention is to place all data in a directory ",
-            "called 'data', and use three subdirectories: 'raw-sources' for ",
-            "the raw sources; 'clean-sources' for the cleaned sources, ",
-            "and 'coded-sources' for the coded sources. If you have ",
-            "multiple coders, use e.g. 'coded-sources-coder-A' and ",
-            "'coded-sources-coder-B' to organise these versions, or use ",
-            "different filenames (and use the coderId).");
-  }
-  invisible(res);
+  msg(
+    "Out of ", length(rawSourceFiles), " provided sources, I just wrote ",
+    length(rawSourceFiles) - length(skippedFiles),
+    " 'post-search-replace-sources' to path '",
+    output,
+    "' ",
+    ifelse(preventOverwriting,
+           paste0("(skipping ", length(skippedFiles),
+                  " files that already existed)"),
+           "(overwriting any files that may already have existed)"),
+    ". Note that these files may all be overwritten if this ",
+    "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
+    "Therefore, make sure to copy them to ",
+    "another directory before starting to code those sources!\n\n",
+    "A recommended convention is to place all data in a directory ",
+    "called 'data', and use three subdirectories: 'raw-sources' for ",
+    "the raw sources; 'clean-sources' for the cleaned sources, ",
+    "and 'coded-sources' for the coded sources. If you have ",
+    "multiple coders, use e.g. 'coded-sources-coder-A' and ",
+    "'coded-sources-coder-B' to organise these versions, or use ",
+    "different filenames (and use the coderId).",
+    silent=silent
+  );
+return(invisible(res));
 }

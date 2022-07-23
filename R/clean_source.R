@@ -38,12 +38,17 @@
 #' than the default set, these can be conveniently specified in `extraReplacementsPre`
 #'  and `extraReplacementsPost`. This prevents you from having to
 #' manually copypaste the list of defaults to retain it.
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param utteranceSplits This is a vector of regular expressions that specify where to
 #' insert breaks between utterances in the source(s). Such breakes are specified using
 #' `utteranceMarker`.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param removeNewlines Whether to remove all newline characters from the source before
-#' starting to clean them.
+#' starting to clean them. **Be careful**: if the source contains YAML fragments, these
+#' will also be affected by this, and will probably become invalid!
+#' @param removeTrailingNewlines Whether to remove trailing newline characters
+#' (i.e. at the end of a character value in a character vector);
 #' @param encoding The encoding of the source(s).
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
@@ -65,6 +70,30 @@
 #' cat(clean_source(exampleSource,
 #'                  removeNewlines=TRUE));
 #'
+#' ### Example with a YAML fragment
+#' exampleWithYAML <-
+#' c(
+#'   "Do you like icecream?",
+#'   "",
+#'   "",
+#'   "Well, that depends\u2026 Sometimes, when it's..... Nice.",
+#'   "Then I do,",
+#'   "but otherwise... not really, actually.",
+#'   "",
+#'   "---",
+#'   "This acts as some YAML. So this won't be split.",
+#'   "Not real YAML, mind... It just has the delimiters, really.",
+#'   "---",
+#'   "This is an utterance again."
+#' );
+#'
+#' cat(
+#'   rock::clean_source(
+#'     exampleWithYAML
+#'   ),
+#'   sep="\n"
+#' );
+#'
 #' @export
 clean_source <- function(input,
                          output = NULL,
@@ -73,6 +102,8 @@ clean_source <- function(input,
                          extraReplacementsPre = NULL,
                          extraReplacementsPost = NULL,
                          removeNewlines = FALSE,
+                         removeTrailingNewlines = TRUE,
+                         rlWarn = rock::opts$get(rlWarn),
                          utteranceSplits = rock::opts$get(utteranceSplits),
                          preventOverwriting = rock::opts$get(preventOverwriting),
                          encoding = rock::opts$get(encoding),
@@ -80,20 +111,23 @@ clean_source <- function(input,
 
   utteranceMarker <- rock::opts$get(utteranceMarker);
 
-  if (file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input)) {
     res <- readLines(input,
-                     encoding=encoding);
+                     encoding=encoding,
+                     warn=rlWarn);
 
     if (removeNewlines) {
       res <-
         paste0(res, collapse="");
     } else {
-      res <-
-        paste0(res, collapse="\n");
+      # res <-
+      #   paste0(res, collapse="\n");
     }
   } else {
     res <- input;
     if (removeNewlines) {
+      res <-
+        paste0(res, collapse="");
       res <-
         gsub("\\n", "", res);
     }
@@ -108,6 +142,22 @@ clean_source <- function(input,
     replacementsPost <- c(replacementsPost,
                           extraReplacementsPost);
   }
+
+  non_YAML_indices <-
+    unlist(
+      yum::find_yaml_fragment_indices(
+        text=res,
+        delimiterRegEx=rock::opts$get('delimiterRegEx'),
+        ignoreOddDelimiters=rock::opts$get('ignoreOddDelimiters'),
+        invert = TRUE
+      )
+    );
+
+  ### Store full source and get only those lines we want to replace
+  fullSource <-
+    res;
+
+  res <- fullSource[non_YAML_indices];
 
   if (!is.null(replacementsPre)) {
     for (i in seq_along(replacementsPre)) {
@@ -136,36 +186,43 @@ clean_source <- function(input,
     }
   }
 
+  ### Insert lines that were potentially cleaned back in
+  fullResult <- fullSource;
+  fullResult[non_YAML_indices] <- res;
+  res <- fullResult;
+
+  if (removeTrailingNewlines) {
+    res <- gsub(
+      "(.*)\\n",
+      "\\1",
+      res
+    );
+  }
+
   if (is.null(output)) {
     return(res);
   } else {
-    if (!dir.exists(dirname(output))) {
-      stop("The directory specified where the output file '",
-           basename(output), "' is supposed to be written ('",
-           dirname(output),
-           "') does not exist.");
-    }
-    if (file.exists(output) && preventOverwriting) {
-      if (!silent) {
-        message("File '",
-                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
-                "write the cleaned source to disk.");
-      }
+
+    writingResult <-
+      writeTxtFile(
+        x = res,
+        output = output,
+        preventOverwriting = preventOverwriting,
+        encoding = encoding,
+        silent = silent
+      );
+
+    if (writingResult) {
+      msg("I just wrote a cleaned source to file '",
+          output,
+          "'. Note that this file may be overwritten if this ",
+          "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
+          "Therefore, make sure to copy it to ",
+          "another directory, or rename it, before starting to code this source!",
+          silent = silent);
     } else {
-      con <- file(description=output,
-                  open="w",
-                  encoding=encoding);
-      writeLines(text=res,
-                 con=con);
-      close(con);
-    }
-    if (!silent) {
-      message("I just wrote a cleaned source to file '",
-              output,
-              "'. Note that this file may be overwritten if this ",
-              "script is ran again (unless `preventOverwriting` is set to `TRUE`). ",
-              "Therefore, make sure to copy it to ",
-              "another directory, or rename it, before starting to code this source!");
+      warning("Could not write output file to `",
+              output, "`.");
     }
     invisible(res);
   }

@@ -11,6 +11,7 @@ code_source(
   indices = NULL,
   output = NULL,
   preventOverwriting = rock::opts$get("preventOverwriting"),
+  rlWarn = rock::opts$get(rlWarn),
   encoding = rock::opts$get("encoding"),
   silent = rock::opts$get("silent")
 )
@@ -57,6 +58,9 @@ element of \code{codes} is used, and its name is ignored.}
 \item{output}{If specified, the coded source will be written here.}
 
 \item{preventOverwriting}{Whether to prevent overwriting existing files.}
+
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
 
 \item{encoding}{The encoding to use.}
 

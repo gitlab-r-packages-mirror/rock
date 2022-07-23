@@ -2,7 +2,7 @@
 #'
 #' This function shows one or more inductive code trees.
 #'
-#' @param x A `rockParsedSources` object (the result of a call to
+#' @param x A `rock_parsedSources` object (the result of a call to
 #' `rock::parse_sources`).
 #' @param codes A regular expression: only code trees from codes coded
 #' with a coding pattern with this name will be shown.
@@ -26,52 +26,85 @@ show_inductive_code_tree <- function(x,
                                      edgeStyle = list(arrowhead = "none"),
                                      graphStyle = list(rankdir = "LR")) {
 
-  if (!(("rockParsedSources" %in% class(x)) |
-        ("rockParsedSource"  %in% class(x)))) {
-    stop("As `x`, you must pass either an `rockParsedSource` or ",
-         "an `rockParsedSources` object (i.e. either the result ",
+  if (!(("rock_parsedSources" %in% class(x)) |
+        ("rock_parsedSource"  %in% class(x)))) {
+    stop("As `x`, you must pass either an `rock_parsedSource` or ",
+         "an `rock_parsedSources` object (i.e. either the result ",
          "from a call to `rock::parseSource()` or the result from ",
          "a call to `rock::parseSources()`). However, you ",
          "provided an object of class ", vecTxtQ(x), ".");
   }
 
-  trees <- names(x$inductiveCodeTrees);
+  trees <- names(x$inductiveDiagrammeRs);
+
+  if (is.null(x$inductiveDiagrammeRs)) {
+    return(invisible(NULL));
+  }
+
+  trees <-
+    trees[!unlist(lapply(x$inductiveDiagrammeRs, is.null))];
 
   res <- c();
 
   for (i in trees) {
-    if (grep("both|text", output)) {
+    if (grepl("both|text", output)) {
       if (isTRUE(getOption('knitr.in.progress'))) {
-        res <- c(res,
-                 "\n\n",
-                 repStr("#", headingLevel),
-                 " Inductive code tree for ",
-                 i,
-                 "\n\n<pre>",
-                 paste0(
-                   utils::capture.output(
-                     print(
-                       x$inductiveCodeTrees[[i]])
-                     ),
-                   collapse="\n"
-                 ),
-                 "</pre>");
+        res1 <-
+          c("\n\n",
+            repStr("#", headingLevel),
+            " Inductive code tree for ",
+            i,
+            "\n\n");
+        res3 <-
+          c("<pre>",
+            paste0(
+              utils::capture.output(
+                print(
+                  x$inductiveCodeTrees[[i]])
+                ),
+              collapse="\n"
+            ),
+            "</pre>");
       } else {
+        res1 <- "";
+        res3 <- "";
         print(x$inductiveCodeTrees[[i]]);
       }
     }
-    if (grep("both|plot", output)) {
-      do.call(data.tree::SetNodeStyle,
-              c(list(node = x$inductiveCodeTrees[[i]]),
-                nodeStyle));
-      do.call(data.tree::SetEdgeStyle,
-              c(list(node = x$inductiveCodeTrees[[i]]),
-                edgeStyle));
-      do.call(data.tree::SetGraphStyle,
-              c(list(root = x$inductiveCodeTrees[[i]]),
-                graphStyle));
-      print(plot(x$inductiveCodeTrees[[i]]));
+    if (grepl("both|plot", output)) {
+      if (isTRUE(getOption('knitr.in.progress'))) {
+        dot_code <- DiagrammeR::generate_dot(x$inductiveDiagrammeRs[[i]]);
+        graphSvg <- DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
+        graphSvg <- sub(".*\n<svg ", "<svg ", graphSvg);
+        graphSvg <- gsub("<svg width=\"[0-9]+pt\" height=\"[0-9]+pt\"\n viewBox=",
+                         "<svg viewBox=", graphSvg);
+        res2 <- graphSvg;
+      } else {
+        res2 <- "";
+        print(
+          DiagrammeR::render_graph(
+            x$inductiveDiagrammeRs[[i]]
+          )
+        );
+      }
+      # do.call(data.tree::SetNodeStyle,
+      #         c(list(node = x$inductiveCodeTrees[[i]]),
+      #           nodeStyle));
+      # do.call(data.tree::SetEdgeStyle,
+      #         c(list(node = x$inductiveCodeTrees[[i]]),
+      #           edgeStyle));
+      # do.call(data.tree::SetGraphStyle,
+      #         c(list(root = x$inductiveCodeTrees[[i]]),
+      #           graphStyle));
+      # print(plot(x$inductiveCodeTrees[[i]]));
     }
+
+    res <-
+      c(res,
+        res1,
+        res2,
+        res3);
+
   }
 
   if (isTRUE(getOption('knitr.in.progress'))) {

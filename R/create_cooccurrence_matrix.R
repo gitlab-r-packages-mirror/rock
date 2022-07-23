@@ -25,12 +25,12 @@ create_cooccurrence_matrix <- function(x,
                                        codes = x$convenience$codingLeaves,
                                        plotHeatmap = FALSE) {
 
-  if (!("rockParsedSource" %in% class(x)) &&
-      !("rockParsedSources" %in% class(x))) {
+  if (!("rock_parsedSource" %in% class(x)) &&
+      !("rock_parsedSources" %in% class(x))) {
     stop(glue::glue("The object you provided (as argument `x`) has class '{vecTxtQ(class(x))}', ",
                     "but I can only process objects obtained by parsing one or more sources (with ",
-                    "`rock::parse_source` or `rock::parse_sources`), which have class 'rockParsedSource' ",
-                    "or 'rockParsedSources'."));
+                    "`rock::parse_source` or `rock::parse_sources`), which have class 'rock_parsedSource' ",
+                    "or 'rock_parsedSources'."));
   }
 
   simpleMatrix <-
@@ -39,7 +39,22 @@ create_cooccurrence_matrix <- function(x,
   res <- crossprod(simpleMatrix);
 
   if (plotHeatmap) {
-    print(stats::heatmap(res));
+
+    df <- as.data.frame(as.table(res));
+
+    plot <-
+      rock::heatmap_basic(
+        data = df,
+        x = "Var1",
+        y = "Var2",
+        fill = "Freq",
+        xLab = NULL,
+        yLab = NULL,
+        fillLab = NULL
+      );
+
+    print(plot);
+
   }
 
   return(res);

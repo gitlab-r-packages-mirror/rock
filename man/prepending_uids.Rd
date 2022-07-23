@@ -11,6 +11,7 @@ prepend_ids_to_source(
   input,
   output = NULL,
   origin = Sys.time(),
+  rlWarn = rock::opts$get(rlWarn),
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)
@@ -38,6 +39,9 @@ resulting files for \code{prepend_ids_to_sources}}
 
 \item{origin}{The time to use for the first identifier.}
 
+\item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
+with a newline character.}
+
 \item{preventOverwriting}{Whether to overwrite existing files (\code{FALSE})
 or prevent that from happening (\code{TRUE}).}
 
@@ -53,10 +57,34 @@ The source with prepended uids, either invisible (if \code{output}
 if specified) or visibly (if not).
 }
 \description{
-This function prepending unique utterance identifiers to each
+This function prepends unique utterance identifiers to each
 utterance (line) in a source. Note that you'll probably want
 to clean the sources using \code{\link[=clean_sources]{clean_sources()}} first.
 }
 \examples{
-prepend_ids_to_source(input = "brief\nexample\nsource");
+### Simple example
+rock::prepend_ids_to_source(
+  "brief\nexample\nsource"
+);
+
+### Example including fake YAML fragments
+longerExampleText <-
+  c(
+    "---",
+    "First YAML fragment",
+    "---",
+    "So this is an utterance (i.e. outside of YAML)",
+    "This, too.",
+    "---",
+    "Second fragment",
+    "---",
+    "Another real utterance outside of YAML",
+    "Another one outside",
+    "Last 'real utterance'"
+  );
+
+rock::prepend_ids_to_source(
+  longerExampleText
+);
+
 }

@@ -1,5 +1,13 @@
 #' @rdname masking_sources
 #'
+#' @examples ### Mask text but not the codes
+#' rock::mask_utterances(
+#'   paste0(
+#'     "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+#'     "elit. [[expAttitude_expectation_73dnt5z1>earplugsFeelUnpleasant]]"
+#'   )
+#' )
+#'
 #' @export
 mask_utterances <- function(input,
                             proportionToMask = 1,

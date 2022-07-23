@@ -29,3 +29,11 @@ iROCK/
 ### Images
 img/
 
+^doc$
+^Meta$
+
+### Maybe a side effect of testing? A file just called 'unspecified'.
+unspecified
+^CRAN-RELEASE$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

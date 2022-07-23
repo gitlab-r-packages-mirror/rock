@@ -28,6 +28,8 @@
 #' @param output If specified, the coded source will be written here.
 #' @param preventOverwriting Whether to prevent overwriting existing files.
 #' @param encoding The encoding to use.
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param silent Whether to be chatty or quiet.
 #'
 #' @return Invisibly, the coded source object.
@@ -81,13 +83,15 @@ code_source <- function(input,
                         indices = NULL,
                         output = NULL,
                         preventOverwriting = rock::opts$get('preventOverwriting'),
+                        rlWarn = rock::opts$get(rlWarn),
                         encoding = rock::opts$get('encoding'),
                         silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
   if ((length(input) == 1) && (file.exists(input))) {
     input <- readLines(input,
-                       encoding=encoding);
+                       encoding=encoding,
+                       warn = rlWarn);
     input <- cleaned_source_to_utterance_vector(input);
   } else if ("character" %in% class(input)) {
     input <- cleaned_source_to_utterance_vector(input);
@@ -131,15 +135,15 @@ code_source <- function(input,
              escapeRegexCharacterClass(codeDelimiters[2]),
              "$");
 
-    if (!silent) {
-      if (length(codes) > 1) {
-        cat0("Multiple codes to check have been specified.");
-      }
-      cat0("Starting processing of ",
-           vecTxtQ(names(codes)),
-           " against the regular expression ",
-           vecTxtQ(regexMatchingCode), ".\n");
+    if (length(codes) > 1) {
+      msg("Multiple codes to check have been specified.\n",
+          silent=silent);
     }
+    msg("Starting processing of ",
+        vecTxtQ(names(codes)),
+        " against the regular expression ",
+        vecTxtQ(regexMatchingCode), ".\n",
+        silent=silent);
 
     for (i in seq_along(codes)) {
 
@@ -164,11 +168,10 @@ code_source <- function(input,
                input,
                perl=TRUE);
 
-        if (!silent) {
-          cat0("Looking for code or utterance id '",
-                    escapedCodeToFind, "'; found in utterances with line numbers ",
-                    vecTxt(indices), ".\n");
-        }
+        msg("Looking for code or utterance id '",
+            escapedCodeToFind, "'; found in utterances with line numbers ",
+            vecTxt(indices), ".\n",
+            silent = TRUE);
 
       } else if (grepl("^[0-9]+$", names(codes)[i])) {
         ### It's a number, so a line number; check whether
@@ -196,18 +199,18 @@ code_source <- function(input,
         }
       }
 
+      ### Append code
+      input[indices] <-
+        paste(input[indices],
+              codeToAdd,
+              sep=" ");
+
+      if (!silent) {
+        cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
+      }
+
     }
 
-  }
-
-  ### Append code
-  input[indices] <-
-    paste(input[indices],
-          codeToAdd,
-          sep=" ");
-
-  if (!silent) {
-    cat0("Appending code '", codeToAdd, "' to utterances at those line numbers.\n");
   }
 
   if (is.null(output)) {
@@ -215,30 +218,23 @@ code_source <- function(input,
     return(input);
   } else {
 
-    if (!dir.exists(dirname(output))) {
-      stop("The directory specified where the output file '",
-           basename(output), "' is supposed to be written ('",
-           dirname(output),
-           "') does not exist.");
-    }
-    if (file.exists(output) && preventOverwriting) {
-      if (!silent) {
-        message("File '",
-                output, "' exists, and `preventOverwriting` was `TRUE`, so I did not ",
-                "write the source with added codes to disk.");
-      }
+    writingResult <-
+      writeTxtFile(
+        x = input,
+        output = output,
+        preventOverwriting = preventOverwriting,
+        encoding = encoding,
+        silent = silent
+      );
+
+    if (writingResult) {
+      msg("I just wrote a source with added codes to file '",
+          output,
+          "'.",
+          silent = silent);
     } else {
-      con <- file(description=output,
-                  open="w",
-                  encoding=encoding);
-      writeLines(text=input,
-                 con=con);
-      close(con);
-    }
-    if (!silent) {
-      message("I just wrote a source with added codes to file '",
-              output,
-              "'.");
+      warning("Could not write output file to `",
+              output, "`.");
     }
 
     class(input) <- c("rock_source", "character");

@@ -19,8 +19,8 @@ export_codes_to_txt(
 )
 }
 \arguments{
-\item{input}{An object of class \code{rockParsedSource} (as resulting from a call
-to \code{parse_source}) or of class \code{rockParsedSources} (as resulting from a call
+\item{input}{An object of class \code{rock_parsedSource} (as resulting from a call
+to \code{parse_source}) or of class \code{rock_parsedSources} (as resulting from a call
 to \code{parse_sources}.}
 
 \item{output}{THe filename to write to.}

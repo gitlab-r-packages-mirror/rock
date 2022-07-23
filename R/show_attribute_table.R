@@ -1,6 +1,6 @@
 #' Show a table with all attributes in the RStudio viewer and/or console
 #'
-#' @param x A `rockParsedSources` object (the result of a call to
+#' @param x A `rock_parsedSources` object (the result of a call to
 #' `rock::parse_sources`).
 #' @param output The output: a character vector with one or more
 #' of "`console`" (the raw concatenated input, without conversion

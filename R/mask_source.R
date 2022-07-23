@@ -20,6 +20,8 @@
 #' @param perl Whether the regular expression is a perl regex or not.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param encoding The encoding of the source(s).
+#' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end
+#' with a newline character.
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
 #' @return A character vector for `mask_utterance` and `mask_source`, or a list of
@@ -32,6 +34,7 @@ mask_source <- function(input,
                         proportionToMask = 1,
                         preventOverwriting = rock::opts$get(preventOverwriting),
                         encoding = rock::opts$get(encoding),
+                        rlWarn = rock::opts$get(rlWarn),
                         maskRegex = "[[:alnum:]]",
                         maskChar = "X",
                         perl = TRUE,
@@ -41,7 +44,8 @@ mask_source <- function(input,
 
   if (file.exists(input)) {
     res <- readLines(input,
-                     encoding=encoding);
+                     encoding=encoding,
+                     warn = rlWarn);
   } else {
     res <- input;
   }
