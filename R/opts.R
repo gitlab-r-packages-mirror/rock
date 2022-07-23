@@ -23,7 +23,8 @@
 #'
 #' }
 #'
-#' The following options can be set:
+#' Some of the options that can be set (see `rock::opts$defaults` for the
+#' full list):
 #'
 #' \describe{
 #'   \item{codeRegexes}{A named character vector with one or more regular
@@ -372,14 +373,33 @@ opts$defaults <-
        ### Default heading level
        defaultHeadingLevel = 1,
 
+       theme_codeTreeDiagram =
+         list(
+           c("layout", "dot", "graph"),
+           c("rankdir", "LR", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
+           c("fixedsize", "false", "node"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
+           c("shape", "box", "node"),
+           c("style", "rounded,filled", "node"),
+           c("color", "#000000", "node"),
+           #c("width", "4", "node"),
+           c("color", "#888888", "edge"),
+           c("dir", "none", "edge"),
+           c("headclip", "false", "edge"),
+           c("tailclip", "false", "edge"),
+           c("fillcolor", "#FFFFFF", "node")
+         ),
+
        theme_utteranceDiagram =
          list(
            c("layout", "dot", "graph"),
            c("rankdir", "LR", "graph"),
            c("outputorder", "edgesfirst", "graph"),
            c("fixedsize", "false", "node"),
-           c("font", "arial", "node"),
-           c("font", "arial", "edge"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
            c("shape", "box", "node"),
            c("style", "rounded,filled", "node"),
            c("color", "#000000", "node"),
@@ -395,8 +415,8 @@ opts$defaults <-
          list(
            c("outputorder", "nodesfirst", "graph"),
            c("fixedsize", "false", "node"),
-           c("font", "arial", "node"),
-           c("font", "arial", "edge"),
+           c("fontname", "arial", "node"),
+           c("fontname", "arial", "edge"),
            c("shape", "ellipse", "node"),
            c("style", "rounded,filled", "node"),
            c("color", "#000000", "node"),

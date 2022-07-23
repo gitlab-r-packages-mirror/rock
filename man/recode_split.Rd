@@ -101,16 +101,15 @@ exampleFile <-
 ### Load example source
 loadedExample <- rock::load_source(exampleFile);
 
-### Split a code into two codes, showing progress (the backticks are
-### used to be able to specify a name that starts with an underscore)
+### Split a code into two codes, showing progress
 recoded_source <-
   rock::recode_split(
     loadedExample,
     codes="childCode1",
     splitToCodes = list(
-      `_and_` = " and ",
-      `_book_` = "book",
-      `_else_` = TRUE
+      and_REPLACED = " and ",
+      book_REPLACED = "book",
+      else_REPLACED = TRUE
     ),
     silent=FALSE
   );

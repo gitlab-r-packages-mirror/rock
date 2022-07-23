@@ -39,7 +39,22 @@ create_cooccurrence_matrix <- function(x,
   res <- crossprod(simpleMatrix);
 
   if (plotHeatmap) {
-    print(stats::heatmap(res));
+
+    df <- as.data.frame(as.table(res));
+
+    plot <-
+      rock::heatmap_basic(
+        data = df,
+        x = "Var1",
+        y = "Var2",
+        fill = "Freq",
+        xLab = NULL,
+        yLab = NULL,
+        fillLab = NULL
+      );
+
+    print(plot);
+
   }
 
   return(res);

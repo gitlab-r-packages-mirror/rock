@@ -619,6 +619,12 @@ parse_source <- function(text,
         tryCatch({
           codeProcessing[[codeRegex]]$inductiveDiagrammeR <-
             data.tree::ToDiagrammeRGraph(codeProcessing[[codeRegex]]$inductiveCodeTrees);
+          codeProcessing[[codeRegex]]$inductiveDiagrammeR <-
+            do.call(
+              rock::apply_graph_theme,
+              c(list(graph = codeProcessing[[codeRegex]]$inductiveDiagrammeR),
+                rock::opts$get("theme_codeTreeDiagram"))
+            );
         }, error = function(e) {
           warning("Error issued by 'data.tree::ToDiagrammeRGraph' when converting '",
                   codeRegex, "' code tree: ", e$message, "\n\nClass and content:\n\n",
@@ -939,14 +945,22 @@ parse_source <- function(text,
 
             for (currentType in uniqueTypes) {
 
-              res$networkCodes[[networkCodeRegex]]$coded_df[
-                res$networkCodes[[networkCodeRegex]]$coded_df$type ==
-                  currentType,
-                setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-              ] <-
-                res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+              configuredColor <-
+                unlist(
+                  res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+                    setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+                    ]
+                );
+
+              if (!is.null(configuredColor)) {
+
+                res$networkCodes[[networkCodeRegex]]$coded_df[
+                  which(res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+                          currentType),
                   setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-                ];
+                ] <-
+                  configuredColor;
+              }
 
             }
 
@@ -1355,7 +1369,10 @@ parse_source <- function(text,
              return(sort(unique(unname(unlist(x)))));
            });
 
-  if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
+  if (postponeDeductiveTreeBuilding) {
+    res$extendedDeductiveCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- NA;
+  } else if (!postponeDeductiveTreeBuilding && ("Node" %in% class(res$deductiveCodeTrees))) {
     ### Merge inductive code tree into deductive code tree (currently only support
     ### for one deductive code tree)
     res$extendedDeductiveCodeTrees <-
@@ -1383,10 +1400,20 @@ parse_source <- function(text,
         }
       }
     }
-  } else {
+  } else if (!postponeDeductiveTreeBuilding) {
     res$extendedDeductiveCodeTrees <- NA;
-    res$fullyMergedCodeTrees <- NA;
+    res$fullyMergedCodeTrees <- res$inductiveCodeTrees;
   }
+
+
+  res$convenience$valid_inductiveCodeTrees <-
+    which(unlist(lapply(res$inductiveCodeTrees, is.environment)));
+
+  res$convenience$original_inductiveCodeTreeNames <-
+    names(res$inductiveCodeTrees);
+
+  res$inductiveCodeTrees <-
+    res$inductiveCodeTrees[res$convenience$valid_inductiveCodeTrees];
 
   if (!silent) {
     cat("\n\n");

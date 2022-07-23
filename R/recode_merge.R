@@ -61,22 +61,24 @@ recode_merge <- function(input,
                          silent = rock::opts$get('silent')) {
 
   return(
-    generic_recoding(
-      input = input,
-      codes = codes,
-      mergeToCode = mergeToCode,
-      filter = filter,
-      func = changeSource_mergeCodes,
-      output = output,
-      filenameRegex = filenameRegex,
-      outputPrefix = outputPrefix,
-      outputSuffix = outputSuffix,
-      decisionLabel = decisionLabel,
-      justification = justification,
-      justificationFile = justificationFile,
-      preventOverwriting = preventOverwriting,
-      encoding = encoding,
-      silent = silent
+    invisible(
+      generic_recoding(
+        input = input,
+        codes = codes,
+        mergeToCode = mergeToCode,
+        filter = filter,
+        func = changeSource_mergeCodes,
+        output = output,
+        filenameRegex = filenameRegex,
+        outputPrefix = outputPrefix,
+        outputSuffix = outputSuffix,
+        decisionLabel = decisionLabel,
+        justification = justification,
+        justificationFile = justificationFile,
+        preventOverwriting = preventOverwriting,
+        encoding = encoding,
+        silent = silent
+      )
     )
   );
 

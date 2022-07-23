@@ -1,22 +1,8 @@
-#' Get the code identifiers a code's descendents
-#'
-#' Get the code identifiers of all children, or all descendents (i.e. including
-#' grand-children, grand-grand-children, etc) of a code with a given identifier.
-#'
-#' @param x The parsed sources object
-#' @param parentCodeId The code identifier of the parent code
-#' @param returnNodes For `get_childCodeIds()`, set this to `TRUE` to return
-#' a list of nodes, not just the code identifiers.
-#' @param includeParentCode Whether to include the parent code
-#' identifier in the result
-#'
-#' @return A character vector with code identifiers (or a list of nodes)
 #' @rdname get_childCodeIds
 #' @export
-get_childCodeIds <- function(x,
-                             parentCodeId,
-                             returnNodes = FALSE,
-                             includeParentCode = FALSE) {
+get_descendentCodeIds <- function(x,
+                                  parentCodeId,
+                                  includeParentCode = FALSE) {
 
   if ((!inherits(x, "rock_parsedSources")) &&
       (!inherits(x, "rock_parsedSource"))) { ### Added this, might be wrong
@@ -50,20 +36,12 @@ get_childCodeIds <- function(x,
          parentCodeId, "' was found.");
   }
 
-  childNodes <- node$children;
+  nodeNames <- node$Get('name');
 
-  if (includeParentCode) {
-    childNodes <- c(parentCodeId, childNodes);
+  if (!includeParentCode) {
+    nodeNames <- setdiff(nodeNames, parentCodeId);
   }
 
-  if (returnNodes) {
-    return(childNodes);
-  } else {
-    if (length(childNodes) == 0) {
-      return(NA);
-    } else {
-      return(names(childNodes));
-    }
-  }
+  return(nodeNames);
 
 }
