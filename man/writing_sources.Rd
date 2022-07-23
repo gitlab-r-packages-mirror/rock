@@ -10,6 +10,7 @@ write_source(
   x,
   output,
   encoding = rock::opts$get("encoding"),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
   silent = rock::opts$get("silent")
 )
 
@@ -29,6 +30,9 @@ write_sources(
 \code{rock::write_sources()}) to write to.}
 
 \item{encoding}{The encoding to use.}
+
+\item{preventOverwriting}{Whether to prevent against overwriting of the
+file(s) to write. Set to \code{FALSE} to overwrite.}
 
 \item{silent}{Whether to be chatty or quiet.}
 
