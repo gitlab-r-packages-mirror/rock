@@ -82,8 +82,15 @@ ci_heatmap <- function(x,
          "coding scheme that exists in the `rock` package.");
   }
 
-  nrOfCodes <-
-    length(x$codeProcessing$ci$leafCodes);
+  if (!is.null(x$codeProcessing)) {
+    nrOfCodes <-
+      length(x$codeProcessing$ci$leafCodes);
+  } else {
+    nrOfCodes <- length(
+      names(srcs$inductiveCodeTrees$ci$children)
+    );
+  }
+
   nrOfItems <-
     length(na.omit(unique(x$mergedSourceDf$itemId)));
 
@@ -92,9 +99,14 @@ ci_heatmap <- function(x,
          "specified)!");
   }
 
+  if (nrOfCodes == 0) {
+    stop("No Cognitive Interviewing codes were found!");
+  }
+
+
   if ((nrOfCodes*nrOfItems) < 2) {
     stop("Only one item ('",
-         na.omit(unique(x$mergedSourceDf$itemId)),
+         vecTxtQ(na.omit(unique(x$mergedSourceDf$itemId))),
          "') was coded with one code ('",
          x$codeProcessing$ci$leafCodes,
          "')!");
