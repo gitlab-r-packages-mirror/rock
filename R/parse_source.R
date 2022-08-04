@@ -411,10 +411,10 @@ parse_source <- function(text,
       multipleIds <-
         which(unlist(lapply(ids, length))>1);
       if (length(multipleIds) > 0) {
-        warning(glue::glue("Multiple identifiers matching '{idRegex}' found in the following utterances:\n",
+        warning(glue::glue("Multiple class instance identifiers matching '{idRegex}' found in the following utterances:\n",
                        paste0(x[multipleIds],
                               collapse="\n"),
-                       "\n\nOnly using the first identifier for each utterance, removing and ignoring the rest!"));
+                       "\n\nOnly using the first  class instanceidentifier for each utterance, removing and ignoring the rest!"));
         ids <-
           lapply(ids, utils::head, 1);
       }
