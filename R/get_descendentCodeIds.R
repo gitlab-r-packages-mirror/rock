@@ -20,14 +20,19 @@ get_descendentCodeIds <- function(x,
   if (inherits(x, "rock_parsedSource")) {
     node <- NULL;
     for (i in seq_along(x$inductiveCodeTrees)) {
-      if (!is.null(x$inductiveCodeTrees[[i]])) {
+      node <- NULL;
+      if ((!is.null(x$inductiveCodeTrees[[i]])) && is.null(node)) {
         node <-
           data.tree::FindNode(x$inductiveCodeTrees[[i]], parentCodeId);
       }
     }
-  } else {
+  } else if (inherits(x, "rock_parsedSources")) {
     node <-
       data.tree::FindNode(x$fullyMergedCodeTrees, parentCodeId);
+  } else {
+    stop("As `x`, you passed '",
+         substitute(deparse(x)), "', but this does not have class ",
+         "`rock_parsedSource` or `rock_parsedSources`.");
   }
 
   if (is.null(node)) {
