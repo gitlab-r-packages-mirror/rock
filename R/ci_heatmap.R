@@ -92,7 +92,7 @@ ci_heatmap <- function(x,
   }
 
   nrOfItems <-
-    length(na.omit(unique(x$mergedSourceDf$itemId)));
+    length(stats::na.omit(unique(x$mergedSourceDf$itemId)));
 
   if (nrOfItems == 0) {
     stop("No items were coded (or no valid item identifiers were ",
@@ -106,7 +106,7 @@ ci_heatmap <- function(x,
 
   if ((nrOfCodes*nrOfItems) < 2) {
     stop("Only one item ('",
-         vecTxtQ(na.omit(unique(x$mergedSourceDf$itemId))),
+         vecTxtQ(stats::na.omit(unique(x$mergedSourceDf$itemId))),
          "') was coded with one code ('",
          x$codeProcessing$ci$leafCodes,
          "')!");

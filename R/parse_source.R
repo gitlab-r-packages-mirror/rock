@@ -1199,14 +1199,24 @@ parse_source <- function(text,
   ### Clean the source dataframe by removing section break rows.
 
   if (nrow(sourceDf) > 0) {
+
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
 
     cleanSourceDf <-
       sourceDf[!grepl(paste0(sectionRegexes, collapse="|"),
                       x), ];
 
+    ###-------------------------------------------------------------------------
+    ### Changed on 2022-09-13 because rows holding only a code were
+    ### also deleted (but shouldn't be)
     cleanSourceDf <-
-      cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
+      cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+
+    ### Original, before 2022-09-13
+    # cleanSourceDf <-
+    #   cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
+    ###-------------------------------------------------------------------------
+
   } else {
     cleanSourceDf <- data.frame();
   }
