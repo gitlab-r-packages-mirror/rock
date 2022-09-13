@@ -87,7 +87,7 @@ ci_heatmap <- function(x,
       length(x$codeProcessing$ci$leafCodes);
   } else {
     nrOfCodes <- length(
-      names(srcs$inductiveCodeTrees$ci$children)
+      names(x$inductiveCodeTrees$ci$children)
     );
   }
 

@@ -1209,8 +1209,13 @@ parse_source <- function(text,
     ###-------------------------------------------------------------------------
     ### Changed on 2022-09-13 because rows holding only a code were
     ### also deleted (but shouldn't be)
+
     cleanSourceDf <-
       cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+    cleanSourceDf <-
+      cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
+    cleanSourceDf <-
+      cleanSourceDf[nchar(cleanSourceDf$utterances_raw)>0, ];
 
     ### Original, before 2022-09-13
     # cleanSourceDf <-
