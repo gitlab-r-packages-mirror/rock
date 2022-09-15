@@ -411,10 +411,10 @@ parse_source <- function(text,
       multipleIds <-
         which(unlist(lapply(ids, length))>1);
       if (length(multipleIds) > 0) {
-        warning(glue::glue("Multiple identifiers matching '{idRegex}' found in the following utterances:\n",
+        warning(glue::glue("Multiple class instance identifiers matching '{idRegex}' found in the following utterances:\n",
                        paste0(x[multipleIds],
                               collapse="\n"),
-                       "\n\nOnly using the first identifier for each utterance, removing and ignoring the rest!"));
+                       "\n\nOnly using the first  class instanceidentifier for each utterance, removing and ignoring the rest!"));
         ids <-
           lapply(ids, utils::head, 1);
       }
@@ -1199,14 +1199,29 @@ parse_source <- function(text,
   ### Clean the source dataframe by removing section break rows.
 
   if (nrow(sourceDf) > 0) {
+
     sourceDf$originalSequenceNr <- 1:nrow(sourceDf);
 
     cleanSourceDf <-
       sourceDf[!grepl(paste0(sectionRegexes, collapse="|"),
                       x), ];
 
+    ###-------------------------------------------------------------------------
+    ### Changed on 2022-09-13 because rows holding only a code were
+    ### also deleted (but shouldn't be)
+
     cleanSourceDf <-
-      cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
+      cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+    cleanSourceDf <-
+      cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
+    cleanSourceDf <-
+      cleanSourceDf[nchar(cleanSourceDf$utterances_raw)>0, ];
+
+    ### Original, before 2022-09-13
+    # cleanSourceDf <-
+    #   cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
+    ###-------------------------------------------------------------------------
+
   } else {
     cleanSourceDf <- data.frame();
   }
