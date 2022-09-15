@@ -164,7 +164,7 @@ opts$reset <- function(...) {
 opts$defaults <-
   list(### Used throughout
        codeRegexes = c(codes = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)\\]\\]",
-                       ci = "\\[\\[ci[=:]([a-zA-Z0-9_>]+)\\]\\]"),
+                       ci = "\\[\\[ci--([a-zA-Z0-9_>]+)\\]\\]"),
        idRegexes = c(caseId = "\\[\\[cid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
