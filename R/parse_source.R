@@ -95,7 +95,8 @@ parse_source <- function(text,
   sectionRegexes <- rock::opts$get('sectionRegexes');
   uidRegex <- rock::opts$get('uidRegex');
   autoGenerateIds <- rock::opts$get('autoGenerateIds');
-  persistentIds <- rock::opts$get('persistentIds');
+  ### Obsolete now all class instance identifiers are persistent
+  # persistentIds <- rock::opts$get(persistentIds);
   noCodes <- rock::opts$get('noCodes');
   inductiveCodingHierarchyMarker <- rock::opts$get('inductiveCodingHierarchyMarker');
   attributeContainers <- rock::opts$get('attributeContainers');
@@ -434,18 +435,30 @@ parse_source <- function(text,
       ids <- unlist(ids);
 
       if (length(ids) > 1) {
+
         ### Implement 'identifier persistence' by copying the
         ### identifier of the previous utterance if the identifier
         ### is not set - can't be done using vectorization as identifiers
         ### have to carry over sequentially.
-        if (idRegex %in% persistentIds) {
-          rawIds <- ids;
-          for (i in 2:length(ids)) {
-            if ((ids[i] == "no_id")) {
-              ids[i] <- ids[i-1];
-            }
+        # if (idRegex %in% persistentIds) {
+        #   rawIds <- ids;
+        #   for (i in 2:length(ids)) {
+        #     if ((ids[i] == "no_id")) {
+        #       ids[i] <- ids[i-1];
+        #     }
+        #   }
+        # }
+
+        ### 2022-10-07 --- Decision Szilvia & GJ: change ROCK standard such
+        ###                that all class instance identifiers are always
+        ###                persistent.
+        rawIds <- ids;
+        for (i in 2:length(ids)) {
+          if ((ids[i] == "no_id")) {
+            ids[i] <- ids[i-1];
           }
         }
+
       } else {
         ids = "no_id";
       }
@@ -461,10 +474,16 @@ parse_source <- function(text,
         ### Store identifiers in sourceDf
         sourceDf[, idRegex] <-
           ids;
-        if (idRegex %in% persistentIds) {
-          sourceDf[, paste0(idRegex, "_raw")] <-
-            rawIds;
-        }
+        # if (idRegex %in% persistentIds) {
+        #   sourceDf[, paste0(idRegex, "_raw")] <-
+        #     rawIds;
+        # }
+        ### 2022-10-07 --- Decision Szilvia & GJ: change ROCK standard such
+        ###                that all class instance identifiers are always
+        ###                persistent.
+        sourceDf[, paste0(idRegex, "_raw")] <-
+          rawIds;
+
       }
     }
   }
