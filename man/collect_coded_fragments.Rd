@@ -36,7 +36,9 @@ concatenated using "\code{|}" as a separator, to create a regular expression
 matching all codes).}
 
 \item{context}{How many utterances before and after the target
-utterances to include in the fragments.}
+utterances to include in the fragments. If two values, the first is the
+number of utterances before, and the second, the number of utterances
+after the target utterances.}
 
 \item{includeDescendents}{Whether to also collect the fragments coded with
 descendent codes (i.e. child codes, 'grand child codes', etc; in other

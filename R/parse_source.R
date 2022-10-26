@@ -101,6 +101,7 @@ parse_source <- function(text,
   inductiveCodingHierarchyMarker <- rock::opts$get('inductiveCodingHierarchyMarker');
   attributeContainers <- rock::opts$get('attributeContainers');
   networkContainers <- rock::opts$get('networkContainers');
+  aestheticContainers <- rock::opts$get('aestheticContainers');
   codesContainers <- rock::opts$get('codesContainers');
   sectionBreakContainers <- rock::opts$get('sectionBreakContainers');
   delimiterRegEx <- rock::opts$get('delimiterRegEx');
@@ -216,6 +217,17 @@ parse_source <- function(text,
     res$rawDeductiveCodes <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
                              select=paste0(codesContainers, collapse="|"));
+
+    # ### Store data frame with all info about deductive codes
+    # res$deductiveCodeDfs <-
+    #   lapply(
+    #     parsedSource$rawDeductiveCodes,
+    #     get_dataframe_from_nested_list
+    #   );
+    #
+    # names(res$deductiveCodeDfs) <-
+    #   names(res$rawDeductiveCodes);
+
     ### Get all deductive code ids
     res$deductiveCodes <-
       get_deductive_code_values(res$rawDeductiveCodes,
@@ -252,12 +264,12 @@ parse_source <- function(text,
       "Looking for network configuration.\n",
       silent = silent
     );
-    res$networkConfig <-
+    res$aestheticConfig <-
       yum::load_and_simplify(yamlFragments=res$yamlFragments,
-                             select=paste0(networkContainers, collapse="|"));
+                             select=paste0(aestheticContainers, collapse="|"));
     msg(
-      "Read ", length(unlist(res$networkConfig)),
-      " network confguration specifications.\n",
+      "Read ", length(unlist(res$aestheticConfig)),
+      " aesthetic specifications.\n",
       silent = silent
     );
 
@@ -277,7 +289,7 @@ parse_source <- function(text,
     res$deductiveCodes <- NA;
     res$deductiveCodeTrees <- NA;
     res$sectionBreakRegexes <- NA;
-    res$networkConfig <- NA;
+    res$aestheticConfig <- NA;
   }
 
   ###---------------------------------------------------------------------------
@@ -691,6 +703,8 @@ parse_source <- function(text,
     }
   }
 
+  browser();
+
   ###---------------------------------------------------------------------------
   ### Process codeValues
 
@@ -933,7 +947,7 @@ parse_source <- function(text,
               penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
             );
 
-          if (!is.na(res$networkConfig)) {
+          if (!is.na(res$aestheticConfig)) {
 
             configName <- paste0("ROCK_", networkCodeRegex);
 
@@ -945,7 +959,7 @@ parse_source <- function(text,
             configuredEdgeTypes <-
               unlist(
                 lapply(
-                  res$networkConfig[[configName]]$edges,
+                  res$aestheticConfig[[configName]]$edges,
                   function(x) {
                     if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
                       return("no_type_specified");
@@ -958,7 +972,7 @@ parse_source <- function(text,
 
             res$networkCodes[[networkCodeRegex]]$edgeConfig <-
               stats::setNames(
-                res$networkConfig[[configName]]$edges,
+                res$aestheticConfig[[configName]]$edges,
                 configuredEdgeTypes
               );
 

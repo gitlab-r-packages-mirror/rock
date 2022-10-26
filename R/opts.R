@@ -178,6 +178,7 @@ opts$defaults <-
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
        codeTreeMarker = ">",
+       anchorRegex = "--+-{[a-zA-Z0-9_:.,+@!#$%^&*)(/\\><|~=-]}-+--",
 
        ### Regular expression describing the characters that can be used for
        ### code identifiers (has to include `inductiveCodingHierarchyMarker`
@@ -192,8 +193,9 @@ opts$defaults <-
        noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
        attributeContainers = c("ROCK_attributes"),
        networkContainers = c("ROCK_network"),
-       codesContainers = c("codes", "dct"),
-       sectionBreakContainers = c("section_breaks"),
+       aestheticContainers = c("ROCK_aesthetics", "ROCK_network"),
+       codesContainers = c("ROCK_codes", "codes", "dct"),
+       sectionBreakContainers = c("ROCK_sectionBreaks", "section_breaks"),
        delimiterString = "---",
        delimiterRegEx = "^---$",
        ignoreRegex = "^#",

@@ -1,7 +1,7 @@
 test_that("an RPE coding file can be prepared", {
 
-  # devtools::load_all("B:/Data/R/rock");
-  # devtools::load_all("B:/Data/R/limonaid");
+  # devtools::load_all("C:/pC/git/R/rock");
+  # devtools::load_all("C:/pC/git/R/limonaid");
 
   lsFilesPath <- system.file("limesurvey",
                              package="rock");
