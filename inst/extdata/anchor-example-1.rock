@@ -1,5 +1,5 @@
 [[sourceId=source1]]
-[[streamId=streamA]]
+[[streamId=streamA]] [[caseId=case1]]
 
 --+-{ 2022-11-26 21:01:00.000 CET (UTC+1) }-+--
 What is Lorem Ipsum? [[code1]]
