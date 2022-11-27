@@ -170,7 +170,11 @@ opts$defaults <-
                      stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      itemId = "\\[\\[uiid[=:]([a-zA-Z0-9_]+)\\]\\]",
                      probeId = "\\[\\[prbid[=:]([a-zA-Z0-9_]+)\\]\\]",
-                     metaqId = "\\[\\[mqid[=:]([a-zA-Z0-9_]+)\\]\\]"),
+                     metaqId = "\\[\\[mqid[=:]([a-zA-Z0-9_]+)\\]\\]"#,
+                     #sourceId = "\\[\\[sourceId[=:]([a-zA-Z0-9_]+)\\]\\]",
+                     #streamId = "\\[\\[streamId[=:]([a-zA-Z0-9_]+)\\]\\]"
+                     ),
+       classInstanceRegex = "\\[\\[([a-zA-Z][a-zA-Z0-9_]*)[=:]([a-zA-Z0-9_]+)\\]\\]",
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: ?!-]+)\\]\\]"),
        networkCodeRegexes = c(network = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)->([a-zA-Z][a-zA-Z0-9_>]*)\\|\\|([a-zA-Z][a-zA-Z0-9_>]*)(\\|\\|[a-zA-Z0-9_>]*)?\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
@@ -178,7 +182,7 @@ opts$defaults <-
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
        codeTreeMarker = ">",
-       anchorRegex = "--+-{[a-zA-Z0-9_:.,+@!#$%^&*)(/\\><|~=-]}-+--",
+       anchorRegex = "--\\+-\\{[a-zA-Z0-9_:.,+@!#$%^&*)(\\/\\\\>< |~=-]+\\}-\\+--",
 
        ### Regular expression describing the characters that can be used for
        ### code identifiers (has to include `inductiveCodingHierarchyMarker`

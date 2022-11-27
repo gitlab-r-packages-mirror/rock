@@ -91,6 +91,8 @@ parse_source <- function(text,
 
   codeRegexes <- rock::opts$get('codeRegexes');
   idRegexes <- rock::opts$get('idRegexes');
+  anchorRegex <- rock::opts$get('anchorRegex');
+  classInstanceRegex <- rock::opts$get('classInstanceRegex');
   codeValueRegexes <- rock::opts$get('codeValueRegexes');
   sectionRegexes <- rock::opts$get('sectionRegexes');
   uidRegex <- rock::opts$get('uidRegex');
@@ -410,8 +412,9 @@ parse_source <- function(text,
   }
 
   ###---------------------------------------------------------------------------
+  ### Process specified class instance identifiers
+  ###---------------------------------------------------------------------------
 
-  ### Process identifiers
   if (!is.null(idRegexes) && length(idRegexes) > 0) {
     for (idRegex in names(idRegexes)) {
 
@@ -501,13 +504,77 @@ parse_source <- function(text,
   }
 
   ###---------------------------------------------------------------------------
+  ### Process unspecified (generic) class instance identifiers
+  ###---------------------------------------------------------------------------
 
+  classIdMatches <-
+    regmatches(x,
+               gregexpr(classInstanceRegex, x));
+
+  classIdMatches <-
+    lapply(
+      classIdMatches,
+      function(x) {
+        return(c(
+          gsub(classInstanceRegex, "\\1", x),
+          gsub(classInstanceRegex, "\\2", x)
+        ));
+      }
+    );
+
+  browser();
+
+  ### Adjust to multiple matches
+  # gsub(
+  #   classInstanceRegex,
+  #   "\\1",
+  #   lapply(
+  #     regmatches(
+  #       x,
+  #       gregexpr(classInstanceRegex, x)
+  #     ),
+  #     function(x) {
+  #       if (length(x) == 0) {
+  #         return("");
+  #       } else {
+  #         return(x);
+  #       }
+  #     }
+  #   )
+  # )
+
+  ###---------------------------------------------------------------------------
   ### Delete identifiers and store clean version in sourceDf
+  ###---------------------------------------------------------------------------
+
   x <-
     gsub(paste0(idRegexes, collapse="|"),
          "",
          x);
   sourceDf$utterances_without_identifiers <- x;
+
+  ###---------------------------------------------------------------------------
+  ### Anchors
+  ###---------------------------------------------------------------------------
+
+  ### Get a list of matches
+  anchors <-
+    unlist(
+      lapply(
+        regmatches(x,
+                   gregexpr(anchorRegex, x)),
+        function(x) {
+          if (length(x) == 0) {
+            return("");
+          } else {
+            return(x);
+          }
+        }
+      )
+    );
+
+  sourceDf[, "anchors"] <-
+    anchors;
 
   ###---------------------------------------------------------------------------
   ### Process codes
@@ -702,8 +769,6 @@ parse_source <- function(text,
       }
     }
   }
-
-  browser();
 
   ###---------------------------------------------------------------------------
   ### Process codeValues
