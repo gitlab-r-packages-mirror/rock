@@ -174,7 +174,15 @@ opts$defaults <-
                      #sourceId = "\\[\\[sourceId[=:]([a-zA-Z0-9_]+)\\]\\]",
                      #streamId = "\\[\\[streamId[=:]([a-zA-Z0-9_]+)\\]\\]"
                      ),
-       classInstanceRegex = "\\[\\[([a-zA-Z][a-zA-Z0-9_]*)[=:]([a-zA-Z0-9_]+)\\]\\]",
+       ### Introduced in v. 0.6.0 when introducing generic class
+       ### instance identifiers (end removing the specified ones,
+       ### introducing the below option to copy over column names)
+       ciid_columnsToCopy = c(cid = 'caseId',
+                              sid = 'stanzaId',
+                              uuid = 'itemId',
+                              prbid = 'probeId',
+                              mqid = 'metaqid'),
+       classInstanceRegex = "\\[\\[(?!uid)(?!UID)([a-zA-Z][a-zA-Z0-9_]*)[=:]([a-zA-Z0-9_]+)\\]\\]",
        codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: ?!-]+)\\]\\]"),
        networkCodeRegexes = c(network = "\\[\\[([a-zA-Z][a-zA-Z0-9_>]*)->([a-zA-Z][a-zA-Z0-9_>]*)\\|\\|([a-zA-Z][a-zA-Z0-9_>]*)(\\|\\|[a-zA-Z0-9_>]*)?\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
@@ -194,7 +202,9 @@ opts$defaults <-
        # persistentIds = c('caseId', 'coderId', 'stanzaId', 'itemId', 'probeId', 'metaqId'),
        persistentIds = c('caseId'),
 
-       noCodes = "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
+       ### In version 0.6, this was made redundant, except for UIDs
+       noCodes = "^uid[=:]", # "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
+
        attributeContainers = c("ROCK_attributes"),
        networkContainers = c("ROCK_network"),
        aestheticContainers = c("ROCK_aesthetics", "ROCK_network"),

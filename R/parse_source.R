@@ -91,6 +91,7 @@ parse_source <- function(text,
 
   codeRegexes <- rock::opts$get('codeRegexes');
   idRegexes <- rock::opts$get('idRegexes');
+  ciid_columnsToCopy <- rock::opts$get('ciid_columnsToCopy');
   anchorRegex <- rock::opts$get('anchorRegex');
   classInstanceRegex <- rock::opts$get('classInstanceRegex');
   codeValueRegexes <- rock::opts$get('codeValueRegexes');
@@ -509,7 +510,9 @@ parse_source <- function(text,
 
   classIdMatches <-
     regmatches(x,
-               gregexpr(classInstanceRegex, x));
+               gregexpr(classInstanceRegex,
+                        x,
+                        perl = TRUE));
 
   if (all(unlist(lapply(classIdMatches, length)) == 0)) {
 
@@ -530,8 +533,8 @@ parse_source <- function(text,
         classIdMatches,
         function(x) {
           return(list(
-            gsub(classInstanceRegex, "\\1", x),
-            gsub(classInstanceRegex, "\\2", x)
+            gsub(classInstanceRegex, "\\1", x, perl = TRUE),
+            gsub(classInstanceRegex, "\\2", x, perl = TRUE)
           ));
         }
       );
@@ -634,6 +637,14 @@ parse_source <- function(text,
       sourceDf[, paste0(unspecifiedClasses, "_raw")] <-
         unspecifiedClassInstanceIdentifierDf_raw;
 
+      colsToCopy <- names(ciid_columnsToCopy) %in% unspecifiedClasses;
+
+      if (length(colsToCopy) > 0) {
+        colsToCopy <- ciid_columnsToCopy[colsToCopy];
+        sourceDf[, colsToCopy] <-
+          sourceDf[, names(colsToCopy)];
+      }
+
       msg(
         "Processed ", length(unspecifiedClasses),
         " class instance identifiers (", vecTxtQ(unspecifiedClasses), ").\n",
@@ -651,11 +662,13 @@ parse_source <- function(text,
   x <-
     gsub(paste0(idRegexes, collapse="|"),
          "",
-         x);
+         x,
+         perl = TRUE);
   x <-
     gsub(classInstanceRegex,
          "",
-         x);
+         x,
+         perl = TRUE);
 
   sourceDf$utterances_without_identifiers <- x;
 
