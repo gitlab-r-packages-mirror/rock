@@ -93,6 +93,7 @@ parse_source <- function(text,
   idRegexes <- rock::opts$get('idRegexes');
   ciid_columnsToCopy <- rock::opts$get('ciid_columnsToCopy');
   anchorRegex <- rock::opts$get('anchorRegex');
+  anchorsCol <- rock::opts$get('anchorsCol');
   classInstanceRegex <- rock::opts$get('classInstanceRegex');
   codeValueRegexes <- rock::opts$get('codeValueRegexes');
   sectionRegexes <- rock::opts$get('sectionRegexes');
@@ -692,8 +693,15 @@ parse_source <- function(text,
       )
     );
 
-  sourceDf[, "anchors"] <-
+  sourceDf[, paste0(anchorsCol, "_raw")] <-
     anchors;
+
+  sourceDf[, anchorsCol] <-
+    trimws(
+      gsub(anchorRegex,
+           "\\1",
+           anchors)
+    );
 
   ###---------------------------------------------------------------------------
   ### Process codes

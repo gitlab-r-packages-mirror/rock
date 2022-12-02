@@ -190,7 +190,7 @@ opts$defaults <-
        uidRegex = "\\[\\[uid[=:]([a-zA-Z0-9_]+)\\]\\]",
        inductiveCodingHierarchyMarker = ">",
        codeTreeMarker = ">",
-       anchorRegex = "--\\+-\\{[a-zA-Z0-9_:.,+@!#$%^&*)(\\/\\\\>< |~=-]+\\}-\\+--",
+       anchorRegex = "--\\+-\\{([a-zA-Z0-9_:.,+@!#$%^&*)(\\/\\\\>< |~=-]+)\\}-\\+--",
 
        ### Regular expression describing the characters that can be used for
        ### code identifiers (has to include `inductiveCodingHierarchyMarker`
@@ -201,6 +201,10 @@ opts$defaults <-
        autoGenerateIds = c('stanzaId'),
        # persistentIds = c('caseId', 'coderId', 'stanzaId', 'itemId', 'probeId', 'metaqId'),
        persistentIds = c('caseId'),
+
+       sourceId = "sourceId",
+       streamId = "streamId",
+       anchorsCol = "anchors",
 
        ### In version 0.6, this was made redundant, except for UIDs
        noCodes = "^uid[=:]", # "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",

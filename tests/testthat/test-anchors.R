@@ -19,6 +19,24 @@ testthat::test_that("reading anchors works", {
 
 ###-----------------------------------------------------------------------------
 
+testthat::test_that("reading anchors works", {
+
+  ### devtools::load_all();
+
+  examplePath <- file.path(system.file(package="rock"), 'extdata', 'streams');
+
+  testres <- rock::parse_sources(
+    examplePath
+  );
+
+  syncedres <- rock::sync_streams(
+    testres
+  );
+
+  testthat::expect_s3_class(testres, "rock_parsedSource");
+
+});
+
 
 ###-----------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------
