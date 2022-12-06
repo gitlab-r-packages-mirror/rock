@@ -206,6 +206,8 @@ opts$defaults <-
        streamId = "streamId",
        anchorsCol = "anchors",
 
+       colNameGlue = "_",
+
        ### In version 0.6, this was made redundant, except for UIDs
        noCodes = "^uid[=:]", # "^uid[=:]|^dct[=:]|^ci[=:]|^uiid[=:]|^prbid[=:]",
 

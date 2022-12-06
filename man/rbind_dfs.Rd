@@ -4,7 +4,7 @@
 \alias{rbind_dfs}
 \title{Simple alternative for rbind.fill or bind_rows}
 \usage{
-rbind_dfs(x, y, clearRowNames = TRUE)
+rbind_dfs(x, y, clearRowNames = TRUE, glue = NULL)
 }
 \arguments{
 \item{x}{One dataframe}

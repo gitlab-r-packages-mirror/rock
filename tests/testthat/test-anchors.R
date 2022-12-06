@@ -30,7 +30,10 @@ testthat::test_that("reading anchors works", {
   );
 
   syncedres <- rock::sync_streams(
-    testres
+    testres,
+    primaryStream = "streamA",
+    columns = c("Code1", "Code2"),
+    prependStreamIdToColName = TRUE
   );
 
   testthat::expect_s3_class(testres, "rock_parsedSource");

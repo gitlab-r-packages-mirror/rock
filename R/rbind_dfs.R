@@ -10,7 +10,8 @@
 #' @examples rbind_dfs(Orange, mtcars);
 rbind_dfs <- function(x,
                       y,
-                      clearRowNames = TRUE) {
+                      clearRowNames = TRUE,
+                      glue = NULL) {
 
   ### Check what we got
 

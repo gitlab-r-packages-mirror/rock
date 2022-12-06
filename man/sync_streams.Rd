@@ -7,9 +7,11 @@
 sync_streams(
   x,
   primaryStream,
+  columns,
   anchorsCol = rock::opts$get("anchorsCol"),
   sourceId = rock::opts$get("sourceId"),
-  streamId = rock::opts$get("streamId")
+  streamId = rock::opts$get("streamId"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
@@ -17,11 +19,17 @@ sync_streams(
 
 \item{primaryStream}{The identifier of the primary stream.}
 
+\item{columns}{The names of the column(s) to synchronize.}
+
 \item{anchorsCol}{The column containing the anchors.}
 
 \item{sourceId}{The column containing the source identifiers.}
 
 \item{streamId}{The column containing the stream identifiers.}
+}
+\value{
+The object with parsd sources, \code{x}, with the synchronization results
+added in the \verb{$syncResults} subobject.
 }
 \description{
 This function maps the codes from multiple streams onto a primary stream.
