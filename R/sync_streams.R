@@ -381,7 +381,11 @@ sync_streams <- function(x,
       }
     );
 
-  mergedMergedStreamDfs <-
+  ###---------------------------------------------------------------------------
+  ### Merge dataframes for each source
+  ###---------------------------------------------------------------------------
+
+  syncedStreamDfs <-
     lapply(
       names(dfBySourceAndStream),
       function(sourceDfName) {
@@ -407,7 +411,16 @@ sync_streams <- function(x,
       }
     );
 
-  names(mergedMergedStreamDfs) <- names(dfBySourceAndStream);
+  names(syncedStreamDfs) <- names(dfBySourceAndStream);
+
+  ###---------------------------------------------------------------------------
+  ### Merge the synced stream data framesinto one new 'mergedSourceDf'
+  ###---------------------------------------------------------------------------
+
+  mergedSourceDf <-
+    rbind_df_list(
+      syncedStreamDfs
+    );
 
   ###---------------------------------------------------------------------------
   ### Compose sub-object with results and return it
@@ -424,7 +437,8 @@ sync_streams <- function(x,
       anchorIndices = anchorIndices,
       streamMapping = streamMapping,
       mergedStreamDfs = mergedStreamDfs,
-      mergedMergedStreamDfs = mergedMergedStreamDfs
+      syncedStreamDfs = syncedStreamDfs,
+      mergedSourceDf = mergedSourceDf
     );
 
   return(
