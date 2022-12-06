@@ -10,7 +10,9 @@
 #' @param streamId The column containing the stream identifiers.
 #' @param prependStreamIdToColName,appendStreamIdToColName Whether to append
 #' or prepend the stream identifier before merging the dataframes together.
+#' @param silent Whether to be silent (`TRUE`) or chatty (`FALSE`).
 #'
+#' @inheritParams syncing_vector_compress,syncing_vector_expand
 #' @return The object with parsd sources, `x`, with the synchronization results
 #' added in the `$syncResults` subobject.
 #' @export
@@ -24,6 +26,10 @@ sync_streams <- function(x,
                          streamId = rock::opts$get('streamId'),
                          prependStreamIdToColName = FALSE,
                          appendStreamIdToColName = FALSE,
+                         sep = " ",
+                         fill = TRUE,
+                         compressFun = NULL,
+                         fillexpandFun = NULL,
                          colNameGlue = rock::opts$get('colNameGlue'),
                          silent = rock::opts$get('silent')) {
 
@@ -308,7 +314,8 @@ sync_streams <- function(x,
                         drop=FALSE
                       ],
                       newLength = currentSource[[primaryStream]][[anchorPair]]$length,
-                      sep = " "
+                      sep = sep,
+                      compressFun = compressFun
                     );
 
                 } else if (currentSource[[primaryStream]][[anchorPair]]$length >
@@ -330,7 +337,8 @@ sync_streams <- function(x,
                         drop=FALSE
                       ],
                       newLength = currentSource[[primaryStream]][[anchorPair]]$length,
-                      fill = TRUE
+                      fill = fill,
+                      expandFun = expandFun
                     );
 
                 }

@@ -2,14 +2,16 @@
 #' @export
 syncing_df_compress <- function(x,
                                 newLength,
-                                sep = " ") {
+                                sep = " ",
+                                compressFun = NULL) {
 
   res <-
     lapply(
       x,
       syncing_vector_compress,
       newLength = newLength,
-      sep = sep
+      sep = sep,
+      compressFun = compressFun
     );
 
   res <- as.data.frame(res);

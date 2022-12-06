@@ -2,10 +2,9 @@
 #'
 #' @param x The vector
 #' @param newLength The new length
-#' @param sep The separator used to glue together elements
-#' @param fill Whether to duplicate elements to completely fill the new vector
 #'
 #' @return The synced vector
+#' @inheritParams syncing_vector_compress,syncing_vector_expand
 #' @export
 #'
 #' @examples rock::sync_vector(letters[1:10], 15);
@@ -13,7 +12,9 @@
 sync_vector <- function(x,
                         newLength,
                         sep = " ",
-                        fill = TRUE) {
+                        fill = TRUE,
+                        compressFun = NULL,
+                        expandFun = NULL) {
 
   oldLength <- length(x);
 
@@ -24,7 +25,8 @@ sync_vector <- function(x,
       syncing_vector_expand(
         x = x,
         newLength = newLength,
-        fill = fill
+        fill = fill,
+        expandFun = expandFun
       )
     );
   } else if (oldLength > newLength) {
@@ -32,7 +34,8 @@ sync_vector <- function(x,
       syncing_vector_compress(
         x = x,
         newLength = newLength,
-        sep = sep
+        sep = sep,
+        compressFun = compressFun
       )
     );
   }

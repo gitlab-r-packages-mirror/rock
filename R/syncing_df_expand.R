@@ -2,7 +2,8 @@
 #' @export
 syncing_df_expand <- function(x,
                               newLength,
-                              fill = TRUE) {
+                              fill = TRUE,
+                              expandFun = NULL) {
 
   res <-
     lapply(

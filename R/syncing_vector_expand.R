@@ -2,7 +2,13 @@
 #'
 #' @param x The vector
 #' @param newLength The new length
-#' @param fill Whether to duplicate elements to completely fill the new vector
+#' @param fill When expanding streams, whether to duplicate elements to fill
+#' the resulting vector. Ignored if `fillFun` is specified.
+#' @param expandFun If specified, when expanding streams, instead of potentially
+#' filling the new larger vector with elements (if `fill` is `TRUE`), the
+#' vectors are passed to function `expandFun`, which must accept a vector (to
+#' compress) and a single integer (with the desired resulting length of
+#' the vector).
 #'
 #' @return The expanded vector
 #' @rdname expanding_vectors
@@ -12,7 +18,8 @@
 #' rock::syncing_vector_expand(letters[1:10], 15, fill=FALSE);
 syncing_vector_expand <- function(x,
                                   newLength,
-                                  fill = TRUE) {
+                                  fill = TRUE,
+                                  expandFun = NULL) {
 
   oldLength <- length(x);
   oldIndices <- seq_along(x);
@@ -26,27 +33,50 @@ syncing_vector_expand <- function(x,
          "should be shrunk or expanded.");
   }
 
-  if (length(x) == 1) {
-    if (fill) {
-      return(rep(x, newLength));
-    } else {
-      return(c(x, rep("", newLength-1)));
-    }
-  }
+  if (is.null(expandFun)) {
 
-  newVector <- c();
-
-  for (newIndex in 1:newLength) {
-    if (newIndex %in% newIndices) {
-      newVector[newIndex] <- x[newIndices == newIndex];
-      oldValue <- newVector[newIndex];
-    } else {
+    if (length(x) == 1) {
       if (fill) {
-        newVector[newIndex] <- oldValue;
+        return(rep(x, newLength));
       } else {
-        newVector[newIndex] <- "";
+        return(c(x, rep("", newLength-1)));
       }
     }
+
+    newVector <- c();
+
+    for (newIndex in 1:newLength) {
+      if (newIndex %in% newIndices) {
+        newVector[newIndex] <- x[newIndices == newIndex];
+        oldValue <- newVector[newIndex];
+      } else {
+        if (fill) {
+          newVector[newIndex] <- oldValue;
+        } else {
+          newVector[newIndex] <- "";
+        }
+      }
+    }
+
+  } else {
+
+    if (!is.function(expandFun)) {
+      stop("As `expandFun`, you must pass a function. You currently passed ",
+           "and object of class(es) ", vecTxtQ(class(expandFun)), ".");
+    }
+
+    newVector <-
+      expandFun(
+        x,
+        newLength
+      );
+
+    if (length(newVector) != newLength) {
+      stop("The `expandFun` you specified did not deliver a vector of ",
+           "the correct length! `newLength` is ", newLength, ", but the ",
+           "vector that was returned had length ", length(newVector), ".");
+    }
+
   }
 
   return(newVector);
