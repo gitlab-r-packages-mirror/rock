@@ -16,6 +16,7 @@
 #'
 #' @examples rock::compress_with_sum(c(1, '1', 0));
 #' rock::compress_with_or(c(1, '1', 0));
+#' rock::compress_with_or(c(0, '', 0, FALSE));
 compress_with_sum <- function(x) {
   x <- convertToNumeric(x);
   return(sum(x, na.rm = TRUE));
@@ -24,18 +25,32 @@ compress_with_sum <- function(x) {
 #' @rdname compression_helper_functions
 #' @export
 compress_with_or <- function(x) {
-  if (all(is.na(x))) {
+
+  missings <- is.na(x);
+  if (all(missings)) {
     return(0);
   }
+  x <- x[!missings];
 
+  noContents <- nchar(as.character(x)) == 0;
+  if (all(noContents)) {
+    return(0);
+  }
+  x <- x[!noContents];
 
-  return(
-    ifelse(
-      any(!is.na(
-    )
-  );
+  falses <- unlist(lapply(x, isFALSE));
+  if (all(falses)) {
+    return(0);
+  }
+  x <- x[!falses];
 
-  x <- convertToNumeric(x);
+  zeroes <- convertToNumeric(x) == 0;
+  zeroes <- zeroes[!is.na(zeroes)];
+  if (all(zeroes)) {
+    return(0);
+  }
+  x <- x[!zeroes];
 
-  return(ifelse(any(x, na.rm = TRUE));
+  return(1);
+
 }
