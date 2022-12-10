@@ -18,7 +18,10 @@
 #' is not, the order of the `itemLabel` is used.
 #' @param wrapLabels Whether to wrap the labels; if not `NULL`, the
 #' number of character to wrap at.
-#' @param itemIdentifier The column identifying the items.
+#' @param itemIdentifier The column identifying the items; the class instance
+#' identifier prefix, e.g. if item identifiers are specified as
+#' `[[uiid:familySize_7djdy62d]]`, the `itemIdentifier` to pass here
+#' is `"uiid"`.
 #' @param codingScheme The coding scheme, either as a string if it represents
 #' one of the cognitive interviewig coding schemes provided with the `rock`
 #' package, or as a coding scheme resulting from a call
@@ -46,7 +49,7 @@ ci_heatmap <- function(x,
                        wrapLabels = 80,
                        itemOrder = NULL,
                        itemLabels = NULL,
-                       itemIdentifier = "itemId",
+                       itemIdentifier = "uiid",
                        codingScheme = "peterson",
                        itemlab = NULL,
                        codelab = NULL,
@@ -82,19 +85,31 @@ ci_heatmap <- function(x,
          "coding scheme that exists in the `rock` package.");
   }
 
-  nrOfCodes <-
-    length(x$codeProcessing$ci$leafCodes);
+  if (!is.null(x$codeProcessing)) {
+    nrOfCodes <-
+      length(x$codeProcessing$ci$leafCodes);
+  } else {
+    nrOfCodes <- length(
+      names(x$inductiveCodeTrees$ci$children)
+    );
+  }
+
   nrOfItems <-
-    length(na.omit(unique(x$mergedSourceDf$itemId)));
+    length(stats::na.omit(unique(x$mergedSourceDf[, itemIdentifier])));
 
   if (nrOfItems == 0) {
     stop("No items were coded (or no valid item identifiers were ",
          "specified)!");
   }
 
+  if (nrOfCodes == 0) {
+    stop("No Cognitive Interviewing codes were found!");
+  }
+
+
   if ((nrOfCodes*nrOfItems) < 2) {
     stop("Only one item ('",
-         na.omit(unique(x$mergedSourceDf$itemId)),
+         vecTxtQ(stats::na.omit(unique(x$mergedSourceDf[, itemIdentifier]))),
          "') was coded with one code ('",
          x$codeProcessing$ci$leafCodes,
          "')!");

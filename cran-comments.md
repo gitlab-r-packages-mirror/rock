@@ -1,7 +1,7 @@
-Hey there!
+Hey there,
 
-Finally got around to fixing the error that got the package removed from CRAN! Sorry for the delay!
+Just a number of small improvements and a minor bug fix, nothing exciting.
 
-Thank you for all your work on CRAN, kind regards,
+Kind regards,
 
 Gjalt-Jorn

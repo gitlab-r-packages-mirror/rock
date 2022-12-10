@@ -58,6 +58,12 @@ doc_to_txt <- function(input,
                        ...
                       ) {
 
+  if (!requireNamespace("textreadr", quietly = TRUE)) {
+    stop("To use this function, you need the {textreadr} package! ",
+         "To install it, you can use:\n\n    ",
+         "install.packages('textreadr');\n\n");
+  }
+
   msg("Reading input file from '", input, "'.\n",
       silent = silent);
 
