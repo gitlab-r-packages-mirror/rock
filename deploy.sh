@@ -15,7 +15,7 @@ echo Calling PkgDown
 #/usr/local/bin/quarto render --to all
 /usr/local/bin/R -e "pkgdown::build_site();"
 
-echo Finished PkgdDown
+echo Finished PkgDown
 
 ### Copy image
 mkdir public/iROCK
