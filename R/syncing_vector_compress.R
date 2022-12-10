@@ -1,23 +1,44 @@
 #' Compress a vector or data frame
 #'
 #' @param x The vector or data frame
-#' @param newLength The new length
-#' @param sep When compressing streams, the separator to use. Ignored
-#' if `sepFun` is specified.
+#' @param newLength The new length (or number of rows for a data frame)
+#' @param sep When not specifying `compressFun` and `compressFunPart`, the
+#' `paste` function is used to combine elements, and in that case, `sep` is
+#' passed to `paste` as separator.
 #' @param compressFun If specified, when compressing streams, instead of pasting
 #' elements together using separator `sep`, the vectors are passed to function
 #' `compressFun`, which must accept a vector (to compress) and a single integer
 #' (with the desired resulting length of the vector).
+#' @param compressFunPart A function to apply to the segments that are
+#' automatically created; this can be passed instead of `compressFun`.
+#' @param silent Whether to be silent or chatty.
 #'
-#' @return The shortened vector
-#' @rdname compressing_vectors
+#' @rdname compressing_vectors_or_dataframes
+#'
+#' @return The compressed vector or data frame
 #' @export
 #'
-#' @examples rock::syncing_vector_compress(1:10, 3);
+#' @examples rock::syncing_vector_compress(
+#'   1:10,
+#'   3
+#' );
+#'
+#' rock::syncing_df_compress(
+#'   mtcars[, 1:4],
+#'   6
+#' );
+#'
+#' rock::syncing_df_compress(
+#'   mtcars[, 1:4],
+#'   6,
+#'   compressFunPart = mean
+#' );
 syncing_vector_compress <- function(x,
                                     newLength,
                                     sep = " ",
-                                    compressFun = NULL) {
+                                    compressFun = NULL,
+                                    compressFunPart = NULL,
+                                    silent = rock::opts$get('silent')) {
 
   oldLength <- length(x);
   oldIndices <- seq_along(x);
@@ -38,12 +59,23 @@ syncing_vector_compress <- function(x,
           lapply(
             1:newLength,
             function(newIndex) {
-              return(
-                paste0(
-                  x[newIndices == newIndex],
-                  collapse = sep
-                )
-              )
+              if (is.null(compressFunPart)) {
+                return(
+                  paste0(
+                    x[newIndices == newIndex],
+                    collapse = sep
+                  )
+                );
+              } else {
+                res <- compressFunPart(x[newIndices == newIndex]);
+                msg(
+                  "     - Compressed ",
+                  vecTxtQ(x[newIndices == newIndex]),
+                  " into '", res, "'.\n",
+                  silent = silent
+                );
+                return(res);
+              }
             }
           )
         )

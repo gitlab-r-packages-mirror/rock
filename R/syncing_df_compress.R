@@ -1,17 +1,29 @@
-#' @rdname compressing_vectors
+#' @rdname compressing_vectors_or_dataframes
 #' @export
 syncing_df_compress <- function(x,
                                 newLength,
                                 sep = " ",
-                                compressFun = NULL) {
+                                compressFun = NULL,
+                                compressFunPart = NULL,
+                                silent = rock::opts$get('silent')) {
 
   res <-
     lapply(
-      x,
-      syncing_vector_compress,
-      newLength = newLength,
-      sep = sep,
-      compressFun = compressFun
+      names(x),
+      function(currentCol) {
+        msg("    - Processing column: '", currentCol, "'.\n",
+            silent = silent);
+        return(
+          syncing_vector_compress(
+            x[, currentCol],
+            newLength = newLength,
+            sep = sep,
+            compressFun = compressFun,
+            compressFunPart = compressFunPart,
+            silent = silent
+          )
+        )
+      }
     );
 
   res <- as.data.frame(res);

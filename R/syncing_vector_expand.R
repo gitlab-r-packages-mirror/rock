@@ -1,7 +1,7 @@
-#' Expand a vector
+#' Expand a vector or data frame
 #'
-#' @param x The vector
-#' @param newLength The new length
+#' @param x The vector or data frame
+#' @param newLength The new length (or number of rows for a data frame)
 #' @param fill When expanding streams, whether to duplicate elements to fill
 #' the resulting vector. Ignored if `fillFun` is specified.
 #' @param expandFun If specified, when expanding streams, instead of potentially
@@ -9,9 +9,10 @@
 #' vectors are passed to function `expandFun`, which must accept a vector (to
 #' compress) and a single integer (with the desired resulting length of
 #' the vector).
+#' @param silent Whether to be silent or chatty.
 #'
 #' @return The expanded vector
-#' @rdname expanding_vectors
+#' @rdname expanding_vectors_or_dataframes
 #' @export
 #'
 #' @examples rock::syncing_vector_expand(letters[1:10], 15);
@@ -19,7 +20,8 @@
 syncing_vector_expand <- function(x,
                                   newLength,
                                   fill = TRUE,
-                                  expandFun = NULL) {
+                                  expandFun = NULL,
+                                  silent = rock::opts$get('silent')) {
 
   oldLength <- length(x);
   oldIndices <- seq_along(x);

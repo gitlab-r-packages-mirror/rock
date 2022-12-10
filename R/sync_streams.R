@@ -10,14 +10,42 @@
 #' @param streamId The column containing the stream identifiers.
 #' @param prependStreamIdToColName,appendStreamIdToColName Whether to append
 #' or prepend the stream identifier before merging the dataframes together.
+#' @param colNameGlue When appending or prepending stream identifiers, the
+#' character(s) to use as "glue" or separator.
 #' @param silent Whether to be silent (`TRUE`) or chatty (`FALSE`).
 #'
-#' @inheritParams syncing_vector_compress,syncing_vector_expand
 #' @return The object with parsd sources, `x`, with the synchronization results
 #' added in the `$syncResults` subobject.
+#' @inheritParams syncing_vector_compress
+#' @inheritParams syncing_vector_expand
 #' @export
 #'
-#' @examples
+#' @examples ### Get a directory with example sources
+#' examplePath <-
+#'   file.path(
+#'     system.file(package="rock"),
+#'     'extdata',
+#'     'streams'
+#'   );
+#'
+#' ### Parse the sources
+#' parsedSources <- rock::parse_sources(
+#'   examplePath
+#' );
+#'
+#' ### Add a dataframe, syncing all streams to primary stream !
+#' parsedSources <- rock::sync_streams(
+#'   parsedSources,
+#'   primaryStream = "streamA",
+#'   columns = c("Code1", "Code2", "Code3"),
+#'   prependStreamIdToColName = TRUE
+#' );
+#'
+#' ### Look at two examples
+#' parsedSources$syncResults$mergedSourceDf[
+#'   ,
+#'   c("streamB_Code3", "streamC_Code1")
+#' ];
 sync_streams <- function(x,
                          primaryStream,
                          columns = NULL,
@@ -29,7 +57,8 @@ sync_streams <- function(x,
                          sep = " ",
                          fill = TRUE,
                          compressFun = NULL,
-                         fillexpandFun = NULL,
+                         compressFunPart = NULL,
+                         expandFun = NULL,
                          colNameGlue = rock::opts$get('colNameGlue'),
                          silent = rock::opts$get('silent')) {
 
@@ -150,7 +179,7 @@ sync_streams <- function(x,
         stop(
           "Not all anchors align!\n\n",
           paste0(
-            capture.output(
+            utils::capture.output(
               print(anchorDf)
             ),
             collapse="\n"
@@ -315,7 +344,9 @@ sync_streams <- function(x,
                       ],
                       newLength = currentSource[[primaryStream]][[anchorPair]]$length,
                       sep = sep,
-                      compressFun = compressFun
+                      compressFun = compressFun,
+                      compressFunPart = compressFunPart,
+                      silent = silent
                     );
 
                 } else if (currentSource[[primaryStream]][[anchorPair]]$length >

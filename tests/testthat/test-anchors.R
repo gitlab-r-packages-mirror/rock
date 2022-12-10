@@ -36,6 +36,13 @@ testthat::test_that("reading anchors works", {
     prependStreamIdToColName = TRUE
   );
 
+  devtools::load_all(); syncedres <- rock::sync_streams(
+    testres, primaryStream = "streamA",
+    columns = c("Code1", "Code2", "Code3"),
+    prependStreamIdToColName = TRUE, compressFunPart = betterSum);
+
+  syncedres$syncResults$mergedSourceDf[, c("streamB_Code3", "streamC_Code1")];
+
   testthat::expect_s3_class(testres, "rock_parsedSource");
 
 });
