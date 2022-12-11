@@ -15,8 +15,12 @@
 #' examplePath <-
 #'   system.file("extdata", package="rock");
 #'
-#' ### Parse all example sources in that directory
-#' parsedExamples <- rock::parse_sources(examplePath);
+#' ### Parse a selection of example sources in that directory
+#' parsedExamples <-
+#'   rock::parse_sources(
+#'     examplePath,
+#'     regex = "(test|example)(.txt|.rock)"
+#'   );
 #'
 #' ### Create cooccurrence matrix
 #' rock::create_cooccurrence_matrix(parsedExamples);

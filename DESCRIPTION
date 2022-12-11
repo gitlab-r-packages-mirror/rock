@@ -1,6 +1,6 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.6.0
+Version: 0.6.3
 Authors@R: 
     c(person(given = "Gjalt-Jorn Ygram",
              family = "Peters",
@@ -9,7 +9,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-0336-9589")),
       person(given = "Szilvia",
              family = "Zorgo",
-             role = c("ctb"),
+             role = c("aut", "ctb"),
              comment = c(ORCID = "0000-0002-6916-2097")))
 Maintainer: Gjalt-Jorn Ygram Peters <gjalt-jorn@behaviorchange.eu>
 Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
@@ -50,13 +50,16 @@ Suggests:
     knitr,
     limonaid,
     openxlsx (>= 4.2),
+    pdftools,
     preregr (>= 0.1.9),
     rENA (>= 0.1.6),
     readxl,
     rmarkdown,
+    rvest,
     rstudioapi,
+    striprtf,
     testthat,
-    textreadr,
     writexl,
-    XLConnect
+    XLConnect,
+    xml2
 VignetteBuilder: knitr

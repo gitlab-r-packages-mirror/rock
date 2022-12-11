@@ -17,8 +17,11 @@
 #' examplePath <-
 #'   system.file("extdata", package="rock");
 #'
-#' ### Inspect sources
-#' rock::inspect_coded_sources(examplePath);
+#' ### Inspect a selection of example sources
+#' rock::inspect_coded_sources(
+#'   examplePath,
+#'   parse_args = list(regex = "(test|example)(.txt|.rock)")
+#' );
 inspect_coded_sources <- function(path,
                                   parse_args = list(extension = "rock|dct",
                                                     regex=NULL,
