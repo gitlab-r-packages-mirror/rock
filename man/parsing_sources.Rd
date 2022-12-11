@@ -125,8 +125,12 @@ parsedExample$inductiveCodeTrees$codes;
 parsedExample <- rock::parse_source(exampleFile,
                                     silent=FALSE);
 
-### Parse all example sources in that directory
-parsedExamples <- rock::parse_sources(examplePath);
+### Parse as selection of example sources in that directory
+parsedExamples <-
+  rock::parse_sources(
+    examplePath,
+    regex = "(test|example)(.txt|.rock)"
+  );
 
 ### Show combined inductive code tree for the codes
 ### extracted with the regular expression specified with
