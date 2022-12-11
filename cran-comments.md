@@ -8,7 +8,7 @@ Hey there,
 
 0.6.0: Removed the 'hard' dependency on {textreadr} as it's been archived (but hopefully will return). Also added functionality to synchronize multiple data streams.
 
-As always, thank you for your work on CRAN!!! 🙏
+As always, thank you for your work on CRAN!!!
 
 Kind regards,
 
