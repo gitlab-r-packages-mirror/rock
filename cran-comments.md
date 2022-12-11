@@ -2,6 +2,8 @@ Hey there,
 
 Sorry for the successive uploads! Here's an overview of what each entails.
 
+0.6.5: Disabled one command in an example, takes too long to test.
+
 0.6.4: Shortened time for one example even further.
 
 0.6.3: Edited examples to run faster by selecting a sub-set of sources.
