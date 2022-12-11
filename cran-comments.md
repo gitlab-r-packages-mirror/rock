@@ -1,6 +1,8 @@
 Hey there,
 
-Sorry for the successive uploads! Here's an overview of what each entails.
+Sorry for the successive uploads! Here's an overview of what each entails. It's just super-weird, an example that only takes < 1 second for me, takes >15 seconds on the server for some reason...
+
+0.6.5: Disabled one command in an example, takes too long to test.
 
 0.6.4: Shortened time for one example even further.
 
