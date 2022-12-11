@@ -22,9 +22,11 @@ their input (\code{x}) into a single element by various means.
 \details{
 \code{compress_with_sum} computes the sum of the elements, doing its best to
 convert all input values to numeric values.
-\code{compress_with_or} simply applies \code{\link[=any]{any()}} to \code{x} with \code{na.rm=TRUE}.
+\code{compress_with_or} returns \code{0} if all elements are \code{FALSE}, \code{0}, \code{NA} or
+empty character values (\code{""}), and \code{1} otherwise.
 }
 \examples{
 rock::compress_with_sum(c(1, '1', 0));
 rock::compress_with_or(c(1, '1', 0));
+rock::compress_with_or(c(0, '', 0, FALSE));
 }
