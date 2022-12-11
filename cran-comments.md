@@ -1,5 +1,9 @@
 Hey there,
 
+Sorry for the successive uploads! Here's an overview of what each entails.
+
+0.6.4: Shortened time for one example even further.
+
 0.6.3: Edited examples to run faster by selecting a sub-set of sources.
 
 0.6.2: Caved and removed {textreader} from suggests, instead porting functions to {rock}. Also added rock::get_utterances_and_codes_from_source().
