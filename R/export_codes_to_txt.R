@@ -45,14 +45,16 @@
 #'   );
 #'
 #' ### Show results of exporting the codes
-#' export_codes_to_txt(parsedExamples);
+#' rock::export_codes_to_txt(parsedExamples);
 #'
 #' ### Only show select a narrow set of codes
-#' export_codes_to_txt(parsedExamples,
-#'                     leavesOnly=TRUE,
-#'                     includePath=FALSE,
-#'                     onlyChildrenOf = "parentCode2",
-#'                     regex="5|6");
+#' rock::export_codes_to_txt(
+#'   parsedExamples,
+#'   leavesOnly=TRUE,
+#'   includePath=FALSE,
+#'   onlyChildrenOf = "inductFather",
+#'   regex="3|5"
+#' );
 #'
 #' @export
 export_codes_to_txt<- function(input,

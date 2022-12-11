@@ -1,5 +1,7 @@
 Hey there,
 
+0.6.3: Edited examples to run faster by selecting a sub-set of sources.
+
 0.6.2: Caved and removed {textreader} from suggests, instead porting functions to {rock}. Also added rock::get_utterances_and_codes_from_source().
 
 0.6.1: Implemented a check on an example for an optional (non-CRAN) package.
