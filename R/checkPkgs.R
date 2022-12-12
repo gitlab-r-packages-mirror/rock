@@ -45,11 +45,9 @@ checkPkgs <- function(...,
   } else {
     x <- names(vrsn);
   }
-  pkgNames <- utils::installed.packages()[, 'Package'];
-  res <- stats::setNames(rep(FALSE, length(x)),
-                         x);
+
   for (i in seq_along(x)) {
-    if (x[i] %in% pkgNames) {
+    if (length(find.package(x[i]) > 0))
       if (utils::compareVersion(as.character(utils::packageVersion(x[i])), vrsn[i]) < 0) {
         res[x[i]] <- TRUE;
       }
