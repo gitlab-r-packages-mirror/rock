@@ -49,6 +49,11 @@
 #' @rdname parsing_sources
 #' @aliases parsing_sources parse_source parse_sources print.rock_parsedSource
 #'
+#' @return For `rock::parse_source()`, an object of class `rock_parsedSource`;
+#' for `rock::parse_sources()`, an object of class `rock_parsedSources`. These
+#' objects contain the original source(s) as well as the final data frame with
+#' utterances and codes, as well as the code structures.
+#'
 #' @examples ### Get path to example source
 #' examplePath <-
 #'   system.file("extdata", package="rock");
