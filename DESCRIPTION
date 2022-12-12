@@ -5,7 +5,7 @@ Authors@R:
     c(person(given = "Gjalt-Jorn Ygram",
              family = "Peters",
              role = c("aut", "cre"),
-             email = "gjalt-jorn@behaviorchange.eu",
+             email = "rock@opens.science",
              comment = c(ORCID = "0000-0002-0336-9589")),
       person(given = "Szilvia",
              family = "Zorgo",

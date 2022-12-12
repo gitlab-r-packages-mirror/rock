@@ -46,8 +46,10 @@ checkPkgs <- function(...,
     x <- names(vrsn);
   }
 
+  res <- c();
+
   for (i in seq_along(x)) {
-    if (length(find.package(x[i]) > 0))
+    if (length(find.package(x[i]) > 0)) {
       if (utils::compareVersion(as.character(utils::packageVersion(x[i])), vrsn[i]) < 0) {
         res[x[i]] <- TRUE;
       }
