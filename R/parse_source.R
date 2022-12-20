@@ -86,6 +86,15 @@
 #' ### the name 'codes':
 #' parsedExamples$inductiveCodeTrees$codes;
 #'
+#' ### Show a souce coded with the Qualitative Network Approach
+#' qnaExample <-
+#'   rock::parse_source(
+#'     file.path(
+#'       examplePath,
+#'       "network-example-1.rock"
+#'     )
+#'   );
+#'
 #' @export
 parse_source <- function(text,
                          file,
