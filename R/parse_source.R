@@ -607,25 +607,52 @@ parse_source <- function(text,
         silent = silent
       );
 
-      unspecifiedClassInstanceIdentifierDf_raw <-
-        rbind_df_list(
-          lapply(
-            namedClassIdMatches,
-            function(x) {
-              if ((length(x) == 0) || (all(tolower(names(x)) == "uid"))) {
-                return(
-                  stats::setNames(
-                    data.frame(t(rep(NA, length(unspecifiedClasses)))),
-                    unspecifiedClasses
-                  )
-                );
-              } else {
-                cols <- names(x)[names(x) %in% unspecifiedClasses];
-                return(as.data.frame(as.list(x))[, cols, drop=FALSE]);
-              }
+      unspecifiedClassInstanceIdentifierList_raw <-
+        lapply(
+          namedClassIdMatches,
+          function(x) {
+            if ((length(x) == 0) || (all(tolower(names(x)) == "uid"))) {
+              return(
+                stats::setNames(
+                  data.frame(t(rep(NA, length(unspecifiedClasses)))),
+                  unspecifiedClasses
+                )
+              );
+            } else {
+              cols <- names(x)[names(x) %in% unspecifiedClasses];
+              return(as.data.frame(as.list(x))[, cols, drop=FALSE]);
             }
-          )
+          }
         );
+
+      unspecifiedClassInstanceIdentifierDf_raw <-
+        tryCatch(
+          rbind_df_list(
+            unspecifiedClassInstanceIdentifierList_raw
+          )
+        , error = function(e) {
+
+          ### Sometimes there's a C stack error that apparently has to
+          ### do with recursion. If there are many lines, rbind_df_list()
+          ### calls itself lots of times, so then in this case we can
+          ### simplify matters since we know the columns we'll need
+          ### (those are stored in unspecifiedClasses).
+
+          res <-
+            lapply(
+              unspecifiedClassInstanceIdentifierList_raw,
+              function(x) {
+                colsToAdd <-
+                  unspecifiedClasses[!(unspecifiedClasses %in% names(x))];
+                x[, colsToAdd] <- NA;
+                return(x[, unspecifiedClasses]);
+              }
+            );
+
+          return(do.call(rbind, res));
+
+        }
+      );
 
       unspecifiedClassInstanceIdentifierDf <-
         lapply(
