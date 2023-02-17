@@ -11,8 +11,8 @@
 #' @param mergeToCode A single character vector with the merged code.
 #' @param filter Optionally, a filter to apply to specify a subset of the
 #' source(s) to process (see [get_source_filter()]).
-#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param output If specified, the recoded source(s) will be written here.
+#' @param decisionLabel A description of the (recoding) decision that was taken.
 #' @param justification The justification for this action.
 #' @param justificationFile If specified, the justification is appended to
 #' this file. If not, it is saved to the `justifier::workspace()`. This can

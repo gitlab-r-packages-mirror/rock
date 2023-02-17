@@ -26,6 +26,9 @@ LICENSE\.md$
 ### iROCK
 iROCK/
 
+### Deploying to gg1.one
+deploy.sh
+
 ### Images
 img/
 

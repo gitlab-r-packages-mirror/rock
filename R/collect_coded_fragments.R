@@ -18,7 +18,9 @@
 #' concatenated using "`|`" as a separator, to create a regular expression
 #' matching all codes).
 #' @param context How many utterances before and after the target
-#' utterances to include in the fragments.
+#' utterances to include in the fragments. If two values, the first is the
+#' number of utterances before, and the second, the number of utterances
+#' after the target utterances.
 #' @param includeDescendents Whether to also collect the fragments coded with
 #' descendent codes (i.e. child codes, 'grand child codes', etc; in other
 #' words, whether to collect the fragments recursively).
@@ -121,6 +123,14 @@ collect_coded_fragments <- function(x,
   fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
+
+  if (is.null(context) || any(is.na(context)) || (length(context) == 0)) {
+    context <- 0;
+  } else if (length(context) == 1) {
+    context = c(context, context);
+  } else if (length(context) > 2) {
+    context <- context[1:2];
+  }
 
   if (!("rock_parsedSource" %in% class(x)) &&
       !("rock_parsedSources" %in% class(x))) {
@@ -267,8 +277,8 @@ collect_coded_fragments <- function(x,
             which(selectedUtterances & (dat[, i] == 1)),
             function(center) {
 
-              indices <- seq(center - context,
-                             center + context);
+              indices <- seq(center - context[1],
+                             center + context[2]);
 
               ### Store indices corresponding source of this utterance
               if (singleSource) {
@@ -280,7 +290,7 @@ collect_coded_fragments <- function(x,
 
               ### If this source is shorter than the number of lines requested,
               ### simply send the complete source
-              if ((max(sourceIndices) - min(sourceIndices)) <= (1 + 2*context)) {
+              if ((max(sourceIndices) - min(sourceIndices)) <= (1 + sum(context))) {
                 indices <- sourceIndices;
               } else {
                 ### Shift forwards or backwards to make sure early or late
@@ -349,7 +359,7 @@ collect_coded_fragments <- function(x,
         heading <-
           paste0("<h", headingLevel, ">",
                  "Collected coded fragments with ",
-                 context, " lines of context",
+                 sum(context), " lines of context",
                  "</h", headingLevel, ">",
                  "\n\n");
       } else {
@@ -357,7 +367,7 @@ collect_coded_fragments <- function(x,
           paste0("<h", headingLevel, ">",
                  "Collected coded fragments for codes ",
                  vecTxtQ(usedCodes), " with ",
-                 context, " lines of context",
+                 sum(context), " lines of context",
                  "</h", headingLevel, ">",
                  "\n\n");
       }

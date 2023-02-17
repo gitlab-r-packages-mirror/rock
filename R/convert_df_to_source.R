@@ -30,13 +30,14 @@
 #' as a character vectors.
 #' @param cols_to_ciids The names of the columns to convert to class instance
 #' identifiers (e.g. case identifiers), as a named character vector, with
-#' the values being the column names in the data frame, and
+#' the values being the column names in the data frame, and the names being the
+#' class instance identifiers (e.g. `"sourceId"`, `"fieldId"`, `"caseId"`, etc).
 #' @param cols_to_codes The names of the columns to convert to codes (i.e.
-#' codes appended to every utterance), as a character vectors.
+#' codes appended to every utterance), as a character vector.
 #' @param cols_to_attributes The names of the columns to convert to attributes,
 #' as a named character vector, where each name is the name of the class
 #' instance identifier to attach the attribute to. If only one column is passed
-#' in `cols_to_ciids`, names can be omitted and a regular unnames character
+#' in `cols_to_ciids`, names can be omitted and a regular unnamed character
 #' vector can be passed.
 #' @param oneFile Whether to store everything in one source, or create one
 #' source for each row of the data (if this is set to `FALSE`, make sure that
@@ -63,9 +64,7 @@
 #' the element's name the identifier.
 #' @param ciid_separator The separator for the class instance identifier - by
 #' default, either an equals sign (`=`) or a colon (`:`) are supported, but
-#' an equals sign is less ambiguous, as a colon is also used for different
-#' types of codes (e.g. codes for cognitive interviews start with `ci:`, and
-#' unique construct identifiers (UCIDs) from `psyverse` start with `dct:`.
+#' an equals sign is less ambiguous.
 #' @param attributesFile Optionally, a file to write the attributes to if you
 #' don't want them to be written to the source file(s).
 #' @param preventOverwriting Whether to prevent overwriting of output files.
