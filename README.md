@@ -20,7 +20,7 @@ CRAN](https://cranlogs.r-pkg.org/badges/grand-total/rock?color=brightgreen)](htt
 ## Reproducible Open Coding Kit
 
 The pkgdown website for this project is located at
-<https://rockopens.science>. If there is a development version of the
+<https://rock.opens.science>. If there is a development version of the
 documentation, that is available at <https://r-packages.gitlab.io/rock>.
 
 <!--------------------------------------------->

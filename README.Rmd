@@ -36,7 +36,7 @@ dependency_url <-
 pkgdown_url_dev <-
   paste0("https://r-packages.gitlab.io/", packagename);
 pkgdown_url_prod <-
-  paste0("https://", packagename, "opens.science");
+  paste0("https://", packagename, ".opens.science");
 
 cran_url <-
   paste0("https://cran.r-project.org/package=", packagename);
