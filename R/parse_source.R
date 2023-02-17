@@ -295,6 +295,12 @@ parse_source <- function(text,
       silent = silent
     );
 
+    res$aestheticsTheme <-
+      aesthetics_to_graph_theme(res$aestheticConfig);
+
+    res$aestheticRegexes <-
+      aesthetics_to_regexIndexed_list(res$aestheticConfig);
+
     msg(
       "Done parsing YAML fragments.\n",
       silent = silent

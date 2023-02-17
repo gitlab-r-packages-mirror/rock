@@ -1,5 +1,7 @@
 aesthetics_to_graph_theme <- function(aestheticConfig) {
 
+  aestheticConfig <- unname(aestheticConfig);
+
   themeVectors <-
     unlist(
       lapply(
@@ -10,7 +12,7 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
           if ("graph" %in% names(currentAesthetics)) {
             graphAttributeNames <-
               names(currentAesthetics$graph);
-            res <-
+            graphAttributes <-
               mapply(
                 c,
                 graphAttributeNames,
@@ -19,7 +21,7 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
                 SIMPLIFY = FALSE
               );
           } else {
-            res <- c();
+            graphAttributes <- c();
           }
 
           ### Process node attributes, if any
@@ -49,11 +51,11 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
                   SIMPLIFY = FALSE
                 );
 
-              res <-
-                c(res,
-                  nodeAttributes);
-
+            } else {
+              nodeAttributes <- c();
             }
+          } else {
+            nodeAttributes <- c();
           }
 
           ### Process edge attributes, if any
@@ -83,17 +85,18 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
                   SIMPLIFY = FALSE
                 );
 
-              res <-
-                c(res,
-                  edgeAttributes);
-
+            } else {
+              edgeAttributes <- c();
             }
+          } else {
+            edgeAttributes <- c();
           }
 
-
           return(
-            unname(
-              res
+            list(
+              graphAttributes = graphAttributes,
+              nodeAttributes = nodeAttributes,
+              edgeAttributes = edgeAttributes
             )
           );
         }
@@ -101,9 +104,72 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
       recursive = FALSE
     );
 
+  res <- list();
+
+  for (attType in c('graph',
+                    'node',
+                    'edge')) {
+
+    currentType <- paste0(attType, "Attributes");
+
+    attributeNames <-
+      unname(
+        unlist(
+          lapply(
+            unlist(
+              themeVectors[names(themeVectors) == currentType],
+              recursive = FALSE
+            ),
+            `[`,
+            1
+          )
+        )
+      );
+
+    attributeValues <-
+      unlist(
+        lapply(
+          unlist(
+            themeVectors[names(themeVectors) == currentType],
+            recursive = FALSE
+          ),
+          `[`,
+          2
+        )
+      );
+
+    names(attributeValues) <- attributeNames;
+
+    uniqueAttributeNames <- unique(attributeNames);
+
+    for (i in uniqueAttributeNames) {
+
+      attValues <- attributeValues[attributeNames == i];
+
+      res[[currentType]][[i]] <-
+        unname(
+          c(i, attValues[1], attType)
+        );
+
+      if (length(unique(attValues)) > 1) {
+
+        warning(
+          "For ", attType, "s, attribute ", i,
+          " had multiple values specified: ",
+          vecTxtQ(attValues), "; taking the first one."
+        );
+
+      }
+    }
+
+  }
+
   return(
     unname(
-      themeVectors
+      unlist(
+        res,
+        recursive = FALSE
+      )
     )
   );
 

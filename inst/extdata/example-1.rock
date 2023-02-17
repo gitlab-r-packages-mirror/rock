@@ -121,6 +121,9 @@ ROCK_aesthetics:
     -
       type: grandchildCode2
       fillcolor: Seashell
+    -
+      type: grandchildCode3
+      fillcolor: Blue
   edges:
     -
       type: default
