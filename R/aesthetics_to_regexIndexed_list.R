@@ -91,6 +91,65 @@ aesthetics_to_regexIndexed_list <- function(aestheticConfig) {
       recursive = FALSE
     );
 
+  res <-
+    lapply(
+      unique(names(customAesthetic)),
+      function(name) {
+        res <-
+          do.call(
+            c,
+            customAesthetic[names(customAesthetic) == name]
+          );
+        if (!is.null(res)) {
+          names(res) <- gsub(paste0(name, "."), "", names(res));
+        }
+        regexes <- unique(names(res));
+        if (any(duplicated(names(res)))) {
+          for (currentRegex in regexes) {
+
+            attributeDf <-
+              do.call(
+                rbind,
+                lapply(
+                  res[names(res) == currentRegex],
+                  function(x) {
+                    return(
+                      data.frame(
+                        attName = names(x),
+                        attValue = x
+                      )
+                    )
+                  }
+                )
+              );
+
+
+
+            if (any(duplicated(attributeDf$attName))) {
+              warning("For ", gsub("Attributes", "", name), "s of types ",
+                      "matching regular expression '", currentRegex, "', ",
+                      "duplicate attributes were found");
+            } else {
+
+            }
+
+            regexIndices <- which(names(res) == currentRegex);
+
+
+
+
+          }
+
+          ### Check the attributes that are set; if the same attribute
+          ### occurs multiple times, check the values;
+          ### if the values aren't the same, select one of them and
+          ### throw a warning
+        }
+        return(res);
+      }
+    );
+  names(res) <- unique(names(customAesthetic));
+
   return(
     customAesthetic
   );

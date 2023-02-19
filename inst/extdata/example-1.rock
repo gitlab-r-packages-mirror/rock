@@ -136,4 +136,8 @@ ROCK_network:
   graph:
     fontname: Arial
     fontcolor: Black
+  nodes:
+    -
+      type: grandchildCode2
+      fillcolor: Green
 ---
