@@ -1488,8 +1488,12 @@ parse_source <- function(text,
     ### Changed on 2022-09-13 because rows holding only a code were
     ### also deleted (but shouldn't be)
 
-    cleanSourceDf <-
-      cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+    ### Commented out on 2023-04-12 as it assumes there is only one section
+    ### break and it's called "sectionBreak". Didn't need replacement because
+    ### the previous command actually already deletes all lines matching one
+    ### or more section breaks.
+    # cleanSourceDf <-
+    #   cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
     cleanSourceDf <-
       cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
     cleanSourceDf <-
