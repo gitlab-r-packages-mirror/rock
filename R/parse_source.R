@@ -1285,6 +1285,11 @@ parse_source <- function(text,
               )
             );
 
+          res$networkCodes[[networkCodeRegex]]$dot <-
+            DiagrammeR::generate_dot(
+              res$networkCodes[[networkCodeRegex]]$graph
+            );
+
         }
 
       } else {
