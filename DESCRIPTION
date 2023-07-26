@@ -1,6 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.6.7
+Version: 0.7.1
+Date: 2023-02-14
 Authors@R: 
     c(person(given = "Gjalt-Jorn Ygram",
              family = "Peters",
@@ -20,14 +21,14 @@ Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
   implements Epistemic Network Analysis ('ENA'), means to process notes
   from Cognitive Interviews ('CIs'), and means to work with decentralized
   construct taxonomies ('DCTs'). The 'ROCK' and this 'rock' package are described
-  in the ROCK book <https:rockbook.org>.
+  in the ROCK book <https://rockbook.org>.
 BugReports: https://gitlab.com/r-packages/rock/-/issues
 URL: https://rock.opens.science
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.0.0)
 Imports: data.tree (>= 0.7.8),
          dplyr (>= 0.7.8),

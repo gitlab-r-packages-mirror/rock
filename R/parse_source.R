@@ -86,6 +86,15 @@
 #' ### the name 'codes':
 #' parsedExamples$inductiveCodeTrees$codes;
 #'
+#' ### Show a souce coded with the Qualitative Network Approach
+#' qnaExample <-
+#'   rock::parse_source(
+#'     file.path(
+#'       examplePath,
+#'       "network-example-1.rock"
+#'     )
+#'   );
+#'
 #' @export
 parse_source <- function(text,
                          file,
@@ -285,6 +294,12 @@ parse_source <- function(text,
       " aesthetic specifications.\n",
       silent = silent
     );
+
+    res$aestheticsTheme <-
+      aesthetics_to_graph_theme(res$aestheticConfig);
+
+    res$aestheticRegexes <-
+      aesthetics_to_regexIndexed_list(res$aestheticConfig);
 
     msg(
       "Done parsing YAML fragments.\n",
@@ -598,25 +613,52 @@ parse_source <- function(text,
         silent = silent
       );
 
-      unspecifiedClassInstanceIdentifierDf_raw <-
-        rbind_df_list(
-          lapply(
-            namedClassIdMatches,
-            function(x) {
-              if ((length(x) == 0) || (all(tolower(names(x)) == "uid"))) {
-                return(
-                  stats::setNames(
-                    data.frame(t(rep(NA, length(unspecifiedClasses)))),
-                    unspecifiedClasses
-                  )
-                );
-              } else {
-                cols <- names(x)[names(x) %in% unspecifiedClasses];
-                return(as.data.frame(as.list(x))[, cols, drop=FALSE]);
-              }
+      unspecifiedClassInstanceIdentifierList_raw <-
+        lapply(
+          namedClassIdMatches,
+          function(x) {
+            if ((length(x) == 0) || (all(tolower(names(x)) == "uid"))) {
+              return(
+                stats::setNames(
+                  data.frame(t(rep(NA, length(unspecifiedClasses)))),
+                  unspecifiedClasses
+                )
+              );
+            } else {
+              cols <- names(x)[names(x) %in% unspecifiedClasses];
+              return(as.data.frame(as.list(x))[, cols, drop=FALSE]);
             }
-          )
+          }
         );
+
+      unspecifiedClassInstanceIdentifierDf_raw <-
+        tryCatch(
+          rbind_df_list(
+            unspecifiedClassInstanceIdentifierList_raw
+          )
+        , error = function(e) {
+
+          ### Sometimes there's a C stack error that apparently has to
+          ### do with recursion. If there are many lines, rbind_df_list()
+          ### calls itself lots of times, so then in this case we can
+          ### simplify matters since we know the columns we'll need
+          ### (those are stored in unspecifiedClasses).
+
+          res <-
+            lapply(
+              unspecifiedClassInstanceIdentifierList_raw,
+              function(x) {
+                colsToAdd <-
+                  unspecifiedClasses[!(unspecifiedClasses %in% names(x))];
+                x[, colsToAdd] <- NA;
+                return(x[, unspecifiedClasses]);
+              }
+            );
+
+          return(do.call(rbind, res));
+
+        }
+      );
 
       unspecifiedClassInstanceIdentifierDf <-
         lapply(
@@ -1243,6 +1285,11 @@ parse_source <- function(text,
               )
             );
 
+          res$networkCodes[[networkCodeRegex]]$dot <-
+            DiagrammeR::generate_dot(
+              res$networkCodes[[networkCodeRegex]]$graph
+            );
+
         }
 
       } else {
@@ -1446,8 +1493,12 @@ parse_source <- function(text,
     ### Changed on 2022-09-13 because rows holding only a code were
     ### also deleted (but shouldn't be)
 
-    cleanSourceDf <-
-      cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+    ### Commented out on 2023-04-12 as it assumes there is only one section
+    ### break and it's called "sectionBreak". Didn't need replacement because
+    ### the previous command actually already deletes all lines matching one
+    ### or more section breaks.
+    # cleanSourceDf <-
+    #   cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
     cleanSourceDf <-
       cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
     cleanSourceDf <-
