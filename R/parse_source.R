@@ -40,6 +40,9 @@
 #' you should probably call `parse_sources` instead of `parse_source`).
 #' @param mergeInductiveTrees Merge multiple inductive code trees into one; this
 #' functionality is currently not yet implemented.
+#' @param removeSectionBreakRows,removeIdentifierRows,removeEmptyRows Whether to
+#' remove from the QDT, respectively: rows containing section breaks; rows
+#' containing only (class instance) identifiers; and empty rows.
 #' @param filesWithYAML Any additional files to process to look for YAML fragments.
 #' @param silent Whether to provide (`FALSE`) or suppress (`TRUE`) more detailed progress updates.
 #' @param x The object to print.
@@ -103,9 +106,12 @@ parse_source <- function(text,
                          checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                          postponeDeductiveTreeBuilding = FALSE,
                          filesWithYAML = NULL,
-                         rlWarn = rock::opts$get(rlWarn),
-                         encoding=rock::opts$get(encoding),
-                         silent=rock::opts$get(silent)) {
+                         removeSectionBreakRows = rock::opts$get('removeSectionBreakRows'),
+                         removeIdentifierRows = rock::opts$get('removeIdentifierRows'),
+                         removeEmptyRows = rock::opts$get('removeEmptyRows'),
+                         rlWarn = rock::opts$get('rlWarn'),
+                         encoding=rock::opts$get('encoding'),
+                         silent=rock::opts$get('silent')) {
 
   codeRegexes <- rock::opts$get('codeRegexes');
   idRegexes <- rock::opts$get('idRegexes');
@@ -1482,12 +1488,18 @@ parse_source <- function(text,
     ### Changed on 2022-09-13 because rows holding only a code were
     ### also deleted (but shouldn't be)
 
-    cleanSourceDf <-
-      cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
-    cleanSourceDf <-
-      cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
-    cleanSourceDf <-
-      cleanSourceDf[nchar(cleanSourceDf$utterances_raw)>0, ];
+    if (removeSectionBreakRows) {
+      cleanSourceDf <-
+        cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+    }
+    if (removeIdentifierRows) {
+      cleanSourceDf <-
+        cleanSourceDf[nchar(cleanSourceDf$utterances_without_identifiers)>0, ];
+    }
+    if (removeEmptyRows) {
+      cleanSourceDf <-
+        cleanSourceDf[nchar(cleanSourceDf$utterances_raw)>0, ];
+    }
 
     ### Original, before 2022-09-13
     # cleanSourceDf <-
