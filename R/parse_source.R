@@ -301,6 +301,12 @@ parse_source <- function(text,
       silent = silent
     );
 
+    res$aestheticsTheme <-
+      aesthetics_to_graph_theme(res$aestheticConfig);
+
+    res$aestheticRegexes <-
+      aesthetics_to_regexIndexed_list(res$aestheticConfig);
+
     msg(
       "Done parsing YAML fragments.\n",
       silent = silent
@@ -1285,6 +1291,11 @@ parse_source <- function(text,
               )
             );
 
+          res$networkCodes[[networkCodeRegex]]$dot <-
+            DiagrammeR::generate_dot(
+              res$networkCodes[[networkCodeRegex]]$graph
+            );
+
         }
 
       } else {
@@ -1488,6 +1499,18 @@ parse_source <- function(text,
     ### Changed on 2022-09-13 because rows holding only a code were
     ### also deleted (but shouldn't be)
 
+    ### Original, before 2022-09-13
+    # cleanSourceDf <-
+    #   cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
+    ###-------------------------------------------------------------------------
+
+    ### Commented out on 2023-04-12 as it assumes there is only one section
+    ### break and it's called "sectionBreak". Didn't need replacement because
+    ### the previous command actually already deletes all lines matching one
+    ### or more section breaks.
+    # cleanSourceDf <-
+    #   cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
+
     if (removeSectionBreakRows) {
       cleanSourceDf <-
         cleanSourceDf[!cleanSourceDf$sectionBreak_match, ];
@@ -1500,11 +1523,6 @@ parse_source <- function(text,
       cleanSourceDf <-
         cleanSourceDf[nchar(cleanSourceDf$utterances_raw)>0, ];
     }
-
-    ### Original, before 2022-09-13
-    # cleanSourceDf <-
-    #   cleanSourceDf[nchar(cleanSourceDf$utterances_clean)>0, ];
-    ###-------------------------------------------------------------------------
 
   } else {
     cleanSourceDf <- data.frame();
