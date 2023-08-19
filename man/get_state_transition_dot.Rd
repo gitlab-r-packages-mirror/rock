@@ -42,4 +42,6 @@ exampleDotCode <- rock::get_state_transition_dot(
   exampleStateDf
 );
 
+DiagrammeR::grViz(exampleDotCode);
+
 }

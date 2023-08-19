@@ -246,8 +246,6 @@ collect_coded_fragments <- function(x,
 
   ### Select utterances matching the specified attributes
 
-  browser();
-
   if (is.na(nrow(dat)) || (nrow(dat) < 1)) {
     browser();
   }

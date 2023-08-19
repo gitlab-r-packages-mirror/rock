@@ -9,7 +9,8 @@
 #' @param metadata The columns in the merged source dataframe that contain the
 #' metadata. By default, takes all read metadata.
 #'
-#' @return The result of a call to [rENA::ena.plot.network()].
+#' @return The result of a call to `rENA::ena.plot.network()`, if that is
+#' installed.
 #' @export
 #'
 #' @examples ### Get path to example source
