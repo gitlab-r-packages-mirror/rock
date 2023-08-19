@@ -290,14 +290,14 @@ parse_sources <- function(path,
     #                             'sourceDf'));
 
   ### Merge merged source dataframes
-  res$mergedSourceDf <-
+  res$qdt <-
     rbind_df_list(
       lapply(
         names(res$parsedSources),
         function(i) {
-          if (is.data.frame(res$parsedSources[[i]]$mergedSourceDf) &&
-              nrow(res$parsedSources[[i]]$mergedSourceDf) > 0) {
-            tmpRes <- res$parsedSources[[i]]$mergedSourceDf;
+          if (is.data.frame(res$parsedSources[[i]]$qdt) &&
+              nrow(res$parsedSources[[i]]$qdt) > 0) {
+            tmpRes <- res$parsedSources[[i]]$qdt;
             tmpRes$originalSource <- i;
             return(tmpRes);
           } else {
@@ -320,8 +320,8 @@ parse_sources <- function(path,
     #                             'mergedSourceDf'),
     #                  .id="originalSource");
 
-  res$mergedSourceDf[, res$convenience$codingLeaves] <-
-    lapply(res$mergedSourceDf[, res$convenience$codingLeaves],
+  res$qdt[, res$convenience$codingLeaves] <-
+    lapply(res$qdt[, res$convenience$codingLeaves],
            function(x) {
              return(ifelse(is.na(x),
                            0,
@@ -429,20 +429,20 @@ parse_sources <- function(path,
         attributesDf[, j] <-
           as.character(attributesDf[, j]);
       }
-      for (j in intersect(names(res$mergedSourceDf),
+      for (j in intersect(names(res$qdt),
                           names(attributesDf))) {
-        if (all(is.na(res$mergedSourceDf[, j]))) {
-          res$mergedSourceDf[, j] <- NULL;
+        if (all(is.na(res$qdt[, j]))) {
+          res$qdt[, j] <- NULL;
         }
       }
 
-      if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
+      if (!(names(idRegexes)[i] %in% names(res$qdt))) {
         msg <-
           paste0("When processing identifier regex '", idRegexes[i],
                  "', I failed to find its name ('", names(idRegexes[i]),
                  "') in the column names of the merged ",
                  "sources data frame (",
-                 vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
+                 vecTxtQ(names(res$qdt)), "), so not merging ",
                  "the attributes data frame with the source data frame for ",
                  "this class instance identifier..");
         if (checkClassInstanceIds) {
@@ -474,7 +474,7 @@ parse_sources <- function(path,
           );
 
         alreadyPresentAttributeIndices <-
-          attributesToLookFor %in% names(res$mergedSourceDf);
+          attributesToLookFor %in% names(res$qdt);
 
         alreadyPresentAttributes <-
           attributesToLookFor[alreadyPresentAttributeIndices];
@@ -488,7 +488,7 @@ parse_sources <- function(path,
           }
 
           testDf <-
-            dplyr::left_join(res$mergedSourceDf,
+            dplyr::left_join(res$qdt,
                              attributesDf[, setdiff(names(attributesDf), 'type')],
                              by=names(idRegexes)[i]);
 
@@ -496,7 +496,7 @@ parse_sources <- function(path,
 
             if (i %in% names(testDf)) {
 
-              if (res$mergedSourceDf[, i] != testDf[, i]) {
+              if (res$qdt[, i] != testDf[, i]) {
 
                 cat("\nFound a difference in column ", i, ".");
                 stop("Found a difference in column ", i, ".");
@@ -527,13 +527,15 @@ parse_sources <- function(path,
           # attributesDf[, names(idRegexes)[i]] <-
           #   as.character(attributesDf[, names(idRegexes)[i]]);
           ### Join attributes based on identifier
-          res$mergedSourceDf <-
+          res$qdt <-
             dplyr::left_join(
-              res$mergedSourceDf,
+              res$qdt,
               attributesDf[, setdiff(names(attributesDf), 'type')],
               by=names(idRegexes)[i]
             );
 
+          res$mergedSourceDf <-
+            res$qdt;
         }
 
       }

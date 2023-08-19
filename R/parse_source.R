@@ -1518,8 +1518,8 @@ parse_source <- function(text,
   }
 
   ### Store results in the object to return
+  res$qdt <- cleanSourceDf;
   res$sourceDf <- cleanSourceDf;
-  res$mergedSourceDf <- res$sourceDf;
   res$utteranceTree <- utteranceTree;
   res$rawSourceDf <- sourceDf;
   res$codings <- codeProcessing[[codeRegex]]$leafCodes;
@@ -1528,6 +1528,7 @@ parse_source <- function(text,
   res$inductiveCodeTrees <- purrr::map(res$codeProcessing, "inductiveCodeTrees");
   res$inductiveDiagrammeRs <- purrr::map(res$codeProcessing, "inductiveDiagrammeR");
   res$utteranceDiagram <- utteranceDiagram;
+  res$mergedSourceDf <- res$sourceDf;
 
   ### Merge attributes with source dataframe
   if (length(res$attributes) > 0) {
