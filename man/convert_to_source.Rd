@@ -137,15 +137,16 @@ as a character vectors.}
 
 \item{cols_to_ciids}{The names of the columns to convert to class instance
 identifiers (e.g. case identifiers), as a named character vector, with
-the values being the column names in the data frame, and}
+the values being the column names in the data frame, and the names being the
+class instance identifiers (e.g. \code{"sourceId"}, \code{"fieldId"}, \code{"caseId"}, etc).}
 
 \item{cols_to_codes}{The names of the columns to convert to codes (i.e.
-codes appended to every utterance), as a character vectors.}
+codes appended to every utterance), as a character vector.}
 
 \item{cols_to_attributes}{The names of the columns to convert to attributes,
 as a named character vector, where each name is the name of the class
 instance identifier to attach the attribute to. If only one column is passed
-in \code{cols_to_ciids}, names can be omitted and a regular unnames character
+in \code{cols_to_ciids}, names can be omitted and a regular unnamed character
 vector can be passed.}
 
 \item{oneFile}{Whether to store everything in one source, or create one

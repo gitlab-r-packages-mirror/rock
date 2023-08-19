@@ -202,6 +202,10 @@ opts$defaults <-
        # persistentIds = c('caseId', 'coderId', 'stanzaId', 'itemId', 'probeId', 'metaqId'),
        persistentIds = c('caseId'),
 
+       removeSectionBreakRows = FALSE,
+       removeIdentifierRows = FALSE,
+       removeEmptyRows = FALSE,
+
        sourceId = "sourceId",
        streamId = "streamId",
        anchorsCol = "anchors",
