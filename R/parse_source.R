@@ -553,6 +553,8 @@ parse_source <- function(text,
     );
 
     unspecifiedClasses <- NULL;
+    specifiedClasses <- NULL;
+    allClasses <- NULL;
 
   } else {
 
@@ -602,10 +604,6 @@ parse_source <- function(text,
       );
 
     unspecifiedClasses <- setdiff(unspecifiedClasses, c("uid"));
-
-    # if (grepl("example-2.rock", text)) {
-    #   browser();
-    # }
 
     if (length(unspecifiedClasses) == 0) {
 
@@ -703,7 +701,16 @@ parse_source <- function(text,
         colsToCopy <- ciid_columnsToCopy[colsToCopy];
         sourceDf[, colsToCopy] <-
           sourceDf[, names(colsToCopy)];
+        specifiedClasses <-
+          res$convenience$specifiedClasses <- colsToCopy;
+      } else {
+        specifiedClasses <-
+          res$convenience$specifiedClasses <- NULL;
       }
+
+      allClasses <-
+        res$convenience$allClasses <-
+        c(specifiedClasses, unspecifiedClasses);
 
       msg(
         "Processed ", length(unspecifiedClasses),
@@ -1558,7 +1565,7 @@ parse_source <- function(text,
     qdtNew <-
       merge_utterances_and_attributes(
         qdt = res$qdt,
-        classes = unspecifiedClasses,
+        classes = allClasses,
         attributesDf = res$attributesDf,
         checkClassInstanceIds = checkClassInstanceIds,
         silent = silent
@@ -1670,11 +1677,13 @@ parse_source <- function(text,
 
   ### Add codings and leaves only to the convenience list
   res$convenience$codings <- sort(unique(unlist(res$rawCodings)));
-  if (exists('unspecifiedClasses') && !is.null(unspecifiedClasses)) {
-    res$convenience$unspecifiedClasses <- unspecifiedClasses;
-  } else {
-    res$convenience$unspecifiedClasses <- NULL;
-  }
+
+  # if (exists('unspecifiedClasses') && !is.null(unspecifiedClasses)) {
+  #   res$convenience$unspecifiedClasses <- unspecifiedClasses;
+  # } else {
+  #   res$convenience$unspecifiedClasses <- NULL;
+  # }
+
   res$codings <- res$convenience$codings;
   res$convenience$codingLeaves <-
     sort(unique(unlist(get_leaf_codes(res$convenience$codings,

@@ -426,13 +426,28 @@ parse_sources <- function(path,
       )
     );
 
+  specifiedClasses <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(currentParsedSource) {
+            return(currentParsedSource$convenience$specifiedClasses);
+          }
+        )
+      )
+    );
+
+  allClasses <-
+    c(specifiedClasses, unspecifiedClasses);
+
   ### Merge attributes with source dataframe
   if (length(res$attributes) > 0) {
 
     qdtNew <-
       merge_utterances_and_attributes(
         qdt = res$qdt,
-        classes = unspecifiedClasses,
+        classes = allClasses,
         attributesDf = res$attributesDf,
         checkClassInstanceIds = checkClassInstanceIds,
         silent = silent

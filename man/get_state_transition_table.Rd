@@ -31,7 +31,7 @@ exampleFile <-
 parsedExample <- rock::parse_source(exampleFile);
 
 ### Show the state transition probabilities
-rock::get_state_transitions(
+rock::get_state_transition_table(
   parsedExample
 );
 

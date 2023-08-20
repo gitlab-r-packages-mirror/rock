@@ -14,6 +14,8 @@ qna_to_tlm(
 \item{x}{The parsed source object (as produced by \code{\link[=parse_source]{parse_source()}}),
 or an object holding multiple parsed sources (as produced
 by \code{\link[=parse_sources]{parse_sources()}}).}
+
+\item{topicmapId, topicmapTitle}{The topic map's identifier and title.}
 }
 \value{
 If \code{x} is a single parsed source: a character vector holding the

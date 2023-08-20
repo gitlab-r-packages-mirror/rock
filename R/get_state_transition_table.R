@@ -18,7 +18,7 @@
 #' parsedExample <- rock::parse_source(exampleFile);
 #'
 #' ### Show the state transition probabilities
-#' rock::get_state_transitions(
+#' rock::get_state_transition_table(
 #'   parsedExample
 #' );
 #'
@@ -29,7 +29,7 @@ get_state_transition_table <- function(x,
   if (!inherits(x, "rock_parsedSource")) {
     stop("As `x`, pass an object of class `rock_parsedSource`, as produced ",
          "by a call to `rock::parse_source()`. You passed an object of class ",
-         vectTxtQ(class(x)), ".");
+         vecTxtQ(class(x)), ".");
   }
 
   colName <- paste0(classIdentifier, "_raw");

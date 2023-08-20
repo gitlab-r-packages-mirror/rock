@@ -62,7 +62,13 @@ sync_streams <- function(x,
                          colNameGlue = rock::opts$get('colNameGlue'),
                          silent = rock::opts$get('silent')) {
 
-  df <- x$mergedSourceDf;
+  df <- x$qdt;
+
+  ### Added 2023-08-20: removing lines with "no_id" for source and stream
+  df <-
+    df[!(df[, sourceId]=="no_id"), ];
+  df <-
+    df[!(df[, streamId]=="no_id"), ];
 
   if (is.null(columns)) {
     columns <- names(df);
@@ -159,6 +165,7 @@ sync_streams <- function(x,
   ### Note: if we ever want to make it possible to have fewer anchors in the
   ### non-primary streams, this bit below has to be updated.
   ###---------------------------------------------------------------------------
+
   lapply(
     anchorOnlyVectors,
     function(anchorVectorForCurrentSource) {

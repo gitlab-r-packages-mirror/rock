@@ -42,7 +42,7 @@ testthat::test_that("example 2 is read correctly", {
                                 silent=TRUE);
 
   testres_fragment <-
-    testres$mergedSourceDf[
+    testres$qdt[
       ,
       c('uids', 'utterances_clean',
         'sectionBreak_paragraph_break_counter', 'caseId',

@@ -12,6 +12,7 @@
 #' used in parallel, each in a list. If `x` contains multiple parseds sources,
 #' a list of such objects (i.e., a list of vectors, or a list of lists of
 #' vectors).
+#' @param topicmapId,topicmapTitle The topic map's identifier and title.
 #'
 #' @examples ### Get path to example source
 #' examplePath <-

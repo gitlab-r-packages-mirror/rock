@@ -71,8 +71,6 @@ aesthetics_to_regexIndexed_list <- function(aestheticConfig) {
               names(edgeAttributesByRegex) <-
                 regexes[areCustomEdgeAttributes];
 
-              browser();
-
             } else {
               edgeAttributesByRegex <- c();
             }

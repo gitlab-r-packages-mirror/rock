@@ -7,7 +7,7 @@ merge_utterances_and_attributes <- function(qdt,
 
   ### Reconsider this -> prohibits errors from being sent.
 
-  if (is.null(classes) || is.na(classes) || (length(classes) == 0)) {
+  if (is.null(classes) || all(is.na(classes)) || (length(classes) == 0)) {
     return(qdt);
   }
 

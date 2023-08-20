@@ -246,10 +246,6 @@ collect_coded_fragments <- function(x,
 
   ### Select utterances matching the specified attributes
 
-  if (is.na(nrow(dat)) || (nrow(dat) < 1)) {
-    browser();
-  }
-
   selectedUtterances <- rep(TRUE, nrow(dat));
   if (!is.null(attributes)) {
     if ((!is.list(attributes)) || (!all(names(attributes) %in% x$convenience$attributesVars))) {
