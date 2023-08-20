@@ -233,11 +233,19 @@ sync_streams <- function(x,
 
         if (anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$endIndex - 1 ==
             anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$startIndex) {
+
+          ### Update 2023-08-20: adjusting to retention of lines in the source that
+          ### only have identifiers, to allow encoding of state transitions to same state
+
+          # anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$indicesToExtract <-
+          #   c();
+
           anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$indicesToExtract <-
-            c();
+            anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$startIndex;
+
         } else {
           anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$indicesToExtract <-
-            (anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$startIndex+1):
+            (anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$startIndex):
             (anchorIndices[[currentSourceName]][[currentStream]][[currentStartAnchor]]$endIndex-1);
         }
 
