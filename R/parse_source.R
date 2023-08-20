@@ -563,6 +563,8 @@ parse_source <- function(text,
       silent = silent
     );
 
+    ### Get matches with the class instance identifier pattern
+
     classIdMatches <-
       lapply(
         classIdMatches,
@@ -573,6 +575,8 @@ parse_source <- function(text,
           ));
         }
       );
+
+    ### Convert the object for each line into a vector
 
     namedClassIdMatches <-
       lapply(
@@ -586,6 +590,8 @@ parse_source <- function(text,
           );
         }
       );
+
+    ### Get a list of all classes we have
 
     unspecifiedClasses <-
       unique(
@@ -608,16 +614,19 @@ parse_source <- function(text,
     if (length(unspecifiedClasses) == 0) {
 
       msg(
-        "No unspecified class instance identifiers found.\n",
+        "No generic class instance identifiers found.\n",
         silent = silent
       );
 
     } else {
 
       msg(
-        "Found class instance identifiers: commencing to process.\n",
+        "Found class instance identifiers (for classes with identifiers ",
+        vecTxtQ(unspecifiedClasses), "): commencing to process.\n",
         silent = silent
       );
+
+      ### Convert all the vectors into single-row data frames
 
       unspecifiedClassInstanceIdentifierList_raw <-
         lapply(
@@ -636,6 +645,8 @@ parse_source <- function(text,
             }
           }
         );
+
+      ### rbind() all these single rows into one data frame
 
       unspecifiedClassInstanceIdentifierDf_raw <-
         tryCatch(
@@ -691,7 +702,7 @@ parse_source <- function(text,
       }
 
       sourceDf[, unspecifiedClasses] <-
-        unspecifiedClassInstanceIdentifierDf
+        unspecifiedClassInstanceIdentifierDf;
       sourceDf[, paste0(unspecifiedClasses, "_raw")] <-
         unspecifiedClassInstanceIdentifierDf_raw;
 

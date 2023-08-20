@@ -431,6 +431,8 @@ sync_streams <- function(x,
   ### Merge dataframes for each source
   ###---------------------------------------------------------------------------
 
+  browser();
+
   syncedStreamDfs <-
     lapply(
       names(dfBySourceAndStream),

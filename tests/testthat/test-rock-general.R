@@ -20,11 +20,17 @@ testthat::test_that("reading a source with no ROCK stuff works properly", {
 
 testthat::test_that("an inductive code tree is read correctly", {
 
+  ### devtools::load_all();
+
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
-  testres <- parse_source(file.path(examplePath,
-                                    "longer-test.rock"),
-                          silent=TRUE);
+  testres <- parse_source(
+    file.path(
+      examplePath, "longer-test.rock"
+      #examplePath, "streams", "Source2_StreamA.rock"
+    ),
+    silent=TRUE
+  );
 
   testthat::expect_equal(testres$inductiveCodeTrees$codes$inductFather$inducChild3$label,
                          "inducChild3");
