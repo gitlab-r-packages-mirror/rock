@@ -445,6 +445,19 @@ sync_streams <- function(x,
     lapply(
       names(dfBySourceAndStream),
       function(sourceDfName) {
+
+        msg("Creating synchronized stream data frames. Currently processing ",
+            "the source with identifier '",
+            sourceDfName, "'. Proceeding to bind together the data frames ",
+            "from each stream. The primary stream has ",
+            nrow(dfBySourceAndStream[[sourceDfName]][[primaryStream]]),
+            " rows; the other streams' data frames have ",
+            vecTxt(unlist(lapply(mergedStreamDfs[[sourceDfName]], nrow))),
+            " rows, respectively (this should be the same number now).\n",
+            silent = silent);
+
+        browser();
+
         return(
           do.call(
             cbind,
@@ -470,7 +483,7 @@ sync_streams <- function(x,
   names(syncedStreamDfs) <- names(dfBySourceAndStream);
 
   ###---------------------------------------------------------------------------
-  ### Merge the synced stream data framesinto one new 'mergedSourceDf'
+  ### Merge the synced stream data frames into one new 'mergedSourceDf'
   ###---------------------------------------------------------------------------
 
   mergedSourceDf <-
