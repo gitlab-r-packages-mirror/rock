@@ -33,7 +33,8 @@ testthat::test_that("reading anchors works", {
     testres,
     primaryStream = "streamA",
     columns = c("Code1", "Code2", "Code3"),
-    prependStreamIdToColName = TRUE
+    prependStreamIdToColName = TRUE,
+    silent = FALSE
   );
 
   # devtools::load_all(); syncedres <- rock::sync_streams(
