@@ -129,17 +129,31 @@ sync_streams <- function(x,
           lapply(
             currentDfBySource,
             function(currentDfBySourceAndStream) {
+
+              currentSourceId <-
+                unique(currentDfBySourceAndStream[, sourceId]);
+              currentStreamId <-
+                unique(currentDfBySourceAndStream[, streamId]);
+
               res <- currentDfBySourceAndStream[, anchorsCol];
+
               if (is.na(res[1]) || nchar(res[1]) == 0) {
                 msg(
-                  "Auto-inserting a start anchor.\n",
+                  "Auto-inserting a start anchor at position 1 in ",
+                  "anchor column '", anchorsCol, "' in source with identifier '",
+                  currentSourceId, "' and stream with identifier '",
+                  currentStreamId, "'.\n",
                   silent = silent
                 );
                 res[1] <- "ROCK_AUTO_INSERTED_START_ANCHOR";
               }
               if (is.na(res[length(res)]) || nchar(res[length(res)]) == 0) {
                 msg(
-                  "Auto-inserting an end anchor.\n",
+                  "Auto-inserting an end anchor at position ",
+                  length(res), " in ",
+                  "anchor column '", anchorsCol, "' in source with identifier '",
+                  currentSourceId, "' and stream with identifier '",
+                  currentStreamId, "'.\n",
                   silent = silent
                 );
                 res[length(res)] <- "ROCK_AUTO_INSERTED_END_ANCHOR";
@@ -161,11 +175,12 @@ sync_streams <- function(x,
             function(allAnchors) {
               ### Get and check anchors
               anchorsOnly <-
-                sort(
-                  allAnchors[!is.na(allAnchors) & nchar(allAnchors) > 0]
-                );
+                #sort(
+                  allAnchors[!is.na(allAnchors) & nchar(allAnchors) > 0];
+                #);
               if (any(duplicated(anchorsOnly))) {
-                stop("Found a duplicate anchor!");
+                stop("Found a duplicate anchor! Specifically: ",
+                     vecTxtQ(anchorsOnly[which(duplicated(anchorsOnly))]), ".");
               }
               return(anchorsOnly);
             }
@@ -278,7 +293,7 @@ sync_streams <- function(x,
   ### Create vectors with new indices for each non-primary stream
   ###---------------------------------------------------------------------------
 
-  msg("Starting stream synchronization. Primary stream: ", primaryStream, ".\n",
+  msg("\nStarting stream synchronization. Primary stream: ", primaryStream, ".\n",
       silent = silent);
 
   streamMapping <-
@@ -288,7 +303,7 @@ sync_streams <- function(x,
         currentSource <- anchorIndices[[currentSourceName]];
         otherStreams <- setdiff(names(currentSource), primaryStream);
 
-        msg(" - Processing source with identifier: ", currentSourceName, ".\n",
+        msg("\n - Processing source with identifier: ", currentSourceName, ".\n",
             silent = silent);
 
         res <-
@@ -434,7 +449,7 @@ sync_streams <- function(x,
   ### Merge these dataframes into one dataframe per stream per source
   ###---------------------------------------------------------------------------
 
-  msg("- Proceeding to merge the data frames for each anchor pair into a data frame for each stream.\n",
+  msg("\n\n- Proceeding to merge the data frames for each anchor pair into a data frame for each stream.\n",
       silent = silent);
 
   mergedStreamDfs <-
@@ -481,6 +496,14 @@ sync_streams <- function(x,
               msg("    Resulting data frame has ", nrow(res), " rows.\n",
                   silent = silent);
 
+              res <- rbind(
+                res,
+                rep(0, ncol(res))
+              );
+
+              msg("    Added one more row with just 0s to represent the row with the last anchor.\n",
+                  silent = silent);
+
               return(res);
             }
           );
@@ -493,7 +516,7 @@ sync_streams <- function(x,
   ### Merge dataframes for each source
   ###---------------------------------------------------------------------------
 
-  msg("- Proceeding to bind together the stream data frames.\n",
+  msg("\n- Proceeding to bind together the stream data frames.\n",
       silent = silent);
 
   syncedStreamDfs <-
@@ -562,7 +585,8 @@ sync_streams <- function(x,
       streamMapping = streamMapping,
       mergedStreamDfs = mergedStreamDfs,
       syncedStreamDfs = syncedStreamDfs,
-      mergedSourceDf = mergedSourceDf
+      mergedSourceDf = mergedSourceDf,
+      qdt = mergedSourceDf
     );
 
   return(

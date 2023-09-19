@@ -213,7 +213,9 @@ testthat::test_that("the example in export_codes_to_txt.Rd runs properly", {
                         regex="5|6");
 
     TRUE;
+
   });
+
 });
 
 ###-----------------------------------------------------------------------------
@@ -266,7 +268,7 @@ testthat::test_that("merging two sources works properly", {
     filenameRegex = "merging-test-1",
     primarySourcesRegex = "merging-test-1-primary",
     preventOverwriting = FALSE,
-    silent = FALSE
+    silent = TRUE
   );
 
   testResult <-

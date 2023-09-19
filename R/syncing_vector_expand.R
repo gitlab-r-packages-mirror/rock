@@ -25,7 +25,7 @@ syncing_vector_expand <- function(x,
 
   oldLength <- length(x);
   oldIndices <- seq_along(x);
-  newIndices <- floor((oldIndices) / (oldLength / newLength));
+  newIndices <- floor((oldIndices - .01) / (oldLength / newLength));
 
   ### Correct for cases where the lowest newIndex is 2 or higher by shifting
   ### the new indices 'down'
