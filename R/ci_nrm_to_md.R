@@ -39,8 +39,9 @@ ci_nrm_to_md <- function(nrm_spec,
 
   if (is.null(nrm_spec$metadata) ||
       (!("instrument_name" %in% names(nrm_spec$metadata)))) {
-    res <- heading("Narrative Response Model",
-                   " {.tabset .tabset-pills}",
+    res <- heading("Narrative Response Model (",
+                   language,
+                   ") {.tabset .tabset-pills}",
                    headingLevel = headingLevel,
                    cat = FALSE);
   } else {
@@ -62,18 +63,21 @@ ci_nrm_to_md <- function(nrm_spec,
       nrm_spec[[nrm_wsNames$responsemodel_prototype]];
 
     prototype_id <-
-      prototype[,
+      prototype[
+        ,
         nrm_colNames$responsemodel_prototype['responsemodel_id']
       ];
 
     prototype_sequence<-
-      prototype[,
-                nrm_colNames$responsemodel_prototype['responsemodel_sequence']
+      prototype[
+        ,
+        nrm_colNames$responsemodel_prototype['responsemodel_sequence']
       ];
 
     prototype_label <-
-      prototype[,
-                nrm_colNames$responsemodel_prototype['responsemodel_label']
+      prototype[
+        ,
+        nrm_colNames$responsemodel_prototype['responsemodel_label']
       ];
 
     prototype_comments <-
@@ -82,7 +86,7 @@ ci_nrm_to_md <- function(nrm_spec,
       ];
 
     names(prototype_label) <- prototype_id;
-    names(prototype_comments) <- prototype_comments;
+    names(prototype_comments) <- prototype_id;
 
     res <- c(res,
              heading(
@@ -90,6 +94,9 @@ ci_nrm_to_md <- function(nrm_spec,
                headingLevel = headingLevel + 1,
                cat = FALSE
              ));
+
+    browser();
+
     res <- c(
       res,
       paste0(
