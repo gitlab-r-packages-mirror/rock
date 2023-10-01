@@ -95,8 +95,6 @@ ci_nrm_to_md <- function(nrm_spec,
                cat = FALSE
              ));
 
-    browser();
-
     res <- c(
       res,
       paste0(
