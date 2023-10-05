@@ -268,11 +268,13 @@ convert_df_to_source <- function(data,
           sourceList[[i]] <-
             c(sourceList[[i]],
               "",
-              codeDelimiters[1],
-              utterance_classId,
-              ciid_separator,
-              j,
-              codeDelimiters[2],
+              paste0(
+                codeDelimiters[1],
+                utterance_classId,
+                ciid_separator,
+                j,
+                codeDelimiters[2]
+              ),
               "",
               paste0(data[i, j])
             );
