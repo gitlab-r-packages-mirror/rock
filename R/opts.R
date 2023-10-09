@@ -332,14 +332,14 @@ opts$defaults <-
 
        ### For CI template replacements
        ci_template_replacementDelimiters = c("<<", ">>"),
-       rpe_mq_idName = "mqid",
+       rpe_mq_idName = "prbid",
        nrm_probe_idName = "prbid",
 
        uiid_idName = "uiid",
        rpe_iterId = "iterId",
        rpe_batchId = "batchId",
        rpe_popId = "popId",
-       rpe_mq_idName = "mqid",
+       rpe_mq_idName = "prbid",
        coderId_name = "coderId",
        caseId_name = "caseId",
 

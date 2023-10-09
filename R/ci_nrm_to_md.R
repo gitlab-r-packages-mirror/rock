@@ -237,7 +237,11 @@ ci_nrm_to_md <- function(nrm_spec,
               "    - ",
               probes[[
                 nrm_colNames$probes['probe_label']
+              ]], " `",
+              probes[[
+                nrm_colNames$probes['probe_id']
               ]],
+              "`",
               collapse="\n"
             )
           );
