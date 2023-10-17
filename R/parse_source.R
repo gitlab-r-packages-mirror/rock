@@ -719,6 +719,9 @@ parse_source <- function(text,
           res$convenience$specifiedClasses <- NULL;
       }
 
+      res$convenience$unspecifiedClasses <-
+        unspecifiedClasses;
+
       allClasses <-
         res$convenience$allClasses <-
         c(specifiedClasses, unspecifiedClasses);
