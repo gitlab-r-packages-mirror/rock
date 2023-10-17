@@ -108,7 +108,7 @@ clean_source_from_teams <- function(input,
     time <- NULL;
   }
 
-  if(confFlag == FALSE) {
+  if(flagConfidence == FALSE) {
     confFlagMark <- NULL;
   }
 

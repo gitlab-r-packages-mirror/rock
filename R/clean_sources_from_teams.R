@@ -5,7 +5,7 @@
 #' @param outputPrefix,outputSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk.
 #' @export
-clean_teams_s <- function(input,
+cleaning_sources_from_teams <- function(input,
                           output = NULL,
                           outputPrefix = "",
                           outputSuffix = "_cleaned",
