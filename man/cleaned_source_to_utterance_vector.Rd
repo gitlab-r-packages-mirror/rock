@@ -22,9 +22,6 @@ character conform the ROCK standard).}
 \item{perl}{If the \code{utteranceMarker} is a regular expression, whether it is
 a perl regular expression.}
 }
-\value{
-
-}
 \description{
 Utterance vectors are split by the utterance marker. Note that if \code{x} has
 more than one element, the separate elements will remain separate.

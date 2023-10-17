@@ -84,28 +84,39 @@ clean_source_from_teams <- function(input,
   # get language
   language <- regmatches(res, regexpr("(?<=language:).*", res, perl = TRUE));
 
-  res.long <- c(paste(res), collapse = " ");
-  chunks <- strsplit(res.long, "NOTE Confidence: ");
+  # split into lines
+  # res.long <- c(paste(res), collapse = " ");
+  # chunks <- strsplit(res.long, "NOTE Confidence: ");  ### from older version of teams
+
 
   conf <- regmatches(res, regexpr("(?<=NOTE Confidence: )0.[0-9]*", res, perl = TRUE));
   conf <- as.numeric(conf);
   time <- regmatches(res, regexpr(".*(?= -->)", res, perl = TRUE));
+  time2 <- regmatches(res, regexpr("(?<= -->).*", res, perl = TRUE));
 
-  small <- res[1:50];
-  small <- res;
-  small <- paste(small, collapse = " ");
-  small <- gsub("\"", "", small);
-  chunks <- strsplit(small, "NOTE ")[[1]];
+  # small <- res[1:50];
+  # small <- res;
+  # small <- paste(small, collapse = " ");
+  # small <- gsub("\"", "", small);
+  # chunks <- strsplit(small, "NOTE ")[[1]];
+
+  chunks <- paste(c(res), collapse='\t')
+  chunks <- strsplit(chunks, "\t\\d*:", perl = TRUE)
+  chunks <- chunks[[1]]
 
   chunkText <- regmatches(chunks,
                           regexpr("-> .*", chunks, perl = TRUE));
-  chunkText <- gsub("-> \\d*:\\d*:\\d*.\\d{1,3}", "", chunkText);
+  chunkText <- gsub("-> \\d*:\\d*:\\d*.\\d{1,3}\t", "", chunkText);
+
+
+
 
   confFlagMark <- rep("", length(conf));
   confFlagMark[which(conf < confFlag)] <- "***";
 
   if(keepTime == FALSE) {
     time <- NULL;
+    time2 <- NULL;
   }
 
   if(flagConfidence == FALSE) {

@@ -3,7 +3,7 @@
 %   R/clean_sources_from_teams.R
 \name{clean_source_from_teams}
 \alias{clean_source_from_teams}
-\alias{clean_teams_s}
+\alias{cleaning_sources_from_teams}
 \title{Cleaning caption files (sources) from Microsoft Teams auto-captioning}
 \usage{
 clean_source_from_teams(
@@ -19,7 +19,7 @@ clean_source_from_teams(
   silent = rock::opts$get(silent)
 )
 
-clean_teams_s(
+cleaning_sources_from_teams(
   input,
   output = NULL,
   outputPrefix = "",
