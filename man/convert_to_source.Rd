@@ -76,7 +76,7 @@ convert_csv2_to_source(
 
 convert_xlsx_to_source(
   file,
-  importArgs = list(overwrite = !preventOverwriting),
+  importArgs = list(),
   omit_empty_rows = TRUE,
   output = NULL,
   cols_to_utterances = NULL,
