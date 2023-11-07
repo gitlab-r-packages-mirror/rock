@@ -72,7 +72,7 @@ merge_utterances_and_attributes <- function(qdt,
 
     } else {
       if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes was provided.\n"));
+        print(glue::glue("\nFor identifier class {className}, no attributes were provided.\n"));
       }
     }
   }

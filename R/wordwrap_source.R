@@ -144,7 +144,7 @@ wordwrap_source <- function(input,
 
   res <- fullSource[non_YAML_indices];
 
-  res <- split_long_lines(
+  res <- rock::split_long_lines(
     x = res,
     length = length,
     splitString = utteranceMarker
