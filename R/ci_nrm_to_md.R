@@ -158,13 +158,13 @@ ci_nrm_to_md <- function(nrm_spec,
              ));
 
     res <- c(res,
-             paste0("\n**",
+             paste0("\n<div style='border:1px solid black'>",
                     ci_get_item(
                       nrm_spec = nrm_spec,
                       language = language,
                       item_id = currentItemId
                     ),
-                    "**\n"));
+                    "</div>\n"));
 
     if (includeProbes) {
 
