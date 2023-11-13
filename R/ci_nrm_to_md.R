@@ -172,7 +172,8 @@ ci_nrm_to_md <- function(nrm_spec,
 
     tmpItem <- gsub(
       "\n",
-      "\n> "
+      "\n> ",
+      tmpItem
     );
 
     res <- c(res,
