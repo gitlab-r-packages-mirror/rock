@@ -257,7 +257,11 @@ ci_nrm_to_md <- function(nrm_spec,
               probes[[
                 nrm_colNames$probes['probe_id']
               ]],
-              "`)",
+              "`; *",
+              probes[[
+                nrm_colNames$probes['probe_ambiguity']
+              ]],
+              "*)",
               collapse="\n"
             )
           );
