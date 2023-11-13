@@ -157,14 +157,28 @@ ci_nrm_to_md <- function(nrm_spec,
                cat = FALSE
              ));
 
+    tmpItem <-
+      ci_get_item(
+        nrm_spec = nrm_spec,
+        language = language,
+        item_id = currentItemId
+      );
+
+    tmpItem <-
+      paste(
+        tmpItem,
+        collapse = "\n"
+      );
+
+    tmpItem <- gsub(
+      "\n",
+      "\n> "
+    );
+
     res <- c(res,
-             paste0("\n<div style='border:1px solid black'>",
-                    ci_get_item(
-                      nrm_spec = nrm_spec,
-                      language = language,
-                      item_id = currentItemId
-                    ),
-                    "</div>\n"));
+             paste0("\n",
+                    tmpItem,
+                    "\n"));
 
     if (includeProbes) {
 
