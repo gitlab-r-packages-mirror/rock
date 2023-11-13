@@ -166,6 +166,7 @@ ci_nrm_to_md <- function(nrm_spec,
 
     tmpItem <-
       paste(
+        "> ",
         tmpItem,
         collapse = "\n"
       );
