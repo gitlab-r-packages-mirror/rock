@@ -1,5 +1,7 @@
 aesthetics_to_graph_theme <- function(aestheticConfig) {
 
+  warnForMultipleAesthetics <- rock::opts$get('warnForMultipleAesthetics');
+
   aestheticConfig <- unname(aestheticConfig);
 
   themeVectors <-
@@ -153,11 +155,15 @@ aesthetics_to_graph_theme <- function(aestheticConfig) {
 
       if (length(unique(attValues)) > 1) {
 
-        warning(
-          "For ", attType, "s, attribute ", i,
-          " had multiple values specified: ",
-          vecTxtQ(attValues), "; taking the first one."
-        );
+        if (warnForMultipleAesthetics) {
+
+          warning(
+            "For ", attType, "s, attribute ", i,
+            " had multiple values specified: ",
+            vecTxtQ(attValues), "; taking the first one."
+          );
+
+        }
 
       }
     }

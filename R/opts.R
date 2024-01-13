@@ -452,6 +452,8 @@ opts$defaults <-
            c("fillcolor", "#FFFFFF", "node")
          ),
 
+       warnForMultipleAesthetics = TRUE,
+
        ### Used throughout for debugging
        debug = FALSE,
 

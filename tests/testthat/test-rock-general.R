@@ -114,9 +114,13 @@ testthat::test_that("Multiple sources are read correctly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
+  rock::opts$set(warnForMultipleAesthetics = FALSE);
+
   testres <- parse_sources(examplePath,
                            extension="rock",
                            silent=TRUE);
+
+  rock::opts$set(warnForMultipleAesthetics = TRUE);
 
   testthat::expect_equal(testres$deductiveCodeTrees$children$parentCode1$someParent$childCode2$label,
                          "childCode2");
@@ -160,6 +164,8 @@ testthat::test_that("Sources are exported to html properly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
 
+  rock::opts$set(warnForMultipleAesthetics = FALSE);
+
   testres <- parse_sources(examplePath,
                            extension="rock",
                            silent=TRUE);
@@ -177,6 +183,8 @@ testthat::test_that("Sources are exported to html properly", {
 testthat::test_that("Coded fragments are collected properly", {
 
   examplePath <- file.path(system.file(package="rock"), 'extdata');
+
+  rock::opts$set(warnForMultipleAesthetics = FALSE);
 
   testres_parsed <- parse_sources(examplePath,
                                   extension="rock",
@@ -198,6 +206,8 @@ testthat::test_that("the example in export_codes_to_txt.Rd runs properly", {
     ### Get path to example source
     examplePath <-
       system.file("extdata", package="rock");
+
+    rock::opts$set(warnForMultipleAesthetics = FALSE);
 
     ### Parse all example sources in that directory
     parsedExamples <- rock::parse_sources(examplePath);

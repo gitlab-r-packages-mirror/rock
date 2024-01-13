@@ -1,7 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.7.1
-Date: 2023-02-14
+Version: 0.8.0
+Date: 2024-01-14
 Authors@R: 
     c(person(given = "Gjalt-Jorn Ygram",
              family = "Peters",

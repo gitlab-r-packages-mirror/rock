@@ -64,10 +64,12 @@ merge_utterances_and_attributes <- function(qdt,
         # attributesDf[, names(idRegexes)[i]] <-
         #   as.character(attributesDf[, names(idRegexes)[i]]);
         ### Join attributes based on identifier
+
         qdt <-
           dplyr::left_join(qdt,
                            attributesDf[, setdiff(names(attributesDf), 'type')],
-                           by=className);
+                           by=className,
+                           relationship = "many-to-many");
       }
 
     } else {

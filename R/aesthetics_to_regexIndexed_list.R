@@ -1,5 +1,7 @@
 aesthetics_to_regexIndexed_list <- function(aestheticConfig) {
 
+  warnForMultipleAesthetics <- rock::opts$get('warnForMultipleAesthetics');
+
   aestheticConfig <- unname(aestheticConfig);
 
   customAesthetic <-
@@ -124,9 +126,18 @@ aesthetics_to_regexIndexed_list <- function(aestheticConfig) {
 
 
             if (any(duplicated(attributeDf$attName))) {
-              warning("For ", gsub("Attributes", "", name), "s of types ",
-                      "matching regular expression '", currentRegex, "', ",
-                      "duplicate attributes were found");
+
+              if (warnForMultipleAesthetics) {
+
+                warning("For ", gsub("Attributes", "", name), "s of types ",
+                        "matching regular expression '", currentRegex, "', ",
+                        "duplicate attributes were found");
+
+              }
+
+              attributeDf <-
+                attributeDf[duplicated(attributeDf$attName), ];
+
             } else {
 
             }

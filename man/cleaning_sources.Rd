@@ -13,17 +13,17 @@
 clean_source(
   input,
   output = NULL,
-  replacementsPre = rock::opts$get(replacementsPre),
-  replacementsPost = rock::opts$get(replacementsPost),
+  replacementsPre = rock::opts$get("replacementsPre"),
+  replacementsPost = rock::opts$get("replacementsPost"),
   extraReplacementsPre = NULL,
   extraReplacementsPost = NULL,
   removeNewlines = FALSE,
   removeTrailingNewlines = TRUE,
   rlWarn = rock::opts$get(rlWarn),
-  utteranceSplits = rock::opts$get(utteranceSplits),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding),
-  silent = rock::opts$get(silent)
+  utteranceSplits = rock::opts$get("utteranceSplits"),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 
 clean_sources(
@@ -141,6 +141,12 @@ in the source(s), and the second element contains the replacement (these are pas
 as \code{perl} regular expressions; see \code{\link{regex}} for more information).
 Instead of regular expressions, simple words or phrases can also be entered of
 course (since those are valid regular expressions).}
+
+\item{length}{At how many characters to word wrap.}
+
+\item{utteranceMarker}{The character(s) between utterances (i.e. marking where
+one utterance ends and the next one starts). By default, this is a line
+break, and only change this if you know what you are doing.}
 }
 \value{
 A character vector for \code{clean_source}, or a list of character vectors,

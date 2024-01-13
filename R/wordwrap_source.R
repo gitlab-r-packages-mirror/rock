@@ -43,6 +43,7 @@
 #' @param utteranceSplits This is a vector of regular expressions that specify where to
 #' insert breaks between utterances in the source(s). Such breakes are specified using
 #' `utteranceMarker`.
+#' @param length At how many characters to word wrap.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param removeNewlines Whether to remove all newline characters from the source before
 #' starting to clean them. **Be careful**: if the source contains YAML fragments, these
@@ -50,6 +51,9 @@
 #' @param removeTrailingNewlines Whether to remove trailing newline characters
 #' (i.e. at the end of a character value in a character vector);
 #' @param encoding The encoding of the source(s).
+#' @param utteranceMarker The character(s) between utterances (i.e. marking where
+#' one utterance ends and the next one starts). By default, this is a line
+#' break, and only change this if you know what you are doing.
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
 #'
 #' @return A character vector for `clean_source`, or a list of character vectors,
