@@ -54,7 +54,6 @@ Suggests:
     openxlsx (>= 4.2),
     pdftools,
     preregr (>= 0.1.9),
-    rENA (>= 0.1.6),
     readxl,
     rmarkdown,
     rvest,
