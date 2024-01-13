@@ -47,7 +47,7 @@ parsed_sources_to_ena_network <- function(x,
                                           codes = x$convenience$codingLeaves,
                                           metadata = x$convenience$attributesVars) {
 
-  stop("This function is temporarily disables as rENA was archived from CRAN.");
+  message("This function is temporarily disables as rENA was archived from CRAN.");
 
   # if (requireNamespace("rENA", quietly = TRUE)) {
   #
