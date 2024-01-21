@@ -286,7 +286,7 @@ testthat::test_that("merging two sources works properly", {
 
   testthat::expect_equal(
     testResult[9],
-    "---<<some_section_break>>--- ---<<([a-zA-Z][a-zA-Z0-9_]*)>>---"
+    "---<<some_section_break>>--- ---<<\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*>>---"
   );
 
   ### readLines(file.path(examplePath, "merging-test-1-primary.rock"))[15]
