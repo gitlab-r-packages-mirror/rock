@@ -1,9 +1,9 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.8.0
-Date: 2024-01-20
+Version: 0.8.1
+Date: 2024-01-21
 Authors@R: 
-    c(person(given = "Gjalt-Jorn Ygram",
+    c(person(given = "Gjalt-Jorn",
              family = "Peters",
              role = c("aut", "cre"),
              email = "rock@opens.science",
@@ -12,7 +12,7 @@ Authors@R:
              family = "Zorgo",
              role = c("aut", "ctb"),
              comment = c(ORCID = "0000-0002-6916-2097")))
-Maintainer: Gjalt-Jorn Ygram Peters <rock@opens.science>
+Maintainer: Gjalt-Jorn Peters <rock@opens.science>
 Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
   was developed to facilitate reproducible and open coding, specifically
   geared towards qualitative research methods. Although it is a
