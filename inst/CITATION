@@ -26,4 +26,5 @@ bibentry(bibtype = "Book",
              person(given = "Gjalt-Jorn Ygram",
                     family = "Peters")),
          year = format(Sys.time(), "%Y"),
-         publisher = "Self-published, CC-BY-NC-SA")
+         publisher = "Self-published, CC-BY-NC-SA",
+         doi = "10.5281/zenodo.3571019")
