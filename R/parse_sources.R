@@ -75,6 +75,7 @@ parse_sources <- function(path,
            removeSectionBreakRows = removeSectionBreakRows,
            removeIdentifierRows = removeIdentifierRows,
            removeEmptyRows = removeEmptyRows,
+           mergeAttributes = FALSE,
            silent=silent);
 
   if (!silent) {

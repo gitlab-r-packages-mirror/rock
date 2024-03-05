@@ -199,6 +199,32 @@ sync_streams <- function(x,
   lapply(
     anchorOnlyVectors,
     function(anchorVectorForCurrentSource) {
+
+      vectorLengths <-
+        unlist(lapply(anchorVectorForCurrentSource, length));
+      if (length(unique(vectorLengths)) > 1) {
+        stop("The number of anchors in each stream is not ",
+             "identical! I encountered the following numbers of ",
+             "anchors: ",
+             vecTxtQ(paste0(vectorLengths, " (for stream with stream identifier ", names(vectorLengths), ")")),
+             "It is possible that for one of the streams, ",
+             "an anchor was omitted; or, alternatively, that for ",
+             "some of the streams, anchors were automatically added ",
+             "to the beginning or the end of the stream, but not for ",
+             "others (because they already started or ended with an anchor). ",
+             "The last anchor in each stream was: ",
+             vecTxtQ(
+               unlist(
+                 lapply(
+                   anchorVectorForCurrentSource,
+                   function(x) return(x[length(x)])
+                 )
+               )
+             ),
+            "."
+          );
+      }
+
       anchorDf <-
         as.data.frame(
           anchorVectorForCurrentSource
@@ -212,16 +238,44 @@ sync_streams <- function(x,
           ),
           unique
         );
+
       if (!all(unlist(lapply(res, length)) == 1)) {
+
+        rowsWithMismatches <-
+          which(unlist(
+            lapply(apply(anchorDf, 1, unique), function(x) return(length(x) > 1))
+          ));
+
+        streamIds <- names(anchorDf);
+
+        mismatchedAnchors <-
+          apply(anchorDf[rowsWithMismatches, ], 1, as.vector,
+                simplify = FALSE);
+
+        errorMessageBits <-
+          lapply(
+            seq_along(rowsWithMismatches),
+            function(i) {
+              return(
+                paste0("anchor in sequence position ",
+                       rowsWithMismatches[i],
+                       ", which has anchor identifiers ",
+                       vecTxt(
+                         paste0(
+                           mismatchedAnchors[[i]],
+                           " (for stream with identifier ",
+                           streamIds,
+                           ")"
+                         )
+                       )
+                )
+              );
+            }
+          );
+
         stop(
-          "Not all anchors align!\n\n",
-          paste0(
-            utils::capture.output(
-              print(anchorDf)
-            ),
-            collapse="\n"
-          ),
-          "\n\n"
+          "Not all anchors align! Specifically, mismatches occur for ",
+          paste0(errorMessageBits, collapse="; ")
         );
       }
       return(anchorDf);

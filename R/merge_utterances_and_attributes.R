@@ -70,6 +70,7 @@ merge_utterances_and_attributes <- function(qdt,
                            attributesDf[, setdiff(names(attributesDf), 'type')],
                            by=className,
                            relationship = "many-to-many");
+
       }
 
     } else {
