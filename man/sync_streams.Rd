@@ -12,12 +12,13 @@ sync_streams(
   sourceId = rock::opts$get("sourceId"),
   streamId = rock::opts$get("streamId"),
   prependStreamIdToColName = FALSE,
-  appendStreamIdToColName = FALSE,
+  appendStreamIdToColName = TRUE,
   sep = " ",
   fill = TRUE,
   compressFun = NULL,
   compressFunPart = NULL,
   expandFun = NULL,
+  carryOverAnchors = FALSE,
   colNameGlue = rock::opts$get("colNameGlue"),
   silent = rock::opts$get("silent")
 )
@@ -58,6 +59,8 @@ filling the new larger vector with elements (if \code{fill} is \code{TRUE}), the
 vectors are passed to function \code{expandFun}, which must accept a vector (to
 compress) and a single integer (with the desired resulting length of
 the vector).}
+
+\item{carryOverAnchors}{Whether to carry over anchors for each source}
 
 \item{colNameGlue}{When appending or prepending stream identifiers, the
 character(s) to use as "glue" or separator.}

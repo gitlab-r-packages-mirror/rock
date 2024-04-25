@@ -54,6 +54,8 @@
 #' @param template The template to load; either the name of one
 #' of the ROCK templates (currently, only 'default' is available), or
 #' the path and filename of a CSS file.
+#' @param omitEmptyCodes Whether to still show the title for codes that do not
+#' occur or not.
 #' @param codeHeadingFormatting A character value of the
 #' form `%s *(path: %s)*` (the default) or `\n\n### %s\n\n*path:* ``%s``\n\n`.
 #' The first `%s` is replaced by the code identifier; the second `%s` by the
@@ -110,6 +112,7 @@ collect_coded_fragments <- function(x,
                                     headingLevel = 3,
                                     add_html_tags = TRUE,
                                     cleanUtterances = FALSE,
+                                    omitEmptyCodes = TRUE,
                                     output = NULL,
                                     outputViewer = "viewer",
                                     template = "default",
@@ -393,13 +396,36 @@ collect_coded_fragments <- function(x,
     res <- lapply(res,
                   paste0,
                   collapse=fragmentDelimiter);
+
+    if (omitEmptyCodes) {
+      elementsToKeep <-
+        unlist(
+          lapply(
+            res,
+            function(x) {
+              if (is.vector(x) && ((length(x) == 0) || (all(x == "")))) {
+                return(FALSE);
+              } else {
+                return(TRUE);
+              }
+            }
+          )
+        );
+    } else {
+      elementsToKeep <- rep(TRUE, length(res));
+    }
+
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
     res <- paste0(codePrefix,
-                  sprintf(codeHeadingFormatting, usedCodes, usedCodesPaths),
+                  sprintf(
+                    codeHeadingFormatting,
+                    usedCodes[elementsToKeep],
+                    usedCodesPaths[elementsToKeep]
+                  ),
                   fragmentDelimiter,
-                  res,
+                  res[elementsToKeep],
                   fragmentDelimiter);
     ### Collapse into one character value
     res <- paste0(res, collapse="\n");

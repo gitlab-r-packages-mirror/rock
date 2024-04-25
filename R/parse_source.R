@@ -274,7 +274,9 @@ parse_source <- function(text,
     );
 
     ### Store tree, unless we should postpone that
-    if (!postponeDeductiveTreeBuilding) {
+    if ((!postponeDeductiveTreeBuilding) &&
+        (length(res$deductiveCodes) > 0)) {
+      browser();
       ### Build tree
       deductiveCodeTrees <-
         yum::build_tree(res$rawDeductiveCodes);
@@ -684,18 +686,7 @@ parse_source <- function(text,
       unspecifiedClassInstanceIdentifierDf <-
         lapply(
           unspecifiedClassInstanceIdentifierDf_raw,
-          function(x) {
-            x <-
-              ifelse(is.na(x) | (nchar(x) == 0),
-                     "no_id",
-                     x);
-            for (i in 2:length(x)) {
-              if ((x[i] == "no_id")) {
-                x[i] <- x[i-1];
-              }
-            }
-            return(x);
-          }
+          carry_over_values
         );
 
       if ((!(all(unspecifiedClasses %in%
@@ -1709,13 +1700,39 @@ parse_source <- function(text,
     sort(unique(unlist(get_leaf_codes(res$convenience$codings,
                                       inductiveCodingHierarchyMarker=inductiveCodingHierarchyMarker))));
 
+  ### Check for potential errors
+  onlyCodedColumns <-
+    res$sourceDf[, res$convenience$codingLeaves, drop=FALSE];
+  numericCodingColumns <- unlist(lapply(onlyCodedColumns, is.numeric));
+  if (!all(numericCodingColumns)) {
+    nonNumericCols <- names(onlyCodedColumns)[!numericCodingColumns];
+    res$convenience$codingLeaves <-
+      names(onlyCodedColumns)[numericCodingColumns]
+    onlyCodedColumns <- onlyCodedColumns[, numericCodingColumns];
+    warning("Something seems to have gone wrong with coding. When counting ",
+            "code occurrences, I encountered columns that did not contains ",
+            "a 0 or 1 to indicate code occurrence. Specifically, codes ",
+            vecTxtQ(nonNumericCols),
+            " contained non-numeric ",
+            "contents. This can happen, for example, if you accidently ",
+            "use a class identifier (such as 'caseId', 'cid', or 'coderId') ",
+            "without specifying the colon (:) or equals sign (=) and the ",
+            "class instance identifier (so, using '[[caseId]]' or [[cid]]). ",
+            "This defines such a class identifier as a regular code, but ",
+            "when I parse such a source into a Qualitative Data Table (QDT), ",
+            "the corresponding column holds the class instance identifiers ",
+            "instead of the 0s and 1s that represent whether a code occurred ",
+            "for a given data fragment. I'm removing those columns as ",
+            "'coding leaves' for now.");
+  }
+
   res$convenience$codingPaths <-
     codePaths_to_namedVector(res$convenience$codings);
 
   if (length(res$convenience$codings) > 0) {
     ### Count how often each code was used
     res$countedCodings <-
-      colSums(res$sourceDf[, res$convenience$codingLeaves, drop=FALSE]);
+      colSums(onlyCodedColumns);
   } else {
     res$countedCodings <-
       NULL;
@@ -1805,7 +1822,8 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
     sort(unique(unlist(x$convenience$codingLeaves)));
 
   totalCodingMatches <-
-    sum(unlist(x$sourceDf[, appliedCodes]));
+    sum(x$countedCodings);
+    #sum(unlist(x$sourceDf[, appliedCodes]));
 
   if (totalCodingMatches > 0) {
     codingInfo <-
@@ -1898,8 +1916,10 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
       }
     }
   }
-  if (length(x$deductiveCodeTrees) > 0) {
+
+  if (!is.na(x$deductiveCodeTrees) && (length(x$deductiveCodeTrees) > 0)) {
     print(graphics::plot(x$deductiveCodeTrees));
   }
+
   invisible(x);
 }

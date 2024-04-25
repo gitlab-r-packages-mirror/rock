@@ -17,6 +17,7 @@ parse_source(
   checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   postponeDeductiveTreeBuilding = FALSE,
   filesWithYAML = NULL,
+  mergeAttributes = TRUE,
   removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
   removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
   removeEmptyRows = rock::opts$get("removeEmptyRows"),
@@ -77,6 +78,10 @@ this is useful if the full tree information is distributed over multiple files (
 you should probably call \code{parse_sources} instead of \code{parse_source}).}
 
 \item{filesWithYAML}{Any additional files to process to look for YAML fragments.}
+
+\item{mergeAttributes}{Whether to merge the data frame with the attributes
+into the qualitative data table (i.e., the data frame with the data
+fragments and codes).}
 
 \item{removeSectionBreakRows, removeIdentifierRows, removeEmptyRows}{Whether to
 remove from the QDT, respectively: rows containing section breaks; rows

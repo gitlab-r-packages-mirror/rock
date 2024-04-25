@@ -24,7 +24,7 @@
 #'
 #' @export
 get_state_transition_table <- function(x,
-                                       classIdentifier = "state") {
+                                       rawClassIdentifierCol = "state_raw") {
 
   if (!inherits(x, "rock_parsedSource")) {
     stop("As `x`, pass an object of class `rock_parsedSource`, as produced ",
@@ -32,17 +32,15 @@ get_state_transition_table <- function(x,
          vecTxtQ(class(x)), ".");
   }
 
-  colName <- paste0(classIdentifier, "_raw");
-
-  if (!(colName %in% names(x$mergedSourceDf))) {
+  if (!(rawClassIdentifierCol %in% names(x$qdt))) {
     stop("Column doesn't exist!");
   }
 
-  if (length(unique(x$mergedSourceDf[[colName]])) == 1) {
+  if (length(unique(x$qdt[[rawClassIdentifierCol]])) == 1) {
     stop("No state transitions!");
   }
 
-  states <- x$mergedSourceDf[[colName]];
+  states <- x$qdt[[rawClassIdentifierCol]];
 
   states <- states[!is.na(states)];
 

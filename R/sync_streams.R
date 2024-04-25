@@ -10,6 +10,7 @@
 #' @param streamId The column containing the stream identifiers.
 #' @param prependStreamIdToColName,appendStreamIdToColName Whether to append
 #' or prepend the stream identifier before merging the dataframes together.
+#' @param carryOverAnchors Whether to carry over anchors for each source
 #' @param colNameGlue When appending or prepending stream identifiers, the
 #' character(s) to use as "glue" or separator.
 #' @param silent Whether to be silent (`TRUE`) or chatty (`FALSE`).
@@ -53,12 +54,13 @@ sync_streams <- function(x,
                          sourceId = rock::opts$get('sourceId'),
                          streamId = rock::opts$get('streamId'),
                          prependStreamIdToColName = FALSE,
-                         appendStreamIdToColName = FALSE,
+                         appendStreamIdToColName = TRUE,
                          sep = " ",
                          fill = TRUE,
                          compressFun = NULL,
                          compressFunPart = NULL,
                          expandFun = NULL,
+                         carryOverAnchors = FALSE,
                          colNameGlue = rock::opts$get('colNameGlue'),
                          silent = rock::opts$get('silent')) {
 
@@ -508,11 +510,13 @@ sync_streams <- function(x,
 
   mergedStreamDfs <-
     lapply(
-      streamMapping,
-      function(currentSource) {
+      names(streamMapping),
+      function(currentSourceName) {
 
         msg(" - Processing source with identifier: ", currentSourceName, ".\n",
             silent = silent);
+
+        currentSource <- streamMapping[[currentSourceName]];
 
         res <-
           lapply(
@@ -550,12 +554,21 @@ sync_streams <- function(x,
               msg("    Resulting data frame has ", nrow(res), " rows.\n",
                   silent = silent);
 
+              codeIdentifiers <-
+                x$convenience$codingLeaves;
+
               res <- rbind(
                 res,
-                rep(0, ncol(res))
+                ifelse(
+                  names(res) %in% codeIdentifiers,
+                  0,
+                  NA
+                )
               );
 
-              msg("    Added one more row with just 0s to represent the row with the last anchor.\n",
+              msg("    Added one more row with just 0s ",
+                  "(for code identifier columns) and NAs",
+                  " to represent the row with the last anchor.\n",
                   silent = silent);
 
               return(res);
@@ -565,6 +578,7 @@ sync_streams <- function(x,
         return(res);
       }
     );
+  names(mergedStreamDfs) <- names(streamMapping);
 
   ###---------------------------------------------------------------------------
   ### Merge dataframes for each source
@@ -613,6 +627,25 @@ sync_streams <- function(x,
     );
 
   names(syncedStreamDfs) <- names(dfBySourceAndStream);
+
+  ###---------------------------------------------------------------------------
+  ### Potentially carry-over anchors
+  ###---------------------------------------------------------------------------
+
+  if (carryOverAnchors) {
+    syncedStreamDfs <-
+      lapply(
+        syncedStreamDfs,
+        function(syncedStreamDf) {
+          syncedStreamDf[[paste0(anchorsCol, "_persistent")]] <-
+            rock::carry_over_values(
+              syncedStreamDf[[anchorsCol]]
+            );
+          return(syncedStreamDf);
+        }
+      )
+
+  }
 
   ###---------------------------------------------------------------------------
   ### Merge the synced stream data frames into one new 'mergedSourceDf'

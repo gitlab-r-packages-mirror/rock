@@ -34,6 +34,6 @@ tempFile <- tempfile(fileext = ".svg");
 ### Export merged code tree
 export_fullyMergedCodeTrees(
   loadedExample,
-  tempFile,
+  tempFile
 );
 }
