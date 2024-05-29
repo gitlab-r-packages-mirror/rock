@@ -133,21 +133,24 @@ parse_sources <- function(path,
 
   ### 2024-05-29: Stored just before refactoring to allow attributes to exist for multiple
   ### classes
-  # res$convenience$attributes <-
-  #   rbind_df_list(
-  #     lapply(
-  #       res$parsedSources,
-  #       function(x) {
-  #         return(x$attributesDf);
-  #       }
-  #     )
-  #   );
+  ### Also 2024-05-29: enabled again as we discovered that merge_utterances_and_attributes()
+  ### seems to be written for multiple classes with attributes already --- provided we can
+  ### deal with different column names for each attribute specification
+  res$convenience$attributes <-
+    rbind_df_list(
+      lapply(
+        res$parsedSources,
+        function(x) {
+          return(x$attributesDf);
+        }
+      )
+    );
 
   ### 2024-05-29: Parse the attributes in all separate sources, organizing them per
   ### class identifier, and then collapsing them over sources into one attribute dataframe
   ### per class identifier.
 
-  res$convenience$attributes <-
+  res$convenience$attributesPerClass <-
     lapply(
       res$convenience$allClassIds,
       function(currentClassId) {
@@ -245,13 +248,15 @@ parse_sources <- function(path,
   ### 2024-05-29: This no longer makes sense; keeping the code for now for future reference
   res$convenience$attributesVars <- NA;
 
-  # res$convenience$attributesVars <-
-  #   sort(unique(c(unlist(lapply(
-  #     res$parsedSource,
-  #     function(x) {
-  #       return(x$convenience$attributeVars);
-  #     }
-  #   )))));
+  ### 2024-05-29: Given what we just discovered about merge_utterances_and_attributes()
+  ### this is 'reactivated' again
+  res$convenience$attributesVars <-
+    sort(unique(c(unlist(lapply(
+      res$parsedSource,
+      function(x) {
+        return(x$convenience$attributeVars);
+      }
+    )))));
 
     # sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
     #                                        'convenience'),
@@ -415,32 +420,32 @@ parse_sources <- function(path,
   ### 2024-05-29: Replacing this with a new merging activity where we merge
   ### the attributes in from the new res$convenience$attributes object using
   ### the res$convenience$allClassIds
+#
+#   res$qdt <-
+#     res$sourceDf;
+#
+#   for (currentClassId in res$convenience$allClassIds) {
+#     if (currentClassId %in% names(res$qdt)) {
+#
+#     }
+#   }
 
   res$qdt <-
-    res$sourceDf;
-
-  for (currentClassId in res$convenience$allClassIds) {
-    if (currentClassId %in% names(res$qdt)) {
-
-    }
-  }
-
-  # res$qdt <-
-  #   rbind_df_list(
-  #     lapply(
-  #       names(res$parsedSources),
-  #       function(i) {
-  #         if (is.data.frame(res$parsedSources[[i]]$qdt) &&
-  #             nrow(res$parsedSources[[i]]$qdt) > 0) {
-  #           tmpRes <- res$parsedSources[[i]]$qdt;
-  #           tmpRes$originalSource <- i;
-  #           return(tmpRes);
-  #         } else {
-  #           return(NULL);
-  #         }
-  #       }
-  #     )
-  #   );
+    rbind_df_list(
+      lapply(
+        names(res$parsedSources),
+        function(i) {
+          if (is.data.frame(res$parsedSources[[i]]$qdt) &&
+              nrow(res$parsedSources[[i]]$qdt) > 0) {
+            tmpRes <- res$parsedSources[[i]]$qdt;
+            tmpRes$originalSource <- i;
+            return(tmpRes);
+          } else {
+            return(NULL);
+          }
+        }
+      )
+    );
 
     # dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
     #                                    function(x) {
@@ -571,7 +576,7 @@ parse_sources <- function(path,
     c(specifiedClasses, unspecifiedClasses);
 
   ### Merge attributes with source dataframe
-  if (length(res$attributes) > 0) {
+  if (nrow(attributesDf) > 0) {
 
     qdtNew <-
       merge_utterances_and_attributes(

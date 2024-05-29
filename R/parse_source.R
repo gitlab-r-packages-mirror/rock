@@ -343,11 +343,18 @@ parse_source <- function(text,
     ### Simplify YAML attributes and convert into a data frame
     res$attributesDf <-
       tryCatch(
-        do.call(rbind,
-                lapply(res$attributes,
-                       as.data.frame,
-                       stringsAsFactors=FALSE)),
+        ### 2024-05-29: switched from rbind to rbind_df_list, which should
+        ### allow different column names
+        rbind_df_list(
+          lapply(
+            res$attributes,
+            as.data.frame,
+            stringsAsFactors=FALSE
+          )
+        ),
         error = function(e) {
+
+          browser();
 
           colCounts <-
             table(
