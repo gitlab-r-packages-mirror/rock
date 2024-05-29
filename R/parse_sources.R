@@ -118,26 +118,140 @@ parse_sources <- function(path,
   #            })
   #   );
 
-  res$convenience$attributes <-
-    rbind_df_list(
-      lapply(
-        res$parsedSources,
-        function(x) {
-          return(x$attributesDf);
-        }
+  ### 2024-05-29: Get all the class identifiers from all the sources
+  res$convenience$allClassIds <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(x) {
+            return(x$convenience$allClasses);
+          }
+        )
       )
     );
 
-    # dplyr::bind_rows(purrr::map(res$parsedSources,
-    #                             'attributesDf'));
+  ### 2024-05-29: Stored just before refactoring to allow attributes to exist for multiple
+  ### classes
+  # res$convenience$attributes <-
+  #   rbind_df_list(
+  #     lapply(
+  #       res$parsedSources,
+  #       function(x) {
+  #         return(x$attributesDf);
+  #       }
+  #     )
+  #   );
 
-  res$convenience$attributesVars <-
-    sort(unique(c(unlist(lapply(
-      res$parsedSource,
-      function(x) {
-        return(x$convenience$attributeVars);
+  ### 2024-05-29: Parse the attributes in all separate sources, organizing them per
+  ### class identifier, and then collapsing them over sources into one attribute dataframe
+  ### per class identifier.
+
+  res$convenience$attributes <-
+    lapply(
+      res$convenience$allClassIds,
+      function(currentClassId) {
+
+        listOfAttDfsForThisClassForAllSources <-
+          lapply(
+            res$parsedSources,
+            function(currentSource) {
+
+              if (length(currentSource$attributes) > 0) {
+
+                listOfDataframes <-
+                  lapply(
+                    currentSource$attributes,
+                    function(currentAttributeSpec) {
+                      if (currentClassId %in% names(currentAttributeSpec)) {
+                        return(as.data.frame(currentAttributeSpec, stringsAsFactors = FALSE));
+                      } else {
+                        return(NULL);
+                      }
+                    }
+                  );
+
+                if (length(listOfDataframes) > 0) {
+
+                  attributeDfForThisClassInThisSource <-
+                    tryCatch(
+                      do.call(rbind,
+                              listOfDataframes),
+                      error = function(e) {
+
+                        colCounts <-
+                          table(
+                            unlist(
+                              lapply(
+                                listOfDataframes,
+                                colnames
+                              )
+                            )
+                          );
+
+                        stop("I could not parse the attributes into a data frame. At present, ",
+                             "I require that all attributes are specified for all class ",
+                             "instances - you may have omitted one (or more). Sorry! ",
+                             "The following columns appear the following number of ",
+                             "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                             ".");
+                      });
+
+                }
+
+              }
+
+              return(attributeDfForThisClassInThisSource);
+
+            }
+          );
+
+        attributeDfsRbindedOverSources <-
+          tryCatch(
+            do.call(rbind,
+                    listOfAttDfsForThisClassForAllSources),
+            error = function(e) {
+
+              colCounts <-
+                table(
+                  unlist(
+                    lapply(
+                      listOfAttDfsForThisClassForAllSources,
+                      colnames
+                    )
+                  )
+                );
+
+              stop("I could not parse the attributes into a data frame. At present, ",
+                   "I require that all attributes are specified for all class ",
+                   "instances - you may have omitted one (or more). Sorry! ",
+                   "The following columns appear the following number of ",
+                   "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                   ".");
+            });
+
+        return(attributeDfsRbindedOverSources);
+
       }
-    )))));
+    );
+  names(res$convenience$attributes) <- res$convenience$allClassIds;
+
+  ### 2024-05-29: What we just produced is actually the 'new attributeDf' except that it's
+  ### a list of Dfs organized per class identifier
+
+  # dplyr::bind_rows(purrr::map(res$parsedSources,
+  #                             'attributesDf'));
+
+  ### 2024-05-29: This no longer makes sense; keeping the code for now for future reference
+  res$convenience$attributesVars <- NA;
+
+  # res$convenience$attributesVars <-
+  #   sort(unique(c(unlist(lapply(
+  #     res$parsedSource,
+  #     function(x) {
+  #       return(x$convenience$attributeVars);
+  #     }
+  #   )))));
 
     # sort(unique(c(unlist(lapply(purrr::map(res$parsedSource,
     #                                        'convenience'),
@@ -297,22 +411,36 @@ parse_sources <- function(path,
     #                             'sourceDf'));
 
   ### Merge merged source dataframes
+
+  ### 2024-05-29: Replacing this with a new merging activity where we merge
+  ### the attributes in from the new res$convenience$attributes object using
+  ### the res$convenience$allClassIds
+
   res$qdt <-
-    rbind_df_list(
-      lapply(
-        names(res$parsedSources),
-        function(i) {
-          if (is.data.frame(res$parsedSources[[i]]$qdt) &&
-              nrow(res$parsedSources[[i]]$qdt) > 0) {
-            tmpRes <- res$parsedSources[[i]]$qdt;
-            tmpRes$originalSource <- i;
-            return(tmpRes);
-          } else {
-            return(NULL);
-          }
-        }
-      )
-    );
+    res$sourceDf;
+
+  for (currentClassId in res$convenience$allClassIds) {
+    if (currentClassId %in% names(res$qdt)) {
+
+    }
+  }
+
+  # res$qdt <-
+  #   rbind_df_list(
+  #     lapply(
+  #       names(res$parsedSources),
+  #       function(i) {
+  #         if (is.data.frame(res$parsedSources[[i]]$qdt) &&
+  #             nrow(res$parsedSources[[i]]$qdt) > 0) {
+  #           tmpRes <- res$parsedSources[[i]]$qdt;
+  #           tmpRes$originalSource <- i;
+  #           return(tmpRes);
+  #         } else {
+  #           return(NULL);
+  #         }
+  #       }
+  #     )
+  #   );
 
     # dplyr::bind_rows(purrr::map(lapply(res$parsedSources,
     #                                    function(x) {

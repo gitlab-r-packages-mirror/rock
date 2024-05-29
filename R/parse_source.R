@@ -276,7 +276,6 @@ parse_source <- function(text,
     ### Store tree, unless we should postpone that
     if ((!postponeDeductiveTreeBuilding) &&
         (length(res$deductiveCodes) > 0)) {
-      browser();
       ### Build tree
       deductiveCodeTrees <-
         yum::build_tree(res$rawDeductiveCodes);
@@ -336,12 +335,39 @@ parse_source <- function(text,
 
   if ((length(res$attributes) > 0) && (!all(is.na(unlist(res$attributes))))) {
 
+    msg(
+      "Starting to process attributes.\n",
+      silent = silent
+    );
+
     ### Simplify YAML attributes and convert into a data frame
     res$attributesDf <-
-      do.call(rbind,
-              lapply(res$attributes,
-                     as.data.frame,
-                     stringsAsFactors=FALSE));
+      tryCatch(
+        do.call(rbind,
+                lapply(res$attributes,
+                       as.data.frame,
+                       stringsAsFactors=FALSE)),
+        error = function(e) {
+
+          colCounts <-
+            table(
+              unlist(
+                lapply(
+                  lapply(res$attributes,
+                         as.data.frame,
+                         stringsAsFactors=FALSE),
+                  colnames
+                )
+              )
+            );
+
+          stop("I could not parse the attributes into a data frame. At present, ",
+               "I require that all attributes are specified for all class ",
+               "instances - you may have omitted one (or more). Sorry! ",
+               "The following columns appear the following number of ",
+               "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+               ".");
+        });
 
     ### Store attributes variables for convenient use later on
     res$convenience <-
@@ -349,6 +375,11 @@ parse_source <- function(text,
              setdiff(names(res$attributesDf),
                      c(names(idRegexes),
                        names(attributeContainers))));
+
+    msg(
+      "Done processing attributes.\n",
+      silent = silent
+    );
 
   } else {
 
