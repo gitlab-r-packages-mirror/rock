@@ -42,6 +42,14 @@ merge_utterances_and_attributes <- function(qdt,
           all = TRUE
         );
 
+      ### Sort again by original sequence identifier; merge mixes the order
+      resQdt <-
+        resQdt[
+          order(resQdt$originalSource,
+                resQdt$originalSequenceNr,
+                decreasing = FALSE),
+        ];
+
       ### 2024-05-29: Commented out -- BEGINNING
 
       # ### Convert to character to avoid errors and delete

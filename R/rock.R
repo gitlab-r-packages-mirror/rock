@@ -25,6 +25,5 @@
 #' For analysis, [create_cooccurrence_matrix()], [collapse_occurrences()], and
 #'  [collect_coded_fragments()] can be used.
 #'
-#' @docType package
 #' @name rock
-NULL
+"_PACKAGE"

@@ -4,7 +4,11 @@
 \alias{get_state_transition_dot}
 \title{Get the state transition data frame}
 \usage{
-get_state_transition_dot(x)
+get_state_transition_dot(
+  x,
+  labelFun = base::round,
+  labelFunArgs = list(digits = 2)
+)
 }
 \arguments{
 \item{x}{A state transition table as produced by a call
