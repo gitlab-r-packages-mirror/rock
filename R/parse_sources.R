@@ -237,7 +237,12 @@ parse_sources <- function(path,
 
       }
     );
-  names(res$convenience$attributes) <- res$convenience$allClassIds;
+
+  ### Class instance identifiers are sometimes used without attributes; in that
+  ### case, this will be a data frame of 0 cols and 0 rows.
+  if (ncol(res$convenience$attributes) == length(res$convenience$allClassIds)) {
+    names(res$convenience$attributes) <- res$convenience$allClassIds;
+  }
 
   ### 2024-05-29: What we just produced is actually the 'new attributeDf' except that it's
   ### a list of Dfs organized per class identifier
@@ -461,7 +466,7 @@ parse_sources <- function(path,
     #                  .id="originalSource");
 
   res$qdt[, res$convenience$codingLeaves] <-
-    lapply(res$qdt[, res$convenience$codingLeaves],
+    lapply(res$qdt[, res$convenience$codingLeaves, drop=FALSE],
            function(x) {
              return(ifelse(is.na(x),
                            0,

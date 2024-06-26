@@ -366,6 +366,12 @@ opts$defaults <-
        gSheetId_to_exportLink =
          "https://docs.google.com/spreadsheets/d/%s/export?format=xlsx",
 
+       gDocsId_extractionRegex =
+         "^https://docs\\.google\\.com/document/d/([a-zA-Z0-9_-]*)(/.*)?$",
+
+       gDocsId_to_exportLink =
+         "https://docs.google.com/document/d/%s/export?format=txt",
+
        ### When displaying code identifiers, whether to by default show the
        ### full path or just the code identifier itself
        showFullCodePaths = TRUE,

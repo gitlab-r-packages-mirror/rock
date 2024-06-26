@@ -1605,6 +1605,14 @@ parse_source <- function(text,
   if (mergeAttributes) {
     if (length(res$attributes) > 0) {
 
+      ###---------------------------------------------------------------------------
+      ###
+      ### START --- move this to a separate function for parse_source and parse_sources
+      ###
+      ###---------------------------------------------------------------------------
+
+
+
       # ### Merge attributes with source data
       # res$mergedSourceDf <-
       #   merge(res$sourceDf,
@@ -1625,11 +1633,8 @@ parse_source <- function(text,
 
       res$qdt <- qdtNew;
 
-      ###---------------------------------------------------------------------------
-      ###
-      ### START --- move this to a separate function for parse_source and parse_sources
-      ###
-      ###---------------------------------------------------------------------------
+
+
 
       # ### Add attributes to the utterances
       # for (i in seq_along(idRegexes)) {
