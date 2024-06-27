@@ -8,6 +8,11 @@
 #' @param anchorsCol The column containing the anchors.
 #' @param sourceId The column containing the source identifiers.
 #' @param streamId The column containing the stream identifiers.
+#' @param neverFill Columns to never fill regardless of whether fill
+#' is `TRUE`. Set to `NULL` to always respect the setting of `fill`. By default,
+#' the raw versions of the class instance identification columns are never
+#' duplicated (found with regular expression `"_raw$"`), since those are used
+#' for state transition computations.
 #' @param prependStreamIdToColName,appendStreamIdToColName Whether to append
 #' or prepend the stream identifier before merging the dataframes together.
 #' @param carryOverAnchors Whether to carry over anchors for each source
@@ -57,6 +62,8 @@ sync_streams <- function(x,
                          appendStreamIdToColName = TRUE,
                          sep = " ",
                          fill = TRUE,
+                         paddingValue = NA,
+                         neverFill = grep("_raw$", names(x$qdt), value=TRUE),
                          compressFun = NULL,
                          compressFunPart = NULL,
                          expandFun = NULL,
@@ -478,6 +485,7 @@ sync_streams <- function(x,
                       ],
                       newLength = currentSource[[primaryStream]][[anchorPair]]$length,
                       fill = fill,
+                      neverFill = neverFill,
                       expandFun = expandFun,
                       silent = silent
                     );

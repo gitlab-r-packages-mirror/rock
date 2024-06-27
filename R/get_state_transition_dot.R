@@ -74,9 +74,9 @@ get_state_transition_dot <- function(x,
                 row['fromState'],
                 " -> ",
                 row['toState'],
-                " [label='  ",
+                " [label=\"  ",
                 row['label'],
-                "    ', penwidth=",
+                "    \", penwidth=",
                 3 * as.numeric(row['propOfTransitions']),
                 "];"
               )

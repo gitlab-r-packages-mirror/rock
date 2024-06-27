@@ -15,6 +15,8 @@ sync_streams(
   appendStreamIdToColName = TRUE,
   sep = " ",
   fill = TRUE,
+  paddingValue = NA,
+  neverFill = grep("_raw$", names(x$qdt), value = TRUE),
   compressFun = NULL,
   compressFunPart = NULL,
   expandFun = NULL,
@@ -45,6 +47,16 @@ passed to \code{paste} as separator.}
 
 \item{fill}{When expanding streams, whether to duplicate elements to fill
 the resulting vector. Ignored if \code{fillFun} is specified.}
+
+\item{paddingValue}{The value to insert for rows when not filling (by
+default, filling carries over the value from the last preceding row that
+had a value specified).}
+
+\item{neverFill}{Columns to never fill regardless of whether fill
+is \code{TRUE}. Set to \code{NULL} to always respect the setting of \code{fill}. By default,
+the raw versions of the class instance identification columns are never
+duplicated (found with regular expression \code{"_raw$"}), since those are used
+for state transition computations.}
 
 \item{compressFun}{If specified, when compressing streams, instead of pasting
 elements together using separator \code{sep}, the vectors are passed to function
