@@ -53,10 +53,22 @@ get_state_transition_table <- function(x,
       setdiff(colnames(res), rowNames);
     res <- rbind(
       res,
-      rep(0, ncol(res) * length(missingRows))
+      matrix(rep(0, ncol(res) * length(missingRows)),
+             nrow = length(missingRows))
     );
     rownames(res) <- c(rowNames, missingRows);
     res <- res[colnames(res), ];
+  } else if (nrow(res) > ncol(res)) {
+    colNames <- colnames(res);
+    missingCols <-
+      setdiff(rownames(res), colNames);
+    res <- cbind(
+      res,
+      matrix(rep(0, nrow(res) * length(missingCols)),
+             ncol = length(missingCols))
+    );
+    colnames(res) <- c(colNames, missingCols);
+    res <- res[, rownames(res)];
   }
 
   class(res) <- c("rock_stateTransitionTable", class(res));
