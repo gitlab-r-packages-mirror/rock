@@ -47,6 +47,18 @@ get_state_transition_table <- function(x,
   ### https://stackoverflow.com/questions/53641705/how-can-i-count-the-number-of-transitions-from-one-state-to-another
   res <- table(states[-length(states)], states[-1]);
 
+  if (ncol(res) > nrow(res)) {
+    rowNames <- rownames(res);
+    missingRows <-
+      setdiff(colnames(res), rowNames);
+    res <- rbind(
+      res,
+      rep(0, ncol(res) * length(missingRows))
+    );
+    rownames(res) <- c(rowNames, missingRows);
+    res <- res[colnames(res), ];
+  }
+
   class(res) <- c("rock_stateTransitionTable", class(res));
 
   return(res);
