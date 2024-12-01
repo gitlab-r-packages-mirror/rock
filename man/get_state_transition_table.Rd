@@ -4,7 +4,7 @@
 \alias{get_state_transition_table}
 \title{Get the state transition table}
 \usage{
-get_state_transition_table(x, classIdentifier = "state")
+get_state_transition_table(x, rawClassIdentifierCol = "state_raw")
 }
 \arguments{
 \item{x}{A parsed source document as provided by \code{\link[=parse_source]{parse_source()}}.}

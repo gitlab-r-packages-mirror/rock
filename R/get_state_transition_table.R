@@ -24,7 +24,7 @@
 #'
 #' @export
 get_state_transition_table <- function(x,
-                                       classIdentifier = "state") {
+                                       rawClassIdentifierCol = "state_raw") {
 
   if (!inherits(x, "rock_parsedSource")) {
     stop("As `x`, pass an object of class `rock_parsedSource`, as produced ",
@@ -32,22 +32,44 @@ get_state_transition_table <- function(x,
          vecTxtQ(class(x)), ".");
   }
 
-  colName <- paste0(classIdentifier, "_raw");
-
-  if (!(colName %in% names(x$mergedSourceDf))) {
+  if (!(rawClassIdentifierCol %in% names(x$qdt))) {
     stop("Column doesn't exist!");
   }
 
-  if (length(unique(x$mergedSourceDf[[colName]])) == 1) {
+  if (length(unique(x$qdt[[rawClassIdentifierCol]])) == 1) {
     stop("No state transitions!");
   }
 
-  states <- x$mergedSourceDf[[colName]];
+  states <- x$qdt[[rawClassIdentifierCol]];
 
   states <- states[!is.na(states)];
 
   ### https://stackoverflow.com/questions/53641705/how-can-i-count-the-number-of-transitions-from-one-state-to-another
   res <- table(states[-length(states)], states[-1]);
+
+  if (ncol(res) > nrow(res)) {
+    rowNames <- rownames(res);
+    missingRows <-
+      setdiff(colnames(res), rowNames);
+    res <- rbind(
+      res,
+      matrix(rep(0, ncol(res) * length(missingRows)),
+             nrow = length(missingRows))
+    );
+    rownames(res) <- c(rowNames, missingRows);
+    res <- res[colnames(res), ];
+  } else if (nrow(res) > ncol(res)) {
+    colNames <- colnames(res);
+    missingCols <-
+      setdiff(rownames(res), colNames);
+    res <- cbind(
+      res,
+      matrix(rep(0, nrow(res) * length(missingCols)),
+             ncol = length(missingCols))
+    );
+    colnames(res) <- c(colNames, missingCols);
+    res <- res[, rownames(res)];
+  }
 
   class(res) <- c("rock_stateTransitionTable", class(res));
 

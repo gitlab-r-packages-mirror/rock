@@ -33,7 +33,9 @@
 #' DiagrammeR::grViz(exampleDotCode);
 #'
 #' @export
-get_state_transition_dot <- function(x) {
+get_state_transition_dot <- function(x,
+                                     labelFun = base::round,
+                                     labelFunArgs = list(digits = 2)) {
 
   if (!inherits(x, "rock_stateTransitionDf")) {
     stop("As `x`, pass an object of class `rock_stateTransitionDf`, as produced ",
@@ -43,9 +45,24 @@ get_state_transition_dot <- function(x) {
 
   x <- x[x$nrOfTransitions > 0, ];
 
+  x[, 'label'] <- x[, 'propOfTransitions'];
+
+  if (!is.null(labelFun)) {
+    if (is.function(labelFun)) {
+      x[, 'label'] <-
+        do.call(
+          labelFun,
+          c(list(x[, 'propOfTransitions']),
+            labelFunArgs)
+        );
+    }
+  }
+
   res <-
     paste0(
       "digraph {\n",
+      "  node[fontname=Arial]\n\n",
+      "  edge[fontname=Arial]\n\n",
       paste0(
         apply(
           x,
@@ -54,13 +71,13 @@ get_state_transition_dot <- function(x) {
             return(
               paste0(
                 "  ",
-                row[1],
+                row['fromState'],
                 " -> ",
-                row[2],
-                " [label='",
-                row[4],
-                "', penwidth=",
-                3 * as.numeric(row[4]),
+                row['toState'],
+                " [label=\"  ",
+                row['label'],
+                "    \", penwidth=",
+                3 * as.numeric(row['propOfTransitions']),
                 "];"
               )
             );
@@ -75,4 +92,10 @@ get_state_transition_dot <- function(x) {
 
   return(res);
 
+}
+
+#' @export
+print.rock_stateTransitionDot <- function(x, ...) {
+  print(DiagrammeR::grViz(x, ...));
+  return(invisible(x));
 }

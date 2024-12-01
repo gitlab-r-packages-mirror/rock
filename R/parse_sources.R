@@ -75,6 +75,7 @@ parse_sources <- function(path,
            removeSectionBreakRows = removeSectionBreakRows,
            removeIdentifierRows = removeIdentifierRows,
            removeEmptyRows = removeEmptyRows,
+           mergeAttributes = FALSE,
            silent=silent);
 
   if (!silent) {
@@ -117,6 +118,24 @@ parse_sources <- function(path,
   #            })
   #   );
 
+  ### 2024-05-29: Get all the class identifiers from all the sources
+  res$convenience$allClassIds <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(x) {
+            return(x$convenience$allClasses);
+          }
+        )
+      )
+    );
+
+  ### 2024-05-29: Stored just before refactoring to allow attributes to exist for multiple
+  ### classes
+  ### Also 2024-05-29: enabled again as we discovered that merge_utterances_and_attributes()
+  ### seems to be written for multiple classes with attributes already --- provided we can
+  ### deal with different column names for each attribute specification
   res$convenience$attributes <-
     rbind_df_list(
       lapply(
@@ -127,9 +146,115 @@ parse_sources <- function(path,
       )
     );
 
-    # dplyr::bind_rows(purrr::map(res$parsedSources,
-    #                             'attributesDf'));
+  ### 2024-05-29: Parse the attributes in all separate sources, organizing them per
+  ### class identifier, and then collapsing them over sources into one attribute dataframe
+  ### per class identifier.
 
+  res$convenience$attributesPerClass <-
+    lapply(
+      res$convenience$allClassIds,
+      function(currentClassId) {
+
+        listOfAttDfsForThisClassForAllSources <-
+          lapply(
+            res$parsedSources,
+            function(currentSource) {
+
+              if (length(currentSource$attributes) > 0) {
+
+                listOfDataframes <-
+                  lapply(
+                    currentSource$attributes,
+                    function(currentAttributeSpec) {
+                      if (currentClassId %in% names(currentAttributeSpec)) {
+                        return(as.data.frame(currentAttributeSpec, stringsAsFactors = FALSE));
+                      } else {
+                        return(NULL);
+                      }
+                    }
+                  );
+
+                if (length(listOfDataframes) > 0) {
+
+                  attributeDfForThisClassInThisSource <-
+                    tryCatch(
+                      do.call(rbind,
+                              listOfDataframes),
+                      error = function(e) {
+
+                        colCounts <-
+                          table(
+                            unlist(
+                              lapply(
+                                listOfDataframes,
+                                colnames
+                              )
+                            )
+                          );
+
+                        stop("I could not parse the attributes into a data frame. At present, ",
+                             "I require that all attributes are specified for all class ",
+                             "instances - you may have omitted one (or more). Sorry! ",
+                             "The following columns appear the following number of ",
+                             "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                             ".");
+                      });
+
+                }
+
+              }
+
+              return(attributeDfForThisClassInThisSource);
+
+            }
+          );
+
+        attributeDfsRbindedOverSources <-
+          tryCatch(
+            do.call(rbind,
+                    listOfAttDfsForThisClassForAllSources),
+            error = function(e) {
+
+              colCounts <-
+                table(
+                  unlist(
+                    lapply(
+                      listOfAttDfsForThisClassForAllSources,
+                      colnames
+                    )
+                  )
+                );
+
+              stop("I could not parse the attributes into a data frame. At present, ",
+                   "I require that all attributes are specified for all class ",
+                   "instances - you may have omitted one (or more). Sorry! ",
+                   "The following columns appear the following number of ",
+                   "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                   ".");
+            });
+
+        return(attributeDfsRbindedOverSources);
+
+      }
+    );
+
+  ### Class instance identifiers are sometimes used without attributes; in that
+  ### case, this will be a data frame of 0 cols and 0 rows.
+  if (ncol(res$convenience$attributes) == length(res$convenience$allClassIds)) {
+    names(res$convenience$attributes) <- res$convenience$allClassIds;
+  }
+
+  ### 2024-05-29: What we just produced is actually the 'new attributeDf' except that it's
+  ### a list of Dfs organized per class identifier
+
+  # dplyr::bind_rows(purrr::map(res$parsedSources,
+  #                             'attributesDf'));
+
+  ### 2024-05-29: This no longer makes sense; keeping the code for now for future reference
+  res$convenience$attributesVars <- NA;
+
+  ### 2024-05-29: Given what we just discovered about merge_utterances_and_attributes()
+  ### this is 'reactivated' again
   res$convenience$attributesVars <-
     sort(unique(c(unlist(lapply(
       res$parsedSource,
@@ -296,6 +421,20 @@ parse_sources <- function(path,
     #                             'sourceDf'));
 
   ### Merge merged source dataframes
+
+  ### 2024-05-29: Replacing this with a new merging activity where we merge
+  ### the attributes in from the new res$convenience$attributes object using
+  ### the res$convenience$allClassIds
+#
+#   res$qdt <-
+#     res$sourceDf;
+#
+#   for (currentClassId in res$convenience$allClassIds) {
+#     if (currentClassId %in% names(res$qdt)) {
+#
+#     }
+#   }
+
   res$qdt <-
     rbind_df_list(
       lapply(
@@ -327,7 +466,7 @@ parse_sources <- function(path,
     #                  .id="originalSource");
 
   res$qdt[, res$convenience$codingLeaves] <-
-    lapply(res$qdt[, res$convenience$codingLeaves],
+    lapply(res$qdt[, res$convenience$codingLeaves, drop=FALSE],
            function(x) {
              return(ifelse(is.na(x),
                            0,
@@ -442,7 +581,7 @@ parse_sources <- function(path,
     c(specifiedClasses, unspecifiedClasses);
 
   ### Merge attributes with source dataframe
-  if (length(res$attributes) > 0) {
+  if (nrow(attributesDf) > 0) {
 
     qdtNew <-
       merge_utterances_and_attributes(

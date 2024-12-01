@@ -1,7 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
-Version: 0.8.1
-Date: 2024-01-21
+Version: 0.8.3
+Date: 2024-01-24
 Authors@R: 
     c(person(given = "Gjalt-Jorn",
              family = "Peters",
@@ -29,7 +29,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Depends: R (>= 3.0.0)
 Imports: data.tree (>= 1.1.0),
          dplyr (>= 0.7.8),

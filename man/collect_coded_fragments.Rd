@@ -14,6 +14,7 @@ collect_coded_fragments(
   headingLevel = 3,
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
+  omitEmptyCodes = TRUE,
   output = NULL,
   outputViewer = "viewer",
   template = "default",
@@ -66,6 +67,9 @@ instead of \code{headingLevel+1} hashes.}
 \item{cleanUtterances}{Whether to use the clean or the raw utterances
 when constructing the fragments (the raw versions contain all codes). Note that
 this should be set to \code{FALSE} to have \code{add_html_tags} be of the most use.}
+
+\item{omitEmptyCodes}{Whether to still show the title for codes that do not
+occur or not.}
 
 \item{output}{Here, a path and filename can be provided where the
 result will be written. If provided, the result will be returned
