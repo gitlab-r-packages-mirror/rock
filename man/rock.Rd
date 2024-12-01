@@ -2,6 +2,7 @@
 % Please edit documentation in R/rock.R
 \docType{package}
 \name{rock}
+\alias{rock-package}
 \alias{rock}
 \title{rock: A Reproducible Open Coding Kit}
 \description{
@@ -35,3 +36,20 @@ For analysis, \code{\link[=create_cooccurrence_matrix]{create_cooccurrence_matri
 \code{\link[=collect_coded_fragments]{collect_coded_fragments()}} can be used.
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://rock.opens.science}
+  \item Report bugs at \url{https://gitlab.com/r-packages/rock/-/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Gjalt-Jorn Peters \email{rock@opens.science} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID})
+
+Authors:
+\itemize{
+  \item Szilvia Zorgo (\href{https://orcid.org/0000-0002-6916-2097}{ORCID}) [contributor]
+}
+
+}

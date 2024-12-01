@@ -33,8 +33,10 @@ dependency_badge <-
 dependency_url <-
   paste0("https://CRAN.R-project.org/package=", packagename);
 
-pkgdown_url <-
+pkgdown_url_dev <-
   paste0("https://r-packages.gitlab.io/", packagename);
+pkgdown_url_prod <-
+  paste0("https://", packagename, ".opens.science");
 
 cran_url <-
   paste0("https://cran.r-project.org/package=", packagename);
@@ -59,7 +61,7 @@ cranTotal_badge <-
 
 ## `r packageSubtitle`
 
-The pkgdown website for this project is located at `r pkgdown_url`.
+The pkgdown website for this project is located at `r pkgdown_url_prod`. If there is a development version of the documentation, that is available at `r pkgdown_url_dev`.
 
 <!--------------------------------------------->
 <!-- Start of a custom bit for every package -->
@@ -74,11 +76,7 @@ implements Epistemic Network Analysis (ENA), means to process notes
 from Cognitive Interviews (CIs), and means to work with a decentralized
 construct taxonomy (DCT).
 
-There is a FLOSS interface for the ROCK, iROCK, available at https://i.rock.science (the accompanying git repository is available at https://gitlab.com/sci-ops/irock).
-
-We are in the process of writing a textbook to support working with the ROCK standard, this `rock` R package, and the iROCK interface. This book is available at https://rockbook.org.
-
-Materials for a brief workshop are available through https://rock.science/workshop-2-hour
+More ROCK-related resources are available through [https://rock.science](https://rock.science).
 
 <!--------------------------------------------->
 <!--  End of a custom bit for every package  -->

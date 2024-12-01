@@ -11,17 +11,17 @@
 clean_source(
   input,
   output = NULL,
-  replacementsPre = rock::opts$get(replacementsPre),
-  replacementsPost = rock::opts$get(replacementsPost),
+  replacementsPre = rock::opts$get("replacementsPre"),
+  replacementsPost = rock::opts$get("replacementsPost"),
   extraReplacementsPre = NULL,
   extraReplacementsPost = NULL,
   removeNewlines = FALSE,
   removeTrailingNewlines = TRUE,
   rlWarn = rock::opts$get(rlWarn),
-  utteranceSplits = rock::opts$get(utteranceSplits),
-  preventOverwriting = rock::opts$get(preventOverwriting),
-  encoding = rock::opts$get(encoding),
-  silent = rock::opts$get(silent)
+  utteranceSplits = rock::opts$get("utteranceSplits"),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 
 clean_sources(
@@ -104,7 +104,7 @@ with a newline character.}
 
 \item{utteranceSplits}{This is a vector of regular expressions that specify where to
 insert breaks between utterances in the source(s). Such breakes are specified using
-\code{utteranceMarker}.}
+the \code{utteranceMarker} ROCK setting.}
 
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
 

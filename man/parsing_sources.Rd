@@ -17,9 +17,13 @@ parse_source(
   checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   postponeDeductiveTreeBuilding = FALSE,
   filesWithYAML = NULL,
-  rlWarn = rock::opts$get(rlWarn),
-  encoding = rock::opts$get(encoding),
-  silent = rock::opts$get(silent)
+  mergeAttributes = TRUE,
+  removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
+  removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
+  removeEmptyRows = rock::opts$get("removeEmptyRows"),
+  rlWarn = rock::opts$get("rlWarn"),
+  encoding = rock::opts$get("encoding"),
+  silent = rock::opts$get("silent")
 )
 
 \method{print}{rock_parsedSource}(x, prefix = "### ", ...)
@@ -29,6 +33,9 @@ parse_sources(
   extension = "rock|dct",
   regex = NULL,
   recursive = TRUE,
+  removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
+  removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
+  removeEmptyRows = rock::opts$get("removeEmptyRows"),
   ignoreOddDelimiters = FALSE,
   checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   mergeInductiveTrees = FALSE,
@@ -72,6 +79,14 @@ you should probably call \code{parse_sources} instead of \code{parse_source}).}
 
 \item{filesWithYAML}{Any additional files to process to look for YAML fragments.}
 
+\item{mergeAttributes}{Whether to merge the data frame with the attributes
+into the qualitative data table (i.e., the data frame with the data
+fragments and codes).}
+
+\item{removeSectionBreakRows, removeIdentifierRows, removeEmptyRows}{Whether to
+remove from the QDT, respectively: rows containing section breaks; rows
+containing only (class instance) identifiers; and empty rows.}
+
 \item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
 with a newline character.}
 
@@ -100,6 +115,12 @@ or not (\code{FALSE}).}
 \item{mergeInductiveTrees}{Merge multiple inductive code trees into one; this
 functionality is currently not yet implemented.}
 }
+\value{
+For \code{rock::parse_source()}, an object of class \code{rock_parsedSource};
+for \code{rock::parse_sources()}, an object of class \code{rock_parsedSources}. These
+objects contain the original source(s) as well as the final data frame with
+utterances and codes, as well as the code structures.
+}
 \description{
 These function parse one (\code{parse_source}) or more (\code{parse_sources}) sources and the
 contained identifiers, sections, and codes.
@@ -125,12 +146,25 @@ parsedExample$inductiveCodeTrees$codes;
 parsedExample <- rock::parse_source(exampleFile,
                                     silent=FALSE);
 
-### Parse all example sources in that directory
-parsedExamples <- rock::parse_sources(examplePath);
+### Parse as selection of example sources in that directory
+parsedExamples <-
+  rock::parse_sources(
+    examplePath,
+    regex = "(test|example)(.txt|.rock)"
+  );
 
 ### Show combined inductive code tree for the codes
 ### extracted with the regular expression specified with
 ### the name 'codes':
 parsedExamples$inductiveCodeTrees$codes;
+
+### Show a souce coded with the Qualitative Network Approach
+qnaExample <-
+  rock::parse_source(
+    file.path(
+      examplePath,
+      "network-example-1.rock"
+    )
+  );
 
 }

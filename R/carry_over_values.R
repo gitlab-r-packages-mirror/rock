@@ -1,0 +1,32 @@
+#' Taking a vector, carry value over ('persistence')
+#'
+#' This function takes a value, and then replaces
+#' empty elements (NA or zero-length character values)
+#' with the last non-empty preceding element it
+#' encountered.
+#'
+#' @param x The vector
+#' @param noId The value to add for the first empty elements
+#'
+#' @return The vector with the carries over elements
+#' @export
+#'
+#' @examples
+#' rock::carry_over_values(
+#'   c(
+#'     NA, NA, 3, NA, NA, 7, NA, NA
+#'   )
+#' );
+carry_over_values <- function(x,
+                              noId = "no_id") {
+  x <-
+    ifelse(is.na(x) | (nchar(x) == 0),
+           noId,
+           x);
+  for (i in 2:length(x)) {
+    if ((x[i] == "no_id")) {
+      x[i] <- x[i-1];
+    }
+  }
+  return(x);
+}

@@ -14,6 +14,7 @@ collect_coded_fragments(
   headingLevel = 3,
   add_html_tags = TRUE,
   cleanUtterances = FALSE,
+  omitEmptyCodes = TRUE,
   output = NULL,
   outputViewer = "viewer",
   template = "default",
@@ -36,7 +37,9 @@ concatenated using "\code{|}" as a separator, to create a regular expression
 matching all codes).}
 
 \item{context}{How many utterances before and after the target
-utterances to include in the fragments.}
+utterances to include in the fragments. If two values, the first is the
+number of utterances before, and the second, the number of utterances
+after the target utterances.}
 
 \item{includeDescendents}{Whether to also collect the fragments coded with
 descendent codes (i.e. child codes, 'grand child codes', etc; in other
@@ -64,6 +67,9 @@ instead of \code{headingLevel+1} hashes.}
 \item{cleanUtterances}{Whether to use the clean or the raw utterances
 when constructing the fragments (the raw versions contain all codes). Note that
 this should be set to \code{FALSE} to have \code{add_html_tags} be of the most use.}
+
+\item{omitEmptyCodes}{Whether to still show the title for codes that do not
+occur or not.}
 
 \item{output}{Here, a path and filename can be provided where the
 result will be written. If provided, the result will be returned

@@ -4,6 +4,9 @@ parse_sources <- function(path,
                           extension = "rock|dct",
                           regex=NULL,
                           recursive=TRUE,
+                          removeSectionBreakRows = rock::opts$get('removeSectionBreakRows'),
+                          removeIdentifierRows = rock::opts$get('removeIdentifierRows'),
+                          removeEmptyRows = rock::opts$get('removeEmptyRows'),
                           ignoreOddDelimiters = FALSE,
                           checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                           mergeInductiveTrees = FALSE,
@@ -15,7 +18,8 @@ parse_sources <- function(path,
   sectionRegexes <- rock::opts$get(sectionRegexes);
   uidRegex <- rock::opts$get(uidRegex);
   autoGenerateIds <- rock::opts$get(autoGenerateIds);
-  persistentIds <- rock::opts$get(persistentIds);
+  ### Obsolete now all class instance identifiers are persistent
+  # persistentIds <- rock::opts$get(persistentIds);
   noCodes <- rock::opts$get(noCodes);
   inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
   attributeContainers <- rock::opts$get(attributeContainers);
@@ -68,6 +72,10 @@ parse_sources <- function(path,
            ignoreOddDelimiters = ignoreOddDelimiters,
            encoding=encoding,
            postponeDeductiveTreeBuilding = TRUE,
+           removeSectionBreakRows = removeSectionBreakRows,
+           removeIdentifierRows = removeIdentifierRows,
+           removeEmptyRows = removeEmptyRows,
+           mergeAttributes = FALSE,
            silent=silent);
 
   if (!silent) {
@@ -110,6 +118,24 @@ parse_sources <- function(path,
   #            })
   #   );
 
+  ### 2024-05-29: Get all the class identifiers from all the sources
+  res$convenience$allClassIds <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(x) {
+            return(x$convenience$allClasses);
+          }
+        )
+      )
+    );
+
+  ### 2024-05-29: Stored just before refactoring to allow attributes to exist for multiple
+  ### classes
+  ### Also 2024-05-29: enabled again as we discovered that merge_utterances_and_attributes()
+  ### seems to be written for multiple classes with attributes already --- provided we can
+  ### deal with different column names for each attribute specification
   res$convenience$attributes <-
     rbind_df_list(
       lapply(
@@ -120,9 +146,115 @@ parse_sources <- function(path,
       )
     );
 
-    # dplyr::bind_rows(purrr::map(res$parsedSources,
-    #                             'attributesDf'));
+  ### 2024-05-29: Parse the attributes in all separate sources, organizing them per
+  ### class identifier, and then collapsing them over sources into one attribute dataframe
+  ### per class identifier.
 
+  res$convenience$attributesPerClass <-
+    lapply(
+      res$convenience$allClassIds,
+      function(currentClassId) {
+
+        listOfAttDfsForThisClassForAllSources <-
+          lapply(
+            res$parsedSources,
+            function(currentSource) {
+
+              if (length(currentSource$attributes) > 0) {
+
+                listOfDataframes <-
+                  lapply(
+                    currentSource$attributes,
+                    function(currentAttributeSpec) {
+                      if (currentClassId %in% names(currentAttributeSpec)) {
+                        return(as.data.frame(currentAttributeSpec, stringsAsFactors = FALSE));
+                      } else {
+                        return(NULL);
+                      }
+                    }
+                  );
+
+                if (length(listOfDataframes) > 0) {
+
+                  attributeDfForThisClassInThisSource <-
+                    tryCatch(
+                      do.call(rbind,
+                              listOfDataframes),
+                      error = function(e) {
+
+                        colCounts <-
+                          table(
+                            unlist(
+                              lapply(
+                                listOfDataframes,
+                                colnames
+                              )
+                            )
+                          );
+
+                        stop("I could not parse the attributes into a data frame. At present, ",
+                             "I require that all attributes are specified for all class ",
+                             "instances - you may have omitted one (or more). Sorry! ",
+                             "The following columns appear the following number of ",
+                             "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                             ".");
+                      });
+
+                }
+
+              }
+
+              return(attributeDfForThisClassInThisSource);
+
+            }
+          );
+
+        attributeDfsRbindedOverSources <-
+          tryCatch(
+            do.call(rbind,
+                    listOfAttDfsForThisClassForAllSources),
+            error = function(e) {
+
+              colCounts <-
+                table(
+                  unlist(
+                    lapply(
+                      listOfAttDfsForThisClassForAllSources,
+                      colnames
+                    )
+                  )
+                );
+
+              stop("I could not parse the attributes into a data frame. At present, ",
+                   "I require that all attributes are specified for all class ",
+                   "instances - you may have omitted one (or more). Sorry! ",
+                   "The following columns appear the following number of ",
+                   "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                   ".");
+            });
+
+        return(attributeDfsRbindedOverSources);
+
+      }
+    );
+
+  ### Class instance identifiers are sometimes used without attributes; in that
+  ### case, this will be a data frame of 0 cols and 0 rows.
+  if (ncol(res$convenience$attributes) == length(res$convenience$allClassIds)) {
+    names(res$convenience$attributes) <- res$convenience$allClassIds;
+  }
+
+  ### 2024-05-29: What we just produced is actually the 'new attributeDf' except that it's
+  ### a list of Dfs organized per class identifier
+
+  # dplyr::bind_rows(purrr::map(res$parsedSources,
+  #                             'attributesDf'));
+
+  ### 2024-05-29: This no longer makes sense; keeping the code for now for future reference
+  res$convenience$attributesVars <- NA;
+
+  ### 2024-05-29: Given what we just discovered about merge_utterances_and_attributes()
+  ### this is 'reactivated' again
   res$convenience$attributesVars <-
     sort(unique(c(unlist(lapply(
       res$parsedSource,
@@ -289,14 +421,28 @@ parse_sources <- function(path,
     #                             'sourceDf'));
 
   ### Merge merged source dataframes
-  res$mergedSourceDf <-
+
+  ### 2024-05-29: Replacing this with a new merging activity where we merge
+  ### the attributes in from the new res$convenience$attributes object using
+  ### the res$convenience$allClassIds
+#
+#   res$qdt <-
+#     res$sourceDf;
+#
+#   for (currentClassId in res$convenience$allClassIds) {
+#     if (currentClassId %in% names(res$qdt)) {
+#
+#     }
+#   }
+
+  res$qdt <-
     rbind_df_list(
       lapply(
         names(res$parsedSources),
         function(i) {
-          if (is.data.frame(res$parsedSources[[i]]$mergedSourceDf) &&
-              nrow(res$parsedSources[[i]]$mergedSourceDf) > 0) {
-            tmpRes <- res$parsedSources[[i]]$mergedSourceDf;
+          if (is.data.frame(res$parsedSources[[i]]$qdt) &&
+              nrow(res$parsedSources[[i]]$qdt) > 0) {
+            tmpRes <- res$parsedSources[[i]]$qdt;
             tmpRes$originalSource <- i;
             return(tmpRes);
           } else {
@@ -319,8 +465,8 @@ parse_sources <- function(path,
     #                             'mergedSourceDf'),
     #                  .id="originalSource");
 
-  res$mergedSourceDf[, res$convenience$codingLeaves] <-
-    lapply(res$mergedSourceDf[, res$convenience$codingLeaves],
+  res$qdt[, res$convenience$codingLeaves] <-
+    lapply(res$qdt[, res$convenience$codingLeaves, drop=FALSE],
            function(x) {
              return(ifelse(is.na(x),
                            0,
@@ -407,152 +553,203 @@ parse_sources <- function(path,
       )
     );
 
-  ###---------------------------------------------------------------------------
-  ###
-  ### START --- move this to a separate function for parse_source and parse_sources
-  ###
-  ###---------------------------------------------------------------------------
-
-  ### Add attributes to the utterances
-  for (i in seq_along(idRegexes)) {
-    ### Check whether attributes was provided for this identifier
-    if (names(idRegexes)[i] %in% names(attributesDf)) {
-      if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, attributes were provided: proceeding to join to sources dataframe.\n"));
-      }
-      ### Convert to character to avoid errors and delete
-      ### empty columns from merged source dataframe
-      usedIdRegexes <-
-        names(idRegexes)[names(idRegexes) %in% names(attributesDf)];
-      for (j in usedIdRegexes) {
-        attributesDf[, j] <-
-          as.character(attributesDf[, j]);
-      }
-      for (j in intersect(names(res$mergedSourceDf),
-                          names(attributesDf))) {
-        if (all(is.na(res$mergedSourceDf[, j]))) {
-          res$mergedSourceDf[, j] <- NULL;
-        }
-      }
-
-      if (!(names(idRegexes)[i] %in% names(res$mergedSourceDf))) {
-        msg <-
-          paste0("When processing identifier regex '", idRegexes[i],
-                 "', I failed to find its name ('", names(idRegexes[i]),
-                 "') in the column names of the merged ",
-                 "sources data frame (",
-                 vecTxtQ(names(res$mergedSourceDf)), "), so not merging ",
-                 "the attributes data frame with the source data frame for ",
-                 "this class instance identifier..");
-        if (checkClassInstanceIds) {
-          warning(msg);
-        }
-        if (!silent) {
-          cat(msg);
-        }
-      } else if (!(names(idRegexes)[i] %in% setdiff(names(attributesDf), 'type'))) {
-        msg <-
-          paste0("When processing identifier regex '", idRegexes[i],
-                 "', I failed to find its name (", names(idRegexes[i]),
-                 ") in the column names of the merged ",
-                 "attributes data frame, so not merging ",
-                 "the attributes data frame with the source data frame for ",
-                 "this class instance identifier..");
-        if (checkClassInstanceIds) {
-          warning(msg);
-        }
-        if (!silent) {
-          cat(msg);
-        }
-      } else {
-
-        attributesToLookFor <-
-          setdiff(
-            names(attributesDf),
-            names(idRegexes)[i]
-          );
-
-        alreadyPresentAttributeIndices <-
-          attributesToLookFor %in% names(res$mergedSourceDf);
-
-        alreadyPresentAttributes <-
-          attributesToLookFor[alreadyPresentAttributeIndices];
-
-        if (any(alreadyPresentAttributeIndices)) {
-
-          if (!silent) {
-            cat0("\n\nOne or more attribute columns already exist in the merged ",
-                 "source data frame. To be safe, proceeding to check whether ",
-                 "after merging again, the results are the same.");
-          }
-
-          testDf <-
-            dplyr::left_join(res$mergedSourceDf,
-                             attributesDf[, setdiff(names(attributesDf), 'type')],
-                             by=names(idRegexes)[i]);
-
-          for (i in alreadyPresentAttributes) {
-
-            if (i %in% names(testDf)) {
-
-              if (res$mergedSourceDf[, i] != testDf[, i]) {
-
-                cat("\nFound a difference in column ", i, ".");
-                stop("Found a difference in column ", i, ".");
-
-              }
-
-            } else {
-
-              if (!silent) {
-                cat0("\nColumn ", i, " does not exist in the newly merged ",
-                     "data frame.");
-              }
-
+  unspecifiedClasses <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(currentParsedSource) {
+            return(currentParsedSource$convenience$unspecifiedClasses);
             }
+        )
+      )
+    );
 
+  specifiedClasses <-
+    unique(
+      unlist(
+        lapply(
+          res$parsedSources,
+          function(currentParsedSource) {
+            return(currentParsedSource$convenience$specifiedClasses);
           }
+        )
+      )
+    );
 
-          if (!silent) {
-            cat0("\nAll columns that existed in both data frames are ",
-                 "the same. Not performing the merge of the attribute ",
-                 "data frame and the source data frame.");
-          }
+  allClasses <-
+    c(specifiedClasses, unspecifiedClasses);
 
-          #res$mergedSourceDf <- testDf;
+  ### Merge attributes with source dataframe
+  if (nrow(attributesDf) > 0) {
 
-        } else {
+    qdtNew <-
+      merge_utterances_and_attributes(
+        qdt = res$qdt,
+        classes = allClasses,
+        attributesDf = res$attributesDf,
+        checkClassInstanceIds = checkClassInstanceIds,
+        silent = silent
+      );
 
-          # attributesDf[, names(idRegexes)[i]] <-
-          #   as.character(attributesDf[, names(idRegexes)[i]]);
-          ### Join attributes based on identifier
-          res$mergedSourceDf <-
-            dplyr::left_join(
-              res$mergedSourceDf,
-              attributesDf[, setdiff(names(attributesDf), 'type')],
-              by=names(idRegexes)[i]
-            );
+    res$convenience$attributesVars <-
+      unique(c(res$convenience$attributesVars,
+               setdiff(names(qdtNew), names(res$qdt))));
 
-        }
+    res$qdt <- qdtNew;
 
-      }
+    ###---------------------------------------------------------------------------
+    ###
+    ### START --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
 
-    } else {
-      if (!silent) {
-        print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes were provided.\n"));
-      }
+    # ### Add attributes to the utterances
+    # for (i in seq_along(idRegexes)) {
+    #   ### Check whether attributes was provided for this identifier
+    #   if (names(idRegexes)[i] %in% names(attributesDf)) {
+    #     if (!silent) {
+    #       print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, attributes were provided: proceeding to join to sources dataframe.\n"));
+    #     }
+    #     ### Convert to character to avoid errors and delete
+    #     ### empty columns from merged source dataframe
+    #     usedIdRegexes <-
+    #       names(idRegexes)[names(idRegexes) %in% names(attributesDf)];
+    #     for (j in usedIdRegexes) {
+    #       attributesDf[, j] <-
+    #         as.character(attributesDf[, j]);
+    #     }
+    #     for (j in intersect(names(res$qdt),
+    #                         names(attributesDf))) {
+    #       if (all(is.na(res$qdt[, j]))) {
+    #         res$qdt[, j] <- NULL;
+    #       }
+    #     }
+    #
+    #     if (!(names(idRegexes)[i] %in% names(res$qdt))) {
+    #       msg <-
+    #         paste0("When processing identifier regex '", idRegexes[i],
+    #                "', I failed to find its name ('", names(idRegexes[i]),
+    #                "') in the column names of the merged ",
+    #                "sources data frame (",
+    #                vecTxtQ(names(res$qdt)), "), so not merging ",
+    #                "the attributes data frame with the source data frame for ",
+    #                "this class instance identifier..");
+    #       if (checkClassInstanceIds) {
+    #         warning(msg);
+    #       }
+    #       if (!silent) {
+    #         cat(msg);
+    #       }
+    #     } else if (!(names(idRegexes)[i] %in% setdiff(names(attributesDf), 'type'))) {
+    #       msg <-
+    #         paste0("When processing identifier regex '", idRegexes[i],
+    #                "', I failed to find its name (", names(idRegexes[i]),
+    #                ") in the column names of the merged ",
+    #                "attributes data frame, so not merging ",
+    #                "the attributes data frame with the source data frame for ",
+    #                "this class instance identifier..");
+    #       if (checkClassInstanceIds) {
+    #         warning(msg);
+    #       }
+    #       if (!silent) {
+    #         cat(msg);
+    #       }
+    #     } else {
+    #
+    #       attributesToLookFor <-
+    #         setdiff(
+    #           names(attributesDf),
+    #           names(idRegexes)[i]
+    #         );
+    #
+    #       alreadyPresentAttributeIndices <-
+    #         attributesToLookFor %in% names(res$qdt);
+    #
+    #       alreadyPresentAttributes <-
+    #         attributesToLookFor[alreadyPresentAttributeIndices];
+    #
+    #       if (any(alreadyPresentAttributeIndices)) {
+    #
+    #         if (!silent) {
+    #           cat0("\n\nOne or more attribute columns already exist in the merged ",
+    #                "source data frame. To be safe, proceeding to check whether ",
+    #                "after merging again, the results are the same.");
+    #         }
+    #
+    #         testDf <-
+    #           dplyr::left_join(res$qdt,
+    #                            attributesDf[, setdiff(names(attributesDf), 'type')],
+    #                            by=names(idRegexes)[i]);
+    #
+    #         for (i in alreadyPresentAttributes) {
+    #
+    #           if (i %in% names(testDf)) {
+    #
+    #             if (res$qdt[, i] != testDf[, i]) {
+    #
+    #               cat("\nFound a difference in column ", i, ".");
+    #               stop("Found a difference in column ", i, ".");
+    #
+    #             }
+    #
+    #           } else {
+    #
+    #             if (!silent) {
+    #               cat0("\nColumn ", i, " does not exist in the newly merged ",
+    #                    "data frame.");
+    #             }
+    #
+    #           }
+    #
+    #         }
+    #
+    #         if (!silent) {
+    #           cat0("\nAll columns that existed in both data frames are ",
+    #                "the same. Not performing the merge of the attribute ",
+    #                "data frame and the source data frame.");
+    #         }
+    #
+    #         #res$mergedSourceDf <- testDf;
+    #
+    #       } else {
+    #
+    #         # attributesDf[, names(idRegexes)[i]] <-
+    #         #   as.character(attributesDf[, names(idRegexes)[i]]);
+    #         ### Join attributes based on identifier
+    #         res$qdt <-
+    #           dplyr::left_join(
+    #             res$qdt,
+    #             attributesDf[, setdiff(names(attributesDf), 'type')],
+    #             by=names(idRegexes)[i]
+    #           );
+    #
+    #         res$mergedSourceDf <-
+    #           res$qdt;
+    #       }
+    #
+    #     }
+    #
+    #   } else {
+    #     if (!silent) {
+    #       print(glue::glue("\nFor identifier class {names(idRegexes)[i]}, no attributes were provided.\n"));
+    #     }
+    #   }
+    # }
+
+    if (!silent) {
+      cat0("\nFinished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
     }
+
+    ###---------------------------------------------------------------------------
+    ###
+    ### END --- move this to a separate function for parse_source and parse_sources
+    ###
+    ###---------------------------------------------------------------------------
+
   }
 
-  if (!silent) {
-    cat0("\nFinished merging attributes with source dataframe. Starting to collect deductive code trees.\n");
-  }
-
-  ###---------------------------------------------------------------------------
-  ###
-  ### END --- move this to a separate function for parse_source and parse_sources
-  ###
-  ###---------------------------------------------------------------------------
+  res$mergedSourceDf <- res$qdt
 
   ###---------------------------------------------------------------------------
 

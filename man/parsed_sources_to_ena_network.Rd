@@ -27,7 +27,8 @@ sources, but can be something else, as well).}
 metadata. By default, takes all read metadata.}
 }
 \value{
-The result of a call to \code{\link[rENA:ena.plot.network]{rENA::ena.plot.network()}}.
+The result of a call to \code{rENA::ena.plot.network()}, if that is
+installed.
 }
 \description{
 Create an ENA network out of one or more parsed sources
@@ -37,8 +38,12 @@ Create an ENA network out of one or more parsed sources
 examplePath <-
   system.file("extdata", package="rock");
 
-### Parse all example sources in that directory
-parsedExamples <- rock::parse_sources(examplePath);
+### Parse a selection of example sources in that directory
+parsedExamples <-
+  rock::parse_sources(
+    examplePath,
+    regex = "(test|example)(.txt|.rock)"
+  );
 
 ### Add something to indicate which units belong together; normally,
 ### these would probably be indicated using one of the identifier,

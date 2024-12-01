@@ -42,7 +42,7 @@
 #' with a newline character.
 #' @param utteranceSplits This is a vector of regular expressions that specify where to
 #' insert breaks between utterances in the source(s). Such breakes are specified using
-#' `utteranceMarker`.
+#' the `utteranceMarker` ROCK setting.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param removeNewlines Whether to remove all newline characters from the source before
 #' starting to clean them. **Be careful**: if the source contains YAML fragments, these
@@ -97,19 +97,19 @@
 #' @export
 clean_source <- function(input,
                          output = NULL,
-                         replacementsPre = rock::opts$get(replacementsPre),
-                         replacementsPost = rock::opts$get(replacementsPost),
+                         replacementsPre = rock::opts$get("replacementsPre"),
+                         replacementsPost = rock::opts$get("replacementsPost"),
                          extraReplacementsPre = NULL,
                          extraReplacementsPost = NULL,
                          removeNewlines = FALSE,
                          removeTrailingNewlines = TRUE,
                          rlWarn = rock::opts$get(rlWarn),
-                         utteranceSplits = rock::opts$get(utteranceSplits),
-                         preventOverwriting = rock::opts$get(preventOverwriting),
-                         encoding = rock::opts$get(encoding),
-                         silent = rock::opts$get(silent)) {
+                         utteranceSplits = rock::opts$get("utteranceSplits"),
+                         preventOverwriting = rock::opts$get("preventOverwriting"),
+                         encoding = rock::opts$get("encoding"),
+                         silent = rock::opts$get("silent")) {
 
-  utteranceMarker <- rock::opts$get(utteranceMarker);
+  utteranceMarker <- rock::opts$get("utteranceMarker");
 
   if ((length(input) == 1) && file.exists(input)) {
     res <- readLines(input,
