@@ -1,7 +1,7 @@
 #' @rdname ShORCIDs
 #' @export
 #'
-#' @examples
+#' @examples shorcid_to_orcid("i16g2sk1");
 shorcid_to_orcid <- function(x) {
 
   if (length(x) > 1) {
@@ -18,7 +18,7 @@ shorcid_to_orcid <- function(x) {
 
   checksum <- substring(x, nchar(x));
 
-  idbit <- substring(x, 1, nchar(x) - 1);
+  idbit <- substring(x, 2, nchar(x) - 1);
 
   res <- base30toNumeric(idbit);
 

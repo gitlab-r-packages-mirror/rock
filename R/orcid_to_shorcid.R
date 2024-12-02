@@ -6,8 +6,9 @@
 #' checksum) and storing it. Then in the first string of characters, all
 #' non-numbers are removed and the resulting number is converted to a base 30
 #' system with [numericToBase30()]. The checksum is then re-attached. This is
-#' one separately because the checksum can be X (i.e. the only character in an
-#' ORCID that's not necessarily numeric). Conversion the other way around just
+#' done separately because the checksum can be X (i.e. the only character in an
+#' ORCID that's not necessarily numeric). Then, an 'i' is prepended to ensure
+#' that the ShORCID starts with a letter. Conversion the other way around just
 #' inverts the process (and so uses [base30toNumeric()]).
 #'
 #' @param x The ORCID(s) or ShORCID(s).
@@ -16,7 +17,7 @@
 #' @rdname ShORCIDs
 #' @export
 #'
-#' @examples orcid_to_shortcid("0000-0002-9540-5371");
+#' @examples orcid_to_shorcid("0000-0002-9540-5371");
 orcid_to_shorcid <- function(x) {
 
   if (length(x) > 1) {
@@ -40,7 +41,7 @@ orcid_to_shorcid <- function(x) {
 
   res <- numericToBase30(as.numeric(idbit));
 
-  res <- paste0(res, checksum);
+  res <- paste0("i", res, checksum);
 
   return(res);
 
