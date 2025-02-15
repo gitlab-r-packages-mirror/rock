@@ -385,7 +385,7 @@ read_spreadsheet <- function(x,
         "), so attempting to save a local backup.\n",
         silent = silent);
 
-    if (!is.null(downloadResult) && (downloadResult == 0)) {
+    if (exists("downloadResult") && !is.null(downloadResult) && (downloadResult == 0)) {
 
       msg("A file was downloaded, so just copying that file as local backup.\n",
           silent = silent);
