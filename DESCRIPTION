@@ -5,7 +5,7 @@ Date: 2024-01-24
 Authors@R: 
     c(person(given = "Gjalt-Jorn",
              family = "Peters",
-             role = c("aut", "cre"),
+             role = c("aut", "cre", "ctb"),
              email = "rock@opens.science",
              comment = c(ORCID = "0000-0002-0336-9589")),
       person(given = "Szilvia",

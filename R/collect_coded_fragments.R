@@ -468,7 +468,9 @@ collect_coded_fragments <- function(x,
                                   "\n\n")));
     } else {
       if (outputToViewer) {
-        viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+        #viewerHTML <- markdown::mark_html(text=res_without_css);
+        #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
+        viewerHTML <- markdown::mark(text=res_without_css);
         if (add_html_tags) {
           viewerHTML <- htmltools::HTML(
             rock::css(template=template,
@@ -492,7 +494,10 @@ collect_coded_fragments <- function(x,
   } else {
 
     if (outputToViewer) {
-      viewerHTML <- markdown::markdownToHTML(text=res_without_css);
+      #viewerHTML <- markdown::mark_html(text=res_without_css);
+      #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
+      viewerHTML <- markdown::mark(text=res_without_css);
+      viewerHTML <- htmltools::HTML(c("<html>", viewerHTML, "</html"));
       if (add_html_tags) {
         viewerHTML <- htmltools::HTML(
           rock::css(template=template,

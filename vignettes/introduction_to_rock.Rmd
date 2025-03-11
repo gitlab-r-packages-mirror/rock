@@ -31,5 +31,5 @@ and some more.       [[look_a_code]]
 And the end.
 ```
 
-This vignette was originally the introduction to the ROCK, but has become outdated. In addition, there are now a number of other resources. Until this vignette has been replaced with a new up-to-date tutorial, please consult [https://rock.science](https://rock.science).
+This vignette was originally the introduction to the ROCK, but has become outdated. In addition, there are now a number of other resources. Until this vignette has been replaced with a new up-to-date tutorial, please consult [https://rock.science](https://rock.science), or the blog post at [https://sciencer.eu/posts/2024-12-rock-basics.html](https://sciencer.eu/posts/2024-12-rock-basics.html).
 

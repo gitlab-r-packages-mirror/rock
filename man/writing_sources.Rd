@@ -58,14 +58,31 @@ exampleFile <-
 ### Get a temporary file to write to
 tempFile <- tempfile(fileext = ".rock")
 
-### Pipe chain to load the example source; add a code;
-### and write the result to disk
+### For R versions below 4.1
 loadedSource <-
+  rock::load_source(exampleFile);
 
-  rock::load_source(exampleFile) |>
+loadedSource <-
+  rock::code_source(
+    loadedSource,
+    c("Lorem Ipsum" = "lorumIpsum")
+  );
 
-  rock::code_source(c("Lorem Ipsum" = "lorumIpsum")) |>
+rock::write_source(
+  loadedSource,
+  tempFile
+);
 
-  rock::write_source(tempFile);
+### From R 4.1 onwards, you can also chain
+### these commands using the pipe operator:
+if (R.Version()$minor >= "4.1") {
+  loadedSource <-
+
+    rock::load_source(exampleFile) |>
+
+    rock::code_source(c("Lorem Ipsum" = "lorumIpsum")) |>
+
+    rock::write_source(tempFile);
+}
 
 }

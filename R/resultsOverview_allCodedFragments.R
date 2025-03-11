@@ -145,7 +145,8 @@ resultsOverview_allCodedFragments <- function(x,
   } else {
 
     if (outputToViewer) {
-      viewerHTML <- markdown::markdownToHTML(text=res);
+      #viewerHTML <- markdown::mark(text=res, template=TRUE);
+      viewerHTML <- markdown::mark(text=res);
       if (add_html_tags && includeCSS) {
         viewerHTML <- htmltools::HTML(
           rock::css(template=template,

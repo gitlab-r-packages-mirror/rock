@@ -716,7 +716,13 @@ parse_source <- function(text,
               }
             );
 
-          return(do.call(rbind, res));
+          res <- do.call(rbind, res);
+
+          res <- as.data.frame(res)
+
+          names(res) <- unspecifiedClasses;
+
+          return(res);
 
         }
       );
@@ -731,7 +737,9 @@ parse_source <- function(text,
              names(unspecifiedClassInstanceIdentifierDf))) ||
           (!(all(names(unspecifiedClassInstanceIdentifierDf) %in%
              unspecifiedClasses))))) {
+
         stop("Inconsistency in column names");
+
       }
 
       sourceDf[, unspecifiedClasses] <-
@@ -1093,12 +1101,44 @@ parse_source <- function(text,
         regmatches(x,
                    gregexpr(networkCodeRegexes[networkCodeRegex], x));
 
-      res$networkCodes[[networkCodeRegex]]$matches <- matches;
+      matchUIDs <-
+        ifelse(
+          grepl(uidRegex, x),
+          gsub(paste0(".*", uidRegex, ".*"), "\\1", x),
+          NA
+        );
 
-      if (length(matches) > 0) {
+      res$networkCodes[[networkCodeRegex]]$matches <- matches;
+      res$networkCodes[[networkCodeRegex]]$matchUIDs <- matchUIDs;
+
+      res$networkCodes[[networkCodeRegex]]$originalSeqNr_to_uid <-
+        matchUIDs;
+
+      res$networkCodes[[networkCodeRegex]]$matches_unlisted <-
+        matches_unlisted <-
+        unlist(res$networkCodes[[networkCodeRegex]]$matches);
+
+      if (length(matches_unlisted) > 0) {
+
+        matches_with_uids <-
+          lapply(
+            seq_along(matches),
+            function(i) {
+              if (length(matches[[i]]) == 0) {
+                return(NULL);
+              } else {
+                return(
+                  data.frame(
+                    coding = unlist(matches[[i]]),
+                    uid = rep(matchUIDs[i], length(matches[[i]]))
+                  )
+                );
+              }
+            }
+          );
 
         ### Cycle through the four elements; then through the matches;
-        ### then through the elments of each match (in case there are
+        ### then through the elements of each match (in case there are
         ### more than one).
         res$networkCodes[[networkCodeRegex]]$coded_list <-
           lapply(
@@ -1129,7 +1169,8 @@ parse_source <- function(text,
                         selection <-
                           data.frame(
                             NA,
-                            originalSequenceNr
+                            originalSequenceNr,
+                            matchUIDs[originalSequenceNr]
                           );
                       } else {
                         selection <-
@@ -1139,10 +1180,11 @@ parse_source <- function(text,
                               networkCodeCleaningRegexes[2],
                               selection
                             ),
-                            rep(originalSequenceNr, length(selection))
+                            rep(originalSequenceNr, length(selection)),
+                            rep(matchUIDs[originalSequenceNr], length(selection))
                           );
                       }
-                      names(selection) <- c(col, "originalSequenceNr");
+                      names(selection) <- c(col, "originalSequenceNr", "uid");
                       return(selection);
                     }
                   )
