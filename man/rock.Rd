@@ -45,7 +45,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Gjalt-Jorn Peters \email{rock@opens.science} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID})
+\strong{Maintainer}: Gjalt-Jorn Peters \email{rock@opens.science} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID}) [contributor]
 
 Authors:
 \itemize{
