@@ -24,7 +24,7 @@ export_ROCKproject <- function(path,
   }
 
 
-  zip(zipfile <-
+  #zip(zipfile <-
 
 
 }
