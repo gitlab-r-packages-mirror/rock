@@ -5,18 +5,20 @@
 \title{Export a ROCK project to a single ROCKproject file}
 \usage{
 export_ROCKproject(
-  path,
   output,
+  path = ".",
   includeRegex = NULL,
   excludeRegex = NULL,
   createDirs = FALSE,
+  preventOverwriting = TRUE,
+  forceBaseZip = FALSE,
   silent = rock::opts$get(silent)
 )
 }
 \arguments{
-\item{path}{The path with the ROCK project}
-
 \item{output}{The file to write to; should have the extension \code{.ROCKproject}}
+
+\item{path}{The path with the ROCK project}
 
 \item{includeRegex}{A regular expression used to select files to include in
 the project file}
@@ -26,6 +28,12 @@ project file; selection takes place after the selection by \code{includeRegex}}
 
 \item{createDirs}{Whether to, if any directories in the \code{output} path does
 not exist, create these}
+
+\item{preventOverwriting}{If the output file already exists, whether to
+prevent it from being overwritten (\code{TRUE}) or not (\code{FALSE}).}
+
+\item{forceBaseZip}{Whether to force using the \code{zip()} function included in
+R even if the \code{zip} package is installed.}
 
 \item{silent}{Whether to be chatty or silent}
 }
