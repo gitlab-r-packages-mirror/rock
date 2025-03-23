@@ -4,12 +4,18 @@
 \alias{snoe_plot}
 \title{Soft Non-numeric Occurrence Estimation (SNOE) plot}
 \usage{
-snoe_plot(x, codes = ".*", estimateWithin = NULL)
+snoe_plot(
+  x,
+  codes = ".*",
+  matchRegexAgainstPaths = TRUE,
+  estimateWithin = NULL
+)
 }
 \arguments{
 \item{x}{A parsed source(s) object.}
 
-\item{codes}{A regular expression to select codes to include.}
+\item{codes}{A regular expression to select codes to include, or,
+alternatively, a character vector with literal code idenfitiers.}
 
 \item{estimateWithin}{The column specifying within what to count.}
 
@@ -48,7 +54,7 @@ exampleFile <-
 loadedExample <- rock::parse_source(exampleFile);
 
 ### Show code frequencies
-ROCK::snoe_plot(
+rock::snoe_plot(
   loadedExample
 );
 }
