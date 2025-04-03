@@ -1,13 +1,16 @@
 .code {
-  background-color: #f4d142;
+  background-color: #457BB7;
+}
+.networkCode {
+  background-color: #C56A33;
 }
 
 .codeValue {
-  background-color: #d2af20;
+  background-color: #DBA42D;
 }
 
 .identifier {
-  background-color: #aaaaff;
+  background-color: #C27FAB;
 }
 
 .sectionBreak {

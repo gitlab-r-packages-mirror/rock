@@ -353,6 +353,7 @@ opts$defaults <-
        ### Used for generating html
        codeClass = "code",
        codeValueClass = "codeValue",
+       networkCodeClass = "networkCode",
        idClass = "identifier",
        sectionClass = "sectionBreak",
        uidClass = "uid",

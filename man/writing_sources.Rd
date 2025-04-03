@@ -19,7 +19,9 @@ write_sources(
   output,
   filenamePrefix = "",
   filenameSuffix = "_written",
+  recursive = TRUE,
   encoding = rock::opts$get("encoding"),
+  preventOverwriting = rock::opts$get("preventOverwriting"),
   silent = rock::opts$get("silent")
 )
 }

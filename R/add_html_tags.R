@@ -24,6 +24,7 @@ add_html_tags <- function(x,
                           context = NULL,
                           codeClass = rock::opts$get(codeClass),
                           codeValueClass = rock::opts$get(codeValueClass),
+                          networkCodeClass = rock::opts$get(networkCodeClass),
                           idClass = rock::opts$get(idClass),
                           sectionClass = rock::opts$get(sectionClass),
                           uidClass = rock::opts$get(uidClass),
@@ -34,6 +35,7 @@ add_html_tags <- function(x,
   codeValueRegexes <- rock::opts$get(codeValueRegexes);
   idRegexes <- rock::opts$get(idRegexes);
   sectionRegexes <- rock::opts$get(sectionRegexes);
+  networkCodeRegexes <- rock::opts$get(networkCodeRegexes);
   uidRegex <- rock::opts$get(uidRegex);
   inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
 
@@ -52,7 +54,11 @@ add_html_tags <- function(x,
   codeRegexes <- gsub("<", "&lt;", codeRegexes, fixed=TRUE);
   codeRegexes <- gsub(">", "&gt;", codeRegexes, fixed=TRUE);
 
-  ### Add html tags
+  ### And networkRegexes
+  networkCodeRegexes <- gsub("<", "&lt;", networkCodeRegexes, fixed=TRUE);
+  networkCodeRegexes <- gsub(">", "&gt;", networkCodeRegexes, fixed=TRUE);
+
+  ### Add html tags to flat codes and tree codes
   for (currentCodeRegexName in names(codeRegexes)) {
     currentCodeRegex <- codeRegexes[currentCodeRegexName];
     codeContentMatches <- grepl(currentCodeRegex, res);
@@ -70,6 +76,33 @@ add_html_tags <- function(x,
                       collapse=" "));
       splitCodeContent <-
         paste0('<span class="', codeClass,
+               ' ', currentCodeRegexName,
+               '">');
+      res <-
+        gsub(paste0("(", currentCodeRegex, ")"),
+             paste0(splitCodeContent, '\\1</span>'),
+             res);
+    }
+  }
+
+  ### Add html tags to network codes
+  for (currentCodeRegexName in names(networkCodeRegexes)) {
+    currentCodeRegex <- networkCodeRegexes[currentCodeRegexName];
+    codeContentMatches <- grepl(currentCodeRegex, res);
+    if (any(codeContentMatches)) {
+      codeContent <-
+        ifelse(codeContentMatches,
+               gsub(paste0(".*", currentCodeRegex, ".*"),
+                    "\\1",
+                    res),
+               "");
+      splitCodeContent <-
+        unlist(lapply(strsplit(codeContent,
+                               inductiveCodingHierarchyMarker),
+                      paste0,
+                      collapse=" "));
+      splitCodeContent <-
+        paste0('<span class="', networkCodeClass,
                ' ', currentCodeRegexName,
                '">');
       res <-

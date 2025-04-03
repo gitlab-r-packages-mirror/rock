@@ -80,8 +80,22 @@ write_source <- function(x,
         "'.",
         silent = silent);
   } else {
-    warning("Could not write source to `",
-            output, "`.");
+
+    if (file.exists(output)) {
+      if (preventOverwriting) {
+        warning("Could not write source to `",
+                output, "` - the file exists already, and ",
+                "preventOverwriting is set to TRUE.");
+      } else {
+        warning("Could not write source to `",
+                output, "` - the file exists already, but ",
+                "preventOverwriting is set to FALSE, so not sure what went wrong.");
+      }
+    } else {
+      warning("Could not write source to `",
+              output, "` - but the file does not exist already, so ",
+              "not sure what went wrong.");
+    }
   }
 
   return(invisible(x));
