@@ -22,22 +22,23 @@
 #' And another utterance.");
 add_html_tags <- function(x,
                           context = NULL,
-                          codeClass = rock::opts$get(codeClass),
-                          codeValueClass = rock::opts$get(codeValueClass),
-                          networkCodeClass = rock::opts$get(networkCodeClass),
-                          idClass = rock::opts$get(idClass),
-                          sectionClass = rock::opts$get(sectionClass),
-                          uidClass = rock::opts$get(uidClass),
-                          contextClass = rock::opts$get(contextClass),
-                          utteranceClass = rock::opts$get(utteranceClass)) {
+                          codeClass = rock::opts$get("codeClass"),
+                          codeValueClass = rock::opts$get("codeValueClass"),
+                          networkCodeClass = rock::opts$get("networkCodeClass"),
+                          idClass = rock::opts$get("idClass"),
+                          sectionClass = rock::opts$get("sectionClass"),
+                          uidClass = rock::opts$get("uidClass"),
+                          contextClass = rock::opts$get("contextClass"),
+                          utteranceClass = rock::opts$get("utteranceClass"),
+                          codingClass = rock::opts$get("codingClass")) {
 
-  codeRegexes <- rock::opts$get(codeRegexes);
-  codeValueRegexes <- rock::opts$get(codeValueRegexes);
-  idRegexes <- rock::opts$get(idRegexes);
-  sectionRegexes <- rock::opts$get(sectionRegexes);
-  networkCodeRegexes <- rock::opts$get(networkCodeRegexes);
-  uidRegex <- rock::opts$get(uidRegex);
-  inductiveCodingHierarchyMarker <- rock::opts$get(inductiveCodingHierarchyMarker);
+  codeRegexes <- rock::opts$get("codeRegexes");
+  codeValueRegexes <- rock::opts$get("codeValueRegexes");
+  idRegexes <- rock::opts$get("idRegexes");
+  sectionRegexes <- rock::opts$get("sectionRegexes");
+  networkCodeRegexes <- rock::opts$get("networkCodeRegexes");
+  uidRegex <- rock::opts$get("uidRegex");
+  inductiveCodingHierarchyMarker <- rock::opts$get("inductiveCodingHierarchyMarker");
 
   res <- x;
 
@@ -75,7 +76,7 @@ add_html_tags <- function(x,
                       paste0,
                       collapse=" "));
       splitCodeContent <-
-        paste0('<span class="', codeClass,
+        paste0('<span class="', codingClass, " ", codeClass,
                ' ', currentCodeRegexName,
                '">');
       res <-
@@ -102,7 +103,7 @@ add_html_tags <- function(x,
                       paste0,
                       collapse=" "));
       splitCodeContent <-
-        paste0('<span class="', networkCodeClass,
+        paste0('<span class="', codingClass, " ", networkCodeClass,
                ' ', currentCodeRegexName,
                '">');
       res <-
@@ -137,7 +138,7 @@ add_html_tags <- function(x,
                       paste0,
                       collapse=" "));
       splitCodeValueContent <-
-        paste0('<span class="', codeValueClass,
+        paste0('<span class="', codingClass, " ", codeValueClass,
                ' ', currentCodeValueRegexName,
                '">');
       res <-
@@ -172,7 +173,7 @@ add_html_tags <- function(x,
                       paste0,
                       collapse=" "));
       splitCodeContent <-
-        paste0('<span class="', sectionClass,
+        paste0('<span class="', codingClass, " ", sectionClass,
                ' ', currentBreakRegexName,
                '">');
       res <-
@@ -211,7 +212,7 @@ add_html_tags <- function(x,
   ### Add UID tags
   res <-
     gsub(paste0("(", uidRegex, ")"),
-         paste0('<span class="', uidClass,
+         paste0('<span class="', codingClass, " ", uidClass,
                 '">\\1</span>'),
          res);
 

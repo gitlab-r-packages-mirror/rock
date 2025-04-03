@@ -351,13 +351,14 @@ opts$defaults <-
 ",
 
        ### Used for generating html
-       codeClass = "code",
-       codeValueClass = "codeValue",
-       networkCodeClass = "networkCode",
-       idClass = "identifier",
+       codingClass = "rock-coding",
+       codeClass = "rock-treeCode code",
+       codeValueClass = "rock-codeValue codeValue",
+       networkCodeClass = "rock-networkCode networkCode",
+       idClass = "rock-ciid identifier",
        sectionClass = "sectionBreak",
-       uidClass = "uid",
-       utteranceClass = "utterance",
+       uidClass = "rock-uid uid",
+       utteranceClass = "rock-utterance utterance",
        contextClass = "context",
 
        ### Regular expressions for Google Sheets

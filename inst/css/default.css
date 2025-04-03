@@ -1,3 +1,5 @@
+/*
+
 .code {
   background-color: #457BB7;
 }
@@ -31,6 +33,70 @@
   margin-top: -1px;
 }
 
+*/
+
 .context {
   color: #bbbbbb;
 }
+
+.rock-sought-codeIdentifier {
+  font-weight: bold;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+
+div#codableSource {
+  font-family: 'Ubuntu Mono', monospace;
+  font-weight: bold;
+  font-size: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.rock-utterance {
+  border-bottom: 1px dotted #aaa;
+  cursor: crosshair;
+  min-height: 1.8em;
+}
+
+.rock-coding {
+  padding: 3px;
+  border-radius: 3px;
+  cursor: not-allowed;
+}
+
+.addCodeButton .rock-coding {
+  cursor: crosshair;
+}
+
+.rock-uid {
+  background-color: #eee;
+  color : #aaa;
+}
+
+.rock-ciid {
+  background-color: #c27fab;
+  color : white;
+}
+
+.rock-treeCode {
+  background-color: #457bb7;
+  color : white;
+}
+
+.rock-codeValue {
+  background-color: #dba42d;
+  color : white;
+}
+
+.rock-networkCode {
+  background-color: #c56a33;
+  color : white;
+}
+
