@@ -8,7 +8,10 @@ snoe_plot(
   x,
   codes = ".*",
   matchRegexAgainstPaths = TRUE,
-  estimateWithin = NULL
+  estimateWithin = NULL,
+  title = "SNOE plot",
+  ggplot2Theme = ggplot2::theme_minimal(),
+  colors = c("#0072B2", "#E69F00")
 )
 }
 \arguments{
@@ -19,14 +22,16 @@ alternatively, a character vector with literal code idenfitiers.}
 
 \item{estimateWithin}{The column specifying within what to count.}
 
+\item{title}{Title of the plot}
+
+\item{ggplot2Theme}{Can be used to specify theme elements for the plot.}
+
 \item{sortByFreq}{Whether to sort by frequency decreasingly
 (\code{decreasing}, the default), increasingly (\code{increasing}),
 or alphabetically (\code{NULL}).}
 
 \item{forceRootStripping}{Force the stripping of roots, even if they are
 different.}
-
-\item{ggplot2Theme}{Can be used to specify theme elements for the plot.}
 
 \item{silent}{Whether to be chatty or silent.}
 }

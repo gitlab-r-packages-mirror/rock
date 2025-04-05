@@ -10,6 +10,7 @@
 #' @param forceRootStripping Force the stripping of roots, even if they are
 #' different.
 #' @param ggplot2Theme Can be used to specify theme elements for the plot.
+#' @param title Title of the plot
 #' @param silent Whether to be chatty or silent.
 #'
 #' @return a [ggplot2::ggplot()].
@@ -39,7 +40,9 @@ snoe_plot <- function(x,
                       codes = ".*",
                       matchRegexAgainstPaths = TRUE,
                       estimateWithin = NULL,
-                      colors = c("blue", "red")) {
+                      title = "SNOE plot",
+                      ggplot2Theme = ggplot2::theme_minimal(),
+                      colors = c("#0072B2", "#E69F00")) {
 
   if ((!inherits(x, "rock_parsedSources")) && (!inherits(x, "rock_parsedSource"))) {
 
@@ -173,90 +176,114 @@ snoe_plot <- function(x,
       )
     }
 
-  palette_transformerFactory <-
-    function(lb, ub) {
-      return(
-        scales::new_transform(
-          name = "snoe",
-          transform = palette_functionFactory(lb, ub),
-          inverse = function(x) {return(x)},
-          domain = c(0, 1)
-        )
+  ### It does not seem possible to use this as only one fill scale can exist
+  ### for a plot; but keeping it here anyway in case I ever need it again.
+  ###
+  # palette_transformerFactory <-
+  #   function(lb, ub) {
+  #     return(
+  #       scales::new_transform(
+  #         name = "snoe",
+  #         transform = palette_functionFactory(lb, ub),
+  #         inverse = function(x) {return(x)},
+  #         domain = c(0, 1)
+  #       )
+  #     )
+  #   }
+
+  nCodesToInclude <- length(codesToInclude);
+
+  resolution <- 10000;
+
+  estimationScale <-
+    seq(
+      0,
+      maxProp,
+      length = resolution
+    );
+
+  combinedDf <-
+    rock::rbind_df_list(
+      lapply(
+        codesToInclude,
+        function(codeId) {
+          res <-
+            data.frame(
+              codeId = rep(codeId, each = resolution),
+              occurrence = estimationScale
+            );
+          res$estimation <-
+            palette_functionFactory(
+              lb = CIs_totalCodedUtterances_df[codeId, 'ci.lo', drop=TRUE],
+              ub = CIs_totalCodedUtterances_df[codeId, 'ci.hi', drop=TRUE]
+            )(res$occurrence);
+          return(res);
+        }
       )
-    }
+    );
 
+  combinedDf$codeId <-
+    factor(
+      combinedDf$codeId,
+      levels = sort(unique(codesToInclude), decreasing = TRUE),
+      labels = sort(unique(codesToInclude), decreasing = TRUE),
+      ordered = TRUE
+    );
 
-  browser();
+  res <- list();
 
-
-  ggplot2::ggplot(
-    data = CIs_totalCodedUtterances_df,
-    mapping = ggplot2::aes(
-      x = codeId
-    )
-  ) +
-    lapply(
-      codesToInclude,
-      function(codeId) {
-        return(
-          ggplot2::geom_col(
-            data = CIs_totalCodedUtterances_df[codeId, , drop=FALSE],
-            mapping = ggplot2::aes(
-              x = codeId,
-              y = prop
-            )
-          ) +
-            ggplot2::scale_fill_gradient(
-              name = "occurrence estimation",
-              low = colors[1],
-              high = colors[2],
-              transform =
-                palette_transformerFactory(
-                  lb = CIs_totalCodedUtterances_df[codeId, 'ci.lo', drop=TRUE],
-                  ub = CIs_totalCodedUtterances_df[codeId, 'ci.hi', drop=TRUE]
-                )
-            )
-        )
-      }
+  res$plot <-
+    ggplot2::ggplot(
+      data = combinedDf,
+      mapping = ggplot2::aes(
+        x = occurrence,
+        y = codeId,
+        fill = estimation
+      )
     ) +
-    ggplot2::theme_minimal();
+    ggplot2::geom_col() +
+    ggplot2::scale_fill_gradient(
+      low = colors[1],
+      high = colors[2],
+      guide = NULL
+    ) +
+    ggplot2::labs(
+      x = "Occurrence estimation",
+      y = NULL,
+      title = title
+    ) +
+    ggplot2Theme +
+    ggplot2::theme(
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_blank()
+    );
 
+  return(res);
 
-
-
-
-  df |>
-    ggplot2::ggplot(ggplot2::aes(x = group, y = value, fill = subgroup)) +
-    ggdist::stat_ccdfinterval(ggplot2::aes(slab_alpha = ggplot2::after_stat(f)),
-                              thickness = 1, position = "dodge", fill_type = "segments", alpha=0
-    )
-
-  ggplot2::ggplot(df_na, ggplot2::aes(x = value, y)) +
-    ggplot2::geom_bar(ggplot2::aes(fill = y), stat = "identity") +
-    ggplot2::scale_fill_gradient(low = "yellow", high = "red", na.value = NA)
-
-
-
-ggplot2::ggplot(df_na, ggplot2::aes(xmax = value, y = y)) +
-    ggplot2::geom_ribbon(ggplot2::aes(fill = y, xmin = 0), stat = "identity") +
-    ggplot2::scale_fill_gradient(low = "yellow", high = "red", na.value = NA)
-
-### https://stackoverflow.com/questions/53397131/gradient-fill-in-ggplot2
-
-n <- 1169
-df22 <- data.frame(x = 1:n, val = seq(0, 0.5, length.out = n), type = 1)
-
-
-grad_ungroup <- grid::linearGradient(
-  c("blue", "red"),
-  x1 = grid::unit(0, "npc"), y1 = grid::unit(0, "npc"),
-  x2 = grid::unit(0, "npc"), y2 = grid::unit(1, "npc")
-)
-
-ggplot2::ggplot(df22, ggplot2::aes(x = x)) +
-  ggplot2::geom_ribbon(ggplot2::aes(ymax = val, ymin = 0),
-    fill = grad_ungroup
-  )
-
+    # lapply(
+    #   codesToInclude,
+    #   function(codeId) {
+    #     return(
+    #       ggplot2::geom_col(
+    #         data = CIs_totalCodedUtterances_df[codeId, , drop=FALSE],
+    #         mapping = ggplot2::aes(
+    #           x = codeId,
+    #           y = prop
+    #         )
+    #       ) +
+    #         ggplot2::scale_fill_gradient(
+    #           name = "occurrence estimation",
+    #           low = colors[1],
+    #           high = colors[2],
+    #           transform =
+    #             palette_transformerFactory(
+    #               lb = CIs_totalCodedUtterances_df[codeId, 'ci.lo', drop=TRUE],
+    #               ub = CIs_totalCodedUtterances_df[codeId, 'ci.hi', drop=TRUE]
+    #             )
+    #         )
+    #     )
+    #   }
+    # ) +
+    # ggplot2::theme_minimal();
 
 }
