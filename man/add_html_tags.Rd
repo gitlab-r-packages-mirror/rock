@@ -7,13 +7,15 @@
 add_html_tags(
   x,
   context = NULL,
-  codeClass = rock::opts$get(codeClass),
-  codeValueClass = rock::opts$get(codeValueClass),
-  idClass = rock::opts$get(idClass),
-  sectionClass = rock::opts$get(sectionClass),
-  uidClass = rock::opts$get(uidClass),
-  contextClass = rock::opts$get(contextClass),
-  utteranceClass = rock::opts$get(utteranceClass)
+  codeClass = rock::opts$get("codeClass"),
+  codeValueClass = rock::opts$get("codeValueClass"),
+  networkCodeClass = rock::opts$get("networkCodeClass"),
+  idClass = rock::opts$get("idClass"),
+  sectionClass = rock::opts$get("sectionClass"),
+  uidClass = rock::opts$get("uidClass"),
+  contextClass = rock::opts$get("contextClass"),
+  utteranceClass = rock::opts$get("utteranceClass"),
+  codingClass = rock::opts$get("codingClass")
 )
 }
 \arguments{

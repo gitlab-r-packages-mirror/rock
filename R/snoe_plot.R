@@ -32,12 +32,14 @@
 #'
 #' ### Show code frequencies
 #' rock::snoe_plot(
-#'   loadedExample
+#'   loadedExample,
+#'   codes = "un"
 #' );
 snoe_plot <- function(x,
                       codes = ".*",
                       matchRegexAgainstPaths = TRUE,
-                      estimateWithin = NULL) {
+                      estimateWithin = NULL,
+                      colors = c("blue", "red")) {
 
   if ((!inherits(x, "rock_parsedSources")) && (!inherits(x, "rock_parsedSource"))) {
 
@@ -73,8 +75,154 @@ snoe_plot <- function(x,
       ];
   }
 
+  if (inherits(x, "rock_parsedSource")) {
+
+    counts_total <-
+      apply(
+        x$qdt[, codesToInclude],
+        2,
+        sum
+      );
+
+    totalUtterances <- nrow(x$qdt);
+
+    totalCodings <- sum(x$qdt[, x$convenience$codingLeaves]);
+
+    totalCodedUtterances <-
+      sum(
+        as.numeric(
+          apply(
+            x$qdt[, x$convenience$codingLeaves],
+            1,
+            function(row) {
+              return(any(as.logical(row)));
+            }
+          )
+        )
+      );
+
+    proportions_totalCodedUtterances <-
+      counts_total / totalCodedUtterances;
+
+    CIs_totalCodedUtterances_objects <-
+      lapply(
+        counts_total,
+        ufs::confIntProp,
+        n = totalCodedUtterances
+      );
+
+    CIs_totalCodedUtterances_df <-
+      rock::rbind_df_list(
+        lapply(
+          CIs_totalCodedUtterances_objects,
+          as.data.frame
+        )
+      );
+
+    CIs_totalCodedUtterances_df$codeId <- codesToInclude;
+    CIs_totalCodedUtterances_df$prop <- proportions_totalCodedUtterances;
+
+    row.names(CIs_totalCodedUtterances_df) <- codesToInclude;
+
+    minProp <- min(c(CIs_totalCodedUtterances_df$ci.lo, CIs_totalCodedUtterances_df$ci.hi));
+    maxProp <- max(c(CIs_totalCodedUtterances_df$ci.lo, CIs_totalCodedUtterances_df$ci.hi));
+
+    gradients <-
+      lapply(
+        codesToInclude,
+        function(codeId) {
+          return(
+            grid::linearGradient(
+              colours = colors,
+              x1 = grid::unit(CIs_totalCodedUtterances_df[codeId, "ci.lo"], "npc"),
+              y1 = grid::unit(CIs_totalCodedUtterances_df[codeId, "ci.lo"], "npc"),
+              x2 = grid::unit(CIs_totalCodedUtterances_df[codeId, "ci.hi"], "npc"),
+              y2 = grid::unit(CIs_totalCodedUtterances_df[codeId, "ci.hi"], "npc"),
+              extend = "pad"
+            )
+          )
+        }
+      );
+    names(gradients) <- codesToInclude;
+
+
+  } else if (inherits(x, "rock_parsedSources")) {
+    stop("not implemented yet");
+  } else {
+    stop("As `x`, you have to pass one or more parsed sources, as ",
+         "produced by a call to rock::parse_source() or rock::parse_sources(). ",
+         "However, the object you passed has class ", rock::vecTxtQ(class(x)), ".");
+  }
+
+  palette_functionFactory <-
+    function(lb, ub) {
+      return(
+        function(x) {
+          return(
+            ifelse(
+              x < lb,
+              0,
+              ifelse (
+                x > ub,
+                1,
+                (x - lb) / (ub - lb)
+              )
+            )
+          )
+        }
+      )
+    }
+
+  palette_transformerFactory <-
+    function(lb, ub) {
+      return(
+        scales::new_transform(
+          name = "snoe",
+          transform = palette_functionFactory(lb, ub),
+          inverse = function(x) {return(x)},
+          domain = c(0, 1)
+        )
+      )
+    }
+
 
   browser();
+
+
+  ggplot2::ggplot(
+    data = CIs_totalCodedUtterances_df,
+    mapping = ggplot2::aes(
+      x = codeId
+    )
+  ) +
+    lapply(
+      codesToInclude,
+      function(codeId) {
+        return(
+          ggplot2::geom_col(
+            data = CIs_totalCodedUtterances_df[codeId, , drop=FALSE],
+            mapping = ggplot2::aes(
+              x = codeId,
+              y = prop
+            )
+          ) +
+            ggplot2::scale_fill_gradient(
+              name = "occurrence estimation",
+              low = colors[1],
+              high = colors[2],
+              transform =
+                palette_transformerFactory(
+                  lb = CIs_totalCodedUtterances_df[codeId, 'ci.lo', drop=TRUE],
+                  ub = CIs_totalCodedUtterances_df[codeId, 'ci.hi', drop=TRUE]
+                )
+            )
+        )
+      }
+    ) +
+    ggplot2::theme_minimal();
+
+
+
 
 
   df |>

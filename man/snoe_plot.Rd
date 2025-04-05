@@ -55,6 +55,7 @@ loadedExample <- rock::parse_source(exampleFile);
 
 ### Show code frequencies
 rock::snoe_plot(
-  loadedExample
+  loadedExample,
+  codes = "un"
 );
 }
