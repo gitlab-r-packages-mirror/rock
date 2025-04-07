@@ -63,12 +63,21 @@ div#codableSource {
   border-bottom: 1px dotted #aaa;
   cursor: crosshair;
   min-height: 1.8em;
+  line-height: 1.9em;
 }
+
+div.rock-utterance {
+  font-family: 'Ubuntu Mono', monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 
 .rock-coding {
   padding: 3px;
   border-radius: 3px;
   cursor: not-allowed;
+  margin: 2px;
 }
 
 .addCodeButton .rock-coding {
