@@ -42,7 +42,9 @@ snoe_plot <- function(x,
                       estimateWithin = NULL,
                       title = "SNOE plot",
                       ggplot2Theme = ggplot2::theme_minimal(),
-                      colors = c("#0072B2", "#E69F00")) {
+                      greyScale = FALSE,
+                      colors = c("#0072B2", "#E69F00"),
+                      greyScaleColors = c("#808080", "#C0C0C0")) {
 
   if ((!inherits(x, "rock_parsedSources")) && (!inherits(x, "rock_parsedSource"))) {
 
@@ -241,12 +243,27 @@ snoe_plot <- function(x,
         fill = estimation
       )
     ) +
-    ggplot2::geom_col() +
-    ggplot2::scale_fill_gradient(
-      low = colors[1],
-      high = colors[2],
-      guide = NULL
-    ) +
+    ggplot2::geom_col();
+
+  if (greyScale) {
+    res$plot <-
+      res$plot +
+        ggplot2::scale_fill_gradient(
+          low = greyScaleColors[1],
+          high = greyScaleColors[2],
+          guide = NULL
+        )
+  } else {
+    res$plot +
+      ggplot2::scale_fill_gradient(
+        low = colors[1],
+        high = colors[2],
+        guide = NULL
+      )
+  }
+
+  res$plot <-
+    res$plot +
     ggplot2::labs(
       x = "Occurrence estimation",
       y = NULL,
