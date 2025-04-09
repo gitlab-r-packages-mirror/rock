@@ -182,8 +182,8 @@ opts$defaults <-
                               uuid = 'itemId',
                               prbid = 'probeId',
                               mqid = 'metaqid'),
-       classInstanceRegex = "\\[\\[(?!uid)(?!UID)\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]",
-       codeValueRegexes = c(codeValues = "\\[\\[([a-zA-Z0-9_>]+)\\|\\|([a-zA-Z0-9.,_: ?!-]+)\\]\\]"),
+       classInstanceRegex = c(ciid = "\\[\\[(?!uid)(?!UID)\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[\\s*([a-zA-Z0-9_>]+)\\s*\\|\\|\\s*([^\\]]+)\\s*\\]\\]"),
        networkCodeRegexes = c(network = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*->\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*\\|\\|\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*(\\|\\|[a-zA-Z0-9_>]*)?\\s*\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
        sectionRegexes = c(sectionBreak = "---<<\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*>>---"),
@@ -222,7 +222,7 @@ opts$defaults <-
        sectionBreakContainers = c("ROCK_sectionBreaks", "section_breaks"),
        delimiterString = "---",
        delimiterRegEx = "^---$",
-       ignoreRegex = "^#",
+       ignoreRegex = "^\\s*#",
        ignoreOddDelimiters = FALSE,
 
        ### Network settings
@@ -360,6 +360,7 @@ opts$defaults <-
        uidClass = "rock-uid uid",
        utteranceClass = "rock-utterance utterance",
        contextClass = "context",
+       commentClass = "rock-comment",
 
        ### Regular expressions for Google Sheets
        gSheetId_extractionRegex =

@@ -59,6 +59,11 @@ div#codableSource {
   background-color: #fff;
 }
 
+.rock-comment {
+  font-weight: normal;
+  color: #999;
+}
+
 .rock-utterance {
   border-bottom: 1px dotted #aaa;
   cursor: crosshair;
@@ -70,6 +75,11 @@ div.rock-utterance {
   font-family: 'Ubuntu Mono', monospace;
   font-weight: bold;
   font-size: 16px;
+}
+
+div.rock-utterance:has(span.rock-comment) {
+  min-height: 1.1em;
+  line-height: 1.1em;
 }
 
 

@@ -4,14 +4,15 @@
 #'
 #' @param x A character vector with the source
 #' @param context Optionally, lines to pass the contextClass
-#' @param codeClass,codeValueClass,idClass,sectionClass,uidClass,contextClass,utteranceClass
+#' @param codeClass,codeValueClass,idClass,sectionClass,uidClass,contextClass,utteranceClass,commentClass
 #' The classes to use for, respectively, codes, code values,
 #' class instance identifiers (such as case
 #' identifiers or coder identifiers), section breaks, utterance
-#' identifiers, context, and full utterances. All `<span>` elements except
+#' identifiers, context, full utterances, and comments. All `<span>` elements except
 #' for the full utterances, which are placed in `<div>` elements.
 #'
 #' @return The character vector with the replacements made.
+#' @rdname prettifying_sources
 #' @export
 #'
 #' @examples ### Add tags to a mini example source
@@ -30,14 +31,16 @@ add_html_tags <- function(x,
                           uidClass = rock::opts$get("uidClass"),
                           contextClass = rock::opts$get("contextClass"),
                           utteranceClass = rock::opts$get("utteranceClass"),
-                          codingClass = rock::opts$get("codingClass")) {
+                          codingClass = rock::opts$get("codingClass"),
+                          commentClass = rock::opts$get("commentClass")) {
 
   codeRegexes <- rock::opts$get("codeRegexes");
   codeValueRegexes <- rock::opts$get("codeValueRegexes");
-  idRegexes <- rock::opts$get("idRegexes");
+  classInstanceRegex <- rock::opts$get("classInstanceRegex");
   sectionRegexes <- rock::opts$get("sectionRegexes");
   networkCodeRegexes <- rock::opts$get("networkCodeRegexes");
   uidRegex <- rock::opts$get("uidRegex");
+  ignoreRegex <- rock::opts$get("ignoreRegex");
   inductiveCodingHierarchyMarker <- rock::opts$get("inductiveCodingHierarchyMarker");
 
   res <- x;
@@ -46,6 +49,44 @@ add_html_tags <- function(x,
   ### with the corresponding entities
   res <- gsub("<", "&lt;", res, fixed=TRUE);
   res <- gsub(">", "&gt;", res, fixed=TRUE);
+
+  ###---------------------------------------------------------------------------
+  ### Lines to ignore (comments
+  ###---------------------------------------------------------------------------
+
+  linesToIgnore_lineNrs <-
+    grep(
+      ignoreRegex,
+      res,
+      perl = TRUE
+    );
+
+  emptyLines_lineNrs <-
+    grep(
+      "^\\s*$",
+      res,
+      perl = TRUE
+    );
+
+  linesToIgnore_lineNrs <-
+    sort(
+      unique(
+        union(
+          linesToIgnore_lineNrs,
+          emptyLines_lineNrs
+        )
+      )
+    );
+
+  linesToIgnore_contents <-
+    res[linesToIgnore_lineNrs];
+
+  linesToIgnore_contents <-
+    paste0(
+      '<span class="', commentClass, '">',
+      linesToIgnore_contents,
+      '</span>'
+    );
 
   ###---------------------------------------------------------------------------
   ### Codes
@@ -62,13 +103,14 @@ add_html_tags <- function(x,
   ### Add html tags to flat codes and tree codes
   for (currentCodeRegexName in names(codeRegexes)) {
     currentCodeRegex <- codeRegexes[currentCodeRegexName];
-    codeContentMatches <- grepl(currentCodeRegex, res);
+    codeContentMatches <- grepl(currentCodeRegex, res, perl = TRUE);
     if (any(codeContentMatches)) {
       codeContent <-
         ifelse(codeContentMatches,
                gsub(paste0(".*", currentCodeRegex, ".*"),
                     "\\1",
-                    res),
+                    res,
+                    perl = TRUE),
                "");
       splitCodeContent <-
         unlist(lapply(strsplit(codeContent,
@@ -82,20 +124,22 @@ add_html_tags <- function(x,
       res <-
         gsub(paste0("(", currentCodeRegex, ")"),
              paste0(splitCodeContent, '\\1</span>'),
-             res);
+             res,
+             perl = TRUE);
     }
   }
 
   ### Add html tags to network codes
   for (currentCodeRegexName in names(networkCodeRegexes)) {
     currentCodeRegex <- networkCodeRegexes[currentCodeRegexName];
-    codeContentMatches <- grepl(currentCodeRegex, res);
+    codeContentMatches <- grepl(currentCodeRegex, res, perl = TRUE);
     if (any(codeContentMatches)) {
       codeContent <-
         ifelse(codeContentMatches,
                gsub(paste0(".*", currentCodeRegex, ".*"),
                     "\\1",
-                    res),
+                    res,
+                    perl = TRUE),
                "");
       splitCodeContent <-
         unlist(lapply(strsplit(codeContent,
@@ -109,12 +153,13 @@ add_html_tags <- function(x,
       res <-
         gsub(paste0("(", currentCodeRegex, ")"),
              paste0(splitCodeContent, '\\1</span>'),
-             res);
+             res,
+             perl = TRUE);
     }
   }
 
   ###---------------------------------------------------------------------------
-  ### Codes values
+  ### Code values
   ###---------------------------------------------------------------------------
 
   ### Also replace <> symbols in all codeValueRegexes
@@ -122,15 +167,20 @@ add_html_tags <- function(x,
   codeValueRegexes <- gsub(">", "&gt;", codeValueRegexes, fixed=TRUE);
 
   ### Add html tags
+  if (is.null(names(codeValueRegexes)) && (!is.null(codeValueRegexes))) {
+    names(codeValueRegexes) <- paste0("codeValue", seq_along(codeValueRegexes));
+  }
+
   for (currentCodeValueRegexName in names(codeValueRegexes)) {
     currentCodeValueRegex <- codeValueRegexes[currentCodeValueRegexName];
-    codeValueContentMatches <- grepl(currentCodeValueRegex, res);
+    codeValueContentMatches <- grepl(currentCodeValueRegex, res, perl = TRUE);
     if (any(codeValueContentMatches)) {
       codeValueContent <-
         ifelse(codeValueContentMatches,
                gsub(paste0(".*", currentCodeValueRegex, ".*"),
                     "\\1",
-                    res),
+                    res,
+                    perl = TRUE),
                "");
       splitCodeValueContent <-
         unlist(lapply(strsplit(codeValueContent,
@@ -144,7 +194,8 @@ add_html_tags <- function(x,
       res <-
         gsub(paste0("(", currentCodeValueRegex, ")"),
              paste0(splitCodeValueContent, '\\1</span>'),
-             res);
+             res,
+             perl = TRUE);
     }
   }
 
@@ -159,13 +210,14 @@ add_html_tags <- function(x,
   ### Add break tags
   for (currentBreakRegexName in names(sectionRegexes)) {
     currentBreakRegex <- sectionRegexes[currentBreakRegexName];
-    codeContentMatches <- grepl(currentBreakRegex, res);
+    codeContentMatches <- grepl(currentBreakRegex, res, perl = TRUE);
     if (any(codeContentMatches)) {
       codeContent <-
         ifelse(codeContentMatches,
                gsub(paste0(".*", currentBreakRegex, ".*"),
                     "\\1",
-                    res),
+                    res,
+                    perl = TRUE),
                "");
       splitCodeContent <-
         unlist(lapply(strsplit(codeContent,
@@ -179,7 +231,8 @@ add_html_tags <- function(x,
       res <-
         gsub(paste0("(", currentBreakRegex, ")"),
              paste0(splitCodeContent, '\\1</span>'),
-             res);
+             res,
+             perl = TRUE);
     }
   }
 
@@ -188,20 +241,21 @@ add_html_tags <- function(x,
   ###---------------------------------------------------------------------------
 
   ### Also replace <> symbols in all idRegexes
-  idRegexes <- gsub("<", "&lt;", idRegexes, fixed=TRUE);
-  idRegexes <- gsub(">", "&gt;", idRegexes, fixed=TRUE);
+  classInstanceRegex <- gsub("<", "&lt;", classInstanceRegex, fixed=TRUE);
+  classInstanceRegex <- gsub(">", "&gt;", classInstanceRegex, fixed=TRUE);
 
   ### Add identifier tags
-  for (currentIdRegexName in names(idRegexes)) {
-    currentIdRegex <- idRegexes[currentIdRegexName];
-    codeContentMatches <- grepl(currentIdRegex, res);
+  for (currentIdRegexName in names(classInstanceRegex)) {
+    currentIdRegex <- classInstanceRegex[currentIdRegexName];
+    codeContentMatches <- grepl(currentIdRegex, res, perl = TRUE);
     if (any(codeContentMatches)) {
       res <-
         gsub(paste0("(", currentIdRegex, ")"),
              paste0('<span class="', idClass,
                     ' ', currentIdRegexName,
                     '">\\1</span>'),
-             res);
+             res,
+             perl = TRUE);
     }
   }
 
@@ -215,6 +269,13 @@ add_html_tags <- function(x,
          paste0('<span class="', codingClass, " ", uidClass,
                 '">\\1</span>'),
          res);
+
+  ###---------------------------------------------------------------------------
+  ### Replace lines to ignore ('overwriting' any applied tags)
+  ###---------------------------------------------------------------------------
+
+  res[linesToIgnore_lineNrs] <-
+    linesToIgnore_contents;
 
   ###---------------------------------------------------------------------------
   ### Context

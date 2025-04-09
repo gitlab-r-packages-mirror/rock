@@ -11,7 +11,9 @@ snoe_plot(
   estimateWithin = NULL,
   title = "SNOE plot",
   ggplot2Theme = ggplot2::theme_minimal(),
-  colors = c("#0072B2", "#E69F00")
+  greyScale = FALSE,
+  colors = c("#0072B2", "#E69F00"),
+  greyScaleColors = c("#808080", "#C0C0C0")
 )
 }
 \arguments{
