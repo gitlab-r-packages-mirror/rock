@@ -30,6 +30,7 @@ add_html_tags <- function(x,
                           sectionClass = rock::opts$get("sectionClass"),
                           uidClass = rock::opts$get("uidClass"),
                           contextClass = rock::opts$get("contextClass"),
+                          rockLineClass = rock::opts$get("rockLineClass"),
                           utteranceClass = rock::opts$get("utteranceClass"),
                           codingClass = rock::opts$get("codingClass"),
                           commentClass = rock::opts$get("commentClass")) {
@@ -271,11 +272,22 @@ add_html_tags <- function(x,
          res);
 
   ###---------------------------------------------------------------------------
+  ### Utterances
+  ###---------------------------------------------------------------------------
+
+  ### Add rock-line and utterance tags
+  res <- paste0('<div class="', rockLineClass, ' ', utteranceClass, '">', res, '</div>\n');
+
+  ###---------------------------------------------------------------------------
   ### Replace lines to ignore ('overwriting' any applied tags)
   ###---------------------------------------------------------------------------
 
   res[linesToIgnore_lineNrs] <-
     linesToIgnore_contents;
+
+  ### Add rock-line tag
+  res[linesToIgnore_lineNrs] <-
+    paste0('<div class="', rockLineClass, ' ">', res[linesToIgnore_lineNrs], '</div>\n');
 
   ###---------------------------------------------------------------------------
   ### Context
@@ -286,13 +298,6 @@ add_html_tags <- function(x,
     res[context] <-
       paste0('<span class="', contextClass, '">', res[context], '</span>');
   }
-
-  ###---------------------------------------------------------------------------
-  ### Utterances
-  ###---------------------------------------------------------------------------
-
-  ### Add utterance tags
-  res <- paste0('<div class="', utteranceClass, '">', res, '</div>\n');
 
   return(res);
 

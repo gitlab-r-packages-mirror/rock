@@ -89,45 +89,9 @@ prettify_source <- function(x,
       "</html>\n"
     );
 
-  if (is.null(output)) {
+  ### Save to file
 
-    if (interactive() && ("viewer" %in% outputViewer)) {
-      if ((!requireNamespace("rstudioapi", quietly = TRUE)) &&
-          (rstudioapi::isAvailable())) {
-        viewer <- rstudioapi::viewer
-      }
-      else {
-        viewer <- getOption("viewer", utils::browseURL)
-      }
-      outputToViewer <- TRUE
-    } else {
-      outputToViewer <- FALSE
-    }
-
-    if (isTRUE(getOption('knitr.in.progress'))) {
-
-      res <-
-        knitr::asis_output(c("\n\n",
-                             res,
-                             "\n\n"));
-
-      return(res);
-
-    } else {
-
-      if (outputToViewer) {
-        htmltools::html_print(htmltools::HTML(res),
-                              background = "white",
-                              viewer = viewer)
-      }
-      if ("console" %in% outputViewer) {
-        cat(res)
-      }
-      return(invisible(res));
-
-    }
-
-  } else {
+  if (!is.null(output)) {
 
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
@@ -147,12 +111,50 @@ prettify_source <- function(x,
                "did not write the file!");
         }
       }
-      return(invisible(res));
+
     } else {
       stop("You passed '", output,
            "' as output filename, but directory '", dirname(output),
            "' does not exist!");
     }
+  }
+
+  ### Show in viewer, or return when knitting
+
+  if (interactive() && ("viewer" %in% outputViewer)) {
+    if ((!requireNamespace("rstudioapi", quietly = TRUE)) &&
+        (rstudioapi::isAvailable())) {
+      viewer <- rstudioapi::viewer
+    }
+    else {
+      viewer <- getOption("viewer", utils::browseURL)
+    }
+    outputToViewer <- TRUE
+  } else {
+    outputToViewer <- FALSE
+  }
+
+  if (isTRUE(getOption('knitr.in.progress'))) {
+
+    res <-
+      knitr::asis_output(c("\n\n",
+                           res,
+                           "\n\n"));
+
+    return(res);
+
+  } else {
+
+    if (outputToViewer) {
+      htmltools::html_print(htmltools::HTML(res),
+                            background = "white",
+                            viewer = viewer)
+    }
+    if ("console" %in% outputViewer) {
+      cat(res)
+    }
+    return(invisible(res));
+
   }
 
 }

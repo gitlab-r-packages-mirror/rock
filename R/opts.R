@@ -358,6 +358,7 @@ opts$defaults <-
        idClass = "rock-ciid identifier",
        sectionClass = "sectionBreak",
        uidClass = "rock-uid uid",
+       rockLineClass = "rock-line",
        utteranceClass = "rock-utterance utterance",
        contextClass = "context",
        commentClass = "rock-comment",

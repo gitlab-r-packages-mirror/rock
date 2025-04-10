@@ -43,6 +43,7 @@
   font-weight: bold;
 }
 
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 
@@ -59,29 +60,34 @@ div#codableSource {
   background-color: #fff;
 }
 
-.rock-comment {
-  font-weight: normal;
-  color: #999;
+div.rock-line {
+  min-height: 1.1em;
+  line-height: 1.1em;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 14px;
 }
 
-.rock-utterance {
+div.rock-utterance {
+  font-weight: bold;
   border-bottom: 1px dotted #aaa;
+  border-top: 1px dotted #aaa;
   cursor: crosshair;
   min-height: 1.8em;
   line-height: 1.9em;
 }
 
-div.rock-utterance {
-  font-family: 'Ubuntu Mono', monospace;
-  font-weight: bold;
-  font-size: 16px;
+/* If the next element is also an utterance, remove the bottom-line,
+   since it will have a top-line already */
+
+div.rock-utterance:has(+ div.rock-utterance) {
+  border-bottom: 0px;
 }
 
-div.rock-utterance:has(span.rock-comment) {
-  min-height: 1.1em;
-  line-height: 1.1em;
+.rock-comment {
+  font-weight: normal;
+  color: #999;
+  cursor: auto;
 }
-
 
 .rock-coding {
   padding: 3px;
