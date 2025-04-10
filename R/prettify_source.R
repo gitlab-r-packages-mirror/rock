@@ -68,8 +68,8 @@ prettify_source <- function(x,
     add_html_tags(x);
 
   if (preserveSpaces) {
-    x <-
-      gsub("  ", "&nbsp;&nbsp;", x);
+    sourceBit <-
+      gsub("  ", "&nbsp;&nbsp;", sourceBit);
   }
 
   res <-
