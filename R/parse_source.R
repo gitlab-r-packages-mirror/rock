@@ -1274,14 +1274,17 @@ parse_source <- function(text,
               nm = res$networkCodes[[networkCodeRegex]]$nodeList
             );
 
-          res$networkCodes[[networkCodeRegex]]$node_df <-
-            DiagrammeR::create_node_df(
+          ### Prepare a list to provide to do.call when creating the node_df
+          ### (will be supplemented with aesthetics first)
+          list_for_ndf <-
+            list(
               n = length(res$networkCodes[[networkCodeRegex]]$nodeList),
               label = res$networkCodes[[networkCodeRegex]]$nodeList,
               type = networkCodeRegex
             );
 
           ### Prepare a list to provide to do.call when creating the edge_df
+          ### (will be supplemented with aesthetics first)
           list_for_edf <-
             list(
               from =
@@ -1296,77 +1299,231 @@ parse_source <- function(text,
               penwidth = res$networkCodes[[networkCodeRegex]]$coded_df$edge_weight
             );
 
-          if (!is.na(res$aestheticConfig)) {
+          ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          ### Apply aesthetics
+          ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            configName <- paste0("ROCK_", networkCodeRegex);
+          if ((!is.null(res$aestheticRegexes)) &&
+              (!all(is.na(res$aestheticRegexes))) &&
+              (!(length(res$aestheticRegexes) == 0))) {
 
-            uniqueTypes <-
-              unique(
-                res$networkCodes[[networkCodeRegex]]$coded_df$type
+            ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            ### Set defaults for node and edge attributes
+            ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            ### Backup values
+            defaultNetworkAesthetics <-
+              list(edge = list(color = "#000000",
+                               style = "solid",
+                               arrowhead = "normal"),
+                   node = list(fillcolor = "#FFFFFF",
+                               text = "#000000",
+                               stroke = "#000000")
               );
 
-            configuredEdgeTypes <-
-              unlist(
-                lapply(
-                  res$aestheticConfig[[configName]]$edges,
-                  function(x) {
-                    if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
-                      return("no_type_specified");
-                    } else {
-                      return(x$type);
-                    }
-                  }
-                )
-              );
+            ### Overwrite with {rock} package defaults
+            for (aestheticsTheme in theme_networkDiagram) {
 
-            res$networkCodes[[networkCodeRegex]]$edgeConfig <-
-              stats::setNames(
-                res$aestheticConfig[[configName]]$edges,
-                configuredEdgeTypes
-              );
-
-            for (currentType in uniqueTypes) {
-
-              configuredColor <-
-                unlist(
-                  res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
-                    setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-                    ]
-                );
-
-              if (!is.null(configuredColor)) {
-
-                res$networkCodes[[networkCodeRegex]]$coded_df[
-                  which(res$networkCodes[[networkCodeRegex]]$coded_df$type ==
-                          currentType),
-                  setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
-                ] <-
-                  configuredColor;
+              if (aestheticsTheme[3] == "node") {
+                defaultNetworkAesthetics$node[[aestheticsTheme[1]]] <-
+                  aestheticsTheme[2];
+              } else if (aestheticsTheme[3] == "edge") {
+                defaultNetworkAesthetics$edge[[aestheticsTheme[1]]] <-
+                  aestheticsTheme[2];
               }
 
             }
 
-            configuredEdgeAttributes <-
-              setdiff(
-                names(res$networkCodes[[networkCodeRegex]]$coded_df),
-                c("from", "to", "type", "weight", "edge_weight")
-              );
+            ### Overwrite with custom user defaults
+            for (aestheticsTheme in res$aestheticsTheme) {
 
-            for (edgeInfoToAdd in configuredEdgeAttributes) {
-              list_for_edf <-
-                c(list_for_edf,
-                  structure(
-                    list(
-                      unlist(
-                        res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
-                      )
-                    ),
-                    names = edgeInfoToAdd
+              if (aestheticsTheme[3] == "node") {
+                defaultNetworkAesthetics$node[[aestheticsTheme[1]]] <-
+                  aestheticsTheme[2];
+              } else if (aestheticsTheme[3] == "edge") {
+                defaultNetworkAesthetics$edge[[aestheticsTheme[1]]] <-
+                  aestheticsTheme[2];
+              }
+
+            }
+
+            ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            ### Edges
+
+            if (!is.null(res$aestheticRegexes$edgeAttributes)) {
+
+              edgeTypesWithAesthetics <-
+                names(res$aestheticRegexes$edgeAttributes);
+
+              usedEdgeTypes <-
+                unique(list_for_edf$rel);
+
+              edgeTypesToProcess <-
+                unlist(
+                  lapply(
+                    edgeTypesWithAesthetics,
+                    grep,
+                    usedEdgeTypes,
+                    value = TRUE
                   )
                 );
+
+              for (currentEdgeType in edgeTypesToProcess) {
+                for (currentAttribute in names(res$aestheticRegexes$edgeAttributes[[currentEdgeType]])) {
+
+                  ### If this attribute isn't set yet, set with default value
+                  if (!(currentAttribute %in% names(list_for_edf))) {
+                    list_for_edf[[currentAttribute]] <-
+                      rep(defaultNetworkAesthetics$edge[[currentAttribute]],
+                          length(list_for_edf$rel));
+                  }
+
+                  ### Replace with specified attribute value
+                  list_for_edf[[currentAttribute]] <-
+                    ifelse(
+                      grepl(
+                        currentEdgeType,
+                        list_for_edf$rel
+                      ),
+                      res$aestheticRegexes$edgeAttributes[[currentEdgeType]][[currentAttribute]],
+                      list_for_edf[[currentAttribute]]
+                    );
+
+                }
+              }
+
+            }
+
+            ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            ### Nodes
+
+            if (!is.null(res$aestheticRegexes$nodeAttributes)) {
+
+              nodeTypesWithAesthetics <-
+                names(res$aestheticRegexes$nodeAttributes);
+
+              usedNodeTypes <-
+                unique(list_for_ndf$label);
+
+              nodeTypesToProcess <- c();
+
+              for (nodeType in nodeTypesWithAesthetics) {
+                if (any(grepl(nodeType, usedNodeTypes))) {
+
+                  nodeTypesToProcess <- c(nodeTypesToProcess, nodeType);
+
+                };
+              }
+
+              for (currentNodeType in nodeTypesToProcess) {
+                for (currentAttribute in names(res$aestheticRegexes$nodeAttributes[[currentNodeType]])) {
+
+                  ### If this attribute isn't set yet, set with default value
+                  if (!(currentAttribute %in% names(list_for_ndf))) {
+                    list_for_ndf[[currentAttribute]] <-
+                      rep(defaultNetworkAesthetics$node[[currentAttribute]],
+                          length(list_for_ndf$label));
+                  }
+
+                  ### Replace with specified attribute value
+                  list_for_ndf[[currentAttribute]] <-
+                    ifelse(
+                      grepl(
+                        currentNodeType,
+                        list_for_ndf$label
+                      ),
+                      res$aestheticRegexes$nodeAttributes[[currentNodeType]][[currentAttribute]],
+                      list_for_ndf[[currentAttribute]]
+                    );
+
+                }
+              }
+
             }
 
           }
+
+          ### Removed 2025-04-23, when adding more generic asethetic processing
+
+          # if (!is.na(res$aestheticConfig)) {
+          #
+          #   configName <- paste0("ROCK_", networkCodeRegex);
+          #
+          #   uniqueTypes <-
+          #     unique(
+          #       res$networkCodes[[networkCodeRegex]]$coded_df$type
+          #     );
+          #
+          #   configuredEdgeTypes <-
+          #     unlist(
+          #       lapply(
+          #         res$aestheticConfig[[configName]]$edges,
+          #         function(x) {
+          #           if (is.null(x$type) || is.na(x$type) || (nchar(x$type) == 0)) {
+          #             return("no_type_specified");
+          #           } else {
+          #             return(x$type);
+          #           }
+          #         }
+          #       )
+          #     );
+          #
+          #   res$networkCodes[[networkCodeRegex]]$edgeConfig <-
+          #     stats::setNames(
+          #       res$aestheticConfig[[configName]]$edges,
+          #       configuredEdgeTypes
+          #     );
+          #
+          #   for (currentType in uniqueTypes) {
+          #
+          #     configuredColor <-
+          #       unlist(
+          #         res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]][
+          #           setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+          #           ]
+          #       );
+          #
+          #     if (!is.null(configuredColor)) {
+          #
+          #       res$networkCodes[[networkCodeRegex]]$coded_df[
+          #         which(res$networkCodes[[networkCodeRegex]]$coded_df$type ==
+          #                 currentType),
+          #         setdiff(names(res$networkCodes[[networkCodeRegex]]$edgeConfig[[currentType]]), "type")
+          #       ] <-
+          #         configuredColor;
+          #     }
+          #
+          #   }
+          #
+          #   configuredEdgeAttributes <-
+          #     setdiff(
+          #       names(res$networkCodes[[networkCodeRegex]]$coded_df),
+          #       c("from", "to", "type", "weight", "edge_weight")
+          #     );
+          #
+          #   for (edgeInfoToAdd in configuredEdgeAttributes) {
+          #     list_for_edf <-
+          #       c(list_for_edf,
+          #         structure(
+          #           list(
+          #             unlist(
+          #               res$networkCodes[[networkCodeRegex]]$coded_df[, edgeInfoToAdd]
+          #             )
+          #           ),
+          #           names = edgeInfoToAdd
+          #         )
+          #       );
+          #   }
+          #
+          # }
+
+          ### Create edge and node dataframes, and then the graphs
+
+          res$networkCodes[[networkCodeRegex]]$node_df <-
+            do.call(
+              DiagrammeR::create_node_df,
+              list_for_ndf
+            );
 
           res$networkCodes[[networkCodeRegex]]$edge_df <-
             do.call(
@@ -1380,6 +1537,9 @@ parse_source <- function(text,
               edges_df = res$networkCodes[[networkCodeRegex]]$edge_df
             );
 
+          # DiagrammeR::get_node_df(res$networkCodes[[networkCodeRegex]]$graph)
+
+          ### Apply {rock} package theme
           res$networkCodes[[networkCodeRegex]]$graph <-
             do.call(
               apply_graph_theme,
@@ -1388,6 +1548,20 @@ parse_source <- function(text,
                 theme_networkDiagram
               )
             );
+
+          ### Potentially apply custom user theme
+          if (!is.null(res$aestheticsTheme)) {
+            res$networkCodes[[networkCodeRegex]]$graph <-
+              do.call(
+                apply_graph_theme,
+                c(
+                  list(graph = res$networkCodes[[networkCodeRegex]]$graph),
+                  res$aestheticsTheme
+                )
+              );
+          }
+
+          # DiagrammeR::get_node_df(res$networkCodes[[networkCodeRegex]]$graph)
 
           res$networkCodes[[networkCodeRegex]]$dot <-
             DiagrammeR::generate_dot(

@@ -7,6 +7,7 @@ parse_sources <- function(path,
                           removeSectionBreakRows = rock::opts$get('removeSectionBreakRows'),
                           removeIdentifierRows = rock::opts$get('removeIdentifierRows'),
                           removeEmptyRows = rock::opts$get('removeEmptyRows'),
+                          filesWithYAML = NULL,
                           ignoreOddDelimiters = FALSE,
                           checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
                           mergeInductiveTrees = FALSE,
@@ -74,6 +75,7 @@ parse_sources <- function(path,
            postponeDeductiveTreeBuilding = TRUE,
            removeSectionBreakRows = removeSectionBreakRows,
            removeIdentifierRows = removeIdentifierRows,
+           filesWithYAML = filesWithYAML,
            removeEmptyRows = removeEmptyRows,
            mergeAttributes = FALSE,
            silent=silent);
@@ -200,7 +202,17 @@ parse_sources <- function(path,
                              ".");
                       });
 
+                } else {
+
+                  ### No attributes for this source
+                  return(NULL);
+
                 }
+
+              } else {
+
+                ### No attributes for this source
+                return(NULL);
 
               }
 

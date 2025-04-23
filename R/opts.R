@@ -425,7 +425,7 @@ opts$defaults <-
            #c("width", "4", "node"),
            c("color", "#888888", "edge"),
            c("dir", "none", "edge"),
-           c("headclip", "false", "edge"),
+           c("headclip", "true", "edge"),
            c("tailclip", "false", "edge"),
            c("fillcolor", "#FFFFFF", "node")
          ),
@@ -444,14 +444,14 @@ opts$defaults <-
            c("width", "4", "node"),
            c("color", "#888888", "edge"),
            c("dir", "none", "edge"),
-           c("headclip", "false", "edge"),
+           c("headclip", "true", "edge"),
            c("tailclip", "false", "edge"),
            c("fillcolor", "#FFFFFF", "node")
          ),
 
        theme_networkDiagram =
          list(
-           c("outputorder", "nodesfirst", "graph"),
+           c("outputorder", "edgesfirst", "graph"),
            c("fixedsize", "false", "node"),
            c("fontname", "arial", "node"),
            c("fontname", "arial", "edge"),
@@ -459,6 +459,8 @@ opts$defaults <-
            c("style", "rounded,filled", "node"),
            c("color", "#000000", "node"),
            c("color", "#000000", "edge"),
+           c("headclip", "true", "edge"),
+           c("tailclip", "false", "edge"),
            c("fillcolor", "#FFFFFF", "node")
          ),
 
