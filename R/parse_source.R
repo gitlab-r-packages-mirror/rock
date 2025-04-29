@@ -1623,7 +1623,7 @@ parse_source <- function(text,
                     )
                   ];
 
-                if (length(rankbit_same) > 1) {
+                #if (length(rankbit_same) > 1) {
 
                   rankbit <-
                     paste0(
@@ -1633,7 +1633,7 @@ parse_source <- function(text,
                       " }\n"
                     );
 
-                }
+                #}
 
               }
 

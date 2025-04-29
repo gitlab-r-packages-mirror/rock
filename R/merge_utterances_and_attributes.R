@@ -32,7 +32,18 @@ merge_utterances_and_attributes <- function(qdt,
       subDf_forClass <-
         subDf_forClass[
           ,
-          unlist(apply(subDf_forClass, 2, \(x) if(all(is.na(x))) return(FALSE) else return(TRUE)))
+          unlist(
+            apply(
+              subDf_forClass,
+              2,
+              function(x) {
+                if(all(is.na(x)))
+                  return(FALSE)
+                else
+                  return(TRUE)
+              }
+            )
+          )
         ];
 
       resQdt <-
