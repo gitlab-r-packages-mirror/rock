@@ -1563,10 +1563,104 @@ parse_source <- function(text,
 
           # DiagrammeR::get_node_df(res$networkCodes[[networkCodeRegex]]$graph)
 
-          res$networkCodes[[networkCodeRegex]]$dot <-
-            DiagrammeR::generate_dot(
-              res$networkCodes[[networkCodeRegex]]$graph
-            );
+          ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          ### Process any rank information, if any was provided
+          ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+          if ("rank" %in% names(res$aestheticConfig$ROCK_aesthetics)) {
+
+            rankbit <- "";
+
+            if ("min" %in% names(res$aestheticConfig$ROCK_aesthetics$rank)) {
+
+              rankbit_min <-
+                res$networkCodes[[networkCodeRegex]]$node_df$id[
+                  grep(
+                    res$aestheticConfig$ROCK_aesthetics$rank$min,
+                    res$networkCodes[[networkCodeRegex]]$node_df$label
+                  )
+                ];
+
+              rankbit <-
+                paste0(
+                  rankbit,
+                  "\n\n  { rank = min; ",
+                  paste0(rankbit_min, collapse = "; "),
+                  "; }\n"
+                );
+
+            }
+
+            if ("max" %in% names(res$aestheticConfig$ROCK_aesthetics$rank)) {
+
+              rankbit_max <-
+                res$networkCodes[[networkCodeRegex]]$node_df$id[
+                  grep(
+                    res$aestheticConfig$ROCK_aesthetics$rank$max,
+                    res$networkCodes[[networkCodeRegex]]$node_df$label
+                  )
+                ];
+
+              rankbit <-
+                paste0(
+                  rankbit,
+                  "\n\n  { rank = max; ",
+                  paste0(rankbit_max, collapse = "; "),
+                  "; }\n"
+                );
+
+            }
+
+            if ("same" %in% names(res$aestheticConfig$ROCK_aesthetics$rank)) {
+
+              for (currentRegex in res$aestheticConfig$ROCK_aesthetics$rank$same) {
+
+                rankbit_same <-
+                  res$networkCodes[[networkCodeRegex]]$node_df$id[
+                    grep(
+                      currentRegex,
+                      res$networkCodes[[networkCodeRegex]]$node_df$label
+                    )
+                  ];
+
+                rankbit <-
+                  paste0(
+                    rankbit,
+                    "\n\n  { rank = same; ",
+                    paste0(rankbit_same, collapse = "; "),
+                    "; }\n"
+                  );
+              }
+
+            }
+
+            rankbit <-
+              paste0(rankbit, "\n}");
+
+            res$networkCodes[[networkCodeRegex]]$dot_raw <-
+              DiagrammeR::generate_dot(
+                res$networkCodes[[networkCodeRegex]]$graph
+              );
+
+
+            res$networkCodes[[networkCodeRegex]]$dot <-
+              sub(
+                "}$",
+                rankbit,
+                res$networkCodes[[networkCodeRegex]]$dot_raw
+              );
+
+            res$networkCodes[[networkCodeRegex]]$graph_htmlwidget <-
+              DiagrammeR::grViz(
+                res$networkCodes[[networkCodeRegex]]$dot
+              );
+
+          } else {
+            res$networkCodes[[networkCodeRegex]]$dot <-
+              DiagrammeR::generate_dot(
+                res$networkCodes[[networkCodeRegex]]$graph
+              );
+          }
 
         }
 
