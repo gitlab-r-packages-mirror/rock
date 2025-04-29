@@ -1586,7 +1586,7 @@ parse_source <- function(text,
                   rankbit,
                   "\n\n  { rank = min; ",
                   paste0(rankbit_min, collapse = "; "),
-                  "; }\n"
+                  " }\n"
                 );
 
             }
@@ -1606,7 +1606,7 @@ parse_source <- function(text,
                   rankbit,
                   "\n\n  { rank = max; ",
                   paste0(rankbit_max, collapse = "; "),
-                  "; }\n"
+                  " }\n"
                 );
 
             }
@@ -1623,13 +1623,18 @@ parse_source <- function(text,
                     )
                   ];
 
-                rankbit <-
-                  paste0(
-                    rankbit,
-                    "\n\n  { rank = same; ",
-                    paste0(rankbit_same, collapse = "; "),
-                    "; }\n"
-                  );
+                if (length(rankbit_same) > 1) {
+
+                  rankbit <-
+                    paste0(
+                      rankbit,
+                      "\n\n  { rank = same; ",
+                      paste0(rankbit_same, collapse = "; "),
+                      " }\n"
+                    );
+
+                }
+
               }
 
             }
@@ -1654,6 +1659,20 @@ parse_source <- function(text,
               DiagrammeR::grViz(
                 res$networkCodes[[networkCodeRegex]]$dot
               );
+
+
+            res$networkCodes[[networkCodeRegex]]$graph_svg <-
+              tryCatch({
+                DiagrammeRsvg::export_svg(
+                  res$networkCodes[[networkCodeRegex]]$graph_htmlwidget
+                );
+              },
+              error = function(e) {
+                paste0("Encountered error when trying to create SVG, ",
+                       "specifically:", e$message)
+              }
+            );
+
 
           } else {
             res$networkCodes[[networkCodeRegex]]$dot <-
