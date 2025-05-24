@@ -13,6 +13,7 @@ prettify_source(
   outputViewer = "viewer",
   template = "default",
   includeCSS = TRUE,
+  preserveSpaces = TRUE,
   includeBootstrap = rock::opts$get("includeBootstrap"),
   preventOverwriting = rock::opts$get(preventOverwriting),
   silent = rock::opts$get(silent)
@@ -51,6 +52,9 @@ the path and filename of a CSS file.}
 
 \item{includeCSS}{Whether to include the ROCK CSS in the returned HTML.}
 
+\item{preserveSpaces}{Whether to preservce spaces (by replacing every second
+space with \verb{&nbsp;}) or not.}
+
 \item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 
 \item{preventOverwriting}{Whether to prevent overwriting of output files.}
@@ -62,4 +66,17 @@ A character vector with the prettified source
 }
 \description{
 This function adds HTML tags to a source to allow pretty printing/viewing.
+}
+\examples{
+### Get path to example source
+examplePath <-
+  system.file("extdata", package="rock");
+
+### Get a path to one example file
+exampleFile <-
+  file.path(examplePath, "example-1.rock");
+
+rock::prettify_source(
+  exampleFile
+);
 }

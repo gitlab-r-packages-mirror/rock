@@ -33,7 +33,8 @@ add_html_tags <- function(x,
                           rockLineClass = rock::opts$get("rockLineClass"),
                           utteranceClass = rock::opts$get("utteranceClass"),
                           codingClass = rock::opts$get("codingClass"),
-                          commentClass = rock::opts$get("commentClass")) {
+                          commentClass = rock::opts$get("commentClass"),
+                          yamlClass = rock::opts$get("yamlClass")) {
 
   codeRegexes <- rock::opts$get("codeRegexes");
   codeValueRegexes <- rock::opts$get("codeValueRegexes");
@@ -44,6 +45,11 @@ add_html_tags <- function(x,
   ignoreRegex <- rock::opts$get("ignoreRegex");
   inductiveCodingHierarchyMarker <- rock::opts$get("inductiveCodingHierarchyMarker");
 
+  encoding <- rock::opts$get('encoding');
+  silent <- rock::opts$get('silent');
+  delimiterRegEx <- rock::opts$get('delimiterRegEx');
+  ignoreOddDelimiters <- FALSE;
+
   res <- x;
 
   ### First replace smaller than and bigger than symbols
@@ -52,7 +58,7 @@ add_html_tags <- function(x,
   res <- gsub(">", "&gt;", res, fixed=TRUE);
 
   ###---------------------------------------------------------------------------
-  ### Lines to ignore (comments
+  ### Lines to ignore (comments)
   ###---------------------------------------------------------------------------
 
   linesToIgnore_lineNrs <-
@@ -88,6 +94,47 @@ add_html_tags <- function(x,
       linesToIgnore_contents,
       '</span>'
     );
+
+  ###---------------------------------------------------------------------------
+  ### YAML lines
+  ###---------------------------------------------------------------------------
+
+  ### This is adapted from from yum::extract_yaml_fragments()
+
+  yamlDelimiterLines <- grep(delimiterRegEx, res);
+
+  if (length(yamlDelimiterLines) > 0) {
+
+    if (!yum::is.even(length(yamlDelimiterLines))) {
+      stop("Uneven number of YAML chunk delimiters found! You",
+           "probably forgot or accidently deleted it. The YAML ",
+           "chunk delimiter is usually '---' on its own on a line. ",
+           "Specifically, I searched for all lines matching regular ",
+           "expression '", delimiterRegEx, "'.");
+    }
+
+    yamlFragmentIndices <- seq_along(yamlDelimiterLines);
+
+    if (length(yamlFragmentIndices) == 2) {
+      indexSets <- list(seq(yamlDelimiterLines[1], yamlDelimiterLines[2]));
+    } else {
+      indexSets <- mapply(seq, yamlDelimiterLines[yum::is.odd(yamlFragmentIndices)],
+                          yamlDelimiterLines[yum::is.even(yamlFragmentIndices)], SIMPLIFY = FALSE);
+    }
+
+    yamlLines <- unlist(indexSets);
+
+    yamlLines_contents <-
+      paste0(
+        '<div class="', yamlClass, '">',
+        res[yamlLines],
+        '</div>'
+      );
+
+  } else {
+    yamlLines <- NULL;
+    yamlLines_contents <- NULL;
+  }
 
   ###---------------------------------------------------------------------------
   ### Codes
@@ -272,11 +319,32 @@ add_html_tags <- function(x,
          res);
 
   ###---------------------------------------------------------------------------
+  ### Context
+  ###---------------------------------------------------------------------------
+
+  ### Add context tags, if applicable
+  if (!is.null(context)) {
+    res[context] <-
+      paste0('<span class="', contextClass, '">', res[context], '</span>');
+  }
+
+  ###---------------------------------------------------------------------------
   ### Utterances
   ###---------------------------------------------------------------------------
 
   ### Add rock-line and utterance tags
   res <- paste0('<div class="', rockLineClass, ' ', utteranceClass, '">', res, '</div>\n');
+
+  ###---------------------------------------------------------------------------
+  ### Replace YAML lines ('overwriting' any applied tags)
+  ###---------------------------------------------------------------------------
+
+  res[yamlLines] <-
+    yamlLines_contents;
+
+  # ### Add rock-line tag
+  res[yamlLines] <-
+    paste0('<div class="', rockLineClass, ' ">', res[yamlLines], '</div>\n');
 
   ###---------------------------------------------------------------------------
   ### Replace lines to ignore ('overwriting' any applied tags)
@@ -288,16 +356,6 @@ add_html_tags <- function(x,
   ### Add rock-line tag
   res[linesToIgnore_lineNrs] <-
     paste0('<div class="', rockLineClass, ' ">', res[linesToIgnore_lineNrs], '</div>\n');
-
-  ###---------------------------------------------------------------------------
-  ### Context
-  ###---------------------------------------------------------------------------
-
-  ### Add context tags, if applicable
-  if (!is.null(context)) {
-    res[context] <-
-      paste0('<span class="', contextClass, '">', res[context], '</span>');
-  }
 
   return(res);
 

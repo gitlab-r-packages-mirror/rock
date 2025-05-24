@@ -244,6 +244,7 @@ opts$defaults <-
        uidPrefix = "uid=",
        utteranceMarker = "\n",
        fragmentDelimiter = "\n\n-----\n\n",
+       fragmentDelimiterHTML = "\n\n<hr class='rock-fragment-delimiter' />\n\n",
        replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
                                 "\\1.\\3"),
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
@@ -268,7 +269,7 @@ opts$defaults <-
        ### Used for collecting sources
        utteranceGlue = "\n\n",
        sourceFormatting = "\n\n**Source: `%s`**\n\n",
-       codeHeadingFormatting = "%s *(path: %s)*",
+       codeHeadingFormatting = "%s <em>(path: %s)</em>",
 
        ### Cognitive Interview: Narrative Response Models
        nrm_wsNames = list(
@@ -362,6 +363,7 @@ opts$defaults <-
        utteranceClass = "rock-utterance utterance",
        contextClass = "context",
        commentClass = "rock-comment",
+       yamlClass = "rock-yaml-chunk",
 
        ### Regular expressions for Google Sheets
        gSheetId_extractionRegex =

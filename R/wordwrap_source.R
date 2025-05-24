@@ -94,11 +94,11 @@ wordwrap_source <- function(input,
 
   if ((length(non_YAML_indices) == 1) && (is.numeric(non_YAML_indices))) {
     ### If no YAML fragments are present, non_YAML_indices is just c(1)
-    fullResult <- res;
-  } else {
-    ### Insert lines that were potentially cleaned back in
     fullResult <- fullSource;
     fullResult[non_YAML_indices] <- res;
+  } else {
+    ### Insert lines that were potentially cleaned back in
+    fullResult <- res;
   }
 
   res <- fullResult;

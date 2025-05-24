@@ -12,7 +12,17 @@
 #' @returns A character vector with the prettified source
 #' @export
 #'
-#' @examples
+#' @examples ### Get path to example source
+#' examplePath <-
+#'   system.file("extdata", package="rock");
+#'
+#' ### Get a path to one example file
+#' exampleFile <-
+#'   file.path(examplePath, "example-1.rock");
+#'
+#' rock::prettify_source(
+#'   exampleFile
+#' );
 prettify_source <- function(x,
                             heading = NULL,
                             headingLevel = 2,

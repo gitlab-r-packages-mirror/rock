@@ -118,12 +118,17 @@ collect_coded_fragments <- function(x,
                                     template = "default",
                                     rawResult = FALSE,
                                     includeCSS = TRUE,
+                                    preserveSpaces = TRUE,
                                     codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
                                     preventOverwriting = rock::opts$get("preventOverwriting"),
                                     silent=rock::opts$get("silent")) {
 
-  fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
+  if (add_html_tags) {
+    fragmentDelimiter <- rock::opts$get(fragmentDelimiterHTML);
+  } else {
+    fragmentDelimiter <- rock::opts$get(fragmentDelimiter);
+  }
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get(utteranceGlue));
   sourceFormatting <- rock::opts$get(sourceFormatting);
 
@@ -359,37 +364,51 @@ collect_coded_fragments <- function(x,
     names(res) <-
       usedCodes;
   } else {
-    ### Set codePrefix based on whether a heading
+    ### Set the code subheading level based on whether a heading
     ### will be included
     if (is.null(heading)) {
       if (length(usedCodes) > 5) {
         heading <-
           paste0("<h", headingLevel, ">",
-                 "Collected coded fragments with ",
-                 sum(context), " lines of context",
+                 "Collected coded fragments with a total of ",
+                 sum(context), " lines of context (",
+                 context[1], "+", context[2], ")",
                  "</h", headingLevel, ">",
                  "\n\n");
       } else {
         heading <-
           paste0("<h", headingLevel, ">",
                  "Collected coded fragments for codes ",
-                 vecTxtQ(usedCodes), " with ",
-                 sum(context), " lines of context",
+                 vecTxtQ(usedCodes), " with a total of ",
+                 sum(context), " lines of context (",
+                 context[1], "+", context[2], ")",
                  "</h", headingLevel, ">",
                  "\n\n");
       }
-      codePrefix <-
-        paste0(repStr("#", headingLevel+1), " ");
+      codeSubheadingLevel <- headingLevel + 1;
     } else if (is.character(heading)) {
       heading <-
         paste0(repStr("#", headingLevel), " ",
                heading, "\n\n");
-      codePrefix <-
-        paste0(repStr("#", headingLevel+1), " ");
+      codeSubheadingLevel <- headingLevel + 1;
     } else {
       heading <- FALSE;
-      codePrefix <-
-        paste0(repStr("#", headingLevel), " ");
+      codeSubheadingLevel <- headingLevel;
+    }
+
+    ### Function to produce the code subheading at the right level
+    codeSubheading <- function(x,
+                               hl = codeSubheadingLevel) {
+      return(
+        unlist(
+          lapply(
+            x,
+            heading_vector,
+            headingLevel = hl,
+            output = "html"
+          )
+        )
+      );
     }
 
     ### Combine all fragments within each code
@@ -418,11 +437,12 @@ collect_coded_fragments <- function(x,
     ### Unlist into vector
     res <- unlist(res);
     ### Add titles
-    res <- paste0(codePrefix,
-                  sprintf(
-                    codeHeadingFormatting,
-                    usedCodes[elementsToKeep],
-                    usedCodesPaths[elementsToKeep]
+    res <- paste0(codeSubheading(
+                    sprintf(
+                      codeHeadingFormatting,
+                      usedCodes[elementsToKeep],
+                      usedCodesPaths[elementsToKeep]
+                    )
                   ),
                   fragmentDelimiter,
                   res[elementsToKeep],
@@ -456,21 +476,30 @@ collect_coded_fragments <- function(x,
     res_without_css <- res;
   }
 
+  if (preserveSpaces) {
+    res_for_html <-
+      gsub("  ", "&nbsp;&nbsp;", res);
+  } else {
+    res_for_html <-
+      res;
+  }
+
   if (is.null(output)) {
     if (isTRUE(getOption('knitr.in.progress'))) {
 
-      ###-----------------------------------------------------------------------
+      ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       ### Adding the CSS is missing, isn't that wrong?
-      ###-----------------------------------------------------------------------
+      ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       return(knitr::asis_output(c("\n\n",
-                                  res,
+                                  res_for_html,
                                   "\n\n")));
     } else {
       if (outputToViewer) {
         #viewerHTML <- markdown::mark_html(text=res_without_css);
         #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
-        viewerHTML <- markdown::mark(text=res_without_css);
+        #viewerHTML <- markdown::mark(text=res_without_css);
+        viewerHTML <- res_for_html;
         if (add_html_tags) {
           viewerHTML <- htmltools::HTML(
             rock::css(template=template,
@@ -496,7 +525,8 @@ collect_coded_fragments <- function(x,
     if (outputToViewer) {
       #viewerHTML <- markdown::mark_html(text=res_without_css);
       #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
-      viewerHTML <- markdown::mark(text=res_without_css);
+      #viewerHTML <- markdown::mark(text=res_without_css);
+      viewerHTML <- res_for_html;
       viewerHTML <- htmltools::HTML(c("<html>", viewerHTML, "</html"));
       if (add_html_tags) {
         viewerHTML <- htmltools::HTML(
@@ -519,11 +549,25 @@ collect_coded_fragments <- function(x,
 
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
-        writeLines(res,
+
+        fileHTML <- res_for_html;
+        fileHTML <- htmltools::HTML(c("<html>", fileHTML, "</html"));
+        if (add_html_tags) {
+          fileHTML <- htmltools::HTML(
+            rock::css(template=template,
+                      includeBootstrap = ifelse(is.character(includeBootstrap),
+                                                TRUE,
+                                                includeBootstrap)),
+            fileHTML
+          );
+        }
+
+        writeLines(fileHTML,
                    con = con <- file(output,
                                      "w",
                                      encoding="UTF-8"));
         close(con);
+
         if (!silent) {
           cat0("Wrote output file '", output,
                "' to disk.");

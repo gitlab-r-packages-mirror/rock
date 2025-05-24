@@ -14,8 +14,11 @@ add_html_tags(
   sectionClass = rock::opts$get("sectionClass"),
   uidClass = rock::opts$get("uidClass"),
   contextClass = rock::opts$get("contextClass"),
+  rockLineClass = rock::opts$get("rockLineClass"),
   utteranceClass = rock::opts$get("utteranceClass"),
-  codingClass = rock::opts$get("codingClass")
+  codingClass = rock::opts$get("codingClass"),
+  commentClass = rock::opts$get("commentClass"),
+  yamlClass = rock::opts$get("yamlClass")
 )
 }
 \arguments{
@@ -23,10 +26,10 @@ add_html_tags(
 
 \item{context}{Optionally, lines to pass the contextClass}
 
-\item{codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass}{The classes to use for, respectively, codes, code values,
+\item{codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass, commentClass}{The classes to use for, respectively, codes, code values,
 class instance identifiers (such as case
 identifiers or coder identifiers), section breaks, utterance
-identifiers, context, and full utterances. All \verb{<span>} elements except
+identifiers, context, full utterances, and comments. All \verb{<span>} elements except
 for the full utterances, which are placed in \verb{<div>} elements.}
 }
 \value{

@@ -20,6 +20,7 @@ collect_coded_fragments(
   template = "default",
   rawResult = FALSE,
   includeCSS = TRUE,
+  preserveSpaces = TRUE,
   codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
   includeBootstrap = rock::opts$get("includeBootstrap"),
   preventOverwriting = rock::opts$get("preventOverwriting"),

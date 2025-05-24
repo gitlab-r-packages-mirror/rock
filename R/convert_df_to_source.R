@@ -253,70 +253,70 @@ convert_df_to_source <- function(data,
           );
       }
 
-      ### Add the utterances and codes
+    }
 
-      if (is.null(utterance_classId)) {
-        for (j in cols_to_utterances) {
-          sourceList[[i]] <-
-            c(sourceList[[i]],
-              "",
-              paste0(data[i, j], codeVector[i])
-            );
-        }
-      } else {
-        for (j in cols_to_utterances) {
-          sourceList[[i]] <-
-            c(sourceList[[i]],
-              "",
-              paste0(
-                codeDelimiters[1],
-                utterance_classId,
-                ciid_separator,
-                j,
-                codeDelimiters[2]
-              ),
-              "",
-              paste0(data[i, j])
-            );
-        }
+    ### Add the utterances and codes
+
+    if (is.null(utterance_classId)) {
+      for (j in cols_to_utterances) {
+        sourceList[[i]] <-
+          c(sourceList[[i]],
+            "",
+            paste0(data[i, j], codeVector[i])
+          );
       }
-
-      ### Create an object with attributes
-
-      if (!is.null(cols_to_attributes)) {
-
-        currentAttributes <-
-          stats::setNames(
-            c(list(as.character(data[i, cols_to_ciids])),
-              as.list(as.character(data[i, cols_to_attributes]))
+    } else {
+      for (j in cols_to_utterances) {
+        sourceList[[i]] <-
+          c(sourceList[[i]],
+            "",
+            paste0(
+              codeDelimiters[1],
+              utterance_classId,
+              ciid_separator,
+              j,
+              codeDelimiters[2]
             ),
-            nm = c(ciid_labels[names(cols_to_ciids)],
-                   cols_to_attributes)
+            "",
+            paste0(data[i, j])
           );
-
-        attributeList[[i]] <-
-          currentAttributes;
-
-        attributesAsYamlList[[i]] <-
-          attributeList_to_yaml(
-            currentAttributes,
-            delimiterString = delimiterString,
-            attributeContainer = attributeContainer
-          );
-
-      } else {
-
-        attributeList <- c();
-
       }
+    }
+
+    ### Create an object with attributes
+
+    if (!is.null(cols_to_attributes)) {
+
+      currentAttributes <-
+        stats::setNames(
+          c(list(as.character(data[i, cols_to_ciids])),
+            as.list(as.character(data[i, cols_to_attributes]))
+          ),
+          nm = c(ciid_labels[names(cols_to_ciids)],
+                 cols_to_attributes)
+        );
+
+      attributeList[[i]] <-
+        currentAttributes;
+
+      attributesAsYamlList[[i]] <-
+        attributeList_to_yaml(
+          currentAttributes,
+          delimiterString = delimiterString,
+          attributeContainer = attributeContainer
+        );
+
+    } else {
+
+      attributeList <- c();
 
     }
 
-    ### Add empty line to the end
-    sourceList[[i]] <-
-      c(sourceList[[i]], "");
-
   }
+
+  ### Add empty line to the end
+  sourceList[[i]] <-
+    c(sourceList[[i]], "");
 
   if (length(attributeList) > 0) {
 

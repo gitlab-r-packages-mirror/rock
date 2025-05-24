@@ -36,6 +36,7 @@ parse_sources(
   removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
   removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
   removeEmptyRows = rock::opts$get("removeEmptyRows"),
+  filesWithYAML = NULL,
   ignoreOddDelimiters = FALSE,
   checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
   mergeInductiveTrees = FALSE,

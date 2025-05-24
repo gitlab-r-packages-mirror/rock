@@ -1,11 +1,25 @@
 splitString <- function(x,
-                        splittingValuesRegex = zirconia::opts$get("splittingValuesRegex")) {
-  
-  return(
+                        splittingValuesRegex = rock::opts$get("splittingValuesRegex")) {
+
+  res <-
     strsplit(
       x,
       splittingValuesRegex
-    )[[1]]
+    );
+
+  ### Retain empty elements (empty lines)
+  res <- lapply(res, function(x) {
+    if (length(x) == 0) {
+      return("");
+    } else {
+      return(x);
+    }
+  });
+
+  return(
+    unlist(
+      res
+    )
   );
-  
+
 }
