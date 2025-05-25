@@ -48,9 +48,9 @@
 #' );
 #'
 #' ### Look at two examples
-#' parsedSources$syncResults$mergedSourceDf[
+#' parsedSources$syncResults$qdt[
 #'   ,
-#'   c("streamB_Code3", "streamC_Code1")
+#'   c("streamB_Code3_streamB", "streamC_Code1_streamC")
 #' ];
 sync_streams <- function(x,
                          primaryStream,
@@ -548,11 +548,13 @@ sync_streams <- function(x,
                 #glue_df_list(
                   currentSource[[currentStreamName]]
                 );
+
               if (prependStreamIdToColName) {
                 names(res) <- paste0(currentStreamName,
                                      colNameGlue,
                                      names(res));
               }
+
               if (appendStreamIdToColName) {
                 names(res) <- paste0(names(res),
                                      colNameGlue,

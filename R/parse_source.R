@@ -2303,8 +2303,10 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
     }
   }
 
-  if ((!all(is.na(x$deductiveCodeTrees))) && (length(x$deductiveCodeTrees) > 0)) {
-    print(graphics::plot(x$deductiveCodeTrees));
+  if (!is.null(x$deductiveCodeTrees)) {
+    if (is.environment(x$deductiveCodeTrees)) {
+      print(graphics::plot(x$deductiveCodeTrees));
+    }
   }
 
   invisible(x);
