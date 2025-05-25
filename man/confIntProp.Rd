@@ -44,8 +44,7 @@ as the second 'shape argument'.
 
 }
 \seealso{
-\code{\link[=binom.test]{binom.test()}} and \code{\link{ggProportionPlot}, the
-function for which this was written.}
+\code{\link[=binom.test]{binom.test()}}
 }
 \author{
 Unknown (see \code{\link[=binom.test]{binom.test()}}; adapted by Gjalt-Jorn Peters)

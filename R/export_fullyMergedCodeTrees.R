@@ -27,6 +27,11 @@
 export_fullyMergedCodeTrees <- function(x, file) {
   if (!is.null(x$fullyMergedCodeTrees) && inherits(x$fullyMergedCodeTrees, "Node")) {
 
+    if (!requireNamespace("rsvg", quietly = TRUE)) {
+      stop("To export diagrams, you need to have the {rsvg} package installed. ",
+           "You can install it with:\n\n    install.packages('rsvg');")
+    }
+
     graph <-
       data.tree::ToDiagrammeRGraph(
         x$fullyMergedCodeTrees
