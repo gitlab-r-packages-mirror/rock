@@ -231,7 +231,7 @@ _ROCKproject:
       {
         zipResults <-
           utils::capture.output(
-            zip(
+            utils::zip(
               zipfile = output,
               files = selectedFiles
             )

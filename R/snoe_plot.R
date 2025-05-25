@@ -236,9 +236,9 @@ snoe_plot <- function(x,
     ggplot2::ggplot(
       data = combinedDf,
       mapping = ggplot2::aes(
-        x = occurrence,
-        y = codeId,
-        fill = estimation
+        x = .data[['occurrence']],
+        y = .data[['codeId']],
+        fill = .data[['estimation']]
       )
     ) +
     ggplot2::geom_col();

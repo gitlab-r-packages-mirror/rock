@@ -33,7 +33,7 @@ code_freq_by <- function(x,
 
   if (((!inherits(x, "rock_parsedSources")) &&
        (!inherits(x, "rock_parsedSource"))) ||
-      (is.null(srcs_parents_nrms$qdt) || (!is.data.frame(srcs_parents_nrms$qdt)))) {
+      (is.null(x$qdt) || (!is.data.frame(x$qdt)))) {
     stop("As `x`, please provide an object of parsed sources.");
   }
 

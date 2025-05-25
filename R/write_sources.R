@@ -78,17 +78,17 @@ write_sources <- function(x,
       c(res,
         newFilename);
 
-    if (!silent) {
-      message("I just wrote ", length(sourceNames), " sources to path '",
-              output,
-              "' ",
-              ifelse(preventOverwriting,
-                     "(unless the files already existed)",
-                     "(overwriting any files that may already have existed)"),
-              ". Note that these files may all be overwritten if this ",
-              "script is ran again (unless `preventOverwriting` is set to `TRUE`).");
-    }
+  }
 
+  if (!silent) {
+    message("I just wrote ", length(names(x)), " sources to path '",
+            output,
+            "' ",
+            ifelse(preventOverwriting,
+                   "(unless the files already existed)",
+                   "(overwriting any files that may already have existed)"),
+            ". Note that these files may all be overwritten if this ",
+            "script is ran again (unless `preventOverwriting` is set to `TRUE`).");
   }
 
   invisible(res);
