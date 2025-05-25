@@ -4,14 +4,14 @@
 #' @param codes A regular expression to select codes to include, or,
 #' alternatively, a character vector with literal code idenfitiers.
 #' @param estimateWithin The column specifying within what to count.
-#' @param sortByFreq Whether to sort by frequency decreasingly
-#' (`decreasing`, the default), increasingly (`increasing`),
-#' or alphabetically (`NULL`).
-#' @param forceRootStripping Force the stripping of roots, even if they are
-#' different.
+#' @param matchRegexAgainstPaths Whether to match the `codes` regular expression
+#' against the full code paths or only against the code identifier.
 #' @param ggplot2Theme Can be used to specify theme elements for the plot.
 #' @param title Title of the plot
-#' @param silent Whether to be chatty or silent.
+#' @param greyScale Whether to produce the plot in color (`FALSE`) or greyscale
+#' (`TRUE`).
+#' @param colors,greyScaleColors The (two) colors to use for the color and
+#' greyscale versions of the SNOE plot.
 #'
 #' @return a [ggplot2::ggplot()].
 #' @export
@@ -26,10 +26,9 @@
 #' ### Load example source
 #' loadedExample <- rock::parse_source(exampleFile);
 #'
-#' ### Show code frequencies
+#' ### Show code occurrence estimates
 #' rock::snoe_plot(
-#'   loadedExample,
-#'   codes = "un"
+#'   loadedExample
 #' );
 snoe_plot <- function(x,
                       codes = ".*",

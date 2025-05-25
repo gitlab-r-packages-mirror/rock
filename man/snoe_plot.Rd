@@ -12,7 +12,7 @@ snoe_plot(
   title = "SNOE plot",
   ggplot2Theme = ggplot2::theme_minimal(),
   greyScale = FALSE,
-  colors = c("#0072B2", "#E69F00"),
+  colors = c("#0072B2", "#C0C0C0"),
   greyScaleColors = c("#808080", "#C0C0C0")
 )
 }
@@ -22,20 +22,20 @@ snoe_plot(
 \item{codes}{A regular expression to select codes to include, or,
 alternatively, a character vector with literal code idenfitiers.}
 
+\item{matchRegexAgainstPaths}{Whether to match the \code{codes} regular expression
+against the full code paths or only against the code identifier.}
+
 \item{estimateWithin}{The column specifying within what to count.}
 
 \item{title}{Title of the plot}
 
 \item{ggplot2Theme}{Can be used to specify theme elements for the plot.}
 
-\item{sortByFreq}{Whether to sort by frequency decreasingly
-(\code{decreasing}, the default), increasingly (\code{increasing}),
-or alphabetically (\code{NULL}).}
+\item{greyScale}{Whether to produce the plot in color (\code{FALSE}) or greyscale
+(\code{TRUE}).}
 
-\item{forceRootStripping}{Force the stripping of roots, even if they are
-different.}
-
-\item{silent}{Whether to be chatty or silent.}
+\item{colors, greyScaleColors}{The (two) colors to use for the color and
+greyscale versions of the SNOE plot.}
 }
 \value{
 a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.
@@ -55,9 +55,8 @@ exampleFile <-
 ### Load example source
 loadedExample <- rock::parse_source(exampleFile);
 
-### Show code frequencies
+### Show code occurrence estimates
 rock::snoe_plot(
-  loadedExample,
-  codes = "un"
+  loadedExample
 );
 }
