@@ -162,7 +162,8 @@ parse_sources <- function(path,
             res$parsedSources,
             function(currentSource) {
 
-              if (length(currentSource$attributes) > 0) {
+              if ((!all(is.na(currentSource$attributes))) &&
+                  (length(currentSource$attributes) > 0)) {
 
                 listOfDataframes <-
                   lapply(
@@ -176,31 +177,34 @@ parse_sources <- function(path,
                     }
                   );
 
-                if (length(listOfDataframes) > 0) {
+                if (length(unlist(listOfDataframes)) > 0) {
 
                   attributeDfForThisClassInThisSource <-
-                    tryCatch(
-                      do.call(rbind,
-                              listOfDataframes),
-                      error = function(e) {
+                    rbind_df_list(listOfDataframes);
 
-                        colCounts <-
-                          table(
-                            unlist(
-                              lapply(
-                                listOfDataframes,
-                                colnames
-                              )
-                            )
-                          );
-
-                        stop("I could not parse the attributes into a data frame. At present, ",
-                             "I require that all attributes are specified for all class ",
-                             "instances - you may have omitted one (or more). Sorry! ",
-                             "The following columns appear the following number of ",
-                             "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
-                             ".");
-                      });
+                  # attributeDfForThisClassInThisSource <-
+                  #   tryCatch(
+                  #     do.call(rbind,
+                  #             listOfDataframes),
+                  #     error = function(e) {
+                  #
+                  #       colCounts <-
+                  #         table(
+                  #           unlist(
+                  #             lapply(
+                  #               listOfDataframes,
+                  #               colnames
+                  #             )
+                  #           )
+                  #         );
+                  #
+                  #       stop("I could not parse the attributes into a data frame. At present, ",
+                  #            "I require that all attributes are specified for all class ",
+                  #            "instances - you may have omitted one (or more). Sorry! ",
+                  #            "The following columns appear the following number of ",
+                  #            "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                  #            ".");
+                  #     });
 
                 } else {
 
@@ -223,8 +227,9 @@ parse_sources <- function(path,
 
         attributeDfsRbindedOverSources <-
           tryCatch(
-            do.call(rbind,
-                    listOfAttDfsForThisClassForAllSources),
+            rbind_df_list(listOfAttDfsForThisClassForAllSources),
+            # do.call(rbind,
+            #         listOfAttDfsForThisClassForAllSources),
             error = function(e) {
 
               colCounts <-
@@ -245,7 +250,73 @@ parse_sources <- function(path,
                    ".");
             });
 
-        return(attributeDfsRbindedOverSources);
+        if (length(unlist(listOfAttDfsForThisClassForAllSources)) > 0) {
+
+          if (length(duplicated(attributeDfsRbindedOverSources[[currentClassId]])) > 0) {
+
+            res <-
+              do.call(
+                rbind,
+                lapply(
+                  sort(unique(attributeDfsRbindedOverSources[[currentClassId]])),
+                  function(instanceId) {
+
+                    instanceDf <-
+                      attributeDfsRbindedOverSources[
+                        attributeDfsRbindedOverSources[[currentClassId]] == instanceId,
+                      ];
+
+                    instanceList <-
+                      lapply(
+                        names(instanceDf),
+                        function(colName) {
+
+                          col <- instanceDf[, colName];
+
+                          nonMissingValues <-
+                            unique(col[!is.na(col)]);
+
+                          if (all(is.na(col))) {
+                            return(NA);
+                          } else if (all(!is.na(col)) && (length(nonMissingValues) == 1)) {
+                            return(nonMissingValues);
+                          } else if (length(nonMissingValues) == 1) {
+                            return(nonMissingValues);
+                          } else {
+                            ### Take the first non-NA element
+                            firstElement <- nonMissingValues[1];
+                            warning("For instance '", instanceId, "' of class '",
+                                    currentClassId, "', attribute '",
+                                    colName, "' has different values: ",
+                                    vecTxtQ(nonMissingValues),
+                                    ". Taking the first element: '",
+                                    firstElement, "'.");
+                            return(firstElement);
+                          }
+                        }
+                    );
+
+                    names(instanceList) <- names(instanceDf);
+
+                    return(
+                      as.data.frame(
+                        instanceList
+                      )
+                    );
+
+                  }
+                )
+              );
+
+          } else {
+            res <- attributeDfsRbindedOverSources;
+          }
+
+        } else {
+          res <- NA;
+        }
+
+        return(res);
 
       }
     );
