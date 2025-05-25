@@ -1,7 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
 Version: 0.9.0
-Date: 2024-01-24
+Date: 2025-05-25
 Authors@R: 
     c(person(given = "Gjalt-Jorn",
              family = "Peters",
@@ -15,14 +15,15 @@ Authors@R:
 Maintainer: Gjalt-Jorn Peters <rock@opens.science>
 Description: The Reproducible Open Coding Kit ('ROCK', and this package, 'rock')
   was developed to facilitate reproducible and open coding, specifically
-  geared towards qualitative research methods. Although it is a
-  general-purpose toolkit, three specific applications have been
-  implemented, specifically an interface to the 'rENA' package that
-  implements Epistemic Network Analysis ('ENA'), means to process notes
-  from Cognitive Interviews ('CIs'), and means to work with decentralized
-  construct taxonomies ('DCTs'). The 'ROCK' and this 'rock' package are described
-  in the ROCK book <https://rockbook.org> and more information, such as tutorials,
-  is available at <https://rock.science>.
+  geared towards qualitative research methods. It was developed to be both
+  human- and machine-readable, in the spirit of MarkDown and 'YAML'. The idea is
+  that this makes it relatively easy to write other functions and packages
+  to process 'ROCK' files. The 'rock' package contains functions for coding,
+  collecting and showing codes fragments, prettifying sources, as well as a
+  number of advanced analyses such as the Qualitative Network Approach and
+  Qualitative/Unified Exploration of State Transitions. The 'ROCK' and
+  this 'rock' package are described in the ROCK book <https://rockbook.org> and
+  more information, such as tutorials, is available at <https://rock.science>.
 BugReports: https://gitlab.com/r-packages/rock/-/issues
 URL: https://rock.opens.science
 License: GPL-3
