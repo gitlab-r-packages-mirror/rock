@@ -812,7 +812,7 @@ parse_source <- function(text,
     unlist(
       lapply(
         regmatches(x,
-                   gregexpr(anchorRegex, x)),
+                   gregexpr(anchorRegex, x, perl=TRUE)),
         function(x) {
           if (length(x) == 0) {
             return("");
@@ -851,7 +851,7 @@ parse_source <- function(text,
       ### Find matches (the full substrings that match this code in each line)
       matches <-
         regmatches(x,
-                   gregexpr(codeRegexes[codeRegex], x));
+                   gregexpr(codeRegexes[codeRegex], x, perl=TRUE));
 
       ### Retain only the 'parenthesized' expression (i.e. the part of
       ### this code's regex between the parentheses, i.e., the actual code itself)
@@ -1039,17 +1039,18 @@ parse_source <- function(text,
       ### Find matches (the full substrings that match this code in each line)
       matches <-
         regmatches(x,
-                   gregexpr(codeValueRegexes[codeValueRegex], x));
+                   gregexpr(codeValueRegexes[codeValueRegex], x,
+                            perl = TRUE));
 
       ### Retain only the 'parenthesized' expression (i.e. the part of
       ### this code's regex between the parentheses, i.e., the actual code itself)
       cleanedCodeValueNames <-
         lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex],
-               replacement="\\1");
+               replacement="\\1", perl=TRUE);
 
       cleanedValues <-
         lapply(matches, gsub, pattern=codeValueRegexes[codeValueRegex],
-               replacement="\\2");
+               replacement="\\2", perl=TRUE);
 
       namedCodeValues <-
         mapply(
@@ -1108,7 +1109,7 @@ parse_source <- function(text,
       ### Find matches (the full substrings that match this code in each line)
       matches <-
         regmatches(x,
-                   gregexpr(networkCodeRegexes[networkCodeRegex], x));
+                   gregexpr(networkCodeRegexes[networkCodeRegex], x, perl=TRUE));
 
       matchUIDs <-
         ifelse(
@@ -2302,7 +2303,7 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
     }
   }
 
-  if (!is.na(x$deductiveCodeTrees) && (length(x$deductiveCodeTrees) > 0)) {
+  if ((!all(is.na(x$deductiveCodeTrees))) && (length(x$deductiveCodeTrees) > 0)) {
     print(graphics::plot(x$deductiveCodeTrees));
   }
 

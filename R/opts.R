@@ -183,7 +183,7 @@ opts$defaults <-
                               prbid = 'probeId',
                               mqid = 'metaqid'),
        classInstanceRegex = c(ciid = "\\[\\[(?!uid)(?!UID)\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]"),
-       codeValueRegexes = c(codeValues = "\\[\\[\\s*([a-zA-Z0-9_>]+)\\s*\\|\\|\\s*([^\\]]+)\\s*\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[\\s*([a-zA-Z0-9_>]+)\\s*\\|\\|\\s*([^\\]]*)\\s*\\]\\]"),
        networkCodeRegexes = c(network = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*->\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*\\|\\|\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*(\\|\\|[a-zA-Z0-9_>]*)?\\s*\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
        sectionRegexes = c(sectionBreak = "---<<\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*>>---"),
