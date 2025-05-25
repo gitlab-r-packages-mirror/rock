@@ -47,7 +47,7 @@ prettify_source <- function(x,
     } else {
       stop("As `x`, pass either the path to a file, or a source as ",
            "read with rock::load_source(). You passed an object with class ",
-           vectTxtQ(class(x)), ".");
+           vecTxtQ(class(x)), ".");
     }
   }
 

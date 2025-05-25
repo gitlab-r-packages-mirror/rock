@@ -22,8 +22,7 @@
 #' @author Unknown (see [binom.test()]; adapted by Gjalt-Jorn Peters)
 #'
 #' Maintainer: Gjalt-Jorn Peters <rock@@opens.science>
-#' @seealso [binom.test()] and \code{\link{ggProportionPlot}, the
-#' function for which this was written.}
+#' @seealso [binom.test()]
 #' @keywords univar htest
 #' @examples
 #'
