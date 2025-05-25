@@ -54,6 +54,7 @@ Suggests:
     readxl,
     rmarkdown,
     rvest,
+    rsvg,
     rstudioapi,
     striprtf,
     testthat,
