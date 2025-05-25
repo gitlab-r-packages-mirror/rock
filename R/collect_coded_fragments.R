@@ -128,11 +128,12 @@ collect_coded_fragments <- function(x,
 
   if (add_html_tags) {
     fragmentDelimiter <- rock::opts$get("fragmentDelimiterHTML");
+    sourceFormatting <- rock::opts$get("sourceFormatting_html");
   } else {
     fragmentDelimiter <- rock::opts$get("fragmentDelimiter");
+    sourceFormatting <- rock::opts$get("sourceFormatting");
   }
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get("utteranceGlue"));
-  sourceFormatting <- rock::opts$get("sourceFormatting");
 
   if (is.null(context) || any(is.na(context)) || (length(context) == 0)) {
     context <- 0;

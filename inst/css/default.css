@@ -47,6 +47,15 @@
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
+.rock-source-filename {
+  color: #888899;
+}
+
+.rock-source-filename pre {
+  display: inline;
+  color: #888899;
+}
+
 
 .sectionBreak {
   background-color: #ddddff;
