@@ -225,30 +225,35 @@ parse_sources <- function(path,
             }
           );
 
-        attributeDfsRbindedOverSources <-
-          tryCatch(
-            rbind_df_list(listOfAttDfsForThisClassForAllSources),
-            # do.call(rbind,
-            #         listOfAttDfsForThisClassForAllSources),
-            error = function(e) {
+        if (length(unlist(listOfAttDfsForThisClassForAllSources)) == 0) {
+          attributeDfsRbindedOverSources <- NULL;
+        } else {
 
-              colCounts <-
-                table(
-                  unlist(
-                    lapply(
-                      listOfAttDfsForThisClassForAllSources,
-                      colnames
+          attributeDfsRbindedOverSources <-
+            tryCatch(
+              rbind_df_list(listOfAttDfsForThisClassForAllSources),
+              # do.call(rbind,
+              #         listOfAttDfsForThisClassForAllSources),
+              error = function(e) {
+
+                colCounts <-
+                  table(
+                    unlist(
+                      lapply(
+                        listOfAttDfsForThisClassForAllSources,
+                        colnames
+                      )
                     )
-                  )
-                );
+                  );
 
-              stop("I could not parse the attributes into a data frame. At present, ",
-                   "I require that all attributes are specified for all class ",
-                   "instances - you may have omitted one (or more). Sorry! ",
-                   "The following columns appear the following number of ",
-                   "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
-                   ".");
-            });
+                stop("I could not parse the attributes into a data frame. At present, ",
+                     "I require that all attributes are specified for all class ",
+                     "instances - you may have omitted one (or more). Sorry! ",
+                     "The following columns appear the following number of ",
+                     "times: ", vecTxt(paste0(names(colCounts), " (", colCounts, " times)")),
+                     ".");
+              });
+        }
 
         if (length(unlist(listOfAttDfsForThisClassForAllSources)) > 0) {
 
