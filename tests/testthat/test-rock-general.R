@@ -57,7 +57,7 @@ testthat::test_that("example 2 is read correctly", {
     ];
 
   testthat::expect_equal(nrow(testres_fragment),
-                         16);
+                         18);
 
 });
 

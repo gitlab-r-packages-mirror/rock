@@ -50,7 +50,8 @@ merge_utterances_and_attributes <- function(qdt,
         merge(
           resQdt,
           subDf_forClass,
-          all = TRUE
+          all.x = TRUE,
+          all.y = FALSE
         );
 
       ### Sort again by original sequence identifier; merge mixes the order
