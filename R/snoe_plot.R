@@ -21,12 +21,7 @@
 #'
 #' ### Get a path to one example file
 #' exampleFile <-
-#'   file.path(examplePath, "example-1.rock");
-#'
-#' exampleFile <-
-#'   readLines(
-#'     "https://codeberg.org/explicate/ehps-2024-pluriformity-uniformity-roundtable/raw/branch/main/data-coded/sourceId-20240905T0800Z---coderId-consensus-1.rock"
-#'   );
+#'   file.path(examplePath, "example-3.rock");
 #'
 #' ### Load example source
 #' loadedExample <- rock::parse_source(exampleFile);
@@ -43,7 +38,7 @@ snoe_plot <- function(x,
                       title = "SNOE plot",
                       ggplot2Theme = ggplot2::theme_minimal(),
                       greyScale = FALSE,
-                      colors = c("#0072B2", "#E69F00"),
+                      colors = c("#0072B2", "#C0C0C0"),
                       greyScaleColors = c("#808080", "#C0C0C0")) {
 
   if ((!inherits(x, "rock_parsedSources")) && (!inherits(x, "rock_parsedSource"))) {
@@ -112,7 +107,7 @@ snoe_plot <- function(x,
     CIs_totalCodedUtterances_objects <-
       lapply(
         counts_total,
-        ufs::confIntProp,
+        rock::confIntProp,
         n = totalCodedUtterances
       );
 
@@ -126,6 +121,8 @@ snoe_plot <- function(x,
 
     CIs_totalCodedUtterances_df$codeId <- codesToInclude;
     CIs_totalCodedUtterances_df$prop <- proportions_totalCodedUtterances;
+    CIs_totalCodedUtterances_df$count <- counts_total;
+    CIs_totalCodedUtterances_df$totalCodedUtterances <- totalCodedUtterances;
 
     row.names(CIs_totalCodedUtterances_df) <- codesToInclude;
 
@@ -232,7 +229,9 @@ snoe_plot <- function(x,
       ordered = TRUE
     );
 
-  res <- list();
+  res <- list(
+    occurrenceEstimates = CIs_totalCodedUtterances_df
+  );
 
   res$plot <-
     ggplot2::ggplot(
@@ -252,14 +251,26 @@ snoe_plot <- function(x,
           low = greyScaleColors[1],
           high = greyScaleColors[2],
           guide = NULL
-        )
+        ) +
+      ggplot2::scale_color_gradient(
+        low = greyScaleColors[1],
+        high = greyScaleColors[2],
+        guide = NULL
+      );
   } else {
-    res$plot +
+    res$plot <-
+      res$plot +
       ggplot2::scale_fill_gradient(
         low = colors[1],
         high = colors[2],
         guide = NULL
-      )
+      ) +
+      ggplot2::scale_color_gradient(
+        low = colors[1],
+        high = colors[2],
+        guide = NULL
+      );
+
   }
 
   res$plot <-
@@ -274,6 +285,8 @@ snoe_plot <- function(x,
       axis.ticks.x = ggplot2::element_blank(),
       axis.text.x = ggplot2::element_blank()
     );
+
+  class(res) <- c("rock_snoe_plot", "rock");
 
   return(res);
 
@@ -303,4 +316,10 @@ snoe_plot <- function(x,
     # ) +
     # ggplot2::theme_minimal();
 
+}
+
+#' @export
+print.rock_snoe_plot <- function(x, ...) {
+  print(x$plot);
+  return(invisible(x));
 }

@@ -50,12 +50,7 @@ examplePath <-
 
 ### Get a path to one example file
 exampleFile <-
-  file.path(examplePath, "example-1.rock");
-
-exampleFile <-
-  readLines(
-    "https://codeberg.org/explicate/ehps-2024-pluriformity-uniformity-roundtable/raw/branch/main/data-coded/sourceId-20240905T0800Z---coderId-consensus-1.rock"
-  );
+  file.path(examplePath, "example-3.rock");
 
 ### Load example source
 loadedExample <- rock::parse_source(exampleFile);
