@@ -1976,9 +1976,6 @@ parse_source <- function(text,
 
       res$qdt <- qdtNew;
 
-
-
-
       # ### Add attributes to the utterances
       # for (i in seq_along(idRegexes)) {
       #   ### Check whether attributes was provided for this identifier
@@ -2189,6 +2186,8 @@ parse_source <- function(text,
   if (!silent) {
     cat("\n\n");
   }
+
+  class(res) <- c("rock_parsedSource", "rock");
 
   ### Return result
   return(res);
