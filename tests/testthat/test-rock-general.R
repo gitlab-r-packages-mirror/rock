@@ -57,7 +57,7 @@ testthat::test_that("example 2 is read correctly", {
     ];
 
   testthat::expect_equal(nrow(testres_fragment),
-                         18);
+                         17);
 
 });
 
@@ -169,7 +169,7 @@ testthat::test_that("Sources are exported to html properly", {
 
   testres <- export_to_html(testres);
 
-  testthat::expect_true(grepl('<span class="code codes">[[grandchildCode2]]</span>',
+  testthat::expect_true(grepl('<span class="rock-coding rock-treeCode code codes">[[grandchildCode2]]</span>',
                               testres[["example-1.rock"]],
                               fixed=TRUE));
 
@@ -189,9 +189,17 @@ testthat::test_that("Coded fragments are collected properly", {
 
   testres <- collect_coded_fragments(testres_parsed);
 
-  testthat::expect_true(grepl('\n#### Topic2 *(path: codes>Topic2)*\n\n-----\n\n\n\n**Source: `longer-test.rock`**\n\n<div class=\"utterance\">It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. <span class=\"code codes\">[[Topic2]]</span>',
-                              testres,
-                              fixed=TRUE));
+  testthat::expect_true(grepl(
+    paste0(
+      "<h4> Topic2 <em>\\(path: codes>Topic2\\)</em></h4>",
+      "\\s*",
+      "<hr class='rock-fragment-delimiter' />",
+      "\\s*",
+      "<div class='rock-source-filename'><strong>Source: <pre>longer-test.rock</pre></strong></div>",
+      "\\s*",
+      '<div class="rock-line rock-utterance utterance">It has roots in a piece of classical Latin literature from 45 BC'
+    ),
+    testres));
 
 });
 
