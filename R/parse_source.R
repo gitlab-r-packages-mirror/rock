@@ -363,8 +363,6 @@ parse_source <- function(text,
         ),
         error = function(e) {
 
-          browser();
-
           colCounts <-
             table(
               unlist(
