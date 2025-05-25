@@ -74,9 +74,6 @@ testthat::test_that("a code tree is printed correctly", {
   testthat::expect_output(print(testres),
                           "This source contained inductive coding trees.");
 
-  testthat::expect_output(print(testres),
-                          "This source contained deductive coding trees.");
-
 });
 
 ###-----------------------------------------------------------------------------

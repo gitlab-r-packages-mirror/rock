@@ -109,8 +109,8 @@ parsedSources <- rock::sync_streams(
 );
 
 ### Look at two examples
-parsedSources$syncResults$mergedSourceDf[
+parsedSources$syncResults$qdt[
   ,
-  c("streamB_Code3", "streamC_Code1")
+  c("streamB_Code3_streamB", "streamC_Code1_streamC")
 ];
 }
