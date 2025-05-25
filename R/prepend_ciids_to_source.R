@@ -10,6 +10,10 @@
 #' is the class identifier (e.g. "codeId" or "participantId") and each
 #' element is the class instance identifier.
 #' @param output If specified, the coded source will be written here.
+#' @param allOnOneLine Whether to add all class instance identifiers to one
+#' line (`TRUE`) or add then on successive lines (`FALSE`).
+#' @param designationSymbol The symbol to use to designate an instance
+#' identifier for a class (can be "`=`" or "`:`" as per the ROCK standard).
 #' @param preventOverwriting Whether to prevent overwriting existing files.
 #' @param encoding The encoding to use.
 #' @param rlWarn Whether to let [readLines()] warn, e.g. if files do not end

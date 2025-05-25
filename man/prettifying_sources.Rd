@@ -26,10 +26,10 @@ add_html_tags(
 
 \item{context}{Optionally, lines to pass the contextClass}
 
-\item{codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass, commentClass}{The classes to use for, respectively, codes, code values,
+\item{codeClass, codeValueClass, idClass, sectionClass, uidClass, contextClass, utteranceClass, commentClass, networkCodeClass, rockLineClass, codingClass, yamlClass}{The classes to use for, respectively, codes, code values,
 class instance identifiers (such as case
 identifiers or coder identifiers), section breaks, utterance
-identifiers, context, full utterances, and comments. All \verb{<span>} elements except
+identifiers, context, full utterances, comments, network codes, source lines, codings, and YAML chunks. All \verb{<span>} elements except
 for the full utterances, which are placed in \verb{<div>} elements.}
 }
 \value{

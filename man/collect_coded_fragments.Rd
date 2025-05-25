@@ -91,6 +91,9 @@ fragments, or one character value in markdown format.}
 
 \item{includeCSS}{Whether to include the ROCK CSS in the returned HTML.}
 
+\item{preserveSpaces}{Whether to preserve spaces in the output (replacing
+double spaces with "\verb{&nbsp;&nbsp;}").}
+
 \item{codeHeadingFormatting}{A character value of the
 form \verb{\%s *(path: \%s)*} (the default) or \verb{\\n\\n### \%s\\n\\n*path:* ``\%s``\\n\\n}.
 The first \verb{\%s} is replaced by the code identifier; the second \verb{\%s} by the

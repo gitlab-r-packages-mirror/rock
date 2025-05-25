@@ -1,6 +1,8 @@
 #' @rdname writing_sources
 #' @param filenamePrefix,filenameSuffix Optional prefixes or suffixes to pre-
 #' or append to the filenames when writing the files.
+#' @param recursive Whether to recursively create directories if the `output`
+#' directory does not yet exist.
 #' @export
 write_sources <- function(x,
                           output,

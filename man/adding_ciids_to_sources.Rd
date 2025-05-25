@@ -41,6 +41,12 @@ element is the class instance identifier.}
 
 \item{output}{If specified, the coded source will be written here.}
 
+\item{allOnOneLine}{Whether to add all class instance identifiers to one
+line (\code{TRUE}) or add then on successive lines (\code{FALSE}).}
+
+\item{designationSymbol}{The symbol to use to designate an instance
+identifier for a class (can be "\code{=}" or "\code{:}" as per the ROCK standard).}
+
 \item{preventOverwriting}{Whether to prevent overwriting existing files.}
 
 \item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end

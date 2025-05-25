@@ -56,6 +56,8 @@
 #' the path and filename of a CSS file.
 #' @param omitEmptyCodes Whether to still show the title for codes that do not
 #' occur or not.
+#' @param preserveSpaces Whether to preserve spaces in the output (replacing
+#' double spaces with "`&nbsp;&nbsp;`").
 #' @param codeHeadingFormatting A character value of the
 #' form `%s *(path: %s)*` (the default) or `\n\n### %s\n\n*path:* ``%s``\n\n`.
 #' The first `%s` is replaced by the code identifier; the second `%s` by the

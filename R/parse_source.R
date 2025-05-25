@@ -162,6 +162,9 @@ parse_source <- function(text,
         if (!silent) {
           cat0("Read the contents of file '", text, "' (", length(x), " lines read).\n");
         }
+
+        originalSource <- text;
+
       } else {
         x <- text;
         if ((length(x) == 1) && grepl('\n', x)) {
@@ -172,6 +175,9 @@ parse_source <- function(text,
         if (!silent) {
           cat0("Read input string (", length(x), " lines read).\n\n");
         }
+
+        originalSource <- "<no file; source provided as text>";
+
       }
     }
   } else {
@@ -182,6 +188,9 @@ parse_source <- function(text,
       if (!silent) {
         cat0("Read the contents of file '", file, "' (", length(x), " lines read).\n");
       }
+
+      originalSource <- file;
+
     } else {
       stop("The file you specified in argument `file` ('",
            paste0(file, collapse=" "),
@@ -1914,7 +1923,11 @@ parse_source <- function(text,
   }
 
   if (nrow(cleanSourceDf) > 0) {
+
     cleanSourceDf$sequenceNr <- 1:nrow(cleanSourceDf);
+
+    cleanSourceDf$originalSource <- originalSource;
+
   }
 
   ### Store results in the object to return
@@ -1932,7 +1945,7 @@ parse_source <- function(text,
 
   ### Merge attributes with source dataframe
   if (mergeAttributes) {
-    if (length(res$attributes) > 0) {
+    if ((length(res$attributes) > 0) && (nrow(cleanSourceDf) > 0)) {
 
       ###---------------------------------------------------------------------------
       ###
@@ -2241,15 +2254,15 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
       lapply(actualIdentifiers,
              function(x) return(x[!(x=="no_id")]));
     identifierInfo <-
-      glue::glue("This source contained matches with identifier regular expressions. Specifically, ",
+      glue::glue("This source contained matches with class instance identifier regular expressions. Specifically, ",
                  glue::glue_collapse(lapply(names(actualIdentifiers),
-                                            function(x) return(glue::glue("identifier regular expression '{x}' matched ",
-                                                                          "with identifiers {vecTxtQ(actualIdentifiers[[x]])}"))),
+                                            function(x) return(glue::glue("class instance identifier regular expression '{x}' matched ",
+                                                                          "class instance identifiers {vecTxtQ(actualIdentifiers[[x]])}"))),
                                      ", "),
                  ".");
   } else {
     identifierInfo <-
-      glue::glue("This source contained no matches with identifier regular expressions.")
+      glue::glue("This source contained no matches with class instance identifier regular expressions.")
   }
 
   print(glue::glue("\n\n",
@@ -2258,13 +2271,13 @@ print.rock_parsedSource <- function(x, prefix="### ",  ...) {
                    "After removing lines that matched '{x$arguments$ignoreRegex}', ",
                    "the regular expression specifying which lines to ignore, and did not ",
                    "make up the {length(x$yamlFragments)} YAML fragments with attributes or ",
-                   "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.",
-                   " {totalSectionMatches} of these matched one of the section regular ",
+                   "deductive coding tree specifications, {nrow(x$rawSourceDf)} lines remained.\n\n",
+                   "Of these, {totalSectionMatches} one of the section break (segmentation) regular ",
                    "expressions ({vecTxtQ(x$arguments$sectionRegexes)}), and after ",
                    "removing these lines and all lines that were empty after removing ",
                    "characters that matched one or more class instance identifier(s) ",
-                   "({vecTxtQ(x$arguments$idRegexes)}) and coding regular expressions",
-                   "regular expressions, ({vecTxtQ(x$arguments$codeRegexes)}), ",
+                   "({vecTxtQ(x$arguments$idRegexes)}) and coding regular expressions,",
+                   "({vecTxtQ(x$arguments$codeRegexes)}), ",
                    "{nrow(x$sourceDf)} utterances remained.",
                    "\n\n",
                    "{prefix}Class instance identifiers\n\n",

@@ -40,6 +40,9 @@ file(s) to write. Set to \code{FALSE} to overwrite.}
 
 \item{filenamePrefix, filenameSuffix}{Optional prefixes or suffixes to pre-
 or append to the filenames when writing the files.}
+
+\item{recursive}{Whether to recursively create directories if the \code{output}
+directory does not yet exist.}
 }
 \value{
 Invisibly, the input (\code{x}), to enable chaining in pipes.

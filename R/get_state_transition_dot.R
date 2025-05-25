@@ -1,10 +1,12 @@
-#' Get the state transition data frame
+#' Get the Dot code for a state transition graph
 #'
 #' @param x A state transition table as produced by a call
 #' to [get_state_transition_table()].
+#' @param labelFun A function to apply to the edge labels in preprocessing.
+#' @param labelFunArgs Arguments to specify to `labelFun` in addition to the
+#' first argument (the edge weight, a number).
 #'
-#' @return A dataframe with columns `fromState`, `toState`,
-#' and `nrOfTransitions`.
+#' @return The Dot code for a state transition graph.
 #'
 #' @examples ### Get path to example source
 #' examplePath <-

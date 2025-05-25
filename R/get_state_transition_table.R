@@ -1,8 +1,8 @@
 #' Get the state transition table
 #'
 #' @param x A parsed source document as provided by [parse_source()].
-#' @param classIdentifier The identifier of the class that has the states to
-#' looks at.
+#' @param rawClassIdentifierCol The identifier of the column in `x`'s QDT with
+#' the raw class codings of the class that has the states to look at.
 #'
 #' @return A table, with the 'from' states as rows and the 'to' states as columns
 #'
