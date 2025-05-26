@@ -9,10 +9,10 @@ parse_sources <- function(path,
                           removeEmptyRows = rock::opts$get('removeEmptyRows'),
                           filesWithYAML = NULL,
                           ignoreOddDelimiters = FALSE,
-                          checkClassInstanceIds = rock::opts$get(checkClassInstanceIds),
+                          checkClassInstanceIds = rock::opts$get("checkClassInstanceIds"),
                           mergeInductiveTrees = FALSE,
-                          encoding=rock::opts$get(encoding),
-                          silent=rock::opts$get(silent)) {
+                          encoding=rock::opts$get("encoding"),
+                          silent=rock::opts$get("silent")) {
 
   codeRegexes <- rock::opts$get(codeRegexes);
   idRegexes <- rock::opts$get(idRegexes);

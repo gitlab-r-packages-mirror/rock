@@ -12,6 +12,7 @@
 #' (`TRUE`).
 #' @param colors,greyScaleColors The (two) colors to use for the color and
 #' greyscale versions of the SNOE plot.
+#' @param silent Whether to be chatty or silent
 #'
 #' @return a [ggplot2::ggplot()].
 #' @export
@@ -30,6 +31,16 @@
 #' rock::snoe_plot(
 #'   loadedExample
 #' );
+#'
+#' ### Load two example sources
+#' loadedExamples <- rock::parse_sources(
+#'   examplePath,
+#'   regex = "example-[34].rock"
+#' );
+#'
+#' rock::snoe_plot(
+#'   loadedExamples
+#' );
 snoe_plot <- function(x,
                       codes = ".*",
                       matchRegexAgainstPaths = TRUE,
@@ -38,7 +49,8 @@ snoe_plot <- function(x,
                       ggplot2Theme = ggplot2::theme_minimal(),
                       greyScale = FALSE,
                       colors = c("#0072B2", "#C0C0C0"),
-                      greyScaleColors = c("#808080", "#C0C0C0")) {
+                      greyScaleColors = c("#808080", "#C0C0C0"),
+                      silent=rock::opts$get("silent")) {
 
   if ((!inherits(x, "rock_parsedSources")) && (!inherits(x, "rock_parsedSource"))) {
 
@@ -74,7 +86,27 @@ snoe_plot <- function(x,
       ];
   }
 
-  if (inherits(x, "rock_parsedSource")) {
+  ### Get coding scheme names
+  codingSchemeNames <-
+    unique(
+      unname(
+        unlist(
+          lapply(
+            x$convenience$rawCodings,
+            names
+          )
+        )
+      )
+    );
+
+  ### Remove coding tree roots (the coding scheme names)
+  codesToInclude <-
+    setdiff(
+      codesToInclude,
+      codingSchemeNames
+    );
+
+  if (inherits(x, "rock_parsedSource") || inherits(x, "rock_parsedSources")) {
 
     counts_total <-
       apply(
@@ -147,8 +179,6 @@ snoe_plot <- function(x,
     names(gradients) <- codesToInclude;
 
 
-  } else if (inherits(x, "rock_parsedSources")) {
-    stop("not implemented yet");
   } else {
     stop("As `x`, you have to pass one or more parsed sources, as ",
          "produced by a call to rock::parse_source() or rock::parse_sources(). ",

@@ -244,7 +244,7 @@ opts$defaults <-
        uidPrefix = "uid=",
        utteranceMarker = "\n",
        fragmentDelimiter = "\n\n-----\n\n",
-       fragmentDelimiterHTML = "\n\n<hr class='rock-fragment-delimiter' />\n\n",
+       fragmentDelimiter_html = "\n\n<hr class='rock-fragment-delimiter' />\n\n",
        replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
                                 "\\1.\\3"),
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
@@ -268,9 +268,10 @@ opts$defaults <-
 
        ### Used for collecting sources
        utteranceGlue = "\n\n",
-       sourceFormatting = "\n\n**Source: `%s`**\n\n",
+       sourceFormatting = "**Source: `%s`**\n\n",
        sourceFormatting_html = "\n\n<div class='rock-source-filename'><strong>Source: <pre>%s</pre></strong></div>\n\n",
-       codeHeadingFormatting = "%s <em>(path: %s)</em>",
+       codeHeadingFormatting = "%s *(path: %s)*",
+       codeHeadingFormatting_html = "%s <em>(path: %s)</em>",
 
        ### Cognitive Interview: Narrative Response Models
        nrm_wsNames = list(

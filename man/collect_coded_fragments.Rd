@@ -22,6 +22,7 @@ collect_coded_fragments(
   includeCSS = TRUE,
   preserveSpaces = TRUE,
   codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
+  codeHeadingFormatting_html = rock::opts$get("codeHeadingFormatting_html"),
   includeBootstrap = rock::opts$get("includeBootstrap"),
   preventOverwriting = rock::opts$get("preventOverwriting"),
   silent = rock::opts$get("silent")
@@ -94,10 +95,11 @@ fragments, or one character value in markdown format.}
 \item{preserveSpaces}{Whether to preserve spaces in the output (replacing
 double spaces with "\verb{&nbsp;&nbsp;}").}
 
-\item{codeHeadingFormatting}{A character value of the
+\item{codeHeadingFormatting, codeHeadingFormatting_html}{A character value of the
 form \verb{\%s *(path: \%s)*} (the default) or \verb{\\n\\n### \%s\\n\\n*path:* ``\%s``\\n\\n}.
 The first \verb{\%s} is replaced by the code identifier; the second \verb{\%s} by the
-corresponding path in the code tree.}
+corresponding path in the code tree; for markdown/console and html output,
+respectively.}
 
 \item{includeBootstrap}{Whether to include the default bootstrap CSS.}
 
@@ -128,7 +130,7 @@ examplePath <-
 ### Get a path to one example file
 exampleFile <-
   file.path(
-    examplePath, "example-1.rock"
+    examplePath, "example-.rock"
   );
 
 ### Parse single example source
@@ -144,12 +146,30 @@ cat(
   )
 );
 
-### Only for the codes containing 'Code2'
+### Only for the codes containing 'Code2', with
+### 2 lines of context (both ways)
 cat(
   rock::collect_coded_fragments(
     parsedExample,
-    'Code2'
+    'Code2',
+    context = 2
   )
 );
+
+### Parse multiple example sources
+### Load two example sources
+parsedExamples <- rock::parse_sources(
+  examplePath,
+  regex = "example-[1234].rock"
+);
+
+cat(
+  rock::collect_coded_fragments(
+    parsedExamples,
+    '[cC]ode2',
+    context = 2
+  )
+);
+
 
 }

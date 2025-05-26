@@ -13,7 +13,8 @@ snoe_plot(
   ggplot2Theme = ggplot2::theme_minimal(),
   greyScale = FALSE,
   colors = c("#0072B2", "#C0C0C0"),
-  greyScaleColors = c("#808080", "#C0C0C0")
+  greyScaleColors = c("#808080", "#C0C0C0"),
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ against the full code paths or only against the code identifier.}
 
 \item{colors, greyScaleColors}{The (two) colors to use for the color and
 greyscale versions of the SNOE plot.}
+
+\item{silent}{Whether to be chatty or silent}
 }
 \value{
 a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.
@@ -58,5 +61,15 @@ loadedExample <- rock::parse_source(exampleFile);
 ### Show code occurrence estimates
 rock::snoe_plot(
   loadedExample
+);
+
+### Load two example sources
+loadedExamples <- rock::parse_sources(
+  examplePath,
+  regex = "example-[34].rock"
+);
+
+rock::snoe_plot(
+  loadedExamples
 );
 }
