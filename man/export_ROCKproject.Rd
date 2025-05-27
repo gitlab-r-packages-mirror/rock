@@ -7,6 +7,7 @@
 export_ROCKproject(
   output,
   path = ".",
+  config = NULL,
   includeRegex = NULL,
   excludeRegex = NULL,
   createDirs = FALSE,
@@ -19,6 +20,9 @@ export_ROCKproject(
 \item{output}{The file to write to; should have the extension \code{.ROCKproject}}
 
 \item{path}{The path with the ROCK project}
+
+\item{config}{Optionally, a named list with configuration options to
+override. For supported options, see \code{vignette("ROCKproject-format", package = "rock");}}
 
 \item{includeRegex}{A regular expression used to select files to include in
 the project file}

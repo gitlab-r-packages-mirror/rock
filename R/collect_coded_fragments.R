@@ -58,10 +58,11 @@
 #' occur or not.
 #' @param preserveSpaces Whether to preserve spaces in the output (replacing
 #' double spaces with "`&nbsp;&nbsp;`").
-#' @param codeHeadingFormatting A character value of the
+#' @param codeHeadingFormatting,codeHeadingFormatting_html A character value of the
 #' form `%s *(path: %s)*` (the default) or `\n\n### %s\n\n*path:* ``%s``\n\n`.
 #' The first `%s` is replaced by the code identifier; the second `%s` by the
-#' corresponding path in the code tree.
+#' corresponding path in the code tree; for markdown/console and html output,
+#' respectively.
 #' @param cleanUtterances Whether to use the clean or the raw utterances
 #' when constructing the fragments (the raw versions contain all codes). Note that
 #' this should be set to `FALSE` to have `add_html_tags` be of the most use.
@@ -80,7 +81,7 @@
 #' ### Get a path to one example file
 #' exampleFile <-
 #'   file.path(
-#'     examplePath, "example-1.rock"
+#'     examplePath, "example-.rock"
 #'   );
 #'
 #' ### Parse single example source
@@ -96,13 +97,31 @@
 #'   )
 #' );
 #'
-#' ### Only for the codes containing 'Code2'
+#' ### Only for the codes containing 'Code2', with
+#' ### 2 lines of context (both ways)
 #' cat(
 #'   rock::collect_coded_fragments(
 #'     parsedExample,
-#'     'Code2'
+#'     'Code2',
+#'     context = 2
 #'   )
 #' );
+#'
+#' ### Parse multiple example sources
+#' ### Load two example sources
+#' parsedExamples <- rock::parse_sources(
+#'   examplePath,
+#'   regex = "example-[1234].rock"
+#' );
+#'
+#' cat(
+#'   rock::collect_coded_fragments(
+#'     parsedExamples,
+#'     '[cC]ode2',
+#'     context = 2
+#'   )
+#' );
+#'
 #'
 #' @export
 collect_coded_fragments <- function(x,
@@ -122,17 +141,19 @@ collect_coded_fragments <- function(x,
                                     includeCSS = TRUE,
                                     preserveSpaces = TRUE,
                                     codeHeadingFormatting = rock::opts$get("codeHeadingFormatting"),
+                                    codeHeadingFormatting_html = rock::opts$get("codeHeadingFormatting_html"),
                                     includeBootstrap = rock::opts$get("includeBootstrap"),
                                     preventOverwriting = rock::opts$get("preventOverwriting"),
                                     silent=rock::opts$get("silent")) {
 
-  if (add_html_tags) {
-    fragmentDelimiter <- rock::opts$get("fragmentDelimiterHTML");
-    sourceFormatting <- rock::opts$get("sourceFormatting_html");
-  } else {
-    fragmentDelimiter <- rock::opts$get("fragmentDelimiter");
-    sourceFormatting <- rock::opts$get("sourceFormatting");
-  }
+  sourceFormatting <- rock::opts$get("sourceFormatting");
+  sourceFormatting_html <- rock::opts$get("sourceFormatting_html");
+
+  fragmentDelimiter <- rock::opts$get("fragmentDelimiter");
+  fragmentDelimiter_html <- rock::opts$get("fragmentDelimiter_html");
+  fragmentDelimiter_above_html <- rock::opts$get("fragmentDelimiter_above_html");
+  fragmentDelimiter_below_html <- rock::opts$get("fragmentDelimiter_below_html");
+
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get("utteranceGlue"));
 
   if (is.null(context) || any(is.na(context)) || (length(context) == 0)) {
@@ -275,9 +296,97 @@ collect_coded_fragments <- function(x,
     }
   }
 
-  ### Get line numbers of the fragments to extract,
-  ### get fragments, store them
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ###
+  ### Get line numbers of the fragments to extract, get fragments, store them
+  ###
+  ### First for the 'raw' version, without any HTML markup
+  ###
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   res <- lapply(
+    usedCodes,
+    function(i) {
+
+      msg(
+        "\n   - Processing code '", i, "'. ",
+        silent = silent
+      );
+
+      if (i %in% names(dat)) {
+        return(
+          lapply(
+            which(selectedUtterances & (dat[, i] == 1)),
+            function(center) {
+
+              indices <- seq(center - context[1],
+                             center + context[2]);
+
+              ### Store indices corresponding source of this utterance
+              if (singleSource) {
+                sourceIndices <- c(1, nrow(dat));
+              } else {
+                sourceIndices <-
+                  which(dat[, 'originalSource'] == dat[center, 'originalSource']);
+              }
+
+              ### If this source is shorter than the number of lines requested,
+              ### simply send the complete source
+              if ((max(sourceIndices) - min(sourceIndices)) <= (1 + sum(context))) {
+                indices <- sourceIndices;
+              } else {
+                ### Shift forwards or backwards to make sure early or late
+                ### fragments don't exceed valid utterance (line) numbers
+                indices <- indices - min(0, (min(indices) - min(sourceIndices)));
+                indices <- indices - max(0, (max(indices) - max(sourceIndices)));
+              }
+
+              ### Get clean or raw utterances
+              if (cleanUtterances) {
+                res <- dat[indices, 'utterances_clean'];
+              } else {
+                res <- dat[indices, 'utterances_raw'];
+              }
+
+              if (rawResult) {
+                return(res);
+              } else {
+
+                ### Collapse all utterances into one character value
+                res <- paste0(res,
+                              collapse=utteranceGlue);
+
+                ### Add the sources, if necessary
+                if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
+                  res <- paste0(
+                    sprintf(
+                      sourceFormatting,
+                      dat[center, 'originalSource']
+                    ),
+                    res);
+                }
+
+                ### Return result
+                return(res);
+              }
+            }
+          )
+        );
+      } else {
+        return(NULL);
+      }
+    }
+  );
+
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ###
+  ### Get line numbers of the fragments to extract, get fragments, store them
+  ###
+  ### Second run, now adding HTML markup
+  ###
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  res_html <- lapply(
     usedCodes,
     function(i) {
 
@@ -342,10 +451,10 @@ collect_coded_fragments <- function(x,
                               collapse=utteranceGlue);
 
                 ### Add the sources, if necessary
-                if ((!identical(sourceFormatting, FALSE)) && !singleSource) {
+                if ((!identical(sourceFormatting_html, FALSE)) && !singleSource) {
                   res <- paste0(
                     sprintf(
-                      sourceFormatting,
+                      sourceFormatting_html,
                       dat[center, 'originalSource']
                     ),
                     res);
@@ -363,36 +472,71 @@ collect_coded_fragments <- function(x,
     }
   );
 
+  rawRes <- res;
+  names(rawRes) <- usedCodes;
+
   if (rawResult) {
-    names(res) <-
-      usedCodes;
+    return(rawRes);
   } else {
     ### Set the code subheading level based on whether a heading
     ### will be included
     if (is.null(heading)) {
       if (length(usedCodes) > 5) {
-        heading <-
-          paste0("<h", headingLevel, ">",
-                 "Collected coded fragments with a total of ",
-                 sum(context), " lines of context (",
-                 context[1], "+", context[2], ")",
-                 "</h", headingLevel, ">",
-                 "\n\n");
+        heading_markdown <-
+          rock::heading(
+            "Collected coded fragments with a total of ",
+            sum(context), " lines of context (",
+            context[1], "+", context[2], ")",
+            headingLevel = headingLevel,
+            output = "markdown",
+            cat = FALSE
+          );
+        heading_html <-
+          rock::heading(
+            "Collected coded fragments with a total of ",
+            sum(context), " lines of context (",
+            context[1], "+", context[2], ")",
+            headingLevel = headingLevel,
+            output = "html",
+            cat = FALSE
+          );
       } else {
-        heading <-
-          paste0("<h", headingLevel, ">",
-                 "Collected coded fragments for codes ",
-                 vecTxtQ(usedCodes), " with a total of ",
-                 sum(context), " lines of context (",
-                 context[1], "+", context[2], ")",
-                 "</h", headingLevel, ">",
-                 "\n\n");
+        heading_markdown <-
+          rock::heading(
+            "Collected coded fragments for codes ",
+            vecTxtQ(usedCodes), " with a total of ",
+            sum(context), " lines of context (",
+            context[1], "+", context[2], ")",
+            headingLevel = headingLevel,
+            output = "markdown",
+            cat = FALSE
+          );
+        heading_html <-
+          rock::heading(
+            "Collected coded fragments for codes ",
+            vecTxtQ(usedCodes), " with a total of ",
+            sum(context), " lines of context (",
+            context[1], "+", context[2], ")",
+            headingLevel = headingLevel,
+            output = "html",
+            cat = FALSE
+          );
       }
       codeSubheadingLevel <- headingLevel + 1;
     } else if (is.character(heading)) {
-      heading <-
-        paste0(repStr("#", headingLevel), " ",
-               heading, "\n\n");
+      heading_markdown <-
+        rock::heading(
+          heading,
+          headingLevel = headingLevel,
+          output = "markdown"
+        );
+      heading_html <-
+        rock::heading(
+          heading,
+          headingLevel = headingLevel,
+          output = "html",
+          cat = FALSE
+        );
       codeSubheadingLevel <- headingLevel + 1;
     } else {
       heading <- FALSE;
@@ -400,24 +544,43 @@ collect_coded_fragments <- function(x,
     }
 
     ### Function to produce the code subheading at the right level
-    codeSubheading <- function(x,
-                               hl = codeSubheadingLevel) {
-      return(
-        unlist(
-          lapply(
-            x,
-            heading_vector,
-            headingLevel = hl,
-            output = "html"
-          )
-        )
-      );
+    codeSubheading_html <- function(x,
+                                    hl = codeSubheadingLevel) {
+                                      return(
+                                        unlist(
+                                          lapply(
+                                            x,
+                                            heading_vector,
+                                            headingLevel = hl,
+                                            output = "html"
+                                          )
+                                        )
+                                      );
+                                    }
+    codeSubheading_markdown <- function(x,
+                                        hl = codeSubheadingLevel) {
+                                          return(
+                                            unlist(
+                                              lapply(
+                                                x,
+                                                heading_vector,
+                                                headingLevel = hl,
+                                                output = "markdown"
+                                              )
+                                            )
+                                          );
     }
 
     ### Combine all fragments within each code
     res <- lapply(res,
                   paste0,
                   collapse=fragmentDelimiter);
+    res_markdown <- lapply(res,
+                           paste0,
+                           collapse=fragmentDelimiter);
+    res_html <- lapply(res_html,
+                       paste0,
+                       collapse=fragmentDelimiter_html);
 
     if (omitEmptyCodes) {
       elementsToKeep <-
@@ -439,31 +602,48 @@ collect_coded_fragments <- function(x,
 
     ### Unlist into vector
     res <- unlist(res);
-    ### Add titles
-    res <- paste0(codeSubheading(
+    res_html <- unlist(res_html);
+    res_markdown <- unlist(res_markdown);
+
+    ### Add titles for html and markdown versions
+    res_html <- paste0(codeSubheading_html(
                     sprintf(
-                      codeHeadingFormatting,
+                      codeHeadingFormatting_html,
                       usedCodes[elementsToKeep],
                       usedCodesPaths[elementsToKeep]
                     )
                   ),
-                  fragmentDelimiter,
-                  res[elementsToKeep],
-                  fragmentDelimiter);
+                  fragmentDelimiter_above_html,
+                  res_html[elementsToKeep],
+                  fragmentDelimiter_below_html);
+
+    res_markdown <- paste0(codeSubheading_markdown(
+                      sprintf(
+                        codeHeadingFormatting,
+                        usedCodes[elementsToKeep],
+                        usedCodesPaths[elementsToKeep]
+                      )
+                    ),
+                    fragmentDelimiter,
+                    res_markdown[elementsToKeep],
+                    fragmentDelimiter);
+
     ### Collapse into one character value
-    res <- paste0(res, collapse="\n");
+    res_html <- paste0(res_html, collapse="\n");
+    res_markdown <- paste0(res_markdown, collapse="\n");
+
     ### Add title heading
     if (!identical(heading, FALSE)) {
-      res <- paste0(heading,
-                    res);
+      res_html <- paste0(heading_html, res_html);
+      res_markdown <- paste0(heading_markdown, res_markdown);
     }
   }
 
   ### Add CSS for html tags if requested
   if (add_html_tags) {
-    res_without_css <- res;
+    res_without_css <- res_html;
     if (includeCSS) {
-      res <-
+      res_html <-
         paste0(
           rock::css(
             template=template,
@@ -472,20 +652,21 @@ collect_coded_fragments <- function(x,
                                       includeBootstrap)
           ),
           "\n\n",
-          res
+          res_html
         );
     }
   } else {
-    res_without_css <- res;
+    res_without_css <- res_html;
   }
 
   if (preserveSpaces) {
-    res_for_html <-
-      gsub("  ", "&nbsp;&nbsp;", res);
-  } else {
-    res_for_html <-
-      res;
+    res_html <-
+      gsub("  ", "&nbsp;&nbsp;", res_html);
   }
+
+  res_html <- paste0("<div class='rock rock-collected-fragments-container'>",
+                     res_html,
+                     "</div>");
 
   if (is.null(output)) {
     if (isTRUE(getOption('knitr.in.progress'))) {
@@ -495,14 +676,14 @@ collect_coded_fragments <- function(x,
       ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       return(knitr::asis_output(c("\n\n",
-                                  res_for_html,
+                                  res_html,
                                   "\n\n")));
     } else {
       if (outputToViewer) {
         #viewerHTML <- markdown::mark_html(text=res_without_css);
         #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
         #viewerHTML <- markdown::mark(text=res_without_css);
-        viewerHTML <- res_for_html;
+        viewerHTML <- res_html;
         if (add_html_tags) {
           viewerHTML <- htmltools::HTML(
             rock::css(template=template,
@@ -519,9 +700,9 @@ collect_coded_fragments <- function(x,
                               viewer = viewer)
       }
       if ("console" %in% outputViewer) {
-        cat(res)
+        cat(res_markdown)
       }
-      return(invisible(res));
+      return(invisible(res_markdown));
     }
   } else {
 
@@ -529,7 +710,7 @@ collect_coded_fragments <- function(x,
       #viewerHTML <- markdown::mark_html(text=res_without_css);
       #viewerHTML <- markdown::mark(text=res_without_css, template=TRUE);
       #viewerHTML <- markdown::mark(text=res_without_css);
-      viewerHTML <- res_for_html;
+      viewerHTML <- res_html;
       viewerHTML <- htmltools::HTML(c("<html>", viewerHTML, "</html"));
       if (add_html_tags) {
         viewerHTML <- htmltools::HTML(
@@ -547,13 +728,13 @@ collect_coded_fragments <- function(x,
                             viewer = viewer)
     }
     if ("console" %in% outputViewer) {
-      cat(res)
+      cat(res_markdown)
     }
 
     if (dir.exists(dirname(output))) {
       if (file.exists(output) | preventOverwriting) {
 
-        fileHTML <- res_for_html;
+        fileHTML <- res_html;
         fileHTML <- htmltools::HTML(c("<html>", fileHTML, "</html"));
         if (add_html_tags) {
           fileHTML <- htmltools::HTML(
@@ -582,7 +763,7 @@ collect_coded_fragments <- function(x,
                "did not write the file!");
         }
       }
-      return(invisible(res));
+      return(invisible(res_markdown));
     } else {
       stop("You passed '", output,
            "' as output filename, but directory '", dirname(output),

@@ -25,7 +25,7 @@ merge_utterances_and_attributes <- function(qdt,
       ### 2024-05-29: Refactoring to make this work for multiple classes with
       ### attributes when called from parse_sources()
 
-      classId <- className;
+      currentClassId <- classId <- className;
 
       subDf_forClass <- attributesDf[!is.na(attributesDf[[classId]]), ]
 
@@ -46,10 +46,64 @@ merge_utterances_and_attributes <- function(qdt,
           )
         ];
 
+      unduplicated_subDf_forClass <-
+        do.call(
+          rbind,
+          lapply(
+            sort(unique(subDf_forClass[[currentClassId]])),
+            function(instanceId) {
+
+              instanceDf <-
+                subDf_forClass[
+                  subDf_forClass[[currentClassId]] == instanceId,
+                ];
+
+              instanceList <-
+                lapply(
+                  names(instanceDf),
+                  function(colName) {
+
+                    col <- instanceDf[, colName];
+
+                    nonMissingValues <-
+                      unique(col[!is.na(col)]);
+
+                    if (all(is.na(col))) {
+                      return(NA);
+                    } else if (all(!is.na(col)) && (length(nonMissingValues) == 1)) {
+                      return(nonMissingValues);
+                    } else if (length(nonMissingValues) == 1) {
+                      return(nonMissingValues);
+                    } else {
+                      ### Take the first non-NA element
+                      firstElement <- nonMissingValues[1];
+                      warning("For instance '", instanceId, "' of class '",
+                              currentClassId, "', attribute '",
+                              colName, "' has different values: ",
+                              vecTxtQ(nonMissingValues),
+                              ". Taking the first element: '",
+                              firstElement, "'.");
+                      return(firstElement);
+                    }
+                  }
+                );
+
+              names(instanceList) <- names(instanceDf);
+
+              return(
+                as.data.frame(
+                  instanceList
+                )
+              );
+
+            }
+          )
+        );
+
       resQdt <-
         merge(
           resQdt,
-          subDf_forClass,
+          unduplicated_subDf_forClass,
           all.x = TRUE,
           all.y = FALSE
         );
@@ -126,6 +180,16 @@ merge_utterances_and_attributes <- function(qdt,
         print(glue::glue("\nFor identifier class {className}, no attributes were provided.\n"));
       }
     }
+  }
+
+  if (nrow(qdt) != nrow(resQdt)) {
+    browser();
+    stop("When merging the attributes and data (the utterances), something strange happened: ",
+         "the dataframe with utterances had ", qdt, " rows, whereas the dataframe ",
+         "merged with the attributes has ", resQdt, " rows. That can't be right. However, ",
+         "no solution has been implemented as yet; nor has more detailed diagnostic information. ",
+         "My apologies! Of course, if this actually ever occurs, that's a good reason (and provides ",
+         "a use case to test with) to look into this. Yay.");
   }
 
   return(resQdt);
