@@ -472,6 +472,8 @@ opts$defaults <-
 
        warnForMultipleAesthetics = TRUE,
 
+       suppressDuplicateInstanceWarnings = FALSE,
+
        ### ROCK project defaults
        ROCKproject_defaults =
          list(
