@@ -43,6 +43,9 @@
 #' @param removeSectionBreakRows,removeIdentifierRows,removeEmptyRows Whether to
 #' remove from the QDT, respectively: rows containing section breaks; rows
 #' containing only (class instance) identifiers; and empty rows.
+#' @param suppressDuplicateInstanceWarnings Whether to suppress warnings about
+#' duplicate instances (as resulting from inconsistent specifications of
+#' attributes for class instances).
 #' @param filesWithYAML Any additional files to process to look for YAML fragments.
 #' @param mergeAttributes Whether to merge the data frame with the attributes
 #' into the qualitative data table (i.e., the data frame with the data
@@ -113,6 +116,7 @@ parse_source <- function(text,
                          removeSectionBreakRows = rock::opts$get('removeSectionBreakRows'),
                          removeIdentifierRows = rock::opts$get('removeIdentifierRows'),
                          removeEmptyRows = rock::opts$get('removeEmptyRows'),
+                         suppressDuplicateInstanceWarnings = rock::opts$get('suppressDuplicateInstanceWarnings'),
                          rlWarn = rock::opts$get('rlWarn'),
                          encoding=rock::opts$get('encoding'),
                          silent=rock::opts$get('silent')) {
@@ -1965,6 +1969,7 @@ parse_source <- function(text,
           classes = allClasses,
           attributesDf = res$attributesDf,
           checkClassInstanceIds = checkClassInstanceIds,
+          suppressDuplicateInstanceWarnings = suppressDuplicateInstanceWarnings,
           silent = silent
         );
 

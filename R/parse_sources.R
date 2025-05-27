@@ -7,6 +7,7 @@ parse_sources <- function(path,
                           removeSectionBreakRows = rock::opts$get('removeSectionBreakRows'),
                           removeIdentifierRows = rock::opts$get('removeIdentifierRows'),
                           removeEmptyRows = rock::opts$get('removeEmptyRows'),
+                          suppressDuplicateInstanceWarnings = rock::opts$get('suppressDuplicateInstanceWarnings'),
                           filesWithYAML = NULL,
                           ignoreOddDelimiters = FALSE,
                           checkClassInstanceIds = rock::opts$get("checkClassInstanceIds"),
@@ -290,12 +291,14 @@ parse_sources <- function(path,
                           } else {
                             ### Take the first non-NA element
                             firstElement <- nonMissingValues[1];
-                            warning("For instance '", instanceId, "' of class '",
-                                    currentClassId, "', attribute '",
-                                    colName, "' has different values: ",
-                                    vecTxtQ(nonMissingValues),
-                                    ". Taking the first element: '",
-                                    firstElement, "'.");
+                            if (!suppressDuplicateInstanceWarnings) {
+                              warning("For instance '", instanceId, "' of class '",
+                                      currentClassId, "', attribute '",
+                                      colName, "' has different values: ",
+                                      vecTxtQ(nonMissingValues),
+                                      ". Taking the first element: '",
+                                      firstElement, "'.");
+                            }
                             return(firstElement);
                           }
                         }
@@ -677,6 +680,7 @@ parse_sources <- function(path,
         classes = allClasses,
         attributesDf = res$attributesDf,
         checkClassInstanceIds = checkClassInstanceIds,
+        suppressDuplicateInstanceWarnings = suppressDuplicateInstanceWarnings,
         silent = silent
       );
 

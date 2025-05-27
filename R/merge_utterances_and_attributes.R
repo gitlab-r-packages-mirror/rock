@@ -2,6 +2,7 @@ merge_utterances_and_attributes <- function(qdt,
                                             classes,
                                             attributesDf,
                                             checkClassInstanceIds = FALSE,
+                                            suppressDuplicateInstanceWarnings = rock::opts$get('suppressDuplicateInstanceWarnings'),
                                             silent = rock::opts$get(silent)) {
 
 
@@ -77,12 +78,14 @@ merge_utterances_and_attributes <- function(qdt,
                     } else {
                       ### Take the first non-NA element
                       firstElement <- nonMissingValues[1];
-                      warning("For instance '", instanceId, "' of class '",
-                              currentClassId, "', attribute '",
-                              colName, "' has different values: ",
-                              vecTxtQ(nonMissingValues),
-                              ". Taking the first element: '",
-                              firstElement, "'.");
+                      if (!suppressDuplicateInstanceWarnings) {
+                        warning("For instance '", instanceId, "' of class '",
+                                currentClassId, "', attribute '",
+                                colName, "' has different values: ",
+                                vecTxtQ(nonMissingValues),
+                                ". Taking the first element: '",
+                                firstElement, "'.");
+                      }
                       return(firstElement);
                     }
                   }
