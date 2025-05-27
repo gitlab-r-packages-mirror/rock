@@ -191,17 +191,23 @@ testthat::test_that("Coded fragments are collected properly", {
 
   testres <- collect_coded_fragments(testres_parsed);
 
-  testthat::expect_true(grepl(
-    paste0(
-      "<h4> Topic2 <em>\\(path: codes>Topic2\\)</em></h4>",
-      "\\s*",
-      "<hr class='rock-fragment-delimiter' />",
-      "\\s*",
-      "<div class='rock-source-filename'><strong>Source: <pre>longer-test.rock</pre></strong></div>",
-      "\\s*",
-      '<div class="rock-line rock-utterance utterance">It has roots in a piece of classical Latin literature from 45 BC'
-    ),
-    testres));
+  testthat::expect_true(
+    grepl(
+      "#### Topic2 *(path: codes>Topic2)*
+
+
+
+-----
+
+**Source: `longer-test.rock`**
+
+It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. [[Topic2]] [[cid=1]] [[tid=2]]
+
+-----",
+      testres,
+      fixed = TRUE
+    )
+  );
 
 });
 
