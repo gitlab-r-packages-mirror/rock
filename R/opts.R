@@ -244,7 +244,9 @@ opts$defaults <-
        uidPrefix = "uid=",
        utteranceMarker = "\n",
        fragmentDelimiter = "\n\n-----\n\n",
-       fragmentDelimiter_html = "\n\n<hr class='rock-fragment-delimiter' />\n\n",
+       fragmentDelimiter_html = "\n\n<hr class='rock-fragment-delimiter rock-fragment-delimiter-within' />\n\n",
+       fragmentDelimiter_above_html = "\n\n<hr class='rock-fragment-delimiter rock-fragment-delimiter-above' />\n\n",
+       fragmentDelimiter_below_html = "\n\n<hr class='rock-fragment-delimiter rock-fragment-delimiter-below' />\n\n",
        replacementsPre = list(c("([^\\.])(\\.\\.)([^\\.])",
                                 "\\1.\\3"),
                               c("([^\\.])(\\.\\.\\.\\.+)([^\\.])",
@@ -271,7 +273,7 @@ opts$defaults <-
        sourceFormatting = "**Source: `%s`**\n\n",
        sourceFormatting_html = "\n\n<div class='rock-source-filename'><strong>Source: <pre>%s</pre></strong></div>\n\n",
        codeHeadingFormatting = "%s *(path: %s)*",
-       codeHeadingFormatting_html = "%s <em>(path: %s)</em>",
+       codeHeadingFormatting_html = "<div class='rock rock-code-heading'>%s <em>(path: %s)</em></div>",
 
        ### Cognitive Interview: Narrative Response Models
        nrm_wsNames = list(
@@ -469,6 +471,39 @@ opts$defaults <-
          ),
 
        warnForMultipleAesthetics = TRUE,
+
+       ### ROCK project defaults
+       ROCKproject_defaults =
+         list(
+           project = list(
+             title = "Default title",
+             authors = "Authors",
+             authorIds = NULL,
+             version = "1.0",
+             ROCK_version = "1.0",
+             ROCK_project_version = "1.0",
+             date_created = as.character(format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")),
+             date_modified = as.character(format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"))
+           ),
+           codebook = list(
+             urcid = "",
+             embedded = NULL,
+             local = ""
+           ),
+           sources = list(
+             extension =  ".rock",
+             regex = NULL,
+             dirsToIncludeRegex = "data/",
+             recursive = TRUE,
+             dirsToExcludeRegex = NULL,
+             filesToIncludeRegex = NULL,
+             filesToExcludeRegex = NULL
+           ),
+           workflow = list(
+             pipeline = NULL,
+             actions = NULL
+           )
+         ),
 
        ### Used throughout for debugging
        debug = FALSE,

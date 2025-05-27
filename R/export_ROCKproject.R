@@ -2,6 +2,8 @@
 #'
 #' @param output The file to write to; should have the extension `.ROCKproject`
 #' @param path The path with the ROCK project
+#' @param config Optionally, a named list with configuration options to
+#' override. For supported options, see \code{vignette("ROCKproject-format", package = "rock");}
 #' @param includeRegex A regular expression used to select files to include in
 #' the project file
 #' @param excludeRegex A regular expression used to omit files from the
@@ -39,12 +41,13 @@
 #' );
 export_ROCKproject <- function(output,
                                path = ".",
+                               config = NULL,
                                includeRegex = NULL,
                                excludeRegex = NULL,
                                createDirs = FALSE,
                                preventOverwriting = TRUE,
                                forceBaseZip = FALSE,
-                               silent = rock::opts$get(silent)) {
+                               silent = rock::opts$get("silent")) {
 
   outputDir <- dirname(output);
 
@@ -70,87 +73,17 @@ export_ROCKproject <- function(output,
   setwd(path);
 
   if (!file.exists(file.path(path, "_ROCKproject.yml"))) {
-    ROCKprojectYAML <- '
-_ROCKproject:
-
-  project:
-
-    title: "Project Title"                       # Any character string
-    authors: "Author names as string"            # Any character string
-    authorIds:
-      -
-        display_name: "Author name 1"            # Any character string
-        orcid: "0000-0000-0000-0001"             # Any character string matching ^([0-9]{4}-){3}[0-9]{4}$
-        shorcid: "ixxxxxx"                       # Any character string matching ^i([0-9a-zA-Z]+$
-      -
-        display_name: "Author name 2"            # Any character string
-        orcid: "0000-0000-0000-0002"             # Any character string matching ^([0-9]{4}-){3}[0-9]{4}$
-        shorcid: "ixxxxxx"                       # Any character string matching ^i([0-9a-zA-Z]+$
-
-    version: "1.1"                               # Anything matching regex [0-9]+(\\.[0-9]+)*
-    ROCK_version: 1                              # Anything matching regex [0-9]+(\\.[0-9]+)*
-    ROCK_project_version: 1                      # Anything matching regex [0-9]+(\\.[0-9]+)*
-    date_created: "2023-03-01 20:03:51 UTC"      # Anything matching that date format, preferably converted to UTC timezone
-    date_modified: "2023-03-08 20:03:51 UTC"     # Anything matching that date format, preferably converted to UTC timezone
-
-  sources:
-
-    extension: ".rock"                           # Any valid extension
-    recursive: true                              # true or false
-    dirsToIncludeRegex: data/                    # Any regex or ~
-    dirsToExcludeRegex: ~                        # Any regex or ~
-    filesToIncludeRegex: ~                       # Any regex or ~
-    filesToExcludeRegex: ~                       # Any regex or ~
-
-  workflow:
-
-    pipeline:
-      -
-        stage: raw                               # Anything matching regex [a-A-Z][a-zA-Z0-9_]*
-        dirName: "data/010---raw-sources"        # Any valid directory name, using a forward slash as separator
-        nextStages:
-          -
-            nextStageid: clean                   # A different stage identifier or ~
-            actionId: cleanSource
-          -
-            nextStageid: uids                    # A different stage identifier or ~
-            actionId: addUIDs
-      -
-        stage: clean                             # Anything matching regex [a-A-Z][a-zA-Z0-9_]*
-        dirName: "data/020---cleaned-sources"    # Any valid directory name, using a forward slash as separator
-        nextStages:
-          -
-            nextStageid: uids                    # A different stage identifier or ~
-            actionId: addUIDs
-      -
-        stage: uids                              # Anything matching regex [a-A-Z][a-zA-Z0-9_]*
-        dirName: "data/030---sources-with-uids"  # Any valid directory name, using a forward slash as separator
-        nextStage: coded                         # A different stage identifier or ~
-      -
-        stage: coded                             # Anything matching regex [a-A-Z][a-zA-Z0-9_]*
-        dirName: "data/040---coded-sources"      # Any valid directory name, using a forward slash as separator
-        nextStage: masked                        # A different stage identifier or ~
-      -
-        stage: masked                            # Anything matching regex [a-A-Z][a-zA-Z0-9_]*
-        dirName: "data/090---masked-sources"     # Any valid directory name, using a forward slash as separator
-        nextStage: ~                             # A different stage identifier or ~
-
-    actions:
-      -
-        actionId: addUIDs                        # String, referenced from the stages
-        language: R                              # Language, has to be matched to interpreter
-        dependencies: rock                       # Dependencies to be loaded before running the script
-        script: |                                # Literal block style string
-          rock::prepend_ids_to_sources(
-            input = {currentStage::dirName},
-            output = {nextStage::dirName}
-          );
-
-';
-    writeLines(
-      ROCKprojectYAML,
+    yaml::write_yaml(
+      rock::opts$get("ROCKproject_defaults"),
       file.path(path, "_ROCKproject.yml")
     );
+    warning("No file with project settings was found yet! This file ",
+            "should normally be called `_ROCKproject.yml` and be stored ",
+            "in the path you specified (", path, "). I'm now creating it, ",
+            "using the default settings in ROCK setting 'ROCKproject_defaults', ",
+            "which you can view with:\n\n  rock::opts$get('ROCKproject_defaults');\n\n",
+            "You can edit this file and then export the project again (repeating ",
+            "this same command).");
   }
 
   fullFileList <-

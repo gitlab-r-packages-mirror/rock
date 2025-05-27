@@ -148,8 +148,12 @@ collect_coded_fragments <- function(x,
 
   sourceFormatting <- rock::opts$get("sourceFormatting");
   sourceFormatting_html <- rock::opts$get("sourceFormatting_html");
+
   fragmentDelimiter <- rock::opts$get("fragmentDelimiter");
   fragmentDelimiter_html <- rock::opts$get("fragmentDelimiter_html");
+  fragmentDelimiter_above_html <- rock::opts$get("fragmentDelimiter_above_html");
+  fragmentDelimiter_below_html <- rock::opts$get("fragmentDelimiter_below_html");
+
   utteranceGlue <- ifelse(add_html_tags, "\n", rock::opts$get("utteranceGlue"));
 
   if (is.null(context) || any(is.na(context)) || (length(context) == 0)) {
@@ -565,7 +569,7 @@ collect_coded_fragments <- function(x,
                                               )
                                             )
                                           );
-                                        }
+    }
 
     ### Combine all fragments within each code
     res <- lapply(res,
@@ -604,14 +608,14 @@ collect_coded_fragments <- function(x,
     ### Add titles for html and markdown versions
     res_html <- paste0(codeSubheading_html(
                     sprintf(
-                      codeHeadingFormatting,
+                      codeHeadingFormatting_html,
                       usedCodes[elementsToKeep],
                       usedCodesPaths[elementsToKeep]
                     )
                   ),
-                  fragmentDelimiter,
+                  fragmentDelimiter_above_html,
                   res_html[elementsToKeep],
-                  fragmentDelimiter);
+                  fragmentDelimiter_below_html);
 
     res_markdown <- paste0(codeSubheading_markdown(
                       sprintf(
@@ -659,6 +663,10 @@ collect_coded_fragments <- function(x,
     res_html <-
       gsub("  ", "&nbsp;&nbsp;", res_html);
   }
+
+  res_html <- paste0("<div class='rock rock-collected-fragments-container'>",
+                     res_html,
+                     "</div>");
 
   if (is.null(output)) {
     if (isTRUE(getOption('knitr.in.progress'))) {
