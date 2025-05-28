@@ -13,7 +13,7 @@ export_ROCKproject(
   createDirs = FALSE,
   preventOverwriting = TRUE,
   forceBaseZip = FALSE,
-  silent = rock::opts$get(silent)
+  silent = rock::opts$get("silent")
 )
 }
 \arguments{
