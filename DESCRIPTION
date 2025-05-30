@@ -1,7 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
 Version: 0.9.0
-Date: 2025-05-25
+Date: 2025-05-28
 Authors@R: 
     c(person(given = "Gjalt-Jorn",
              family = "Peters",
@@ -52,7 +52,7 @@ Suggests:
     haven (>= 2.4),
     justifier (>= 0.2),
     knitr,
-    limonaid,
+    limonaid (>= 25.5),
     openxlsx (>= 4.2),
     pdftools,
     preregr (>= 0.1.9),
