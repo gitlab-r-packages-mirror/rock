@@ -21,6 +21,7 @@ parse_source(
   removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
   removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
   removeEmptyRows = rock::opts$get("removeEmptyRows"),
+  suppressDuplicateInstanceWarnings = rock::opts$get("suppressDuplicateInstanceWarnings"),
   rlWarn = rock::opts$get("rlWarn"),
   encoding = rock::opts$get("encoding"),
   silent = rock::opts$get("silent")
@@ -36,6 +37,7 @@ parse_sources(
   removeSectionBreakRows = rock::opts$get("removeSectionBreakRows"),
   removeIdentifierRows = rock::opts$get("removeIdentifierRows"),
   removeEmptyRows = rock::opts$get("removeEmptyRows"),
+  suppressDuplicateInstanceWarnings = rock::opts$get("suppressDuplicateInstanceWarnings"),
   filesWithYAML = NULL,
   ignoreOddDelimiters = FALSE,
   checkClassInstanceIds = rock::opts$get("checkClassInstanceIds"),
@@ -87,6 +89,10 @@ fragments and codes).}
 \item{removeSectionBreakRows, removeIdentifierRows, removeEmptyRows}{Whether to
 remove from the QDT, respectively: rows containing section breaks; rows
 containing only (class instance) identifiers; and empty rows.}
+
+\item{suppressDuplicateInstanceWarnings}{Whether to suppress warnings about
+duplicate instances (as resulting from inconsistent specifications of
+attributes for class instances).}
 
 \item{rlWarn}{Whether to let \code{\link[=readLines]{readLines()}} warn, e.g. if files do not end
 with a newline character.}
