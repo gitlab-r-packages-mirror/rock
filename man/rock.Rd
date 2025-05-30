@@ -13,7 +13,7 @@ and this R package that facilitates working with .rock files.
 \section{The ROCK File Format}{
 
 
-The .rock files are plain text files where a number of conventions are used
+The \code{.rock} files are plain text files where a number of conventions are used
 to add metadata. Normally these are the following conventions:
 \itemize{
 \item The smallest 'codeable unit' is called an utterance, and utterances are separated by newline characters (i.e. every line of the file is an utterance);
@@ -49,7 +49,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Szilvia Zorgo (\href{https://orcid.org/0000-0002-6916-2097}{ORCID}) [contributor]
+  \item Szilvia Zörgő (\href{https://orcid.org/0000-0002-6916-2097}{ORCID}) [contributor]
 }
 
 }
