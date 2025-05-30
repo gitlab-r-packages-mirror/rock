@@ -42,15 +42,15 @@
 #'
 #' ### From R 4.1 onwards, you can also chain
 #' ### these commands using the pipe operator:
-#' #if (R.Version()$minor >= "4.1") {
-#' #  loadedSource <-
-#' #
-#' #    rock::load_source(exampleFile) |>
-#' #
-#' #    rock::code_source(c("Lorem Ipsum" = "lorumIpsum")) |>
-#' #
-#' #    rock::write_source(tempFile);
-#' #}
+#' if (R.Version()$minor >= "4.1") {
+#'   loadedSource <-
+#'
+#'     rock::load_source(exampleFile) |>
+#'
+#'     rock::code_source(c("Lorem Ipsum" = "lorumIpsum")) |>
+#'
+#'     rock::write_source(tempFile);
+#' }
 #'
 #' @export
 write_source <- function(x,

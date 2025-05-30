@@ -1579,7 +1579,7 @@ parse_source <- function(text,
           ### Process any rank information, if any was provided
           ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-          if ("rank" %in% names(res$aestheticConfig$ROCK_aesthetics)) {
+          if ((!is.na(res$aestheticConfig)) && ("rank" %in% names(res$aestheticConfig$ROCK_aesthetics))) {
 
             rankbit <- "";
 

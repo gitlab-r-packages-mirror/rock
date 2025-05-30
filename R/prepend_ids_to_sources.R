@@ -73,7 +73,7 @@ prepend_ids_to_sources <- function(input,
     last_uid <-
       gsub(regexToMatch, "\\1", utils::tail(tmp, 1));
     origin <-
-      as.POSIXct((1+base30toNumeric(last_uid)) / 100, origin="1970-01-01");
+      as.POSIXct((1+squids::base30toNumeric(last_uid)) / 100, origin="1970-01-01");
   }
   if (!silent) {
     message("I just added utterenance identifiers to ", length(rawSourceFiles),

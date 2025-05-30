@@ -1,7 +1,9 @@
 #' @rdname ShORCIDs
 #' @export
 #'
-#' @examples shorcid_to_orcid("i16g2sk1");
+#' @examples rock::shorcid_to_orcid(
+#'   "i16g2sk1"
+#' );
 shorcid_to_orcid <- function(x) {
 
   if (length(x) > 1) {
@@ -20,7 +22,7 @@ shorcid_to_orcid <- function(x) {
 
   idbit <- substring(x, 2, nchar(x) - 1);
 
-  res <- base30toNumeric(idbit);
+  res <- squids::base30toNumeric(idbit);
 
   res <- paste0(res, checksum);
 

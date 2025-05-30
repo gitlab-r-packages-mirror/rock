@@ -17,7 +17,9 @@
 #' @rdname ShORCIDs
 #' @export
 #'
-#' @examples orcid_to_shorcid("0000-0002-9540-5371");
+#' @examples rock::orcid_to_shorcid(
+#'   "0000-0002-9540-5371"
+#' );
 orcid_to_shorcid <- function(x) {
 
   if (length(x) > 1) {
@@ -39,7 +41,7 @@ orcid_to_shorcid <- function(x) {
          " characters, and so, not an ORCID.");
   }
 
-  res <- numericToBase30(as.numeric(idbit));
+  res <- squids::numericToBase30(as.numeric(idbit));
 
   res <- paste0("i", res, checksum);
 

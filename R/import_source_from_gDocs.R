@@ -1,4 +1,4 @@
-#' Import a sourec from Google Documents
+#' Import a source from Google Documents
 #'
 #' @param x The URL to the source: has to be viewable publicly!
 #' @param localFile A local file (where to store a local backup).
@@ -6,32 +6,38 @@
 #' @return The source contents.
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
 #' ### Note that this will require an active
-#' ### internet connection!
+#' ### internet connection! This if statement
+#' ### checks for that.
+#' \donttest{
+#' if (tryCatch({readLines("https://google.com",n=1); TRUE}, error=function(x) FALSE)) {
 #'
-#' gDocs_url <-
-#'   paste0(
-#'     "https://docs.google.com/document/d/",
-#'     "1iACYjV7DdCjOmfgX6KEMtCcCjuuXD3iuikTSGWtsK84",
-#'     "/edit?usp=sharing"
-#'   );
+#'   gDocs_url <-
+#'     paste0(
+#'       "https://docs.google.com/document/d/",
+#'       "1iACYjV7DdCjOmfgX6KEMtCcCjuuXD3iuikTSGWtsK84",
+#'       "/edit?usp=sharing"
+#'     );
 #'
-#' exampleSource <-
-#'   import_source_from_gDocs(
-#'     gDocs_url
-#'   );
+#'   ### Import the source
+#'   exampleSource <-
+#'     import_source_from_gDocs(
+#'       gDocs_url
+#'     );
 #'
-#' ### Show the downloaded file:
-#' exampleSource;
+#'   ### Show the downloaded file:
+#'   exampleSource;
 #'
-#' ### Parse the source:
-#' parsedExampleSource <-
-#'   rock::parse_source(exampleSource);
+#'   ### Parse the source:
+#'   parsedExampleSource <-
+#'     rock::parse_source(
+#'       exampleSource
+#'     );
 #'
-#' ### Imported; the comments are gone:
-#' parsedExampleSource$qdt$utterances_raw;
-#'
+#'   ### Imported; the comments are gone:
+#'   parsedExampleSource$qdt$utterances_raw;
+#' }
 #' }
 import_source_from_gDocs <- function(x,
                                      localFile = NULL) {

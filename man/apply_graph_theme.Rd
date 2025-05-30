@@ -62,7 +62,7 @@ miniGraph <-
   miniGraph
 );}
 
-## Apply a "theme" (three attributes)
+### Apply a "theme" (three attributes)
 miniGraph_themed <-
   rock::apply_graph_theme(
     miniGraph,

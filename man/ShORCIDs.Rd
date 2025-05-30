@@ -29,6 +29,10 @@ that the ShORCID starts with a letter. Conversion the other way around just
 inverts the process (and so uses \code{\link[=base30toNumeric]{base30toNumeric()}}).
 }
 \examples{
-orcid_to_shorcid("0000-0002-9540-5371");
-shorcid_to_orcid("i16g2sk1");
+rock::orcid_to_shorcid(
+  "0000-0002-9540-5371"
+);
+rock::shorcid_to_orcid(
+  "i16g2sk1"
+);
 }
