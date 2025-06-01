@@ -5,8 +5,8 @@
 #' to clean the sources using [clean_sources()] first.
 #'
 #' @param input The filename or contents of the source
-#' for `prepend_ids_to_source` and the directory containing the
-#' sources for `prepend_ids_to_sources`.
+#' for `prepend_ids_to_source`; and the directory containing the
+#' sources, or a list of character vectors, for `prepend_ids_to_sources`.
 #' @param output The filename where to write the resulting file for
 #' `prepend_ids_to_source` and the directory where to write the
 #' resulting files for `prepend_ids_to_sources`
