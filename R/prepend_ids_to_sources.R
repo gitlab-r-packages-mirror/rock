@@ -26,25 +26,26 @@ prepend_ids_to_sources <- function(input,
   } else if (!is.character(input) || !length(input)==1) {
     stop("Only specify a single string (with the path to a directory ",
          "with sources) or a list of character vectors (where each character ",
-         "vector is a source) as 'input'!");
+         "vector is a source) as 'input'! 'input' now has class(es) ",
+         vecTxtQ(class(input)), ".");
   } else {
 
     res <- character();
 
   }
 
-  if (!is.character(output) || !length(output)==1) {
+  if (((!is.null(output)) && !is.character(output)) || (!is.null(output) && !length(output)==1)) {
     stop("Only specify a single string as 'output'!");
   }
 
-  if (tolower(output) == "same") {
+  if ((!is.null(output)) && tolower(output) == "same") {
     if ((is.null(outputPrefix) || (nchar(outputPrefix) == 0)) &&
         (is.null(outputSuffix) || (nchar(outputSuffix) == 0))) {
       stop("If writing the output to the same directory, you must specify ",
            "an outputPrefix and/or an outputSuffix!");
     }
   } else {
-    if (!dir.exists(output)) {
+    if (!is.null(output) && !dir.exists(output)) {
       warning("Directory provided to write to ('",
               output,
               "') does not exist - creating it!");
@@ -53,11 +54,14 @@ prepend_ids_to_sources <- function(input,
     }
   }
 
-  rawSourceFiles <-
-    list.files(input,
-               full.names=TRUE);
+  ### Used to override following distance in sources other than the first
+  furtherFollowBy <- NULL;
 
   if (is.character(res)) {
+
+    rawSourceFiles <-
+      list.files(input,
+                 full.names=TRUE);
 
     ### Loop through files
     for (filename in rawSourceFiles) {
@@ -89,19 +93,18 @@ prepend_ids_to_sources <- function(input,
                               preventOverwriting = preventOverwriting,
                               origin=origin,
                               silent=silent);
+
       ### Getting UIDs
       regexToMatch <-
-        paste0("^\\[\\[", uidPrefix, "[^]]*\\]\\]$");
+        paste0("\\[\\[", uidPrefix, "([0123456789bcdfghjklmnpqrstwxyz]{8})\\]\\].*");
       follow <-
-        grep(regexToMatch, tmp, value=TRUE);
+        gsub(regexToMatch, "\\1", res[[i]], perl = TRUE);
+
       if (!is.null(uidSpacing)) {
         ### Used for all but the first source as UID spacing
         furtherFollowBy <- uidSpacing;
       }
-      ### Now that we use {squids}, we can use the 'follow' argument instead
-      ### of this bit below.
-      # origin <-
-      #   as.POSIXct((1+squids::base30toNumeric(last_uid)) / 100, origin="1970-01-01");
+
     }
 
     if (!silent) {
@@ -120,6 +123,8 @@ prepend_ids_to_sources <- function(input,
 
   } else if (is.list(res)) {
 
+    ### When being provided with a list of character vectors
+
     for (i in seq_along(input)) {
 
       if (!is.null(furtherFollowBy)) {
@@ -136,9 +141,9 @@ prepend_ids_to_sources <- function(input,
 
       ### Getting UIDs
       regexToMatch <-
-        paste0("^\\[\\[", uidPrefix, "[^]]*\\]\\]$");
+        paste0("\\[\\[", uidPrefix, "([0123456789bcdfghjklmnpqrstwxyz]{8})\\]\\].*");
       follow <-
-        grep(regexToMatch, res[[i]], value=TRUE);
+        gsub(regexToMatch, "\\1", res[[i]], perl = TRUE);
 
       if (!is.null(uidSpacing)) {
         ### Used for all but the first source as UID spacing
