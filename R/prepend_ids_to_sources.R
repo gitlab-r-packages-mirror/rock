@@ -1,6 +1,8 @@
 #' @rdname prepending_uids
 #' @param outputPrefix,outputSuffix The prefix and suffix to add to the
 #' filenames when writing the processed files to disk.
+#' @param uidSpacing The number of UID spaces to leave between sources (in case
+#' more data may follow in with source).
 #' @export
 prepend_ids_to_sources <- function(input,
                                    output = NULL,
@@ -9,6 +11,7 @@ prepend_ids_to_sources <- function(input,
                                    origin=Sys.time(),
                                    follow = NULL,
                                    followBy = NULL,
+                                   uidSpacing = NULL,
                                    preventOverwriting=rock::opts$get(preventOverwriting),
                                    encoding=rock::opts$get(encoding),
                                    silent=rock::opts$get(silent)) {
@@ -45,6 +48,7 @@ prepend_ids_to_sources <- function(input,
                full.names=TRUE);
 
   res <- character();
+
   for (filename in rawSourceFiles) {
     newFilename <-
       paste0(outputPrefix,
@@ -61,6 +65,10 @@ prepend_ids_to_sources <- function(input,
         output;
     }
 
+    if (!is.null(furtherFollowBy)) {
+      followBy <- furtherFollowBy;
+    }
+
     tmp <-
       prepend_ids_to_source(input = filename,
                             output = file.path(newFileDir,
@@ -73,9 +81,12 @@ prepend_ids_to_sources <- function(input,
     ### Getting UIDs
     regexToMatch <-
       paste0("^\\[\\[", uidPrefix, "[^]]*\\]\\]$");
-    last_uid <-
+    follow <-
       grep(regexToMatch, tmp, value=TRUE);
-    follow <- last_uid;
+    if (!is.null(uidSpacing)) {
+      ### Used for all but the first source as UID spacing
+      furtherFollowBy <- uidSpacing;
+    }
     ### Now that we use {squids}, we can use the 'follow' argument instead
     ### of this bit below.
     # origin <-
