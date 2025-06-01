@@ -7,6 +7,8 @@ prepend_ids_to_sources <- function(input,
                                    outputPrefix = "",
                                    outputSuffix = "_withUIDs",
                                    origin=Sys.time(),
+                                   follow = NULL,
+                                   followBy = NULL,
                                    preventOverwriting=rock::opts$get(preventOverwriting),
                                    encoding=rock::opts$get(encoding),
                                    silent=rock::opts$get(silent)) {
@@ -63,17 +65,21 @@ prepend_ids_to_sources <- function(input,
       prepend_ids_to_source(input = filename,
                             output = file.path(newFileDir,
                                                newFilename),
+                            follow = follow,
+                            followBy = followBy,
                             preventOverwriting = preventOverwriting,
                             origin=origin,
                             silent=silent);
-    ### Setting origin to a few seconds in the future to make sure all
-    ### uids are unique
+    ### Getting UIDs
     regexToMatch <-
-      paste0("^\\[\\[", uidPrefix, "([^]]*)\\]\\].*$");
+      paste0("^\\[\\[", uidPrefix, "[^]]*\\]\\]$");
     last_uid <-
-      gsub(regexToMatch, "\\1", utils::tail(tmp, 1));
-    origin <-
-      as.POSIXct((1+squids::base30toNumeric(last_uid)) / 100, origin="1970-01-01");
+      grep(regexToMatch, tmp, value=TRUE);
+    follow <- last_uid;
+    ### Now that we use {squids}, we can use the 'follow' argument instead
+    ### of this bit below.
+    # origin <-
+    #   as.POSIXct((1+squids::base30toNumeric(last_uid)) / 100, origin="1970-01-01");
   }
   if (!silent) {
     message("I just added utterenance identifiers to ", length(rawSourceFiles),
