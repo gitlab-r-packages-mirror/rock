@@ -60,7 +60,8 @@ checkPkgs <- function(...,
   }
   if (any(res)) {
     if (install) {
-      installedPkgs(x[res], repos=repos);
+      utils::install.packages(x[res],
+                              repos=repos);
     } else {
       stop("Of package(s) ", vecTxtQ(x[res]),
            ", you need at least versions ", vecTxt(vrsn[res]),
