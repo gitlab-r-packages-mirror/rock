@@ -131,6 +131,12 @@ convert_df_to_source <- function(data,
                                  ciid_labels = NULL,
                                  ciid_separator = "=",
                                  attributesFile = NULL,
+                                 clean = TRUE,
+                                 cleaningArgs = NULL,
+                                 wordwrap = TRUE,
+                                 wrappingArgs = NULL,
+                                 prependUIDs = TRUE,
+                                 UIDArgs = NULL,
                                  preventOverwriting = rock::opts$get(preventOverwriting),
                                  encoding = rock::opts$get(encoding),
                                  silent = rock::opts$get(silent)) {
@@ -255,18 +261,47 @@ convert_df_to_source <- function(data,
 
     }
 
+    ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     ### Add the utterances and codes
+    ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (is.null(utterance_classId)) {
       for (j in cols_to_utterances) {
+
+        dataToWrite <-
+          preprocess_data(
+            paste0(data[i, j], codeVector[i]),
+            clean = clean,
+            cleaningArgs = cleaningArgs,
+            wordwrap = wordwrap,
+            wrappingArgs = wrappingArgs,
+            prependUIDs = prependUIDs,
+            UIDArgs = UIDArgs
+          );
+
         sourceList[[i]] <-
           c(sourceList[[i]],
             "",
-            paste0(data[i, j], codeVector[i])
+            dataToWrite
+            #paste0(data[i, j], codeVector[i])
           );
       }
     } else {
       for (j in cols_to_utterances) {
+
+
+        dataToWrite <-
+          preprocess_data(
+            data[i, j],
+            clean = clean,
+            cleaningArgs = cleaningArgs,
+            wordwrap = wordwrap,
+            wrappingArgs = wrappingArgs,
+            prependUIDs = prependUIDs,
+            UIDArgs = UIDArgs
+          );
+
+
         sourceList[[i]] <-
           c(sourceList[[i]],
             "",
@@ -278,7 +313,8 @@ convert_df_to_source <- function(data,
               codeDelimiters[2]
             ),
             "",
-            paste0(data[i, j])
+            dataToWrite
+            #paste0(data[i, j])
           );
       }
     }

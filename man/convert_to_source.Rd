@@ -25,6 +25,12 @@ convert_df_to_source(
   ciid_labels = NULL,
   ciid_separator = "=",
   attributesFile = NULL,
+  clean = TRUE,
+  cleaningArgs = NULL,
+  wordwrap = TRUE,
+  wrappingArgs = NULL,
+  prependUIDs = TRUE,
+  UIDArgs = NULL,
   preventOverwriting = rock::opts$get(preventOverwriting),
   encoding = rock::opts$get(encoding),
   silent = rock::opts$get(silent)

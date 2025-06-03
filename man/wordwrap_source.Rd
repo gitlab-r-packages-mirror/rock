@@ -7,7 +7,7 @@
 wordwrap_source(
   input,
   output = NULL,
-  length = 60,
+  length = 40,
   removeNewlines = FALSE,
   removeTrailingNewlines = TRUE,
   rlWarn = rock::opts$get(rlWarn),
@@ -58,4 +58,31 @@ A character vector.
 }
 \description{
 This function wordwraps a source.
+}
+\examples{
+exampleText <-
+  paste0(
+    "Lorem ipsum dolor sit amet, consectetur ",
+    "adipiscing elit. Nunc non commodo ex, ac ",
+    "varius mi. Praesent feugiat nunc eget urna ",
+    "euismod lobortis. Sed hendrerit suscipit ",
+    "nisl, ac tempus magna porta et. ",
+    "Quisque libero massa, tempus vel tristique ",
+    "lacinia, tristique in nulla. Nam cursus enim ",
+    "dui, non ornare est tempor eu. Vivamus et massa ",
+    "consectetur, tristique magna eget, viverra elit."
+  );
+
+### Show example text
+cat(exampleText);
+
+### Show preprocessed example text
+cat(
+  paste0(
+    rock::wordwrap_source(
+      exampleText
+    ),
+    collapse = "\n"
+  )
+);
 }

@@ -31,9 +31,34 @@
 #' @return A character vector.
 #'
 #' @export
+#' @examples exampleText <-
+#'   paste0(
+#'     "Lorem ipsum dolor sit amet, consectetur ",
+#'     "adipiscing elit. Nunc non commodo ex, ac ",
+#'     "varius mi. Praesent feugiat nunc eget urna ",
+#'     "euismod lobortis. Sed hendrerit suscipit ",
+#'     "nisl, ac tempus magna porta et. ",
+#'     "Quisque libero massa, tempus vel tristique ",
+#'     "lacinia, tristique in nulla. Nam cursus enim ",
+#'     "dui, non ornare est tempor eu. Vivamus et massa ",
+#'     "consectetur, tristique magna eget, viverra elit."
+#'   );
+#'
+#' ### Show example text
+#' cat(exampleText);
+#'
+#' ### Show preprocessed example text
+#' cat(
+#'   paste0(
+#'     rock::wordwrap_source(
+#'       exampleText
+#'     ),
+#'     collapse = "\n"
+#'   )
+#' );
 wordwrap_source <- function(input,
                             output = NULL,
-                            length = 60,
+                            length = 40,
                             removeNewlines = FALSE,
                             removeTrailingNewlines = TRUE,
                             rlWarn = rock::opts$get(rlWarn),
@@ -94,11 +119,11 @@ wordwrap_source <- function(input,
 
   if ((length(non_YAML_indices) == 1) && (is.numeric(non_YAML_indices))) {
     ### If no YAML fragments are present, non_YAML_indices is just c(1)
-    fullResult <- fullSource;
-    fullResult[non_YAML_indices] <- res;
+    fullResult <- res;
   } else {
     ### Insert lines that were potentially cleaned back in
-    fullResult <- res;
+    fullResult <- fullSource;
+    fullResult[non_YAML_indices] <- res;
   }
 
   res <- fullResult;

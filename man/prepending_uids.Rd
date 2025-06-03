@@ -35,8 +35,8 @@ prepend_ids_to_sources(
 }
 \arguments{
 \item{input}{The filename or contents of the source
-for \code{prepend_ids_to_source} and the directory containing the
-sources for \code{prepend_ids_to_sources}.}
+for \code{prepend_ids_to_source}; and the directory containing the
+sources, or a list of character vectors, for \code{prepend_ids_to_sources}.}
 
 \item{output}{The filename where to write the resulting file for
 \code{prepend_ids_to_source} and the directory where to write the
