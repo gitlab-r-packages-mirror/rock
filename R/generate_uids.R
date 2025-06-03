@@ -56,8 +56,8 @@ generate_uids <- function(x,
                           follow = NULL,
                           followBy = NULL) {
 
-  uidPrefix <- rock::opts$get(uidPrefix);
-  codeDelimiters <- rock::opts$get(codeDelimiters);
+  uidPrefix <- rock::opts$get("uidPrefix");
+  codeDelimiters <- rock::opts$get("codeDelimiters");
 
   if (!is.null(follow)) {
     follow_as_SQUID <-
