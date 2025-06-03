@@ -65,7 +65,7 @@ checkPkgs <- function(...,
     } else {
       stop("Of package(s) ", vecTxtQ(x[res]),
            ", you need at least versions ", vecTxt(vrsn[res]),
-           ", respectively. Install those with:\n\n",
+           ", respectively. Install those with:\n\n  ",
            "install.packages(c(",
            vecTxtQ(x[res], lastDelimiter = ", "),
            "));\n");
