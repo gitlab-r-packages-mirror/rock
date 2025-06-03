@@ -159,7 +159,7 @@ parse_source <- function(text,
     if (missing(text)) {
       stop("Provide either a `file` or a `text` to scan!");
     } else {
-      if ((length(text) == 1) && file.exists(text)) {
+      if ((length(text) == 1) && file.exists(text) && (!dir.exists(text))) {
         x <- readLines(text,
                        encoding=encoding,
                        warn=rlWarn);
@@ -185,7 +185,8 @@ parse_source <- function(text,
       }
     }
   } else {
-    if (file.exists(file)) {
+    if (file.exists(file) && (!dir.exists(file))) {
+
       x <- readLines(file,
                      encoding=encoding,
                      warn=rlWarn);

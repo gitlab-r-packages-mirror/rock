@@ -19,17 +19,17 @@
 #' @export
 #'
 #' @examples \donttest{
-#' ufs::checkPkgs('base');
+#' rock::checkPkgs('base');
 #'
 #' ### Require a specific version
-#' ufs::checkPkgs(ufs = "0.3.1");
+#' rock::checkPkgs(rock = "99.2.1");
 #'
 #' ### This will show the error message
 #' tryCatch(
-#'   ufs::checkPkgs(
+#'   rock::checkPkgs(
 #'     base = "99",
 #'     stats = "42.5",
-#'     ufs = 20
+#'     rock = 2000
 #'   ),
 #'   error = print
 #' );

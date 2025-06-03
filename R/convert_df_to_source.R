@@ -123,6 +123,13 @@ convert_df_to_source <- function(data,
                                  cols_to_codes = NULL,
                                  cols_to_attributes = NULL,
                                  utterance_classId = NULL,
+                                 utterance_comments = NULL,
+                                 commentPrefix =
+                                   ifelse(
+                                     prependUIDs,
+                                     repStr("#", 16),
+                                     repStr("#", 3)
+                                   ),
                                  oneFile = TRUE,
                                  cols_to_sourceFilename = cols_to_ciids,
                                  cols_in_sourceFilename_sep = "=",
@@ -238,18 +245,132 @@ convert_df_to_source <- function(data,
     codeVector <- rep("", nrow(data));
   }
 
+  ### Optionally prepare comments to attach to the utterances
+
+  if (!is.null(utterance_comments)) {
+
+    if (!is.character(utterance_comments) || is.null(names(utterance_comments))) {
+
+      stop("`utterance_comments` must be a named character vector, where ",
+           "each element is a comment and each element's name is a column ",
+           "in the data set you want to take utterances from.");
+
+    }
+
+    utterance_comments_colNames <- names(utterance_comments);
+
+    if (!all(utterance_comments_colNames %in% names(data))) {
+
+      stop("`utterance_comments` must be a named character vector, where ",
+           "each element is a comment and each element's name is a column ",
+           "in the data set you want to take utterances from, but not all ",
+           "element names correspond to existing columns!");
+
+    }
+
+    ### Potentially clean and word wrap the comments
+
+    utterance_comments <-
+      lapply(
+        utterance_comments,
+        preprocess_source,
+        clean = FALSE,
+        wordwrap = wordwrap,
+        wrappingArgs = wrappingArgs,
+        prependUIDs = FALSE
+      );
+
+    ### Prepend comment prefix
+
+    utterance_comments <-
+      lapply(
+        utterance_comments,
+        function(commentVector) {
+          return(
+            paste0(
+              commentPrefix,
+              " ",
+              commentVector
+            )
+          )
+        }
+      );
+
+  }
+
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ### Process each row of the data frame
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ### First set SQUIDs_to_follow if we prepend UIDs
+  if (prependUIDs) {
+    SQUIDs_to_follow <- NULL
+  };
+
   for (i in 1:nrow(data)) {
 
-    sourceList[[i]] <- "";
+    ### Prepare for UID generation or continuation
+
+    if (prependUIDs) {
+
+      if (!is.null(SQUIDs_to_follow)) {
+
+        ### If this is NULL, this is the first time we run this loop;
+        ### so if we need to follow a SQUID, it was specified by the
+        ### user. So if it is not NULL, we have to store/override the
+        ### argument in the UIDArgs list.
+
+        if (is.null(UIDArgs)) {
+          UIDArgs <- list(follow = SQUIDs_to_follow);
+        } else {
+          UIDArgs$follow <- SQUIDs_to_follow;
+        }
+
+      }
+
+      sourceList[[i]] <-
+        do.call(
+          prepend_ids_to_source,
+          c(list(input = ""),
+            UIDArgs)
+        );
+
+      ### Will be used to guarantee unique UIDs
+      SQUIDs_to_follow <- extract_uids(sourceList[[i]], returnSQUIDs  = TRUE);
+
+    } else {
+
+      ### Just include an empty line
+      sourceList[[i]] <- "";
+
+    }
 
     if (!is.null(cols_to_ciids)) {
 
       ### Add the class instance identifiers
 
       for (j in seq_along(cols_to_ciids)) {
+
+        if (prependUIDs) {
+
+          ### This is always set, since we set it above for the first time and
+          ### below in this loop from that point onwards; and if the user
+          ### specified something, that was handled above so we override this.
+          UIDArgs$follow <- SQUIDs_to_follow;
+
+          potentialUID_prefix <-
+            do.call(prepend_ids_to_source, c(list(input = ""), UIDArgs));
+
+          SQUIDs_to_follow <- extract_uids(potentialUID_prefix, returnSQUIDs = TRUE);
+
+        } else {
+          potentialUID_prefix <- "";
+        }
+
         sourceList[[i]] <-
           c(sourceList[[i]],
             paste0(
+              potentialUID_prefix,
               codeDelimiters[1],
               names(cols_to_ciids)[j],
               ciid_separator,
@@ -266,10 +387,32 @@ convert_df_to_source <- function(data,
     ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (is.null(utterance_classId)) {
+
+      ### No class identifier column specified for utterances; so
+      ### just writing the utterances to the source (origin columns
+      ### will not be visible in the source)
+
       for (j in cols_to_utterances) {
 
+        if (prependUIDs) {
+
+          ### This is always set, since we set it above; and we
+          ### always need to override any
+          UIDArgs$follow <- SQUIDs_to_follow;
+
+          potentialUID_prefix <-
+            do.call(prepend_ids_to_source, c(list(input = ""), UIDArgs));
+
+          SQUIDs_to_follow <- extract_uids(potentialUID_prefix, returnSQUIDs = TRUE);
+
+          UIDArgs$follow <- SQUIDs_to_follow;
+
+        } else {
+          potentialUID_prefix <- "";
+        }
+
         dataToWrite <-
-          preprocess_data(
+          preprocess_source(
             paste0(data[i, j], codeVector[i]),
             clean = clean,
             cleaningArgs = cleaningArgs,
@@ -279,19 +422,66 @@ convert_df_to_source <- function(data,
             UIDArgs = UIDArgs
           );
 
-        sourceList[[i]] <-
-          c(sourceList[[i]],
-            "",
-            dataToWrite
-            #paste0(data[i, j], codeVector[i])
+        SQUIDs_to_follow <-
+          extract_uids(
+            dataToWrite,
+            returnSQUIDs  = TRUE
           );
+
+        ### Add the fragment for this row and column to this row's source
+
+        if (is.null(utterance_comments)) {
+
+          ### No comments specified
+
+          sourceList[[i]] <-
+            c(sourceList[[i]],
+              potentialUID_prefix,
+              dataToWrite
+              #paste0(data[i, j], codeVector[i])
+            );
+
+        } else {
+
+          ### So comments are specified for the utterance columns;
+          ### Add these in as ROCK comments.
+
+          sourceList[[i]] <-
+            c(sourceList[[i]],
+              commentPrefix,
+              utterance_comments[j],
+              potentialUID_prefix,
+              dataToWrite
+              #paste0(data[i, j], codeVector[i])
+            );
+
+        }
+
       }
+
     } else {
+
       for (j in cols_to_utterances) {
 
+        if (prependUIDs) {
+
+          ### This is always set, since we set it above; and we
+          ### always need to override any
+          UIDArgs$follow <- SQUIDs_to_follow;
+
+          potentialUID_prefix <-
+            do.call(prepend_ids_to_source, c(list(input = c("", "", "")), UIDArgs));
+
+          SQUIDs_to_follow <- extract_uids(potentialUID_prefix, returnSQUIDs = TRUE);
+
+          UIDArgs$follow <- SQUIDs_to_follow;
+
+        } else {
+          potentialUID_prefix <- c("", "", "");
+        }
 
         dataToWrite <-
-          preprocess_data(
+          preprocess_source(
             data[i, j],
             clean = clean,
             cleaningArgs = cleaningArgs,
@@ -301,21 +491,59 @@ convert_df_to_source <- function(data,
             UIDArgs = UIDArgs
           );
 
-
-        sourceList[[i]] <-
-          c(sourceList[[i]],
-            "",
-            paste0(
-              codeDelimiters[1],
-              utterance_classId,
-              ciid_separator,
-              j,
-              codeDelimiters[2]
-            ),
-            "",
-            dataToWrite
-            #paste0(data[i, j])
+        SQUIDs_to_follow <-
+          extract_uids(
+            dataToWrite,
+            returnSQUIDs  = TRUE
           );
+
+        ### Add the fragment for this row and column to this row's source
+
+        if (is.null(utterance_comments)) {
+
+          ### No comments specified
+
+          sourceList[[i]] <-
+            c(sourceList[[i]],
+              potentialUID_prefix[1],
+              paste0(
+                potentialUID_prefix[2],
+                codeDelimiters[1],
+                utterance_classId,
+                ciid_separator,
+                j,
+                codeDelimiters[2]
+              ),
+              potentialUID_prefix[3],
+              dataToWrite
+              #paste0(data[i, j])
+            );
+
+        } else {
+
+          ### So comments are specified for the utterance columns;
+          ### Add these in as ROCK comments.
+
+          sourceList[[i]] <-
+            c(sourceList[[i]],
+              commentPrefix,
+              utterance_comments[j],
+              potentialUID_prefix[1],
+              paste0(
+                potentialUID_prefix[2],
+                codeDelimiters[1],
+                utterance_classId,
+                ciid_separator,
+                j,
+                codeDelimiters[2]
+              ),
+              potentialUID_prefix[3],
+              dataToWrite
+              #paste0(data[i, j])
+            );
+
+        }
+
       }
     }
 
@@ -365,7 +593,9 @@ convert_df_to_source <- function(data,
 
   }
 
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ### Check whether we should save the attributes to one separate file
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (!is.null(attributesFile)) {
 
@@ -392,7 +622,13 @@ convert_df_to_source <- function(data,
 
   }
 
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ### Write and/or return output
+  ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (oneFile) {
+
+    ### Writing to one file; compose it
 
     allInOneSource <-
       unlist(
@@ -439,6 +675,8 @@ convert_df_to_source <- function(data,
     }
 
   } else {
+
+    ### Writing to multiple files
 
     if (!dir.exists(output)) {
       stop("You indicated that you wanted to write the produced sources ",

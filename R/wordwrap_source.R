@@ -67,7 +67,7 @@ wordwrap_source <- function(input,
                             silent = rock::opts$get(silent),
                             utteranceMarker = rock::opts$get('utteranceMarker')) {
 
-  if ((length(input) == 1) && file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input) && (!dir.exists(input))) {
     text <- readLines(input,
                       encoding=encoding,
                       warn=rlWarn);

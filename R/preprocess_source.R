@@ -46,10 +46,10 @@ preprocess_source <- function(input,
                               rlWarn = rock::opts$get("rlWarn"),
                               silent = rock::opts$get("silent")) {
 
-  if ((length(input) == 1) && file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input) && (!dir.exists(input))) {
     input <- readLines(input,
-                      encoding=encoding,
-                      warn=rlWarn);
+                       encoding=encoding,
+                       warn=rlWarn);
   }
 
   ### Clean data if requested
@@ -60,6 +60,8 @@ preprocess_source <- function(input,
         c(list(input = input),
           cleaningArgs)
       );
+  } else {
+    res <- input;
   }
 
   ### Wordwrap data if requested
@@ -72,7 +74,7 @@ preprocess_source <- function(input,
       );
   }
 
-  ### Wordwrap data if requested
+  ### Word wrap data if requested
   if (prependUIDs) {
     res <-
       do.call(

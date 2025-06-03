@@ -56,7 +56,7 @@ prepend_ciids_to_source <- function(input,
                                     silent = rock::opts$get('silent')) {
 
   ### Read input, if it's a file
-  if ((length(input) == 1) && (file.exists(input))) {
+  if ((length(input) == 1) && file.exists(input) && (!dir.exists(input))) {
     input <- readLines(input,
                        encoding=encoding,
                        warn = rlWarn);

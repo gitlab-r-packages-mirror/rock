@@ -67,7 +67,7 @@ prepend_ids_to_source <- function(input,
   delimiterRegEx <- rock::opts$get(delimiterRegEx);
   ignoreOddDelimiters <- rock::opts$get(ignoreOddDelimiters);
 
-  if ((length(input) == 1) && file.exists(input)) {
+  if ((length(input) == 1) && file.exists(input) && (!dir.exists(input))) {
     textToProcess <- readLines(
       input,
       encoding=encoding,
