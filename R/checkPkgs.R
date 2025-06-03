@@ -11,7 +11,7 @@
 #' package versions (see the second example).
 #' @param install Whether to install missing packages from `repos`.
 #' @param load Whether to load packages (which is exactly *not* the point
-#' of this function, but hey, YMMV).
+#' of this package, but hey, YMMV).
 #' @param repos  The repository to use if installing packages; default
 #' is the RStudio repository.
 #'
@@ -19,14 +19,14 @@
 #' @export
 #'
 #' @examples \donttest{
-#' rock::checkPkgs('base');
+#' ufs::checkPkgs('base');
 #'
-#' ### Require a version
-#' rock::checkPkgs(rock = "0.5.0");
+#' ### Require a specific version
+#' ufs::checkPkgs(ufs = "0.3.1");
 #'
 #' ### This will show the error message
 #' tryCatch(
-#'   rock::checkPkgs(
+#'   ufs::checkPkgs(
 #'     base = "99",
 #'     stats = "42.5",
 #'     ufs = 20
@@ -45,11 +45,12 @@ checkPkgs <- function(...,
   } else {
     x <- names(vrsn);
   }
-
-  res <- c();
-
+  installedPkgs <- utils::installed.packages();
+  pkgNames <- installedPkgs[, 'Package'];
+  res <- stats::setNames(rep(FALSE, length(x)),
+                         x);
   for (i in seq_along(x)) {
-    if (length(find.package(x[i]) > 0)) {
+    if (x[i] %in% pkgNames) {
       if (utils::compareVersion(as.character(utils::packageVersion(x[i])), vrsn[i]) < 0) {
         res[x[i]] <- TRUE;
       }
@@ -59,13 +60,14 @@ checkPkgs <- function(...,
   }
   if (any(res)) {
     if (install) {
-      utils::install.packages(x[res],
-                              repos=repos);
+      installedPkgs(x[res], repos=repos);
     } else {
       stop("Of package(s) ", vecTxtQ(x[res]),
            ", you need at least versions ", vecTxt(vrsn[res]),
            ", respectively. Install those with:\n\n",
-           "install.packages(c(", vecTxtQ(x[res]), "));\n");
+           "install.packages(c(",
+           vecTxtQ(x[res], lastDelimiter = ", "),
+           "));\n");
     }
   }
   if (load) {
