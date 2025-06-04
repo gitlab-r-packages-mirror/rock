@@ -678,7 +678,7 @@ convert_df_to_source <- function(data,
 
     ### Writing to multiple files
 
-    if (!dir.exists(output)) {
+    if (!is.null(output) && !dir.exists(output)) {
       stop("You indicated that you wanted to write the produced sources ",
            "to directory '", output, "', but it doesn't seem to exist.");
     }
