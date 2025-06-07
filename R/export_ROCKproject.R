@@ -73,15 +73,15 @@ export_ROCKproject <- function(output,
   setwd(path);
 
   if (!file.exists(file.path(path, "_ROCKproject.yml"))) {
-    yaml::write_yaml(
-      rock::opts$get("ROCKproject_defaults"),
-      file.path(path, "_ROCKproject.yml")
+
+    rock::make_ROCKproject_config(
+      path = path
     );
+
     warning("No file with project settings was found yet! This file ",
             "should normally be called `_ROCKproject.yml` and be stored ",
             "in the path you specified (", path, "). I'm now creating it, ",
-            "using the default settings in ROCK setting 'ROCKproject_defaults', ",
-            "which you can view with:\n\n  rock::opts$get('ROCKproject_defaults');\n\n",
+            "using the default settings.\n\n",
             "You can edit this file and then export the project again (repeating ",
             "this same command).");
   }

@@ -4,12 +4,12 @@
 \alias{extract_uids}
 \title{Extract the UIDs (or SQUIDs) from a vector}
 \usage{
-extract_uids(x, returnSQUID = FALSE)
+extract_uids(x, returnSQUIDs = FALSE)
 }
 \arguments{
 \item{x}{The vector}
 
-\item{returnSQUID}{WHether to return the UIDs or the SQUIDs.}
+\item{returnSQUIDs}{WHether to return the UIDs or the SQUIDs.}
 }
 \value{
 A vector with (SQ)UIDs

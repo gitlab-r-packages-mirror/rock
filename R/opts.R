@@ -474,39 +474,6 @@ opts$defaults <-
 
        suppressDuplicateInstanceWarnings = FALSE,
 
-       ### ROCK project defaults
-       ROCKproject_defaults =
-         list(
-           project = list(
-             title = "Default title",
-             authors = "Authors",
-             authorIds = NULL,
-             version = "1.0",
-             ROCK_version = "1.0",
-             ROCK_project_version = "1.0",
-             date_created = as.character(format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")),
-             date_modified = as.character(format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"))
-           ),
-           codebook = list(
-             urcid = "",
-             embedded = NULL,
-             local = ""
-           ),
-           sources = list(
-             extension =  ".rock",
-             regex = NULL,
-             dirsToIncludeRegex = "data/",
-             recursive = TRUE,
-             dirsToExcludeRegex = NULL,
-             filesToIncludeRegex = NULL,
-             filesToExcludeRegex = NULL
-           ),
-           workflow = list(
-             pipeline = NULL,
-             actions = NULL
-           )
-         ),
-
        ### Used throughout for debugging
        debug = FALSE,
 

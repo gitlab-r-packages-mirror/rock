@@ -132,7 +132,7 @@ convert_df_to_source <- function(data,
                                    ),
                                  oneFile = TRUE,
                                  cols_to_sourceFilename = cols_to_ciids,
-                                 cols_in_sourceFilename_sep = "=",
+                                 cols_in_sourceFilename_sep = "_is_",
                                  sourceFilename_prefix = "source_",
                                  sourceFilename_suffix = "",
                                  ciid_labels = NULL,
@@ -526,8 +526,6 @@ convert_df_to_source <- function(data,
 
           sourceList[[i]] <-
             c(sourceList[[i]],
-              commentPrefix,
-              utterance_comments[j],
               potentialUID_prefix[1],
               paste0(
                 potentialUID_prefix[2],
@@ -537,6 +535,8 @@ convert_df_to_source <- function(data,
                 j,
                 codeDelimiters[2]
               ),
+              commentPrefix,
+              utterance_comments[j],
               potentialUID_prefix[3],
               dataToWrite
               #paste0(data[i, j])
@@ -676,34 +676,13 @@ convert_df_to_source <- function(data,
 
   } else {
 
-    ### Writing to multiple files
-
-    if (!is.null(output) && !dir.exists(output)) {
-      stop("You indicated that you wanted to write the produced sources ",
-           "to directory '", output, "', but it doesn't seem to exist.");
-    }
+    ### Writing to multiple files or returning sources in a list
 
     res <- list();
 
-    filenames_to_write_to <-
-      file.path(
-        output,
-        paste0(
-          sourceFilename_prefix,
-          apply(
-            data[, cols_to_ciids],
-            1,
-            paste,
-            sep = cols_in_sourceFilename_sep
-          ),
-          sourceFilename_suffix,
-          ".rock"
-        )
-      );
-
     for (i in seq_along(sourceList)) {
 
-      if (is.null(attributesFile)) {
+      if (is.null(attributesFile) && (length(attributesAsYamlList) > 0)) {
 
         res[[i]] <-
           c(sourceList[[i]],
@@ -713,12 +692,21 @@ convert_df_to_source <- function(data,
 
       } else {
 
-        res[[i]] <-
-          c(sourceList[[i]]);
+        res[[i]] <- unlist(unname(sourceList[[i]]));
 
       }
 
     }
+
+    resNames <-
+      apply(
+        data[, cols_to_ciids, drop=FALSE],
+        1,
+        paste,
+        sep = cols_in_sourceFilename_sep
+      );
+
+    names(res) <- resNames;
 
     if (is.null(output)) {
       msg("Nothing specified as `output`, returning a list of the produced ",
@@ -726,6 +714,22 @@ convert_df_to_source <- function(data,
           silent=silent);
       return(res);
     } else {
+
+      if (!dir.exists(output)) {
+        stop("You indicated that you wanted to write the produced sources ",
+             "to directory '", output, "', but it doesn't seem to exist.");
+      }
+
+      filenames_to_write_to <-
+        file.path(
+          output,
+          paste0(
+            sourceFilename_prefix,
+            resNames,
+            sourceFilename_suffix,
+            ".rock"
+          )
+        );
 
       for (i in seq_along(sourceList)) {
 

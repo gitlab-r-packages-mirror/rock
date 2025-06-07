@@ -1,6 +1,6 @@
 ---
 title: "Introduction to the Reproducible Open Coding Kit (ROCK)"
-author: "Gjalt-Jorn Ygram Peters & Szilvia Zörgő"
+author: "Gjalt-Jorn Peters & Szilvia Zörgő"
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 The Reproducible Open Coding Kit (ROCK) was developed to facilitate reproducible and open coding, specifically geared towards qualitative research methods.
 
-To code something with the ROCK, add the code to the line your want to code, in between twoi pairs of sqaure brackets:
+To code something with the ROCK, add the code to the line your want to code, in between two pairs of square brackets:
 
 ```
 Some example text,
@@ -31,5 +31,4 @@ and some more.       [[look_a_code]]
 And the end.
 ```
 
-This vignette was originally the introduction to the ROCK, but has become outdated. In addition, there are now a number of other resources. Until this vignette has been replaced with a new up-to-date tutorial, please consult [https://rock.science](https://rock.science), or the blog post at [https://sciencer.eu/posts/2024-12-rock-basics.html](https://sciencer.eu/posts/2024-12-rock-basics.html).
-
+A more extensive introduction is available in the blog post at [https://sciencer.eu/posts/2024-12-rock-basics.html](https://sciencer.eu/posts/2024-12-rock-basics.html). IN addition, the ROCK website, [https://rock.science](https://rock.science), links to a number of tutorials and workshops.
