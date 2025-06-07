@@ -48,6 +48,10 @@
 #' yields something like "`[[originalColName=colName_1]]`" above all utterances
 #' from the column named `colName_1`). When writing multiple utterance columns,
 #' it is not possible to also write codes (i.e. `cols_to_codes` must be `NULL`).
+#' @param utterance_comments A column with comments to be added to each
+#' utterance.
+#' @param commentPrefix If adding in comments, the prefix to use, typically
+#' a number of hashes. Note that comment lines must start with a hash (`#`).
 #' @param oneFile Whether to store everything in one source, or create one
 #' source for each row of the data (if this is set to `FALSE`, make sure that
 #' `cols_to_sourceFilename` specifies one or more columns that together
@@ -76,6 +80,14 @@
 #' an equals sign is less ambiguous.
 #' @param attributesFile Optionally, a file to write the attributes to if you
 #' don't want them to be written to the source file(s).
+#' @param clean,cleaningArgs Whether to clean the utterances using [rock::clean_source()], and the
+#' arguments to pass when calling it as a named list passed in `cleaningArgs`.
+#' @param wordwrap,wrappingArgs Whether to word wrap the utterances
+#' using [rock::wordwrap_source()], and the
+#' arguments to pass when calling it as a named list passed in  `wrappingArgs`.
+#' @param prependUIDs,UIDArgs Whether to prepend utterance identifiers (UIDs)
+#' using [rock::prepend_ids_to_source()], and the
+#' arguments to pass when calling it as a named list passed in  `UIDArgs`.
 #' @param preventOverwriting Whether to prevent overwriting of output files.
 #' @param encoding The encoding of the source(s).
 #' @param silent Whether to suppress the warning about not editing the cleaned source.
