@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The Reproducible Open Coding Kit (ROCK) was developed to facilitate reproducible and open coding, specifically geared towards qualitative research methods.
+The Reproducible Open Coding Kit (ROCK) was developed to facilitate reproducible and open coding, specifically geared towards qualitative research methods. It was designed to be a standard that realized coded qualitative data that is simultaneously human- and machine-readable, similar to the spirit of Markdown and YAML.
 
 To code something with the ROCK, add the code to the line your want to code, in between two pairs of square brackets:
 
