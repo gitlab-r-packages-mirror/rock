@@ -1,7 +1,7 @@
 Package: rock
 Title: Reproducible Open Coding Kit
 Version: 0.9.1
-Date: 2025-05-30
+Date: 2025-06-07
 Authors@R: 
     c(person(given = "Gjalt-Jorn",
              family = "Peters",
@@ -43,7 +43,7 @@ Imports: data.tree (>= 1.1.0),
          htmltools (>= 0.5.0),
          markdown (>= 1.1),
          purrr (>= 0.2.5),
-         squids (>= 25.6.0),
+         squids (>= 25.5.3),
          yaml (>= 2.2.0),
          yum (>= 0.1.0)
 Suggests: 
