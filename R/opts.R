@@ -163,8 +163,8 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(### Used throughout
-       codeRegexes = c(codes = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*\\]\\]",
-                       ci = "\\[\\[ci\\s*--\\s*([a-zA-Z0-9_>]+)\\s*\\]\\]"),
+       codeRegexes = c(codes = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*([0-9]*\\s*-\\s*[0-9]*)?\\s*\\]\\]",
+                       ci = "\\[\\[ci\\s*--\\s*([a-zA-Z0-9_>]+)\\s*([0-9]*\\s*-\\s*[0-9]*)?\\s*\\]\\]"),
        idRegexes = c(caseId = "\\[\\[cid\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]"#,,
                      # coderId = "\\[\\[coderId[=:]([a-zA-Z0-9_]+)\\]\\]",
                      # stanzaId = "\\[\\[sid[=:]([a-zA-Z0-9_]+)\\]\\]",
@@ -183,8 +183,8 @@ opts$defaults <-
                               prbid = 'probeId',
                               mqid = 'metaqid'),
        classInstanceRegex = c(ciid = "\\[\\[(?!uid)(?!UID)\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]"),
-       codeValueRegexes = c(codeValues = "\\[\\[\\s*([a-zA-Z0-9_>]+)\\s*\\|\\|\\s*([^\\]]*)\\s*\\]\\]"),
-       networkCodeRegexes = c(network = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*->\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*\\|\\|\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*(\\|\\|[a-zA-Z0-9_>]*)?\\s*\\]\\]"),
+       codeValueRegexes = c(codeValues = "\\[\\[\\s*([a-zA-Z0-9_>]+)\\s*\\|\\|\\s*([^\\]]*)\\s*([0-9]*\\s*-\\s*[0-9]*)?\\s*\\]\\]"),
+       networkCodeRegexes = c(network = "\\[\\[\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*->\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*\\|\\|\\s*([a-zA-Z][a-zA-Z0-9_>]*)\\s*(\\|\\|[a-zA-Z0-9_>]*)?\\s*([0-9]*\\s*-\\s*[0-9]*)?\\s*\\]\\]"),
        networkCodeRegexOrder = c("from", "to", "type", "weight"),
        sectionRegexes = c(sectionBreak = "---<<\\s*([a-zA-Z][a-zA-Z0-9_]*)\\s*>>---"),
        uidRegex = "\\[\\[\\s*[uU][iI][dD]\\s*[=:]\\s*([a-zA-Z0-9_]+)\\s*\\]\\]",
