@@ -22,7 +22,7 @@
 #' rock::checkPkgs('base');
 #'
 #' ### Require a specific version
-#' rock::checkPkgs(rock = "99.2.1");
+#' rock::checkPkgs(rock = "0.9.1");
 #'
 #' ### This will show the error message
 #' tryCatch(
